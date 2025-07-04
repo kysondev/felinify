@@ -5,8 +5,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "components/ui/accordion";
-import { Button } from "components/ui/button";
+} from "components/ui/Accordion";
+import { Button } from "components/ui/Button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,14 +14,14 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "components/ui/navigation-menu";
+} from "components/ui/Navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "components/ui/sheet";
+} from "components/ui/Sheet";
 
 interface MenuItem {
   title: string;
@@ -50,7 +50,7 @@ interface Navbar1Props {
   };
 }
 
-const Navbar = ({
+const LandingNavbar = ({
   logo = {
     url: "#",
     alt: "logo",
@@ -269,4 +269,4 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
   );
 };
 
-export { Navbar };
+export { LandingNavbar };

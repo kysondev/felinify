@@ -1,15 +1,14 @@
-import { Cta } from "components/cta";
-import { Feature } from "components/feature";
-import { Footer } from "components/footer";
-import { Hero } from "components/hero";
-import { Navbar } from "components/navbar";
-import { Pricing } from "components/pricing";
-import Image from "next/image";
+import { Cta } from "components/Cta";
+import { Feature } from "components/Feature";
+import { Footer } from "components/Footer";
+import { Hero } from "components/Hero";
+import { LandingNavbar } from "components/LandingNavbar";
+import { Pricing } from "components/Pricing";
 
 export default function Home() {
   return (
     <div className="px-4 max-w-[1080px] mx-auto">
-      <Navbar />
+      <LandingNavbar />
       <Hero />
       <Feature />
       <Pricing />
