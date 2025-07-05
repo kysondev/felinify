@@ -1,6 +1,6 @@
 import { authClient } from "lib/auth-client";
 import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 
 export const signUp = async (formData: FormData) => {
@@ -114,22 +114,22 @@ export const verifyOTP = async (otp: string[]) => {
   try {
     const otpString = otp.join("");
     if (otpString.length !== 6) {
-      toast.error("Please enter all 6 digits");
-      return;
+      return { success: false, error: "Please enter all 6 digits" };
     }
     const { error } = await authClient.twoFactor.verifyOtp({
       code: otpString,
     });
     if (error) {
-      toast.error("Invalid verification code. Please try again.");
-      return;
+      return {
+        success: false,
+        error: "Invalid verification code. Please try again.",
+      };
     }
-    toast.success("Logged in successfully");
+    return { success: true };
   } catch (err) {
-    toast.error("Something went wrong. Please try again.");
-    return;
+    console.error("Error verifying OTP:", err);
+    return { success: false, error: "Something went wrong. Please try again." };
   }
-  redirect("/");
 };
 
 export const forgotPassword = async (formData: FormData) => {
