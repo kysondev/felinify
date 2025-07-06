@@ -21,7 +21,7 @@ const Cta = ({
   title = "Boost Your Learning Efficiency",
   description = "Master any subject with AI-enhanced flashcards, smart repetition, and a distraction-free study experience built for serious learners.",
   buttonText = "Start Learning Free",
-  buttonUrl = "/workspace/library",
+  buttonUrl = "/workspace",
   items = defaultItems,
 }: CtaProps) => {
   return (

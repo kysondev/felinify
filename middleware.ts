@@ -41,9 +41,7 @@ export default async function middleware(request: NextRequest) {
 
     if (session) {
       if (AUTH_ROUTES.includes(currentPath)) {
-        return NextResponse.redirect(
-          new URL("/workspace/library", request.url)
-        );
+        return NextResponse.redirect(new URL("/workspace", request.url));
       }
     } else {
       if (!isAuthRoute) {

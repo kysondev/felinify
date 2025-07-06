@@ -23,7 +23,7 @@ const Hero = ({
   description = "Create, review, and manage flashcards with AI-assisted tools in a minimal, distraction-free interface.",
   button = {
     text: "Get Started",
-    url: "/workspace/library",
+    url: "/workspace",
   },
 }: HeroProps) => {
   return (

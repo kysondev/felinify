@@ -1,7 +1,10 @@
+"use client";
 import { authClient } from "lib/auth-client";
+import { sendEmail } from "lib/email";
 import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
+import EmailVerification from "templates/emails/EmailVerification";
 
 export const signUp = async (formData: FormData) => {
   try {
@@ -34,7 +37,7 @@ export const signUp = async (formData: FormData) => {
   } catch (error) {
     toast.error("Something went wrong");
   }
-  redirect("/workspace/library");
+  redirect("/workspace");
 };
 
 export const signInWithEmail = async (
@@ -59,7 +62,7 @@ export const signInWithEmail = async (
     const { error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/workspace/library",
+      callbackURL: "/workspace",
       fetchOptions: {
         onSuccess: async (ctx) => {
           if (ctx.data.twoFactorRedirect) {
@@ -179,4 +182,15 @@ export const resetPassword = async (formData: FormData, token: string) => {
     return;
   }
   redirect("/auth/login");
+};
+
+export const signOut = async () => {
+  try {
+    await authClient.signOut();
+    toast.success("Signed out successfully");
+  } catch (error) {
+    console.error("Sign out error:", error);
+    toast.error("Something went wrong while signing out");
+  }
+  window.location.href = "/auth/login";
 };

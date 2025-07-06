@@ -88,7 +88,7 @@ const Pricing = () => {
                   </li>
                 </ul>
                 <Button className="w-full mt-auto" asChild>
-                  <Link href="/workspace/library">Get Started</Link>
+                  <Link href="/workspace">Get Started</Link>
                 </Button>
               </div>
             </div>
@@ -133,7 +133,7 @@ const Pricing = () => {
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
-                  <Link href="/workspace/library">Purchase</Link>
+                  <Link href="/workspace">Purchase</Link>
                 </Button>
               </div>
             </div>
@@ -178,7 +178,7 @@ const Pricing = () => {
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
-                  <Link href="/workspace/library">Purchase</Link>
+                  <Link href="/workspace">Purchase</Link>
                 </Button>
               </div>
             </div>

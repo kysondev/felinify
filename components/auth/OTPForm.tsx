@@ -13,7 +13,7 @@ import {
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "components/ui/input-otp";
+} from "components/ui/Input-otp";
 import { Loading } from "components/ui/Loading";
 import { cn } from "lib/utils";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ const OTPForm = ({ onCancel, className, ...props }: OTPFormProps) => {
       const result = await verifyOTP(otp.split(""));
       if (result.success) {
         toast.success("Logged in successfully");
-        router.push("/");
+        router.push("/workspace");
       } else {
         toast.error(
           result.error || "Invalid verification code. Please try again."
