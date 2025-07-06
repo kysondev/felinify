@@ -214,13 +214,11 @@ const WorkspaceNavbar = async ({
               </Sheet>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div>
-                    <img
-                      src={user?.image || "/default-avatar.png"}
-                      alt="User Avatar"
-                      className="w-8 h-8 rounded-full cursor-pointer"
-                    />
-                  </div>
+                  <img
+                    src={user?.image || "/default-avatar.png"}
+                    alt="User Avatar"
+                    className="w-8 h-8 rounded-full cursor-pointer"
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="start">
                   <DropdownMenuItem>
@@ -240,16 +238,26 @@ const WorkspaceNavbar = async ({
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Settings
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      onClick={signOut}
-                    >
-                      Log out
-                    </DropdownMenuItem>
+                    <Link href="/workspace/settings" className="w-full h-full">
+                      <DropdownMenuItem className="cursor-pointer w-full h-full">
+                        <Settings2 className="size-4 shrink-0" />
+                        Settings
+                      </DropdownMenuItem>
+                    </Link>
+                    <Link href="/workspace/upgrade" className="w-full h-full">
+                      <DropdownMenuItem className="cursor-pointer w-full h-full">
+                        <CircleFadingArrowUp className="size-4 shrink-0" />
+                        Upgrade Plan
+                      </DropdownMenuItem>
+                    </Link>
+                    <Form action={signOut}>
+                      <button type="submit" className="w-full h-full text-left">
+                        <DropdownMenuItem className="cursor-pointer w-full h-full">
+                          <LogOut className="size-4 shrink-0" />
+                          Log out
+                        </DropdownMenuItem>
+                      </button>
+                    </Form>
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
