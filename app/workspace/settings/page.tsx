@@ -2,8 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { getUser } from "services/user.service";
 import { AccountSettings } from "components/settings/AccountSettings";
 import { PaymentSettings } from "components/settings/PaymentSettings";
-import { User } from "generated/prisma-client";
 import { Alert } from "components/ui/Alert";
+import { User } from "db/types/models.types";
 
 export default async function SettingsPage() {
   const { data: user } = await getUser();

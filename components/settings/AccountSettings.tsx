@@ -15,13 +15,11 @@ import {
   KeyRound,
   ShieldCheck,
   Lock,
-  Mail,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { upload } from "services/cloudinary.service";
 import { authClient } from "lib/auth-client";
 import { Switch } from "components/ui/Switch";
-import { User } from "generated/prisma-client";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +29,7 @@ import {
   DialogTitle,
 } from "components/ui/Dialog";
 import { passwordSchema, usernameSchema } from "lib/validations/user.schema";
+import { User } from "db/types/models.types";
 
 export function AccountSettings({ user }: { user: User }) {
   const [username, setUsername] = useState(user?.name || "");
