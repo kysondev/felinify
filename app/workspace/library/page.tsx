@@ -1,7 +1,4 @@
-import { getUser } from "services/user.service";
-
-export default async function LibraryPage() {
-  const { data: user } = await getUser();
+export default async function TestPage() {
   return (
     <>
       <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">

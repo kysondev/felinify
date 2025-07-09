@@ -110,11 +110,11 @@ const WorkspaceNavbar = async ({
       <div className="w-full">
         <nav className="hidden justify-between w-full lg:flex">
           <div className="flex items-center gap-6">
-            <a href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-2">
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
-            </a>
+            </Link>
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -176,11 +176,11 @@ const WorkspaceNavbar = async ({
 
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            <a href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-2">
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
-            </a>
+            </Link>
             <div className="flex items-center gap-3">
               <Sheet>
                 <SheetTrigger asChild>
@@ -189,11 +189,11 @@ const WorkspaceNavbar = async ({
                 <SheetContent className="overflow-y-auto">
                   <SheetHeader>
                     <SheetTitle>
-                      <a href={logo.url} className="flex items-center gap-2">
+                      <Link href={logo.url} className="flex items-center gap-2">
                         <span className="text-lg font-semibold tracking-tighter">
                           {logo.title}
                         </span>
-                      </a>
+                      </Link>
                     </SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-6 p-4">
@@ -303,26 +303,25 @@ const renderMenuItem = (item: MenuItem) => {
 
   return (
     <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className="group flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
-        <div className="flex items-center gap-[5px]">
-          {item.icon && (
-            <span className="flex items-center justify-center w-4 h-4 text-foreground">
-              {React.isValidElement(item.icon)
-                ? React.cloneElement(
-                    item.icon as React.ReactElement<{ className?: string }>,
-                    {
-                      className: "w-4 h-4",
-                    }
-                  )
-                : item.icon}
-            </span>
-          )}
-          <span>{item.title}</span>
-        </div>
-      </NavigationMenuLink>
+      <Link href={item.url} legacyBehavior passHref>
+        <NavigationMenuLink className="group flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground">
+          <div className="flex items-center gap-[5px]">
+            {item.icon && (
+              <span className="flex items-center justify-center w-4 h-4 text-foreground">
+                {React.isValidElement(item.icon)
+                  ? React.cloneElement(
+                      item.icon as React.ReactElement<{ className?: string }>,
+                      {
+                        className: "w-4 h-4",
+                      }
+                    )
+                  : item.icon}
+              </span>
+            )}
+            <span>{item.title}</span>
+          </div>
+        </NavigationMenuLink>
+      </Link>
     </NavigationMenuItem>
   );
 };
@@ -345,7 +344,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
 
   const isSmartReview = item.title === "Smart Review";
   return (
-    <a
+    <Link
       key={item.title}
       href={item.url}
       className="text-md font-semibold flex items-center gap-1"
@@ -356,16 +355,16 @@ const renderMobileMenuItem = (item: MenuItem) => {
           AI
         </Badge>
       )}
-    </a>
+    </Link>
   );
 };
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   const isSmartReview = item.title === "Smart Review";
   return (
-    <a
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+    <Link
       href={item.url}
+      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
     >
       <div className="flex items-center justify-center w-4 h-4 text-foreground flex-shrink-0">
         {item.icon}
@@ -385,7 +384,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
           </p>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 
