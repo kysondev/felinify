@@ -12,7 +12,11 @@ import { Input } from "components/ui/Input";
 import { Label } from "components/ui/Label";
 import { useState, useTransition } from "react";
 import Form from "next/form";
-import { signInWithEmail, signInWithGoogle } from "actions/auth.action";
+import {
+  signInWithEmail,
+  signInWithGithub,
+  signInWithGoogle,
+} from "actions/auth.action";
 import OTPForm from "./OTPForm";
 import { Loading } from "components/ui/Loading";
 
@@ -48,7 +52,7 @@ export function LoginForm({
                   variant="outline"
                   className="w-full"
                   type="button"
-                  onClick={signInWithGoogle}
+                  onClick={signInWithGithub}
                 >
                   <img src="/github_light.svg" alt="github" />
                   Login with GitHub
