@@ -1,7 +1,7 @@
-import { ColumnType } from "kysely";
+import { ColumnType, Generated } from "kysely";
 
 export interface UserTable {
-  id: string;
+  id: Generated<string> | string;
   email: string;
   name: string | null;
   emailVerified: boolean;
@@ -16,7 +16,7 @@ export interface UserTable {
 }
 
 export interface SessionTable {
-  id: string;
+  id: Generated<string> | string;
   expiresAt: Date;
   token: string;
   createdAt: ColumnType<Date, string | undefined, never>;
@@ -28,7 +28,7 @@ export interface SessionTable {
 }
 
 export interface AccountTable {
-  id: string;
+  id: Generated<string> | string;
   accountId: string;
   providerId: string;
   userId: string;
@@ -44,7 +44,7 @@ export interface AccountTable {
 }
 
 export interface VerificationTable {
-  id: string;
+  id: Generated<string> | string;
   identifier: string;
   value: string;
   expiresAt: Date;
@@ -53,23 +53,25 @@ export interface VerificationTable {
 }
 
 export interface TwoFactorTable {
-  id: string;
+  id: Generated<string> | string;
   secret: string;
   backupCodes: string;
   userId: string;
 }
 
 export interface DeckTable {
-  id: string;
+  id: Generated<string> | string;
   name: string;
   description: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined, never>;
   userId: string;
+  flashcards: FlashcardTable[] | null;
+  progress: UserDeckProgressTable | null;
 }
 
 export interface UserDeckProgressTable {
-  id: string;
+  id: Generated<string> | string;
   userId: string;
   deckId: string;
   mastery: number;
@@ -80,7 +82,7 @@ export interface UserDeckProgressTable {
 }
 
 export interface FlashcardTable {
-  id: string;
+  id: Generated<string> | string;
   question: string;
   answer: string;
   createdAt: ColumnType<Date, string | undefined, never>;
@@ -89,7 +91,7 @@ export interface FlashcardTable {
 }
 
 export interface FlashcardPerformanceTable {
-  id: string;
+  id: Generated<string> | string;
   userId: string;
   flashcardId: string;
   timesStudied: number;
@@ -102,7 +104,7 @@ export interface FlashcardPerformanceTable {
 }
 
 export interface StudySessionTable {
-  id: string;
+  id: Generated<string> | string;
   userId: string;
   endedAt: Date | null;
   deckId: string | null;

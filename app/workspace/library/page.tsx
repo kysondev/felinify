@@ -1,6 +1,25 @@
-import { Tabs, TabsList, TabsTrigger } from "components/ui/Tabs";
+import { Button } from "components/ui/Button";
+import {
+  Card,
+} from "components/ui/Card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
+import { PlusCircle } from "lucide-react";
+import { getDecksByUserId } from "services/deck.service";
+import { getUser } from "services/user.service";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "components/ui/Dialog";
+import { CreateDeckForm } from "components/library/CreateDeckForm";
+import { DeckCard } from "components/library/DeckCard";
 
 export default async function LibraryPage() {
+  const { data: user } = await getUser();
+  const { data: decks } = await getDecksByUserId(user?.id as string);
   return (
     <>
       <div className="container max-w-[1200px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
@@ -22,6 +41,55 @@ export default async function LibraryPage() {
                 Analytics
               </TabsTrigger>
             </TabsList>
+            <TabsContent value="decks" className="space-y-6 mt-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-medium">
+                  Your Flashcard Decks ({decks?.length || "0"})
+                </h2>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <PlusCircle className="h-4 w-4 mr-2" />
+                      Create Deck
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Create New Flashcard Deck</DialogTitle>
+                      <DialogDescription>
+                        Create a new deck to organize your flashcards.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <CreateDeckForm userId={user?.id as string} />
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {decks?.map((deck) => (
+                  <DeckCard deck={deck} key={deck.id} />
+                ))}
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Card className="border-dashed flex flex-col items-center justify-center p-6 min-h-[208px] cursor-pointer hover:bg-accent/10 transition-colors">
+                      <PlusCircle className="h-8 w-8 text-muted-foreground mb-2" />
+                      <p className="text-muted-foreground font-medium">
+                        Create New Deck
+                      </p>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Create New Flashcard Deck</DialogTitle>
+                      <DialogDescription>
+                        Create a new deck to organize your flashcards.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <CreateDeckForm userId={user?.id as string} />
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>

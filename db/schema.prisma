@@ -111,9 +111,9 @@ model Deck {
 
 model UserDeckProgress {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  deck      Deck     @relation(fields: [deckId], references: [id])
+  deck      Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
   deckId    String
   mastery   Float    @default(0.0)
   completedSessions Int @default(0)
@@ -130,7 +130,7 @@ model Flashcard {
   answer     String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  deck       Deck     @relation(fields: [deckId], references: [id])
+  deck       Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
   deckId     String
   performances FlashcardPerformance[]
   @@map("flashcard")
@@ -138,9 +138,9 @@ model Flashcard {
 
 model FlashcardPerformance {
   id            String   @id @default(cuid())
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  flashcard     Flashcard @relation(fields: [flashcardId], references: [id])
+  flashcard     Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
   flashcardId   String
   timesStudied  Int       @default(0)
   correctCount  Int       @default(0)
@@ -154,11 +154,11 @@ model FlashcardPerformance {
 
 model StudySession {
   id         String    @id @default(cuid())
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   endedAt    DateTime?
   deckId     String?
-  deck       Deck?     @relation(fields: [deckId], references: [id])
+  deck       Deck?     @relation(fields: [deckId], references: [id], onDelete: Cascade)
   CreatedAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   @@map("studySession")

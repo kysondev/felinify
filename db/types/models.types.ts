@@ -4,3 +4,7 @@ import { Database } from "./schema.types";
 export type User = Selectable<Database["user"]>;
 export type NewUser = Insertable<Database["user"]>;
 export type UpdateUser = Updateable<Database["user"]>;
+
+export type Deck = Selectable<Database["deck"]>;
+export type NewDeck = Insertable<Database["deck"]>;
+export type UpdateDeck = Updateable<Database["deck"]>;

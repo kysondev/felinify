@@ -6,7 +6,53 @@ import { X } from "lucide-react"
 
 import { cn } from "lib/utils"
 
-const Dialog = DialogPrimitive.Root
+type DialogContextType = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
+
+const DialogContext = React.createContext<DialogContextType | undefined>(undefined);
+
+export function useDialog() {
+  const context = React.useContext(DialogContext);
+  if (!context) {
+    throw new Error("useDialog must be used within a Dialog");
+  }
+  return context;
+}
+
+const Dialog: React.FC<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>> = ({ 
+  children, 
+  open, 
+  onOpenChange, 
+  ...props 
+}) => {
+  const [dialogOpen, setDialogOpen] = React.useState(open || false);
+  
+  React.useEffect(() => {
+    if (open !== undefined) {
+      setDialogOpen(open);
+    }
+  }, [open]);
+
+  const handleOpenChange = React.useCallback((open: boolean) => {
+    setDialogOpen(open);
+    onOpenChange?.(open);
+  }, [onOpenChange]);
+
+  return (
+    <DialogContext.Provider value={{ open: dialogOpen, setOpen: handleOpenChange }}>
+      <DialogPrimitive.Root
+        open={dialogOpen}
+        onOpenChange={handleOpenChange}
+        {...props}
+      >
+        {children}
+      </DialogPrimitive.Root>
+    </DialogContext.Provider>
+  );
+};
+Dialog.displayName = "Dialog";
 
 const DialogTrigger = DialogPrimitive.Trigger
 
@@ -38,7 +84,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg",
         className
       )}
       {...props}
