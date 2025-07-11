@@ -9,6 +9,7 @@ import {
 } from "components/ui/Card";
 import { Deck } from "db/types/models.types";
 import { BookOpen, Clock } from "lucide-react";
+import Link from "next/link";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
   return (
@@ -43,9 +44,11 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
         </p>
       </CardContent>
       <CardFooter className="flex justify-between pt-2">
-        <Button variant="outline" size="sm">
-          Edit
-        </Button>
+        <Link href={`/workspace/deck/${deck.id}`} passHref>
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+        </Link>
         <Button size="sm">Study Now</Button>
       </CardFooter>
     </Card>

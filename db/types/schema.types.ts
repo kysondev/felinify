@@ -8,7 +8,7 @@ export interface UserTable {
   image: string | null;
   role: "user" | "admin";
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
   twoFactorEnabled: boolean | null;
   banned: boolean | null;
   banReason: string | null;
@@ -20,7 +20,7 @@ export interface SessionTable {
   expiresAt: Date;
   token: string;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
   ipAddress: string | null;
   userAgent: string | null;
   userId: string;
@@ -40,7 +40,7 @@ export interface AccountTable {
   scope: string | null;
   password: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
 }
 
 export interface VerificationTable {
@@ -64,7 +64,7 @@ export interface DeckTable {
   name: string;
   description: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
   userId: string;
   flashcards: FlashcardTable[] | null;
   progress: UserDeckProgressTable | null;
@@ -78,7 +78,7 @@ export interface UserDeckProgressTable {
   completedSessions: number;
   lastStudied: Date | null;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
 }
 
 export interface FlashcardTable {
@@ -86,7 +86,7 @@ export interface FlashcardTable {
   question: string;
   answer: string;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
   deckId: string;
 }
 
@@ -100,7 +100,7 @@ export interface FlashcardPerformanceTable {
   lastStudied: Date | null;
   easeFactor: number;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
 }
 
 export interface StudySessionTable {
@@ -109,7 +109,7 @@ export interface StudySessionTable {
   endedAt: Date | null;
   deckId: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
-  updatedAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
 }
 
 export interface Database {

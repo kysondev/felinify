@@ -1,10 +1,8 @@
 "use client";
 import { authClient } from "lib/auth-client";
-import { sendEmail } from "lib/email";
 import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
-import EmailVerification from "templates/emails/EmailVerification";
 
 export const signUp = async (formData: FormData) => {
   try {

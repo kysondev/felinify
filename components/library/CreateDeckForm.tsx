@@ -14,7 +14,6 @@ import { createDeckAction } from "actions/deck.action";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -23,14 +22,14 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { createDeckSchema } from "lib/validations/deck.schema";
+import { CreateDeckSchema, createDeckSchema } from "lib/validations/deck.schema";
 
 export function CreateDeckForm({ userId }: { userId: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { setOpen } = useDialog();
 
-  const form = useForm<z.infer<typeof createDeckSchema>>({
+  const form = useForm<CreateDeckSchema>({
     resolver: zodResolver(createDeckSchema),
     defaultValues: {
       name: "",
@@ -38,7 +37,7 @@ export function CreateDeckForm({ userId }: { userId: string }) {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof createDeckSchema>) => {
+  const onSubmit = async (data: CreateDeckSchema) => {
     startTransition(async () => {
       const result = await createDeckAction(userId, data.name, data.description);
       if (result.success) {
