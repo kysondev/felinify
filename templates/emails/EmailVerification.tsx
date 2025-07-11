@@ -39,7 +39,7 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
               <Section className="text-center mb-8">
                 <Button
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium text-base transition-colors"
-                  href={url}
+                  href={`${url}workspace/settings`}
                 >
                   Verify Email Address
                 </Button>
@@ -50,8 +50,8 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
                 browser:
               </Text>
               <Text className="text-gray-600 text-sm text-center mb-8">
-                <Link href={url} className="text-blue-600 break-all">
-                  {url}
+                <Link href={`${url}workspace/settings`} className="text-blue-600 break-all">
+                {`${url}workspace/settings`}
                 </Link>
               </Text>
 

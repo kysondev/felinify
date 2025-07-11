@@ -12,6 +12,16 @@ export const passwordSchema = z.string()
 
 export const emailSchema = z.string().email({ message: "Invalid email" });
 
+export const passwordChangeSchema = z.object({
+    currentPassword: z.string().min(1, { message: "Current password is required" }),
+    newPassword: passwordSchema,
+    confirmPassword: z.string().min(1, { message: "Please confirm your password" }),
+  }).refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 export type UsernameSchema = z.infer<typeof usernameSchema>;
 export type PasswordSchema = z.infer<typeof passwordSchema>;
 export type EmailSchema = z.infer<typeof emailSchema>;
+export type PasswordChangeSchema = z.infer<typeof passwordChangeSchema>;

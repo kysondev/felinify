@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "components/ui/Button";
 import { Card } from "components/ui/Card";
 import { Input } from "components/ui/Input";
@@ -28,81 +28,156 @@ import {
   DialogHeader,
   DialogTitle,
 } from "components/ui/Dialog";
-import { passwordSchema, usernameSchema } from "lib/validations/user.schema";
+import { PasswordChangeSchema, passwordChangeSchema, usernameSchema } from "lib/validations/user.schema";
 import { User } from "db/types/models.types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "components/ui/Form";
+import { useRouter } from "next/navigation";
 
 export function AccountSettings({ user }: { user: User }) {
-  const [username, setUsername] = useState(user?.name || "");
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [is2FAEnabled, setIs2FAEnabled] = useState(user?.twoFactorEnabled);
-  const [show2FADialog, setShow2FADialog] = useState(false);
-  const [password, setPassword] = useState("");
-  const [isVerifying, setIsVerifying] = useState(false);
-
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [isSendingVerification, setIsSendingVerification] = useState(false);
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [show2FADialog, setShow2FADialog] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isSendingVerification, setIsSendingVerification] = useState(false);
+  const [username, setUsername] = useState(user?.name || "");
+  const [usernameError, setUsernameError] = useState("");
 
-  useEffect(() => {
-    const usernameChanged = username !== (user?.name || "");
-    const imageChanged = !!selectedFile || !!imagePreview;
-    setHasChanges(usernameChanged || imageChanged);
-  }, [username, selectedFile, imagePreview, user]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSave = async () => {
+  const passwordForm = useForm<PasswordChangeSchema>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
+  const hasChanges = username !== (user?.name || "") || !!selectedFile || !!imagePreview;
+
+  const validateUsername = () => {
+    try {
+      usernameSchema.parse(username);
+      setUsernameError("");
+      return true;
+    } catch (error) {
+      const message = error instanceof z.ZodError ? error.errors[0].message : "Invalid username";
+      setUsernameError(message);
+      return false;
+    }
+  };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    if (usernameError) validateUsername();
+  };
+
+  const handleProfileSave = async () => {
     if (!user.emailVerified) {
       toast.error("Please verify your email before updating your profile");
       return;
     }
-    const result = usernameSchema.safeParse(username);
-    if (!result.success) {
-      toast.error(result.error.issues[0].message);
-      return;
-    }
+
+    if (!validateUsername()) return;
 
     setIsSaving(true);
 
     try {
       if (username !== user?.name) {
-        await authClient.updateUser({
-          name: username,
-        });
+        await authClient.updateUser({ name: username });
       }
 
       if (selectedFile) {
         const response = await upload(selectedFile);
-
         if (response.success && response.data) {
-          await authClient.updateUser({
-            image: response.data.secure_url,
-          });
-          toast.success("Profile updated successfully");
+          await authClient.updateUser({ image: response.data.secure_url });
         } else {
           toast.error(response.message || "Failed to upload image");
-          setIsSaving(false);
           return;
         }
-      } else if (username !== user?.name) {
-        toast.success("Profile updated successfully");
       }
-
-      setHasChanges(false);
-      setSelectedFile(null);
-
-      window.location.reload();
+      
+      if (hasChanges) {
+        toast.success("Profile updated successfully");
+        setSelectedFile(null);
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("An error occurred while updating your profile");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const onPasswordSubmit = async (data: PasswordChangeSchema) => {
+    if (!user.emailVerified) {
+      toast.error("Please verify your email before changing your password");
+      return;
+    }
+
+    try {
+      const response = await authClient.changePassword({
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+
+      if (response.error) {
+        toast.error(response.error.message || "Failed to change password");
+        return;
+      }
+
+      toast.success("Password changed successfully");
+      passwordForm.reset();
+      await authClient.signOut();
+      window.location.href = "/auth/login";
+    } catch (error) {
+      console.error("Error changing password:", error);
+      toast.error("An error occurred while changing your password");
+    }
+  };
+
+  const toggle2FA = async () => {
+    if (!password) {
+      toast.error("Password is required");
+      return;
+    }
+
+    setIsVerifying(true);
+
+    try {
+      const isEnabled = user?.twoFactorEnabled;
+      const response = isEnabled 
+        ? await authClient.twoFactor.disable({ password })
+        : await authClient.twoFactor.enable({ password });
+
+      if (response.error) {
+        toast.error("Incorrect password");
+        return;
+      }
+
+      toast.success(`Two-factor authentication ${isEnabled ? "disabled" : "enabled"}`);
+      setShow2FADialog(false);
+      setPassword("");
+    } catch (error) {
+      console.error("Error verifying password:", error);
+      toast.error("Failed to verify password");
+    } finally {
+      setIsVerifying(false);
+      router.refresh();
     }
   };
 
@@ -129,110 +204,12 @@ export function AccountSettings({ user }: { user: User }) {
       }
     };
     reader.readAsDataURL(file);
-
     e.target.value = "";
   };
 
   const removeSelectedImage = () => {
     setSelectedFile(null);
     setImagePreview(null);
-  };
-
-  const handlePasswordChange = async () => {
-    if (!user.emailVerified) {
-      toast.error("Please verify your email before changing your password");
-      return;
-    }
-    if (!currentPassword) {
-      toast.error("Current password is required");
-      return;
-    }
-
-    if (!newPassword) {
-      toast.error("New password is required");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    const result = passwordSchema.safeParse(newPassword);
-    if (!result.success) {
-      toast.error(result.error.issues[0].message);
-      return;
-    }
-
-    setIsChangingPassword(true);
-
-    try {
-      const response = await authClient.changePassword({
-        currentPassword,
-        newPassword,
-      });
-
-      if (response.error) {
-        toast.error(response.error.message || "Failed to change password");
-        return;
-      }
-
-      toast.success("Password changed successfully");
-
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-
-      await authClient.signOut();
-      window.location.href = "/auth/login";
-    } catch (error) {
-      console.error("Error changing password:", error);
-      toast.error("An error occurred while changing your password");
-    } finally {
-      setIsChangingPassword(false);
-    }
-  };
-
-  const verify2FAPassword = async () => {
-    if (!password) {
-      toast.error("Password is required");
-      return;
-    }
-
-    setIsVerifying(true);
-
-    try {
-      if (user?.twoFactorEnabled) {
-        const response = await authClient.twoFactor.disable({
-          password,
-        });
-        if (response.error) {
-          toast.error("Incorrect password");
-          return;
-        }
-      } else {
-        const response = await authClient.twoFactor.enable({
-          password,
-        });
-        if (response.error) {
-          toast.error("Incorrect password");
-          return;
-        }
-      }
-
-      setIs2FAEnabled(!is2FAEnabled);
-      toast.success(
-        `Two-factor authentication ${!is2FAEnabled ? "enabled" : "disabled"}`
-      );
-
-      setShow2FADialog(false);
-      setPassword("");
-    } catch (error) {
-      console.error("Error verifying password:", error);
-      toast.error("Failed to verify password");
-    } finally {
-      setIsVerifying(false);
-    }
   };
 
   const handleResendVerification = async () => {
@@ -267,7 +244,7 @@ export function AccountSettings({ user }: { user: User }) {
         {hasChanges && (
           <div className="absolute top-4 right-4 md:top-6 md:right-6">
             <Button
-              onClick={handleSave}
+              onClick={handleProfileSave}
               size="sm"
               className="flex items-center gap-1"
               disabled={isSaving}
@@ -285,7 +262,7 @@ export function AccountSettings({ user }: { user: User }) {
         <div className="flex flex-col md:flex-row md:items-start gap-6">
           <div className="flex flex-col items-center gap-2 mx-auto md:mx-0">
             <Avatar className="h-20 w-20 md:h-24 md:w-24 border border-border relative">
-              {isSaving && (
+              {isSaving && selectedFile && (
                 <div className="absolute inset-0 flex items-center justify-center bg-background/80 rounded-full z-10">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
@@ -306,9 +283,7 @@ export function AccountSettings({ user }: { user: User }) {
                 variant="outline"
                 size="sm"
                 className="flex-1 md:flex-auto flex items-center gap-1"
-                onClick={() => {
-                  fileInputRef.current?.click();
-                }}
+                onClick={() => fileInputRef.current?.click()}
                 disabled={isSaving}
               >
                 <Upload className="h-4 w-4" />
@@ -329,44 +304,50 @@ export function AccountSettings({ user }: { user: User }) {
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full">
-            <div className="grid gap-2">
-              <Label htmlFor="username">Username</Label>
-              <div>
+            <div className="space-y-4">
+              <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
+                  data-error={!!usernameError}
                 />
+                {usernameError && (
+                  <p className="text-[0.8rem] font-medium text-destructive">
+                    {usernameError}
+                  </p>
+                )}
               </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                <Input
-                  id="email"
-                  type="email"
-                  defaultValue={user?.email || ""}
-                  className="w-full"
-                  disabled
-                />
-                <div className="flex gap-2 items-center">
-                  <Badge
-                    variant={user?.emailVerified ? "default" : "secondary"}
-                    className="mt-1 sm:mt-0"
-                  >
-                    {user?.emailVerified ? "Verified" : "Unverified"}
-                  </Badge>
-                  {!user?.emailVerified && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="flex items-center gap-1 mt-1 sm:mt-0 text-primary hover:text-primary w-fit px-0 hover:underline hover:bg-transparent"
-                      onClick={handleResendVerification}
-                      disabled={isSendingVerification}
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                  <Input
+                    id="email"
+                    type="email"
+                    defaultValue={user?.email || ""}
+                    className="w-full"
+                    disabled
+                  />
+                  <div className="flex gap-2 items-center">
+                    <Badge
+                      variant={user?.emailVerified ? "default" : "secondary"}
+                      className="mt-1 sm:mt-0"
                     >
-                      <span>Resend</span>
-                    </Button>
-                  )}
+                      {user?.emailVerified ? "Verified" : "Unverified"}
+                    </Badge>
+                    {!user?.emailVerified && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="flex items-center gap-1 mt-1 sm:mt-0 text-primary hover:text-primary w-fit px-0 hover:underline hover:bg-transparent"
+                        onClick={handleResendVerification}
+                        disabled={isSendingVerification}
+                      >
+                        <span>Resend</span>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -377,58 +358,76 @@ export function AccountSettings({ user }: { user: User }) {
       <Card className="p-4 md:p-6">
         <h2 className="text-lg md:text-xl font-semibold mb-4">Security</h2>
         <div className="space-y-6">
-          <div className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="current-password">Current Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="current-password"
-                  type="password"
-                  className="pl-10"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="new-password">New Password</Label>
-              <Input
-                id="new-password"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+          <Form {...passwordForm}>
+            <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
+              <FormField
+                control={passwordForm.control}
+                name="currentPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Current Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="password"
+                          className="pl-10"
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+              <FormField
+                control={passwordForm.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <Button
-              className="w-full sm:w-auto"
-              onClick={handlePasswordChange}
-              disabled={
-                isChangingPassword ||
-                !currentPassword ||
-                !newPassword ||
-                !confirmPassword
-              }
-            >
-              {isChangingPassword ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Updating...
-                </>
-              ) : (
-                "Update Password"
-              )}
-            </Button>
-          </div>
+              <FormField
+                control={passwordForm.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="w-full sm:w-auto"
+                disabled={passwordForm.formState.isSubmitting}
+              >
+                {passwordForm.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  "Update Password"
+                )}
+              </Button>
+            </form>
+          </Form>
 
           <Separator className="my-6" />
 
@@ -441,10 +440,8 @@ export function AccountSettings({ user }: { user: User }) {
                 </p>
               </div>
               <Switch
-                checked={is2FAEnabled as boolean}
-                onCheckedChange={() => {
-                  setShow2FADialog(true);
-                }}
+                checked={user?.twoFactorEnabled as boolean}
+                onCheckedChange={() => setShow2FADialog(true)}
               />
             </div>
           </div>
@@ -456,11 +453,11 @@ export function AccountSettings({ user }: { user: User }) {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" />
-              {is2FAEnabled ? "Disable" : "Enable"} Two-Factor Authentication
+              {user?.twoFactorEnabled ? "Disable" : "Enable"} Two-Factor Authentication
             </DialogTitle>
             <DialogDescription>
               Please enter your password to{" "}
-              {is2FAEnabled ? "disable" : "enable"} two-factor authentication.
+              {user?.twoFactorEnabled ? "disable" : "enable"} two-factor authentication.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -477,6 +474,7 @@ export function AccountSettings({ user }: { user: User }) {
                   className="pl-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  data-error={!password && password !== ""}
                 />
               </div>
             </div>
@@ -492,7 +490,7 @@ export function AccountSettings({ user }: { user: User }) {
               Cancel
             </Button>
             <Button
-              onClick={verify2FAPassword}
+              onClick={toggle2FA}
               disabled={isVerifying || !password}
             >
               {isVerifying ? (

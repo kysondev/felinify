@@ -48,9 +48,9 @@ export default async function LibraryPage() {
                 </h2>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button>
-                      <PlusCircle className="h-4 w-4 mr-2" />
-                      Create Deck
+                    <Button className="p-3 sm:p-4">
+                      <PlusCircle className="h-4 w-4" />
+                      <span className="hidden sm:block">Create Deck</span>
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[500px]">
