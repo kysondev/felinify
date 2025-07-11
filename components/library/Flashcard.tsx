@@ -24,7 +24,6 @@ export const Flashcard = ({
   onEdit,
   onShowFullContent,
 }: FlashcardProps) => {
-
   const isTextOverflowing = (text: string) => {
     return text.length > 120;
   };
@@ -88,7 +87,9 @@ export const Flashcard = ({
             </>
           ) : (
             <>
-              <p className="break-words overflow-hidden">{truncateText(question)}</p>
+              <p className="break-words overflow-hidden">
+                {truncateText(question)}
+              </p>
               {isTextOverflowing(question) && (
                 <Button
                   variant="link"
@@ -107,7 +108,7 @@ export const Flashcard = ({
           )}
         </div>
       </CardContent>
-      <CardFooter className="pt-0 flex justify-between items-center border-t p-3 bg-muted/30">
+      <CardFooter className="pt-0 flex justify-between items-center border-t p-3 bg-muted/60">
         <div className="text-xs text-muted-foreground">
           Click to {isFlipped ? "see question" : "reveal answer"}
         </div>
