@@ -12,3 +12,11 @@ export type UpdateDeck = Updateable<Database["deck"]>;
 export type Flashcard = Selectable<Database["flashcard"]>;
 export type NewFlashcard = Insertable<Database["flashcard"]>;
 export type UpdateFlashcard = Updateable<Database["flashcard"]>;
+
+export type Progress = Selectable<Database["userDeckProgress"]>;
+export type NewProgress = Insertable<Database["userDeckProgress"]>;
+export type UpdateProgress = Updateable<Database["userDeckProgress"]>;
+
+export type StudySession = Selectable<Database["studySession"]>;
+export type NewStudySession = Insertable<Database["studySession"]>;
+export type UpdateStudySession = Updateable<Database["studySession"]>;

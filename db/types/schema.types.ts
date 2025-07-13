@@ -7,6 +7,7 @@ export interface UserTable {
   emailVerified: boolean;
   image: string | null;
   role: "user" | "admin";
+  totalStudyTime: number | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
   twoFactorEnabled: boolean | null;
@@ -106,9 +107,9 @@ export interface FlashcardPerformanceTable {
 export interface StudySessionTable {
   id: Generated<string> | string;
   userId: string;
-  endedAt: Date | null;
+  lengthInSeconds: Number | null;
   deckId: string | null;
-  createdAt: ColumnType<Date, string | undefined, never>;
+  CreatedAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }
 

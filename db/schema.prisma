@@ -24,6 +24,7 @@ model User {
   banned           Boolean?
   banReason        String?
   banExpires       DateTime?
+  totalStudyTime  Int @default(0)
   twofactors       TwoFactor[]
   decks           Deck[]
   flashcardPerformances FlashcardPerformance[]
@@ -156,7 +157,7 @@ model StudySession {
   id         String    @id @default(cuid())
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  endedAt    DateTime?
+  lengthInSeconds     Int?
   deckId     String?
   deck       Deck?     @relation(fields: [deckId], references: [id], onDelete: Cascade)
   CreatedAt  DateTime @default(now())

@@ -1,4 +1,8 @@
-import { UpdateDeck } from "db/types/models.types";
+import {
+  NewStudySession,
+  UpdateDeck,
+  UpdateProgress,
+} from "db/types/models.types";
 import {
   createDeck,
   updateDeck,
@@ -6,6 +10,8 @@ import {
   deleteFlashcard,
   updateFlashcard,
   deleteDeck,
+  saveStudyProgressToDeck,
+  saveStudySession,
 } from "services/deck.service";
 import { getUser } from "services/user.service";
 
@@ -162,5 +168,51 @@ export const deleteFlashcardAction = async (
   } catch (error) {
     console.error("Error deleting flashcard:", error);
     return { success: false, message: "Error deleting flashcard", error };
+  }
+};
+
+export const saveStudyProgressAction = async (data: UpdateProgress) => {
+  try {
+    const { success } = await getUser();
+    if (!success) {
+      return { success: false, message: "User not found" };
+    }
+    const result = await saveStudyProgressToDeck(data as UpdateProgress);
+    if (result.success) {
+      return {
+        success: true,
+        message: "Study progress saved successfully",
+        data: result.data,
+      };
+    } else {
+      return { success: false, message: result.message };
+    }
+  } catch (error) {
+    console.error("Error saving study progress:", error);
+    return { success: false, message: "Error saving study progress", error };
+  }
+};
+
+export const saveStudySessionAction = async (data: NewStudySession) => {
+  try {
+    const { success } = await getUser();
+    if (!success) {
+      return { success: false, message: "User not found" };
+    }
+
+    const result = await saveStudySession(data);
+
+    if (result.success) {
+      return {
+        success: true,
+        message: "Study session started successfully",
+        data: result.data,
+      };
+    } else {
+      return { success: false, message: result.message };
+    }
+  } catch (error) {
+    console.error("Error starting study session:", error);
+    return { success: false, message: "Error starting study session", error };
   }
 };

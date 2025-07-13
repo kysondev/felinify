@@ -4,8 +4,10 @@ import {
   Deck,
   NewDeck,
   NewFlashcard,
+  NewStudySession,
   UpdateDeck,
   UpdateFlashcard,
+  UpdateProgress,
 } from "db/types/models.types";
 import { db } from "lib/db";
 import cuid from "cuid";
@@ -341,5 +343,95 @@ export const deleteFlashcard = async (flashcardId: string, userId: string) => {
   } catch (error) {
     console.error("Error deleting flashcard:", error);
     return { success: false, message: "Error deleting flashcard", error };
+  }
+};
+
+export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
+  try {
+    const deckExists = await db
+      .selectFrom("deck")
+      .select("id")
+      .where("id", "=", data.deckId as string)
+      .where("userId", "=", data.userId as string)
+      .executeTakeFirst();
+
+    if (!deckExists) {
+      return {
+        success: false,
+        message: "Deck not found or you don't have permission to update it",
+      };
+    }
+
+    const updatedProgress = await db
+      .updateTable("userDeckProgress")
+      .set({
+        mastery: data.mastery,
+        completedSessions: data.completedSessions,
+        lastStudied: data.lastStudied,
+        updatedAt: new Date(),
+      })
+      .where("deckId", "=", data.deckId as string)
+      .where("userId", "=", data.userId as string)
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!updatedProgress) {
+      return { success: false, message: "Error updating study progress" };
+    }
+
+    return { success: true, data: updatedProgress };
+  } catch (error) {
+    console.error("Error saving study progress to deck:", error);
+    return { success: false, message: "Error saving study progress", error };
+  }
+};
+
+export const saveStudySession = async (data: NewStudySession) => {
+  try {
+    const newSession = await db
+      .insertInto("studySession")
+      .values({
+        id: cuid(),
+        userId: data.userId,
+        deckId: data.deckId,
+        lengthInSeconds: data.lengthInSeconds || null,
+        CreatedAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
+      })
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!newSession) {
+      return { success: false, message: "Error saving study session" };
+    }
+
+    const sumTotalStudyTime = await db
+      .selectFrom("studySession")
+      .where("userId", "=", data.userId)
+      .select((eb) => eb.fn.sum("lengthInSeconds").as("total"))
+      .executeTakeFirst();
+
+    const total = Number(sumTotalStudyTime?.total ?? 0);
+
+    const updatedUser = await db
+      .updateTable("user")
+      .set({
+        totalStudyTime: total,
+      })
+      .where("id", "=", data.userId)
+      .execute();
+
+    if (!updatedUser) {
+      return { success: false, message: "Error updating user study time" };
+    }
+
+    return {
+      success: true,
+      message: "Study session saved successfully",
+      data: newSession,
+    };
+  } catch (error) {
+    console.error("Error saving study session:", error);
+    return { success: false, message: "Error saving study session", error };
   }
 };

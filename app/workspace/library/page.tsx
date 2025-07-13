@@ -1,7 +1,5 @@
 import { Button } from "components/ui/Button";
-import {
-  Card,
-} from "components/ui/Card";
+import { Card } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { PlusCircle } from "lucide-react";
 import { getDecksByUserId } from "services/deck.service";
