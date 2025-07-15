@@ -20,6 +20,7 @@ import { useQuestionTimer } from "hooks/useQuestionTimer";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "components/ui/Card";
 import { CheckCircle2, XCircle, Award, Clock } from "lucide-react";
 import { formatTime } from "utils/date.utils";
+import { Progress } from "components/ui/Progress";
 
 const QUESTION_TIME_LIMIT = 15;
 
@@ -385,12 +386,10 @@ export default function ChallengePageContent() {
               </p>
             </div>
             
-            <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-primary h-full rounded-full"
-                style={{ width: `${(currentRound / numOfRounds) * 100}%` }}
-              ></div>
-            </div>
+            <Progress
+  value={(currentRound / numOfRounds) * 100}
+  className="w-full h-2 rounded-full overflow-hidden"
+/>
           </CardContent>
           <CardFooter className="flex justify-center">
             <Button onClick={startNextRound} className="min-w-[200px]">

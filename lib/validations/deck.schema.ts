@@ -8,6 +8,15 @@ export const createDeckSchema = z.object({
     .optional(),
 });
 
+export const createDeckWithAISchema = z.object({
+    name: z.string()
+    .min(3, { message: "Name must be at least 3 characters" })
+    .max(20, { message: "Name must be less than 20 characters" }),
+    notes: z.string()
+    .min(100, { message: "Notes must be at least 100 characters" })
+    .max(5000, { message: "Notes must be less than 5000 characters" }),
+});
+
 export const updateDeckSchema = z.object({
     name: z.string()
     .min(3, { message: "Name must be at least 3 characters" })
@@ -29,3 +38,4 @@ export const flashcardSchema = z.object({
 export type CreateDeckSchema = z.infer<typeof createDeckSchema>;
 export type UpdateDeckSchema = z.infer<typeof updateDeckSchema>;
 export type FlashcardSchema = z.infer<typeof flashcardSchema>;
+export type CreateDeckWithAISchema = z.infer<typeof createDeckWithAISchema>;

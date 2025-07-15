@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
 import { Label } from "components/ui/Label";
 import { Switch } from "components/ui/Switch";
+import { Progress } from "components/ui/Progress";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
@@ -78,12 +79,10 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
               : "Never"}
           </span>
         </div>
-        <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-          <div
-            className="bg-primary h-full rounded-full"
-            style={{ width: `${deck.progress?.mastery || 0}%` }}
-          ></div>
-        </div>
+        <Progress
+  value={deck.progress?.mastery || 0}
+  className="w-full h-2 rounded-full overflow-hidden transition-all duration-1000"
+/>
         <p className="text-xs text-muted-foreground mt-1">
           {deck.progress?.mastery || 0}% mastery
         </p>

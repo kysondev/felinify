@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "components/ui/Alert-dialog";
+import { Progress } from "components/ui/Progress";
 
 interface SessionHeaderProps {
   deck: {
@@ -108,11 +109,9 @@ export const SessionHeader = ({
       </p>
     </div>
 
-    <div className="w-full h-1 bg-secondary rounded-full mb-6 md:mb-8">
-      <div
-        className="h-full bg-primary transition-all duration-300"
-        style={{ width: `${totalProgress}%` }}
-      />
-    </div>
+    <Progress
+  value={totalProgress}
+  className="w-full h-2 rounded-full overflow-hidden mb-6 md:mb-8"
+/>
   </>
 ); 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Timer } from "lucide-react";
+import { Progress } from "components/ui/Progress";
 
 interface QuestionTimerProps {
   questionTimeLeft: number;
@@ -25,15 +26,15 @@ export const QuestionTimer = ({
         {questionTimeLeft}s remaining
       </span>
     </div>
-    <div className="w-full h-2 bg-secondary rounded-full">
-      <div
-        className={`h-full rounded-full transition-all duration-1000 ${
-          questionTimeLeft <= 5 ? "bg-red-500" : "bg-primary"
-        }`}
-        style={{
-          width: `${(questionTimeLeft / timeLimit) * 100}%`,
-        }}
-      />
-    </div>
+    <Progress
+  value={(questionTimeLeft / timeLimit) * 100}
+  className={`w-full h-2 rounded-full overflow-hidden transition-all duration-1000 
+    [&>div]:rounded-full 
+    [&>div]:transition-all 
+    [&>div]:duration-1000 
+    ${questionTimeLeft <= 5 ? "[&>div]:bg-red-500" : "[&>div]:bg-primary"}
+  `}
+/>
+
   </div>
 ); 

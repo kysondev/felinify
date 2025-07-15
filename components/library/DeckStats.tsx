@@ -4,6 +4,7 @@ import { Deck } from "db/types/models.types";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import { BookOpen, Calendar, Clock, Dices, BarChart2, Trophy, Brain, Activity } from "lucide-react";
 import { formatDate, formatDateTime } from "utils/date.utils";
+import { Progress } from "components/ui/Progress";
 
 export const DeckStats = ({ deck }: { deck: Deck }) => {
 
@@ -30,12 +31,10 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
               <span className="text-3xl font-bold">{deck.progress?.mastery.toFixed(1) || 0}%</span>
               <span className="text-sm text-muted-foreground mb-1">complete</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full overflow-hidden mt-2">
-              <div
-                className="bg-gray-500 h-full rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${deck.progress?.mastery || 0}%` }}
-              ></div>
-            </div>
+            <Progress
+  value={deck.progress?.mastery || 0}
+  className="w-full h-3 mt-2 rounded-full overflow-hidden"
+/>
           </div>
           
           <div className="flex-1">

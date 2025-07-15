@@ -30,6 +30,7 @@ import {
 } from "components/ui/Alert-dialog";
 import { formatTime } from "utils/date.utils";
 import { useStudySession } from "hooks/useStudySession";
+import { Progress } from "components/ui/Progress";
 
 export default function FlipStudyPage() {
   const searchParams = useSearchParams();
@@ -245,12 +246,10 @@ export default function FlipStudyPage() {
         </p>
       </div>
 
-      <div className="w-full h-1 bg-secondary rounded-full mb-6 md:mb-8">
-        <div
-          className="h-full bg-primary transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+      <Progress
+  value={progress}
+  className="w-full h-1 rounded-full overflow-hidden mb-6 md:mb-8"
+/>
 
       <div className="w-full aspect-[4/3] md:aspect-[3/2] max-w-2xl mx-auto mb-6 md:mb-8 perspective-1000">
         <div

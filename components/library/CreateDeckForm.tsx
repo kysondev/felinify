@@ -22,11 +22,16 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { CreateDeckSchema, createDeckSchema } from "lib/validations/deck.schema";
+import { CreateDeckSchema, createDeckSchema, createDeckWithAISchema, CreateDeckWithAISchema } from "lib/validations/deck.schema";
+import { generateFlashcardsAction, addGeneratedFlashcardsToDeckAction } from "actions/ai-study.actions";
+import { useState } from "react";
+import { Progress } from "components/ui/Progress";
 
 export function CreateDeckForm({ userId }: { userId: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
   const { setOpen } = useDialog();
 
   const form = useForm<CreateDeckSchema>({
@@ -34,6 +39,14 @@ export function CreateDeckForm({ userId }: { userId: string }) {
     defaultValues: {
       name: "",
       description: "",
+    },
+  });
+
+  const aiForm = useForm<CreateDeckWithAISchema>({
+    resolver: zodResolver(createDeckWithAISchema),
+    defaultValues: {
+      name: "",
+      notes: "",
     },
   });
 
@@ -49,6 +62,69 @@ export function CreateDeckForm({ userId }: { userId: string }) {
         toast.error(result.message || "Something went wrong");
       }
     });
+  };
+
+  const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
+    setIsGenerating(true);
+    setProgress(10);
+
+    try {
+      setProgress(30);
+      const deckResult = await createDeckAction(userId, data.name, "AI generated deck");
+      
+      if (!deckResult.success) {
+        toast.error(deckResult.message || "Failed to create deck");
+        setIsGenerating(false);
+        return;
+      }
+      
+      const deckId = deckResult.data?.id;
+      if (!deckId) {
+        toast.error("Failed to get deck ID");
+        setIsGenerating(false);
+        return;
+      }
+      
+      setProgress(50);
+      
+      const flashcardsResult = await generateFlashcardsAction(data.name, data.notes);
+      setProgress(70);
+      
+      if (!flashcardsResult.success) {
+        toast.error(flashcardsResult.message || "Failed to generate flashcards");
+        setIsGenerating(false);
+        return;
+      }
+      
+      setProgress(85);
+      const addResult = await addGeneratedFlashcardsToDeckAction(
+        userId,
+        deckId,
+        flashcardsResult.flashcards
+      );
+      
+      setProgress(100);
+      
+      if (!addResult.success) {
+        toast.error(addResult.message || "Failed to add flashcards to deck");
+        setIsGenerating(false);
+        return;
+      }
+      
+      setTimeout(() => {
+        setIsGenerating(false);
+        setOpen(false);
+        router.refresh();
+        toast.success(`Deck created with ${addResult.addedCount} flashcards`);
+        aiForm.reset();
+        router.push(`/workspace/deck/${deckId}`);
+      }, 500);
+      
+    } catch (error) {
+      console.error("Error in AI flashcard generation:", error);
+      toast.error("Something went wrong during flashcard generation");
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -119,62 +195,99 @@ export function CreateDeckForm({ userId }: { userId: string }) {
             automatically create a deck with flashcards for you.
           </p>
 
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="deck-name-ai">Deck Name</Label>
-              <Input
-                id="deck-name-ai"
-                placeholder="Enter deck name"
-                className="mt-1 bg-white"
-                disabled
+          {isGenerating && (
+            <div className="mb-4">
+              <Progress value={progress} />
+              <p className="text-xs text-muted-foreground mt-1 text-center">
+                {progress < 30 && "Preparing..."}
+                {progress >= 30 && progress < 50 && "Creating deck..."}
+                {progress >= 50 && progress < 70 && "Generating flashcards..."}
+                {progress >= 70 && progress < 85 && "Processing flashcards..."}
+                {progress >= 85 && "Adding flashcards to deck..."}
+              </p>
+            </div>
+          )}
+
+          <Form {...aiForm}>
+            <form onSubmit={aiForm.handleSubmit(onGenerateFlashcards)} className="space-y-4">
+              <FormField
+                control={aiForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deck Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter deck name"
+                        className="bg-white"
+                        disabled={isGenerating}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            <div>
-              <Label htmlFor="notes" className="mb-1 block">
-                Study Notes
-              </Label>
-              <Textarea
-                id="notes"
-                placeholder="Paste your study notes here..."
-                className="min-h-[200px] text-sm resize-none"
-                disabled
+              <FormField
+                control={aiForm.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Study Notes</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Paste your study notes here..."
+                        className="min-h-[100px] text-sm resize-none"
+                        disabled={isGenerating}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
+              <span className="text-xs text-muted-foreground">
+                Note: AI can make mistakes, so please check the flashcards before using them.
+              </span>
+              <div className="flex items-center justify-between pt-2">
+                <Button
+                  variant="outline"
+                  type="button"
+                  className="flex items-center gap-2 sm:hidden"
+                  disabled={isGenerating}
+                >
+                  <Upload className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  type="button"
+                  className="hidden items-center gap-2 sm:flex"
+                  disabled={isGenerating}
+                >
+                  <Upload className="h-4 w-4" />
+                  Upload Document
+                </Button>
 
-            <div className="flex items-center justify-between pt-2">
-              <Button
-                variant="outline"
-                type="button"
-                className="flex items-center gap-2 sm:hidden"
-              >
-                <Upload className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                type="button"
-                className="hidden items-center gap-2 sm:flex"
-              >
-                <Upload className="h-4 w-4" />
-                Upload Document
-              </Button>
-
-              <Button
-                type="button"
-                className="flex items-center gap-2 sm:hidden"
-              >
-                <Sparkles className="h-4 w-4" />
-                Generate
-              </Button>
-              <Button
-                type="button"
-                className="hidden items-center gap-2 sm:flex"
-              >
-                <Sparkles className="h-4 w-4" />
-                Generate Flashcards
-              </Button>
-            </div>
-          </div>
+                <Button
+                  type="submit"
+                  className="flex items-center gap-2 sm:hidden"
+                  disabled={isGenerating}
+                >
+                  {isGenerating ? <Loading isWhite /> : <Sparkles className="h-4 w-4" />}
+                  {isGenerating ? "" : "Generate"}
+                </Button>
+                <Button
+                  type="submit"
+                  className="hidden items-center gap-2 sm:flex"
+                  disabled={isGenerating}
+                >
+                  {isGenerating ? <Loading isWhite /> : <Sparkles className="h-4 w-4" />}
+                  {isGenerating ? "Generating..." : "Generate Flashcards"}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
       </TabsContent>
     </Tabs>
