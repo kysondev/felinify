@@ -18,27 +18,43 @@ import {
   DialogTrigger,
 } from "components/ui/Dialog";
 import { Deck } from "db/types/models.types";
-import { BookOpen, Clock, FlipHorizontal, Brain, Award } from "lucide-react";
+import {
+  BookOpen,
+  Clock,
+  FlipHorizontal,
+  Brain,
+  Award,
+  Timer,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
+import { Label } from "components/ui/Label";
+import { Switch } from "components/ui/Switch";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
-  const [studyQuestions, setStudyQuestions] = useState<number>(10);
+  const [numOfRounds, setNumOfRounds] = useState<number>(3);
+  const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [showStudyModeDialog, setShowStudyModeDialog] = useState<boolean>(false);
+  const [selectedMode, setSelectedMode] = useState<string>("");
+  const [isTimed, setIsTimed] = useState<boolean>(false);
   const router = useRouter();
 
   const handleStudyModeSelect = (mode: string) => {
     if (mode === "flip") {
       router.push(`/workspace/study/flip?deckId=${deck.id}`);
     } else {
-      router.push(
-        `/workspace/study/${mode}?deckId=${deck.id}&questions=${studyQuestions}`
-      );
+      setSelectedMode(mode);
+      setShowStudyModeDialog(false);
+      setShowSettings(true);
     }
   };
 
-  const handleChallengeMode = () => {
-    handleStudyModeSelect("challenge");
+  const handleStartStudy = () => {
+    router.push(
+      `/workspace/study/${selectedMode}?deckId=${deck.id}&numOfRounds=${numOfRounds}&timed=${isTimed}`
+    );
   };
 
   return (
@@ -78,7 +94,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
             Edit
           </Button>
         </Link>
-        <Dialog>
+        <Dialog open={showStudyModeDialog} onOpenChange={setShowStudyModeDialog}>
           <DialogTrigger asChild>
             <Button size="sm">Study Now</Button>
           </DialogTrigger>
@@ -107,7 +123,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
 
               <div
                 className="flex hover:border-primary items-center gap-4 p-4 border rounded-lg cursor-pointer hover:bg-accent/10 transition-colors"
-                onClick={handleChallengeMode}
+                onClick={() => handleStudyModeSelect("challenge")}
               >
                 <div className="p-2 bg-primary/10 rounded-full">
                   <Award className="h-5 w-5 text-primary" />
@@ -117,18 +133,6 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
                   <p className="text-sm text-muted-foreground">
                     Test your knowledge with quizzes
                   </p>
-                </div>
-                <div className="ml-auto">
-                  <select
-                    value={studyQuestions}
-                    onChange={(e) => setStudyQuestions(Number(e.target.value))}
-                    onClick={(e) => e.stopPropagation()}
-                    className="px-3 py-1 border rounded-md text-sm"
-                  >
-                    <option value="5">5 Questions</option>
-                    <option value="10">10 Questions</option>
-                    <option value="20">20 Questions</option>
-                  </select>
                 </div>
               </div>
 
@@ -145,19 +149,94 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
                     Focused on cards you need to practice based on performance
                   </p>
                 </div>
-                <div className="ml-auto">
-                  <select
-                    value={studyQuestions}
-                    onChange={(e) => setStudyQuestions(Number(e.target.value))}
-                    onClick={(e) => e.stopPropagation()}
-                    className="px-3 py-1 border rounded-md text-sm"
-                  >
-                    <option value="5">5 Questions</option>
-                    <option value="10">10 Questions</option>
-                    <option value="20">20 Questions</option>
-                  </select>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showSettings} onOpenChange={setShowSettings}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Study Settings</DialogTitle>
+              <DialogDescription>
+                Configure your{" "}
+                {selectedMode === "challenge" ? "Challenge" : "Smart Review"}{" "}
+                session
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-6 py-4">
+              <div className="space-y-4">
+                <h3 className="font-medium">Number of Rounds</h3>
+                <RadioGroup
+                  defaultValue="3"
+                  value={numOfRounds.toString()}
+                  onValueChange={(value) => setNumOfRounds(parseInt(value))}
+                  className="grid grid-cols-3 gap-2"
+                >
+                  <div>
+                    <RadioGroupItem
+                      value="1"
+                      id="r1"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="r1"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <span>1</span>
+                    </Label>
+                  </div>
+                  <div>
+                    <RadioGroupItem
+                      value="3"
+                      id="r2"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="r2"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <span>3</span>
+                    </Label>
+                  </div>
+                  <div>
+                    <RadioGroupItem
+                      value="5"
+                      id="r3"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="r3"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <span>5</span>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="timed-mode">Timed Mode</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Limited time to answer questions
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="timed-mode"
+                    checked={isTimed}
+                    onCheckedChange={setIsTimed}
+                  />
+                  <Timer
+                    className={`h-4 w-4 ${isTimed ? "text-primary" : "text-muted-foreground"}`}
+                  />
                 </div>
               </div>
+
+              <Button onClick={handleStartStudy} className="w-full">
+                Start Study Session
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

@@ -4,7 +4,7 @@ import { Button } from "components/ui/Button";
 import { Card } from "components/ui/Card";
 import { getDeckById } from "services/deck.service";
 import { getUser } from "services/user.service";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Deck } from "db/types/models.types";
 import {
@@ -18,10 +18,6 @@ import {
   Save,
 } from "lucide-react";
 import {
-  saveStudyProgressAction,
-  saveStudySessionAction,
-} from "actions/deck.action";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -33,6 +29,7 @@ import {
   AlertDialogTrigger,
 } from "components/ui/Alert-dialog";
 import { formatTime } from "utils/date.utils";
+import { useStudySession } from "hooks/useStudySession";
 
 export default function FlipStudyPage() {
   const searchParams = useSearchParams();
@@ -44,80 +41,44 @@ export default function FlipStudyPage() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [noPermission, setNoPermission] = useState(false);
-  const [studyTime, setStudyTime] = useState(0);
-  const [isStudying, setIsStudying] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
-  const studyStartTime = useRef<number>(0);
   const userId = useRef<string | null>(null);
-  const studyInterval = useRef<NodeJS.Timeout | null>(null);
   const initialMastery = useRef<number>(0);
 
-  const startStudySession = () => {
-    if (!isStudying) {
-      studyStartTime.current = Date.now();
-      setIsStudying(true);
+  const {
+    studyTime,
+    isStudying,
+    isSaving,
+    startStudySession,
+    handleEndSession,
+    getNewMastery,
+  } = useStudySession({
+    deck,
+    userId: userId.current,
+    initialMastery: initialMastery.current,
+    studyMode: "flip",
+  });
 
-      studyInterval.current = setInterval(() => {
-        setStudyTime(Math.floor((Date.now() - studyStartTime.current) / 1000));
-      }, 1000);
-    }
-  };
+  const navigateCard = useCallback(
+    (direction: "prev" | "next") => {
+      if (!deck?.flashcards) return;
 
-  const getNewMastery = () => {
-    const studyDurationMinutes = studyTime / 60;
-    const maxGain = Math.min(Math.floor(studyDurationMinutes), 30);
-    const cappedGain =
-      initialMastery.current + maxGain > 50
-        ? 50 - initialMastery.current
-        : maxGain;
-    return initialMastery.current + cappedGain;
-  };
+      const totalCards = deck.flashcards.length;
+      let newIndex;
 
-  const calculateStudyProgress = () => {
-    if (!isStudying || !deck || !userId.current) return null;
-
-    const studyDurationMinutes = Math.floor(studyTime / 60);
-    const maxGain = Math.min(studyDurationMinutes, 30);
-
-    const cappedGain =
-      initialMastery.current + maxGain > 50
-        ? 50 - initialMastery.current
-        : maxGain;
-
-    const newMastery = initialMastery.current + cappedGain;
-
-    return {
-      userId: userId.current,
-      deckId: deck.id,
-      mastery: newMastery,
-      completedSessions: (deck.progress?.completedSessions || 0) + 1,
-      lastStudied: new Date(),
-    };
-  };
-
-  const handleEndSession = async () => {
-    setIsSaving(true);
-    setIsLoading(true);
-
-    try {
-      const progressData = calculateStudyProgress();
-      if (progressData) {
-        await saveStudyProgressAction(progressData);
-        await saveStudySessionAction({
-          userId: userId.current as string,
-          deckId: deck?.id,
-          lengthInSeconds: studyTime as Number,
-        });
+      if (direction === "prev") {
+        newIndex =
+          currentCardIndex === 0 ? totalCards - 1 : currentCardIndex - 1;
+      } else {
+        newIndex =
+          currentCardIndex === totalCards - 1 ? 0 : currentCardIndex + 1;
       }
-    } catch (error) {
-      console.error("Error saving study progress:", error);
-    } finally {
-      router.push("/workspace/library");
-      setIsSaving(false);
-      setIsLoading(false);
-    }
-  };
+
+      setIsFlipped(false);
+      setCurrentCardIndex(newIndex);
+    },
+    [deck, currentCardIndex]
+  );
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -148,7 +109,6 @@ export default function FlipStudyPage() {
 
         setDeck(deckResponse.data as unknown as Deck);
         initialMastery.current = deckResponse.data.progress?.mastery || 0;
-        startStudySession();
       } catch (error) {
         console.error("Error fetching deck:", error);
       } finally {
@@ -157,29 +117,13 @@ export default function FlipStudyPage() {
     };
 
     fetchDeck();
-    return () => {
-      if (isStudying && studyInterval.current) {
-        clearInterval(studyInterval.current);
-        setIsStudying(false);
-      }
-    };
   }, [deckId, router]);
 
-  const navigateCard = (direction: "prev" | "next") => {
-    if (!deck?.flashcards) return;
-
-    const totalCards = deck.flashcards.length;
-    let newIndex;
-
-    if (direction === "prev") {
-      newIndex = currentCardIndex === 0 ? totalCards - 1 : currentCardIndex - 1;
-    } else {
-      newIndex = currentCardIndex === totalCards - 1 ? 0 : currentCardIndex + 1;
+  useEffect(() => {
+    if (deck && !isStudying && !isLoading) {
+      startStudySession();
     }
-
-    setIsFlipped(false);
-    setCurrentCardIndex(newIndex);
-  };
+  }, [deck, isStudying, isLoading, startStudySession]);
 
   if (isLoading || isSaving) {
     return (
@@ -229,6 +173,7 @@ export default function FlipStudyPage() {
   const currentCard = deck.flashcards[currentCardIndex];
   const totalCards = deck.flashcards.length;
   const progress = ((currentCardIndex + 1) / totalCards) * 100;
+  const masteryGain = getNewMastery() - initialMastery.current;
 
   return (
     <div className="container max-w-3xl mx-auto py-6 md:py-8 px-3 md:px-4 mt-14 md:mt-16">
@@ -250,24 +195,16 @@ export default function FlipStudyPage() {
                 <AlertDialogDescription className="flex flex-col gap-1">
                   Your progress will be saved. You&apos;ve studied for{" "}
                   {formatTime(studyTime)}.
-                  {studyTime >= 60 && (
+                  {studyTime >= 60 && initialMastery.current <= 50 && (
                     <span className="text-primary font-medium">
-                      You&apos;ll gain{" "}
-                      {(() => {
-                        const studyDurationMinutes = Math.floor(studyTime / 60);
-                        const maxGain = Math.min(studyDurationMinutes, 30);
-                        const cappedGain =
-                          initialMastery.current + maxGain > 50
-                            ? 50 - initialMastery.current
-                            : maxGain;
-                        return cappedGain;
-                      })()}
-                      % mastery from this session.
+                      You&apos;ll gain {masteryGain}% mastery from this session.
                     </span>
                   )}
-                  {getNewMastery() === 50 && (
+                  {(initialMastery.current > 50 ||
+                    (getNewMastery() === 50 &&
+                      initialMastery.current < 50)) && (
                     <span className="text-red-500">
-                      You’ve reached the maximum 50% mastery allowed in this
+                      You've reached the maximum 50% mastery allowed in this
                       study mode. Study in another mode to progress further.
                     </span>
                   )}
