@@ -12,6 +12,7 @@ import {
   deleteDeck,
   saveStudyProgressToDeck,
   saveStudySession,
+  updateChallengeCompletionCount,
 } from "services/deck.service";
 import { getUser } from "services/user.service";
 
@@ -214,5 +215,21 @@ export const saveStudySessionAction = async (data: NewStudySession) => {
   } catch (error) {
     console.error("Error starting study session:", error);
     return { success: false, message: "Error starting study session", error };
+  }
+};
+
+export const updateChallengeCompletionAction = async (
+  userId: string,
+  deckId: string
+) => {
+  try {
+    const result = await updateChallengeCompletionCount(userId, deckId);
+    return result;
+  } catch (error) {
+    console.error("Error updating challenge completion count:", error);
+    return {
+      success: false,
+      message: "Error updating challenge completion count",
+    };
   }
 };

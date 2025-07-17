@@ -9,7 +9,6 @@ import {
   Menu,
   Repeat,
   Settings2,
-  User,
 } from "lucide-react";
 
 import {
@@ -83,7 +82,7 @@ const WorkspaceNavbar = async ({
       icon: <Book className="size-4 shrink-0" />,
       items: [
         {
-          title: "Smart Review",
+          title: "Adaptive Quiz",
           description: "Reviewing based on past performance with AI",
           icon: <Bot className="size-4 shrink-0" />,
           url: "/workspace/study/smart",
@@ -95,10 +94,10 @@ const WorkspaceNavbar = async ({
           url: "/workspace/study/flip",
         },
         {
-          title: "Typing Recall",
-          description: "Type your answer for active recall practice",
+          title: "Challenge Mode",
+          description: "Test your knowledge with a quiz",
           icon: <FileText className="size-4 shrink-0" />,
-          url: "/workspace/study/typing",
+          url: "/workspace/study/quiz",
         },
       ],
     },
@@ -342,7 +341,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
     );
   }
 
-  const isSmartReview = item.title === "Smart Review";
+  const isSmartReview = item.title === "Adaptive Quiz";
   return (
     <Link
       key={item.title}
@@ -360,7 +359,7 @@ const renderMobileMenuItem = (item: MenuItem) => {
 };
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  const isSmartReview = item.title === "Smart Review";
+  const isSmartReview = item.title === "Adaptive Quiz";
   return (
     <Link
       href={item.url}

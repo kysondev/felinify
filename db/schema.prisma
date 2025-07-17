@@ -30,6 +30,7 @@ model User {
   flashcardPerformances FlashcardPerformance[]
   studySessions  StudySession[]
   userDeckProgress UserDeckProgress[]
+  quizAccessTokens QuizAccessToken[]
 
   @@map("user")
 }
@@ -107,6 +108,7 @@ model Deck {
   flashcards Flashcard[]
   studySessions StudySession[]
   progress UserDeckProgress[]
+  quizAccessTokens QuizAccessToken[]
   @@map("deck")
 }
 
@@ -118,6 +120,7 @@ model UserDeckProgress {
   deckId    String
   mastery   Float    @default(0.0)
   completedSessions Int @default(0)
+  challengeCompleted Int @default(0)
   lastStudied DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -163,4 +166,19 @@ model StudySession {
   CreatedAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   @@map("studySession")
+}
+
+model QuizAccessToken {
+  id         String    @id @default(cuid())
+  token      String    @unique
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  deck       Deck      @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  deckId     String
+  numQuestions Int
+  used       Boolean   @default(false)
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  @@map("quizAccessToken")
 }

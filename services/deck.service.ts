@@ -85,6 +85,38 @@ export const getDeckById = async (deckId: string, userId: string) => {
       return { success: false, message: "Deck not found" };
     }
 
+    if (deck.flashcards && deck.flashcards.length > 0) {
+      const flashcardIds = deck.flashcards.map((f: any) => f.id);
+      
+      const performances = await db
+        .selectFrom("flashcardPerformance")
+        .select([
+          "flashcardId",
+          "correctCount",
+          "incorrectCount"
+        ])
+        .where("userId", "=", userId)
+        .where("flashcardId", "in", flashcardIds)
+        .execute();
+
+      const performanceMap = new Map();
+      performances.forEach(perf => {
+        performanceMap.set(perf.flashcardId, {
+          numCorrect: perf.correctCount,
+          numIncorrect: perf.incorrectCount
+        });
+      });
+
+      deck.flashcards = deck.flashcards.map((flashcard: any) => {
+        const performance = performanceMap.get(flashcard.id) || { numCorrect: 0, numIncorrect: 0 };
+        return {
+          ...flashcard,
+          numCorrect: performance.numCorrect,
+          numIncorrect: performance.numIncorrect
+        };
+      });
+    }
+
     return { success: true, data: deck };
   } catch (error) {
     console.error("Error fetching deck by ID:", error);
@@ -119,6 +151,7 @@ export const createDeck = async (deckData: NewDeck) => {
         deckId: newDeck.id,
         mastery: 0,
         completedSessions: 0,
+        challengeCompleted: 0,
         lastStudied: null,
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
@@ -433,5 +466,147 @@ export const saveStudySession = async (data: NewStudySession) => {
   } catch (error) {
     console.error("Error saving study session:", error);
     return { success: false, message: "Error saving study session", error };
+  }
+};
+
+export const updateChallengeCompletionCount = async (userId: string, deckId: string) => {
+  try {
+    const progressExists = await db
+      .selectFrom("userDeckProgress")
+      .select(["id", "challengeCompleted"])
+      .where("deckId", "=", deckId)
+      .where("userId", "=", userId)
+      .executeTakeFirst();
+
+    if (!progressExists) {
+      return {
+        success: false,
+        message: "Deck progress not found",
+      };
+    }
+
+    const updatedProgress = await db
+      .updateTable("userDeckProgress")
+      .set({
+        challengeCompleted: (progressExists.challengeCompleted || 0) + 1,
+        updatedAt: new Date(),
+      })
+      .where("deckId", "=", deckId)
+      .where("userId", "=", userId)
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!updatedProgress) {
+      return { success: false, message: "Error updating challenge completion count" };
+    }
+
+    return { success: true, data: updatedProgress };
+  } catch (error) {
+    console.error("Error updating challenge completion count:", error);
+    return { success: false, message: "Error updating challenge completion count", error };
+  }
+};
+
+export const createQuizAccessToken = async (
+  userId: string,
+  deckId: string,
+  numQuestions: number
+) => {
+  try {
+    const deckExists = await db
+      .selectFrom("deck")
+      .select("id")
+      .where("id", "=", deckId)
+      .where("userId", "=", userId)
+      .executeTakeFirst();
+
+    if (!deckExists) {
+      return {
+        success: false,
+        message: "Deck not found or you don't have permission to access it",
+      };
+    }
+
+    await db
+      .deleteFrom("quizAccessToken")
+      .where("userId", "=", userId)
+      .where("deckId", "=", deckId)
+      .where("used", "=", false)
+      .execute();
+
+    const expiresAt = new Date();
+    expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+
+    const tokenString = cuid();
+
+    const newToken = await db
+      .insertInto("quizAccessToken")
+      .values({
+        id: cuid(),
+        token: tokenString,
+        userId,
+        deckId,
+        numQuestions,
+        used: false,
+        expiresAt,
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
+      })
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!newToken) {
+      return { success: false, message: "Error creating access token" };
+    }
+
+    return { 
+      success: true, 
+      data: {
+        token: tokenString,
+        numQuestions
+      }
+    };
+  } catch (error) {
+    console.error("Error creating quiz access token:", error);
+    return { success: false, message: "Error creating access token", error };
+  }
+};
+
+export const validateQuizAccessToken = async (
+  token: string,
+  userId: string,
+  deckId: string
+) => {
+  try {
+    
+    const accessToken = await db
+      .selectFrom("quizAccessToken")
+      .selectAll()
+      .where("token", "=", token)
+      .where("userId", "=", userId)
+      .where("deckId", "=", deckId)
+      .where("used", "=", false)
+      .where("expiresAt", ">", new Date())
+      .executeTakeFirst();
+
+    if (!accessToken) {
+      return { success: false, message: "Invalid or expired access token" };
+    }
+
+    await db
+      .updateTable("quizAccessToken")
+      .set({ used: true, updatedAt: new Date() })
+      .where("id", "=", accessToken.id)
+      .execute();
+
+    return { 
+      success: true, 
+      data: {
+        numQuestions: accessToken.numQuestions
+      }
+    };
+  } catch (error) {
+    console.error("Error validating quiz access token:", error);
+    return { success: false, message: "Error validating access token", error };
   }
 };

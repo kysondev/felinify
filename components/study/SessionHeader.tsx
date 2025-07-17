@@ -20,8 +20,8 @@ interface SessionHeaderProps {
     name: string;
     description?: string | null;
   };
-  currentRound: number;
-  numOfRounds: number;
+  currentRound?: number;
+  numOfRounds?: number;
   studyTime: number;
   totalProgress: number;
   handleEndSession: () => void;
@@ -48,6 +48,7 @@ export const SessionHeader = ({
   isSaving,
 }: SessionHeaderProps) => (
   <>
+        {currentRound && numOfRounds && (
     <div className="flex items-center justify-between mb-4 md:mb-6">
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -67,7 +68,7 @@ export const SessionHeader = ({
               <span>You&apos;ve studied for {formatTime(studyTime)}.</span>
               <span className="text-primary font-medium">
                 Current score: {correctAnswers} /{" "}
-                {(currentRound - 1) * totalCards + currentCardIndex + 1}
+                {(currentRound ? currentRound - 1 : 0) * totalCards + currentCardIndex + 1}
               </span>
               <span className="text-primary font-medium">
                 You&apos;ll gain {masteryGain - initialMastery}%
@@ -89,24 +90,38 @@ export const SessionHeader = ({
       </AlertDialog>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1 md:gap-2 bg-secondary/30 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
-          <Award className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-          <span>
-            Round {currentRound}/{numOfRounds}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
-          <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-          <span>{formatTime(studyTime)}</span>
-        </div>
+        
+          <div className="flex items-center gap-1 md:gap-2 bg-secondary/30 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
+            <Award className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <span>
+              Round {currentRound}/{numOfRounds}
+            </span>
+          </div>
+        {currentRound && numOfRounds && (
+                  <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
+                  <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                  <span>{formatTime(studyTime)}</span>
+                </div>
+        )}
       </div>
-    </div>
+      </div>
+    )}
 
-    <div className="mb-4 md:mb-6">
+    <div className="flex items-center justify-between mb-4">
+    <div>
       <h1 className="text-xl md:text-2xl font-bold truncate">{deck.name}</h1>
       <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
         {deck.description || "No description"}
       </p>
+    </div>
+    {
+      !currentRound && !numOfRounds && (
+        <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
+          <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+          <span>{formatTime(studyTime)}</span>
+        </div>
+      )
+    }
     </div>
 
     <Progress

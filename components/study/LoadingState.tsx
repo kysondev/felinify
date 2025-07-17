@@ -11,6 +11,9 @@ export const LoadingState = ({ isSaving }: LoadingStateProps) => (
       <p className="mt-4 text-muted-foreground">
         {isSaving ? "Saving Progress..." : "Loading flashcards..."}
       </p>
+      <span className="text-muted-foreground text-sm">
+        This may take a few seconds, please don't refresh the page.
+      </span>
     </div>
   </div>
 ); 

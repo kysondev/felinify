@@ -77,6 +77,7 @@ export interface UserDeckProgressTable {
   deckId: string;
   mastery: number;
   completedSessions: number;
+  challengeCompleted: number;
   lastStudied: Date | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
@@ -113,6 +114,18 @@ export interface StudySessionTable {
   updatedAt: ColumnType<Date, string | undefined>;
 }
 
+export interface QuizAccessTokenTable {
+  id: Generated<string> | string;
+  token: string;
+  numQuestions: number;
+  used: boolean;
+  expiresAt: Date;
+  userId: string;
+  deckId: string | null;
+  createdAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
+}
+
 export interface Database {
   user: UserTable;
   session: SessionTable;
@@ -124,4 +137,5 @@ export interface Database {
   flashcard: FlashcardTable;
   flashcardPerformance: FlashcardPerformanceTable;
   studySession: StudySessionTable;
+  quizAccessToken: QuizAccessTokenTable;
 }

@@ -18,26 +18,23 @@ import {
   DialogTrigger,
 } from "components/ui/Dialog";
 import { Deck } from "db/types/models.types";
-import {
-  BookOpen,
-  Clock,
-  FlipHorizontal,
-  Brain,
-  Award,
-  Timer,
-} from "lucide-react";
+import { BookOpen, Clock, FlipHorizontal, Brain, Award } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
-import { Label } from "components/ui/Label";
-import { Switch } from "components/ui/Switch";
 import { Progress } from "components/ui/Progress";
+import { Badge } from "components/ui/Badge";
+import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
+import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
-  const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [showStudyModeDialog, setShowStudyModeDialog] = useState<boolean>(false);
+  const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
+  const [showChallengeSettings, setShowChallengeSettings] =
+    useState<boolean>(false);
+  const [showStudyModeDialog, setShowStudyModeDialog] =
+    useState<boolean>(false);
+  const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
   const [selectedMode, setSelectedMode] = useState<string>("");
   const [isTimed, setIsTimed] = useState<boolean>(false);
   const router = useRouter();
@@ -45,14 +42,21 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
   const handleStudyModeSelect = (mode: string) => {
     if (mode === "flip") {
       router.push(`/workspace/study/flip?deckId=${deck.id}`);
-    } else {
+    }
+    if (mode === "challenge") {
       setSelectedMode(mode);
       setShowStudyModeDialog(false);
-      setShowSettings(true);
+      setShowChallengeSettings(true);
+    }
+    if (mode === "quiz") {
+      setSelectedMode(mode);
+      setShowStudyModeDialog(false);
+      setShowQuizSettings(true);
     }
   };
 
   const handleStartStudy = () => {
+
     router.push(
       `/workspace/study/${selectedMode}?deckId=${deck.id}&numOfRounds=${numOfRounds}&timed=${isTimed}`
     );
@@ -80,9 +84,9 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
           </span>
         </div>
         <Progress
-  value={deck.progress?.mastery || 0}
-  className="w-full h-2 rounded-full overflow-hidden transition-all duration-1000"
-/>
+          value={deck.progress?.mastery || 0}
+          className="w-full h-2 rounded-full overflow-hidden transition-all duration-1000"
+        />
         <p className="text-xs text-muted-foreground mt-1">
           {deck.progress?.mastery || 0}% mastery
         </p>
@@ -93,7 +97,10 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
             Edit
           </Button>
         </Link>
-        <Dialog open={showStudyModeDialog} onOpenChange={setShowStudyModeDialog}>
+        <Dialog
+          open={showStudyModeDialog}
+          onOpenChange={setShowStudyModeDialog}
+        >
           <DialogTrigger asChild>
             <Button size="sm">Study Now</Button>
           </DialogTrigger>
@@ -130,22 +137,25 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
                 <div className="flex-1">
                   <h3 className="font-medium">Challenge Mode</h3>
                   <p className="text-sm text-muted-foreground">
-                    Test your knowledge with quizzes
+                    Test what you have learned with multiple choice challenges
                   </p>
                 </div>
               </div>
 
               <div
                 className="flex hover:border-primary items-center gap-4 p-4 border rounded-lg cursor-pointer hover:bg-accent/10 transition-colors"
-                onClick={() => handleStudyModeSelect("smart")}
+                onClick={() => handleStudyModeSelect("quiz")}
               >
                 <div className="p-2 bg-primary/10 rounded-full">
                   <Brain className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-medium">Smart Review Mode</h3>
+                  <h3 className="font-medium">
+                    Adaptive Quiz Mode <Badge>AI</Badge>
+                  </h3>
                   <p className="text-sm text-muted-foreground">
-                    Focused on cards you need to practice based on performance
+                    Quiz you on cards you need to practice based on past
+                    performance
                   </p>
                 </div>
               </div>
@@ -153,92 +163,22 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={showSettings} onOpenChange={setShowSettings}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Study Settings</DialogTitle>
-              <DialogDescription>
-                Configure your{" "}
-                {selectedMode === "challenge" ? "Challenge" : "Smart Review"}{" "}
-                session
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-6 py-4">
-              <div className="space-y-4">
-                <h3 className="font-medium">Number of Rounds</h3>
-                <RadioGroup
-                  defaultValue="3"
-                  value={numOfRounds.toString()}
-                  onValueChange={(value) => setNumOfRounds(parseInt(value))}
-                  className="grid grid-cols-3 gap-2"
-                >
-                  <div>
-                    <RadioGroupItem
-                      value="1"
-                      id="r1"
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor="r1"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      <span>1</span>
-                    </Label>
-                  </div>
-                  <div>
-                    <RadioGroupItem
-                      value="3"
-                      id="r2"
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor="r2"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      <span>3</span>
-                    </Label>
-                  </div>
-                  <div>
-                    <RadioGroupItem
-                      value="5"
-                      id="r3"
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor="r3"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      <span>5</span>
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="timed-mode">Timed Mode</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Limited time to answer questions
-                  </p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="timed-mode"
-                    checked={isTimed}
-                    onCheckedChange={setIsTimed}
-                  />
-                  <Timer
-                    className={`h-4 w-4 ${isTimed ? "text-primary" : "text-muted-foreground"}`}
-                  />
-                </div>
-              </div>
-
-              <Button onClick={handleStartStudy} className="w-full">
-                Start Study Session
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <ChallengeSettings
+          showChallengeSettings={showChallengeSettings}
+          setShowChallengeSettings={setShowChallengeSettings}
+          handleStartStudy={handleStartStudy}
+          numOfRounds={numOfRounds}
+          setNumOfRounds={setNumOfRounds}
+          isTimed={isTimed}
+          setIsTimed={setIsTimed}
+        />
+        <AdaptiveQuizSettings
+          showQuizSettings={showQuizSettings}
+          setShowQuizSettings={setShowQuizSettings}
+          numOfQuestions={numOfQuestions}
+          setNumOfQuestions={setNumOfQuestions}
+          deckId={deck.id}
+        />
       </CardFooter>
     </Card>
   );

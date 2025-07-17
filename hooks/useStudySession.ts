@@ -10,7 +10,7 @@ interface UseStudySessionProps {
   correctAnswers?: number;
   incorrectAnswers?: number;
   totalQuestions?: number;
-  studyMode?: 'challenge' | 'flip';
+  studyMode?: 'challenge' | 'flip' | 'quiz';
 }
 
 export const useStudySession = ({
@@ -52,7 +52,7 @@ export const useStudySession = ({
   }, []);
 
   const getNewMastery = useCallback(() => {
-    if (studyMode === 'challenge') {
+    if (studyMode === 'challenge' || studyMode === 'quiz') {
       if (!deck?.flashcards?.length) return initialMastery;
 
       const masteryChange = correctAnswers - incorrectAnswers;

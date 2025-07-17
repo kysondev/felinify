@@ -17,10 +17,17 @@ import {
 } from "components/study";
 import { useStudySession } from "hooks/useStudySession";
 import { useQuestionTimer } from "hooks/useQuestionTimer";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "components/ui/Card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "components/ui/Card";
 import { CheckCircle2, XCircle, Award, Clock } from "lucide-react";
 import { formatTime } from "utils/date.utils";
 import { Progress } from "components/ui/Progress";
+import { updateChallengeCompletionAction } from "actions/deck.action";
 
 const QUESTION_TIME_LIMIT = 15;
 
@@ -30,12 +37,14 @@ export default function ChallengePageContent() {
   const deckId = searchParams.get("deckId");
   const numOfRounds = parseInt(searchParams.get("numOfRounds") || "3");
   if (numOfRounds !== 1 && numOfRounds !== 3 && numOfRounds !== 5) {
-    return <ErrorState
-      title="Invalid number of rounds"
-      message="Please select a valid number of rounds."
-      buttonText="Return to Library"
-      buttonAction={() => router.push("/workspace/library")}
-    />;
+    return (
+      <ErrorState
+        title="Invalid number of rounds"
+        message="Please select a valid number of rounds."
+        buttonText="Return to Library"
+        buttonAction={() => router.push("/workspace/library")}
+      />
+    );
   }
   const isTimed = searchParams.get("timed") === "true";
 
@@ -47,8 +56,12 @@ export default function ChallengePageContent() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(0);
-  const [answeredCards, setAnsweredCards] = useState<Record<string, boolean>>({});
-  const [options, setOptions] = useState<{ text: string; isCorrect: boolean }[]>([]);
+  const [answeredCards, setAnsweredCards] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [options, setOptions] = useState<
+    { text: string; isCorrect: boolean }[]
+  >([]);
   const [showFinalScore, setShowFinalScore] = useState(false);
   const [showRoundResults, setShowRoundResults] = useState(false);
   const [roundCorrectAnswers, setRoundCorrectAnswers] = useState(0);
@@ -71,11 +84,11 @@ export default function ChallengePageContent() {
 
   const selectCardsForRound = useCallback(() => {
     if (!deck?.flashcards || deck.flashcards.length < 4) return;
-    
+
     const shuffledIndices = [...Array(deck.flashcards.length).keys()]
       .sort(() => 0.5 - Math.random())
       .slice(0, questionsPerRound);
-    
+
     setSelectedCards(shuffledIndices);
     setCurrentCardIndex(0);
   }, [deck, questionsPerRound]);
@@ -114,7 +127,7 @@ export default function ChallengePageContent() {
     correctAnswers,
     incorrectAnswers,
     totalQuestions,
-    studyMode: 'challenge',
+    studyMode: "challenge",
   });
 
   const {
@@ -129,13 +142,18 @@ export default function ChallengePageContent() {
   });
 
   const generateOptions = useCallback(() => {
-    if (!deck?.flashcards || deck.flashcards.length < 4 || optionsGenerated.current) return;
+    if (
+      !deck?.flashcards ||
+      deck.flashcards.length < 4 ||
+      optionsGenerated.current
+    )
+      return;
 
     const currentCard = getCurrentCard();
     if (!currentCard) return;
 
     optionsGenerated.current = true;
-    
+
     const otherCards = deck.flashcards.filter(
       (card) => card.id !== currentCard.id
     );
@@ -153,33 +171,39 @@ export default function ChallengePageContent() {
     setOptions(allOptions.sort(() => 0.5 - Math.random()));
   }, [deck, getCurrentCard]);
 
-  const handleAnswer = useCallback((optionIndex: number) => {
-    if (!deck?.flashcards || showAnswer) return;
+  const handleAnswer = useCallback(
+    (optionIndex: number) => {
+      if (!deck?.flashcards || showAnswer) return;
 
-    const currentCard = getCurrentCard();
-    if (!currentCard) return;
+      const currentCard = getCurrentCard();
+      if (!currentCard) return;
 
-    const isCorrect = options[optionIndex].isCorrect;
+      const isCorrect = options[optionIndex].isCorrect;
 
-    if (isCorrect) {
-      setCorrectAnswers((prev) => prev + 1);
-      setRoundCorrectAnswers((prev) => prev + 1);
-    } else {
-      setIncorrectAnswers((prev) => prev + 1);
-      setRoundIncorrectAnswers((prev) => prev + 1);
-    }
+      if (isCorrect) {
+        setCorrectAnswers((prev) => prev + 1);
+        setRoundCorrectAnswers((prev) => prev + 1);
+      } else {
+        setIncorrectAnswers((prev) => prev + 1);
+        setRoundIncorrectAnswers((prev) => prev + 1);
+      }
 
-    setAnsweredCards((prev) => ({
-      ...prev,
-      [String(currentCard.id)]: isCorrect,
-    }));
+      setAnsweredCards((prev) => ({
+        ...prev,
+        [String(currentCard.id)]: isCorrect,
+      }));
 
-    setShowAnswer(true);
-    stopQuestionTimer();
-  }, [deck, getCurrentCard, options, showAnswer, stopQuestionTimer]);
+      setShowAnswer(true);
+      stopQuestionTimer();
+    },
+    [deck, getCurrentCard, options, showAnswer, stopQuestionTimer]
+  );
 
   const isRoundComplete = useCallback(() => {
-    return currentCardIndex >= questionsPerRound - 1 || currentCardIndex >= selectedCards.length - 1;
+    return (
+      currentCardIndex >= questionsPerRound - 1 ||
+      currentCardIndex >= selectedCards.length - 1
+    );
   }, [currentCardIndex, questionsPerRound, selectedCards.length]);
 
   const navigateNext = useCallback(() => {
@@ -191,6 +215,9 @@ export default function ChallengePageContent() {
       } else {
         stopQuestionTimer();
         saveSessionWithoutRedirect();
+        if (userId.current && deckId) {
+          updateChallengeCompletionAction(userId.current, deckId);
+        }
         setShowFinalScore(true);
       }
       return;
@@ -199,7 +226,14 @@ export default function ChallengePageContent() {
     setCurrentCardIndex((prev) => prev + 1);
     setShowAnswer(false);
     optionsGenerated.current = false;
-  }, [deck, isRoundComplete, currentRound, numOfRounds, stopQuestionTimer, saveSessionWithoutRedirect]);
+  }, [
+    deck,
+    isRoundComplete,
+    currentRound,
+    numOfRounds,
+    stopQuestionTimer,
+    saveSessionWithoutRedirect,
+  ]);
 
   const startNextRound = useCallback(() => {
     setCurrentRound((prev) => prev + 1);
@@ -258,17 +292,42 @@ export default function ChallengePageContent() {
   }, [deck, isStudying, isLoading, startStudySession, selectCardsForRound]);
 
   useEffect(() => {
-    if (deck?.flashcards && deck.flashcards.length >= 4 && !showAnswer && selectedCards.length > 0) {
+    if (
+      deck?.flashcards &&
+      deck.flashcards.length >= 4 &&
+      !showAnswer &&
+      selectedCards.length > 0
+    ) {
       optionsGenerated.current = false;
       generateOptions();
     }
-  }, [deck, currentCardIndex, currentRound, showAnswer, generateOptions, selectedCards]);
+  }, [
+    deck,
+    currentCardIndex,
+    currentRound,
+    showAnswer,
+    generateOptions,
+    selectedCards,
+  ]);
 
   useEffect(() => {
-    if (deck?.flashcards && !showAnswer && !isLoading && selectedCards.length > 0) {
+    if (
+      deck?.flashcards &&
+      !showAnswer &&
+      !isLoading &&
+      selectedCards.length > 0
+    ) {
       startQuestionTimer();
     }
-  }, [deck, showAnswer, isLoading, currentCardIndex, currentRound, startQuestionTimer, selectedCards]);
+  }, [
+    deck,
+    showAnswer,
+    isLoading,
+    currentCardIndex,
+    currentRound,
+    startQuestionTimer,
+    selectedCards,
+  ]);
 
   useEffect(() => {
     if (showAnswer) {
@@ -315,8 +374,9 @@ export default function ChallengePageContent() {
 
   if (showFinalScore) {
     const masteryChange = correctAnswers - incorrectAnswers;
-    const masteryChangeText = masteryChange >= 0 ? `+${masteryChange}%` : `${masteryChange}%`;
-    
+    const masteryChangeText =
+      masteryChange >= 0 ? `+${masteryChange}%` : `${masteryChange}%`;
+
     return (
       <FinalResults
         correctAnswers={correctAnswers}
@@ -332,13 +392,16 @@ export default function ChallengePageContent() {
 
   if (showRoundResults) {
     const masteryChange = roundCorrectAnswers - roundIncorrectAnswers;
-    const masteryChangeText = masteryChange >= 0 ? `+${masteryChange}%` : `${masteryChange}%`;
-    
+    const masteryChangeText =
+      masteryChange >= 0 ? `+${masteryChange}%` : `${masteryChange}%`;
+
     return (
       <div className="container max-w-3xl mx-auto py-6 md:py-8 px-3 md:px-4 mt-14 md:mt-16">
         <Card className="w-full max-w-2xl mx-auto">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Round {currentRound} Complete!</CardTitle>
+            <CardTitle className="text-2xl">
+              Round {currentRound} Complete!
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex justify-center items-center space-x-8">
@@ -374,9 +437,12 @@ export default function ChallengePageContent() {
 
             <div className="bg-secondary/30 rounded-lg p-4">
               <p className="text-center">
-                <span className="font-medium">Round {currentRound} of {numOfRounds} complete. </span>
+                <span className="font-medium">
+                  Round {currentRound} of {numOfRounds} complete.{" "}
+                </span>
                 <span className="text-muted-foreground">
-                  {correctAnswers} correct and {incorrectAnswers} incorrect answers so far.
+                  {correctAnswers} correct and {incorrectAnswers} incorrect
+                  answers so far.
                 </span>
               </p>
               <p className="text-center mt-2 text-sm">
@@ -385,11 +451,11 @@ export default function ChallengePageContent() {
                 </span>
               </p>
             </div>
-            
+
             <Progress
-  value={(currentRound / numOfRounds) * 100}
-  className="w-full h-2 rounded-full overflow-hidden"
-/>
+              value={(currentRound / numOfRounds) * 100}
+              className="w-full h-2 rounded-full overflow-hidden"
+            />
           </CardContent>
           <CardFooter className="flex justify-center">
             <Button onClick={startNextRound} className="min-w-[200px]">
@@ -406,7 +472,10 @@ export default function ChallengePageContent() {
     return <LoadingState isSaving={false} />;
   }
 
-  const totalProgress = (((currentRound - 1) * questionsPerRound + currentCardIndex + 1) / totalQuestions) * 100;
+  const totalProgress =
+    (((currentRound - 1) * questionsPerRound + currentCardIndex + 1) /
+      totalQuestions) *
+    100;
   const isLastCard = isRoundComplete() && currentRound === numOfRounds;
 
   return (
@@ -433,7 +502,7 @@ export default function ChallengePageContent() {
         />
       )}
 
-      <div className="w-full aspect-[4/3] md:aspect-[3/2] max-w-2xl mx-auto mb-6 md:mb-8">
+      <div className="w-full max-w-2xl mx-auto mb-6 md:mb-8">
         <QuestionCard
           currentCard={{
             ...currentCard,
@@ -458,7 +527,11 @@ export default function ChallengePageContent() {
       ) : (
         <div className="flex justify-center">
           <Button onClick={navigateNext} className="min-w-[200px]">
-            {isLastCard ? "View Results" : isRoundComplete() ? "View Round Results" : "Next Card"}
+            {isLastCard
+              ? "View Results"
+              : isRoundComplete()
+                ? "View Round Results"
+                : "Next Card"}
           </Button>
         </div>
       )}

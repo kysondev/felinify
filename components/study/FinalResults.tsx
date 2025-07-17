@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Button } from "components/ui/Button";
 import { CheckCircle, XCircle } from "lucide-react";
 import { formatTime } from "utils/date.utils";
@@ -12,6 +12,8 @@ interface FinalResultsProps {
   masteryGained: number;
   masteryChangeText?: string;
   isSaving: boolean;
+  onFinish?: () => Promise<void>;
+  explanationText?: ReactNode;
 }
 
 export const FinalResults = ({
@@ -22,14 +24,24 @@ export const FinalResults = ({
   masteryGained,
   masteryChangeText,
   isSaving,
+  onFinish,
+  explanationText,
 }: FinalResultsProps) => {
   const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
+
+  const handleReturn = async () => {
+    if (onFinish) {
+      await onFinish();
+    } else {
+      redirect("/workspace/library");
+    }
+  };
 
   return (
     <div className="container max-w-3xl mx-auto py-8 px-4 mt-16">
       <div className="flex flex-col items-center justify-center h-[60vh]">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-4">Challenge Complete!</h2>
+          <h2 className="text-3xl font-bold mb-4">Study Session Complete!</h2>
           <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-8 max-w-md">
             <div className="text-6xl font-bold text-primary mb-4">
               {accuracy}%
@@ -78,16 +90,18 @@ export const FinalResults = ({
                 </span>
               </div>
 
-              <div className="mt-4 pt-4 border-t text-sm text-muted-foreground">
-                <p>+1% mastery for each correct answer</p>
-                <p>-1% mastery for each incorrect answer</p>
-              </div>
+              {explanationText || (
+                <div className="mt-4 pt-4 border-t text-sm text-muted-foreground">
+                  <p>+1% mastery for each correct answer</p>
+                  <p>-1% mastery for each incorrect answer</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <Button
-          onClick={() => redirect("/workspace/library")}
+          onClick={handleReturn}
           className="min-w-[200px]"
           disabled={isSaving}
         >

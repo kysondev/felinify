@@ -25,18 +25,18 @@ export const QuestionCard = ({
   questionTimeLeft,
   isTimed,
 }: QuestionCardProps) => (
-  <Card className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 shadow-md border-2 border-secondary/30 rounded-xl bg-gradient-to-br from-background to-secondary/10">
+  <Card className="w-full flex flex-col p-6 md:p-8 shadow-md border-2 border-secondary/30 rounded-xl bg-gradient-to-br from-background to-secondary/10">
     <div className="absolute top-3 md:top-4 right-3 md:right-4 text-xs text-muted-foreground">
       Card {currentCardIndex + 1}/{totalCards}
     </div>
 
-    <div className="w-full max-w-md text-center overflow-y-auto max-h-[70%] px-2 py-2 my-auto">
-      <div className="text-base sm:text-lg md:text-xl font-medium break-words mb-6">
+    <div className="flex flex-col min-h-[200px] md:min-h-[250px] justify-center">
+      <div className="text-base sm:text-lg md:text-xl font-medium break-words mb-6 text-center">
         {currentCard.question}
       </div>
 
       {showAnswer && (
-        <div className="mt-6 p-4 border border-dashed border-primary/30 rounded-lg">
+        <div className="mt-4 p-4 border border-dashed border-primary/30 rounded-lg w-full">
           <p className="text-sm font-semibold text-muted-foreground mb-2">
             Correct Answer:
           </p>
