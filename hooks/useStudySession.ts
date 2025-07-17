@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Deck } from "db/types/models.types";
-import { saveStudyProgressAction, saveStudySessionAction } from "actions/deck.action";
+import {
+  saveStudyProgressAction,
+  saveStudySessionAction,
+} from "actions/deck.action";
 
 interface UseStudySessionProps {
   deck: Deck | null;
@@ -10,7 +13,7 @@ interface UseStudySessionProps {
   correctAnswers?: number;
   incorrectAnswers?: number;
   totalQuestions?: number;
-  studyMode?: 'challenge' | 'flip' | 'quiz';
+  studyMode?: "challenge" | "flip" | "quiz";
 }
 
 export const useStudySession = ({
@@ -19,25 +22,23 @@ export const useStudySession = ({
   initialMastery,
   correctAnswers = 0,
   incorrectAnswers = 0,
-  studyMode = 'challenge',
+  studyMode = "challenge",
 }: UseStudySessionProps) => {
   const router = useRouter();
   const [studyTime, setStudyTime] = useState(0);
   const [isStudying, setIsStudying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const studyStartTime = useRef<number>(0);
   const studyInterval = useRef<NodeJS.Timeout | null>(null);
-  const hasStarted = useRef<boolean>(false);
 
   const startStudySession = useCallback(() => {
-    if (isStudying || hasStarted.current) return;
-    
-    hasStarted.current = true;
+    if (isStudying) return;
+
     studyStartTime.current = Date.now();
     setIsStudying(true);
-    
+
     studyInterval.current = setInterval(() => {
       setStudyTime(Math.floor((Date.now() - studyStartTime.current) / 1000));
     }, 1000);
@@ -52,27 +53,34 @@ export const useStudySession = ({
   }, []);
 
   const getNewMastery = useCallback(() => {
-    if (studyMode === 'challenge' || studyMode === 'quiz') {
+    if (studyMode === "challenge" || studyMode === "quiz") {
       if (!deck?.flashcards?.length) return initialMastery;
 
       const masteryChange = correctAnswers - incorrectAnswers;
       const newMastery = initialMastery + masteryChange;
 
       return Math.min(Math.max(newMastery, 0), 100);
-    } 
-    else if (studyMode === 'flip') {
+    } else if (studyMode === "flip") {
       if (initialMastery > 50) {
         return initialMastery;
       }
-      
+
       const studyDurationMinutes = studyTime / 60;
       const maxGain = Math.min(Math.floor(studyDurationMinutes), 30);
-      const cappedGain = initialMastery + maxGain > 50 ? 50 - initialMastery : maxGain;
+      const cappedGain =
+        initialMastery + maxGain > 50 ? 50 - initialMastery : maxGain;
       return Math.min(initialMastery + cappedGain, 50);
     }
-    
+
     return initialMastery;
-  }, [deck?.flashcards?.length, initialMastery, correctAnswers, incorrectAnswers, studyMode, studyTime]);
+  }, [
+    deck?.flashcards?.length,
+    initialMastery,
+    correctAnswers,
+    incorrectAnswers,
+    studyMode,
+    studyTime,
+  ]);
 
   const calculateStudyProgress = useCallback(() => {
     if (!deck || !userId) return null;
@@ -133,7 +141,14 @@ export const useStudySession = ({
       setIsSaving(false);
       setIsLoading(false);
     }
-  }, [calculateStudyProgress, deck, router, stopStudySession, studyTime, userId]);
+  }, [
+    calculateStudyProgress,
+    deck,
+    router,
+    stopStudySession,
+    studyTime,
+    userId,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -155,4 +170,4 @@ export const useStudySession = ({
     saveSessionWithoutRedirect,
     getNewMastery,
   };
-}; 
+};

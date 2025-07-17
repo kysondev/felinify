@@ -31,6 +31,8 @@ import {
 import { formatTime } from "utils/date.utils";
 import { useStudySession } from "hooks/useStudySession";
 import { Progress } from "components/ui/Progress";
+import { ErrorState, LoadingState } from "components/study";
+import NoAccessState from "components/study/states/NoAccessState";
 
 export default function FlipStudyPage() {
   const searchParams = useSearchParams();
@@ -127,47 +129,21 @@ export default function FlipStudyPage() {
   }, [deck, isStudying, isLoading, startStudySession]);
 
   if (isLoading || isSaving) {
-    return (
-      <div className="container max-w-3xl mx-auto py-8 px-4 mt-16">
-        <div className="flex flex-col items-center justify-center h-[60vh]">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-muted-foreground">
-            {isSaving ? "Saving Progress..." : "Loading flashcards..."}
-          </p>
-        </div>
-      </div>
-    );
+    return <LoadingState isSaving={isSaving} />;
   }
 
   if (noPermission) {
-    return (
-      <div className="container max-w-3xl mx-auto py-8 px-4 mt-16">
-        <div className="flex flex-col items-center justify-center h-[60vh]">
-          <h2 className="text-2xl font-semibold mb-2">Access Denied</h2>
-          <p className="text-muted-foreground mb-6">
-            You do not have permission to view this deck.
-          </p>
-          <Button onClick={() => router.push("/workspace/library")}>
-            Return to Library
-          </Button>
-        </div>
-      </div>
-    );
+    return <NoAccessState />;
   }
 
   if (!deck?.flashcards?.length) {
     return (
-      <div className="container max-w-3xl mx-auto py-8 px-4 mt-16">
-        <div className="flex flex-col items-center justify-center h-[60vh]">
-          <h2 className="text-2xl font-semibold mb-2">No flashcards found</h2>
-          <p className="text-muted-foreground mb-6">
-            This deck doesn't have any flashcards yet.
-          </p>
-          <Button onClick={() => router.push(`/workspace/deck/${deckId}`)}>
-            Add flashcards
-          </Button>
-        </div>
-      </div>
+      <ErrorState
+        title="No Cards Found"
+        message="This deck doesn't have any flashcards yet."
+        buttonText="Return to Library"
+        buttonAction={() => router.push("/workspace/library")}
+      />
     );
   }
 
@@ -247,9 +223,9 @@ export default function FlipStudyPage() {
       </div>
 
       <Progress
-  value={progress}
-  className="w-full h-1 rounded-full overflow-hidden mb-6 md:mb-8"
-/>
+        value={progress}
+        className="w-full h-1 rounded-full overflow-hidden mb-6 md:mb-8"
+      />
 
       <div className="w-full aspect-[4/3] md:aspect-[3/2] max-w-2xl mx-auto mb-6 md:mb-8 perspective-1000">
         <div

@@ -610,3 +610,57 @@ export const validateQuizAccessToken = async (
     return { success: false, message: "Error validating access token", error };
   }
 };
+
+export const updateFlashcardPerformance = async (
+  userId: string,
+  flashcardResults: {
+    flashcardId: string;
+    isCorrect: boolean;
+  }[]
+) => {
+  try {
+    if (!flashcardResults.length) {
+      return { success: true, message: "No flashcard results to update" };
+    }
+
+    const flashcardIds = flashcardResults.map(result => result.flashcardId);
+
+    const existingPerformances = await db
+      .selectFrom("flashcardPerformance")
+      .select(["id", "flashcardId", "correctCount", "incorrectCount", "timesStudied"])
+      .where("userId", "=", userId)
+      .where("flashcardId", "in", flashcardIds)
+      .execute();
+
+    const performanceMap = new Map();
+    existingPerformances.forEach(perf => {
+      performanceMap.set(perf.flashcardId, perf);
+    });
+
+    for (const result of flashcardResults) {
+      const existingPerformance = performanceMap.get(result.flashcardId);
+
+        await db
+          .updateTable("flashcardPerformance")
+          .set({
+            correctCount: result.isCorrect 
+              ? existingPerformance.correctCount + 1 
+              : existingPerformance.correctCount,
+            incorrectCount: !result.isCorrect 
+              ? existingPerformance.incorrectCount + 1 
+              : existingPerformance.incorrectCount,
+            timesStudied: existingPerformance.timesStudied + 1,
+            lastStudied: new Date(),
+            updatedAt: new Date(),
+          })
+          .where("id", "=", existingPerformance.id)
+          .execute();
+      
+    }
+
+    return { success: true, message: "Flashcard performance updated successfully" };
+  } catch (error) {
+    console.error("Error updating flashcard performance:", error);
+    return { success: false, message: "Error updating flashcard performance", error };
+  }
+};

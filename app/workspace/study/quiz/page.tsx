@@ -14,8 +14,11 @@ import { MultipleChoiceOptions } from "components/study/MultipleChoiceOptions";
 import { QuestionCard } from "components/study/QuestionCard";
 import { SessionHeader } from "components/study/SessionHeader";
 import { FinalResults } from "components/study/FinalResults";
-import { ErrorState } from "components/study/ErrorState";
-import { updateChallengeCompletionAction } from "actions/deck.action";
+import { ErrorState } from "components/study/states/ErrorState";
+import {
+  updateChallengeCompletionAction,
+  updateFlashcardPerformanceAction,
+} from "actions/deck.action";
 import { Progress } from "components/ui/Progress";
 import { Loader2 } from "lucide-react";
 
@@ -46,6 +49,9 @@ export default function QuizPage() {
   const [tokenValidated, setTokenValidated] = useState(false);
   const [numOfQuestions, setNumOfQuestions] = useState(10);
   const [savingResults, setSavingResults] = useState(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<
+    Record<string, boolean>
+  >({});
 
   const [loadingStage, setLoadingStage] = useState<
     "validating-token" | "loading-deck" | "generating-quiz" | "complete"
@@ -130,7 +136,6 @@ export default function QuizPage() {
       validateToken();
     }
   }, [deckId, token, tokenValidated, userId]);
-
   useEffect(() => {
     const loadDeckData = async () => {
       if (!tokenValidated || !deckId || !userId) return;
@@ -176,14 +181,15 @@ export default function QuizPage() {
     if (tokenValidated) {
       loadDeckData();
     }
-  }, [deckId, numOfQuestions, startStudySession, tokenValidated, userId]);
+  }, [deckId, numOfQuestions, tokenValidated, userId]);
 
   const handleAnswer = useCallback(
     (optionIndex: number) => {
-      setSelectedOption(optionIndex);
+      if (showAnswer) return;
 
       const isCorrect =
-        currentQuestion.options[optionIndex] === currentQuestion.correctAnswer;
+        currentQuestion?.options[optionIndex] ===
+        currentQuestion?.correctAnswer;
 
       if (isCorrect) {
         setCorrectAnswers((prev) => prev + 1);
@@ -191,30 +197,45 @@ export default function QuizPage() {
         setIncorrectAnswers((prev) => prev + 1);
       }
 
+      setAnsweredQuestions((prev) => ({
+        ...prev,
+        [currentQuestion?.originalFlashcardId || ""]: isCorrect,
+      }));
+
       setShowAnswer(true);
+      setSelectedOption(optionIndex);
     },
-    [currentQuestion, currentQuestionIndex]
+    [currentQuestion, showAnswer]
   );
 
   const handleNextQuestion = useCallback(() => {
     setShowAnswer(false);
     setSelectedOption(null);
-    
+
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       stopStudySession();
-      
+
       setSavingResults(true);
-      
+
       const saveData = async () => {
         if (userId && deckId) {
           try {
             await updateChallengeCompletionAction(userId, deckId);
-            
+
+            const flashcardResults = Object.entries(answeredQuestions).map(
+              ([flashcardId, isCorrect]) => ({
+                flashcardId,
+                isCorrect,
+              })
+            );
+
+            await updateFlashcardPerformanceAction(userId, flashcardResults);
+
             await saveSessionWithoutRedirect();
-          
-            await new Promise(resolve => setTimeout(resolve, 800));
+
+            await new Promise((resolve) => setTimeout(resolve, 800));
           } catch (error) {
             console.error("Error saving session data:", error);
           } finally {
@@ -226,10 +247,18 @@ export default function QuizPage() {
           setQuizCompleted(true);
         }
       };
-      
+
       saveData();
     }
-  }, [currentQuestionIndex, quizQuestions.length, stopStudySession, userId, deckId, saveSessionWithoutRedirect]);
+  }, [
+    currentQuestionIndex,
+    quizQuestions.length,
+    stopStudySession,
+    userId,
+    deckId,
+    saveSessionWithoutRedirect,
+    answeredQuestions,
+  ]);
 
   const handleFinish = useCallback(async (): Promise<void> => {
     router.push("/workspace/library");
@@ -247,7 +276,7 @@ export default function QuizPage() {
 
           <h2 className="text-xl font-medium mb-2">Preparing Your Quiz</h2>
 
-          <div className="w-full mb-6">
+          <div className="w-full mb-3">
             <Progress value={loadingProgress} className="h-1.5" />
           </div>
 
@@ -258,6 +287,9 @@ export default function QuizPage() {
               "Creating personalized questions..."}
             {loadingStage === "complete" && "Starting quiz..."}
           </p>
+          <span className="text-xs text-muted-foreground mt-1">
+            This may take a moment, please don't refresh the page.
+          </span>
         </div>
       </div>
     );
@@ -272,7 +304,7 @@ export default function QuizPage() {
           </div>
 
           <h2 className="text-xl font-medium mb-2">Saving Your Results</h2>
-          
+
           <p className="text-sm text-muted-foreground">
             Updating your progress and calculating mastery...
           </p>
@@ -298,7 +330,7 @@ export default function QuizPage() {
 
   if (quizCompleted) {
     const masteryGained = getNewMastery() - (deck?.progress?.mastery || 0);
-    
+
     return (
       <FinalResults
         correctAnswers={correctAnswers}

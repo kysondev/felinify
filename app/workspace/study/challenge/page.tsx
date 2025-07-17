@@ -27,7 +27,10 @@ import {
 import { CheckCircle2, XCircle, Award, Clock } from "lucide-react";
 import { formatTime } from "utils/date.utils";
 import { Progress } from "components/ui/Progress";
-import { updateChallengeCompletionAction } from "actions/deck.action";
+import {
+  updateChallengeCompletionAction,
+  updateFlashcardPerformanceAction,
+} from "actions/deck.action";
 
 const QUESTION_TIME_LIMIT = 15;
 
@@ -334,6 +337,24 @@ export default function ChallengePageContent() {
       stopQuestionTimer();
     }
   }, [showAnswer, stopQuestionTimer]);
+
+  useEffect(() => {
+    if (
+      showFinalScore &&
+      userId.current &&
+      deckId &&
+      Object.keys(answeredCards).length > 0
+    ) {
+      const flashcardResults = Object.entries(answeredCards).map(
+        ([flashcardId, isCorrect]) => ({
+          flashcardId,
+          isCorrect,
+        })
+      );
+
+      updateFlashcardPerformanceAction(userId.current, flashcardResults);
+    }
+  }, [showFinalScore, deckId, answeredCards]);
 
   if (isLoading || isSaving || isSavingLoading) {
     return <LoadingState isSaving={isSaving} />;

@@ -13,6 +13,7 @@ import {
   saveStudyProgressToDeck,
   saveStudySession,
   updateChallengeCompletionCount,
+  updateFlashcardPerformance,
 } from "services/deck.service";
 import { getUser } from "services/user.service";
 
@@ -230,6 +231,31 @@ export const updateChallengeCompletionAction = async (
     return {
       success: false,
       message: "Error updating challenge completion count",
+    };
+  }
+};
+
+export const updateFlashcardPerformanceAction = async (
+  userId: string,
+  flashcardResults: {
+    flashcardId: string;
+    isCorrect: boolean;
+  }[]
+) => {
+  try {
+    const { success } = await getUser();
+    if (!success) {
+      return { success: false, message: "User not found" };
+    }
+    
+    const result = await updateFlashcardPerformance(userId, flashcardResults);
+    return result;
+  } catch (error) {
+    console.error("Error updating flashcard performance:", error);
+    return { 
+      success: false, 
+      message: "Error updating flashcard performance", 
+      error 
     };
   }
 };

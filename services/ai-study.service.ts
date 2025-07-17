@@ -1,6 +1,7 @@
 "use server";
-import { google } from "@ai-sdk/google";
+import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
+import { shuffle } from "utils/flashcard.utils";
 
 export const generateFlashcards = async (notes: string) => {
   try {
@@ -21,7 +22,7 @@ Respond **only** in **valid JSON format** using this structure:
 - No extra text. Return JSON only.`;
 
     const { text } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: openai("gpt-4o-mini"),
       system,
       prompt: notes,
     });
@@ -67,53 +68,81 @@ export const generateAdaptiveQuiz = async (
       return bRatio - aRatio;
     });
 
-    const targetFlashcards = sortedFlashcards.slice(
-      0,
-      Math.min(numQuestions * 2, sortedFlashcards.length)
-    );
+    const targetFlashcards = shuffle(
+      sortedFlashcards.slice(
+        0,
+        Math.min(numQuestions * 2, sortedFlashcards.length)
+      )
+    ).slice(0, numQuestions);
+
+    const flashcardsInput = targetFlashcards
+      .map((f) => `ID: ${f.id} | Q: ${f.question} | A: ${f.answer}`)
+      .join("\n\n");
 
     const system = `
 You are an AI quiz generator that creates multiple-choice questions based on flashcards.
 For each flashcard, create a question that tests the user's understanding of the concept.
-The question should not be identical to the flashcard question but should test the same knowledge that is included in the flashcard.
+The question should not be identical to the flashcard question but should test the same knowledge.
 
-Respond **only** in **valid JSON format** using this structure:
-
+Respond ONLY in valid JSON format using this structure:
 [
   {
-    "question": "string",
-    "correctAnswer": "string",
-    "options": ["string", "string", "string", "string"],
-    "originalFlashcardId": "string"
+    "question": "Your question here",
+    "correctAnswer": "The correct answer",
+    "options": ["option1", "option2", "option3", "option4"],
+    "originalFlashcardId": "the ID from the input flashcard"
   }
 ]
 
-**Rules:**
-- Generate exactly ${numQuestions} questions
-- The question should be clear and concise (1-2 sentences max)
+Rules:
+- Generate exactly ${numQuestions} questions (one per flashcard)
 - Each question must have exactly 4 options
 - The correctAnswer must be one of the options
 - The options should be plausible but only one should be correct
-- The originalFlashcardId should be included to track which flashcard the question is based on
-- No extra text. Return JSON only.`;
-
-    const flashcardsInput = JSON.stringify(
-      targetFlashcards.map((f) => ({
-        id: f.id,
-        question: f.question,
-        answer: f.answer,
-      }))
-    );
+- The originalFlashcardId MUST be copied exactly from the input (format: "ID: xyz")
+- The position of the correct answer should be random
+- Questions should be clear and concise (1-2 sentences)
+- No extra text or explanations outside the JSON structure`;
 
     const { text } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: openai("gpt-4o-mini"),
       system,
-      prompt: `Generate ${numQuestions} adaptive quiz questions based on these flashcards, focusing on concepts that need more practice: ${flashcardsInput}`,
+      temperature: 0.5,
+      prompt: `Generate ${numQuestions} quiz questions based on these flashcards. Create one question per flashcard and ensure you copy the exact ID for each flashcard into the originalFlashcardId field.\n\n${flashcardsInput}`,
     });
 
-    const cleaned = text.trim().replace(/^```json|```$/g, "");
-    const parsed = JSON.parse(cleaned);
-    return { success: true, questions: parsed };
+    try {
+      const cleaned = text.trim().replace(/^```json|```$/g, "");
+      const parsed = JSON.parse(cleaned);
+
+      const questions = parsed.map((question: {
+        question: string;
+        correctAnswer: string;
+        options: string[];
+        originalFlashcardId: string;
+      }) => {
+
+        const idMatch = question.originalFlashcardId.match(/ID: (.*)/);
+        if (idMatch && idMatch[1]) {
+          question.originalFlashcardId = idMatch[1];
+        }
+        
+
+        question.options = shuffle([...question.options]);
+        
+        return question;
+      });
+      
+      console.log(questions);
+      return { success: true, questions };
+    } catch (error) {
+      console.error("Error parsing quiz questions:", error);
+      return {
+        success: false,
+        message: "Error parsing generated quiz questions",
+        error,
+      };
+    }
   } catch (error) {
     console.error("Error generating adaptive quiz:", error);
     return {
