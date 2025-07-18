@@ -28,7 +28,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "components/ui/Dialog";
-import { PasswordChangeSchema, passwordChangeSchema, usernameSchema } from "lib/validations/user.schema";
+import {
+  PasswordChangeSchema,
+  passwordChangeSchema,
+  usernameSchema,
+} from "lib/validations/user.schema";
 import { User } from "db/types/models.types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -66,7 +70,8 @@ export function AccountSettings({ user }: { user: User }) {
     },
   });
 
-  const hasChanges = username !== (user?.name || "") || !!selectedFile || !!imagePreview;
+  const hasChanges =
+    username !== (user?.name || "") || !!selectedFile || !!imagePreview;
 
   const validateUsername = () => {
     try {
@@ -74,7 +79,10 @@ export function AccountSettings({ user }: { user: User }) {
       setUsernameError("");
       return true;
     } catch (error) {
-      const message = error instanceof z.ZodError ? error.errors[0].message : "Invalid username";
+      const message =
+        error instanceof z.ZodError
+          ? error.errors[0].message
+          : "Invalid username";
       setUsernameError(message);
       return false;
     }
@@ -109,7 +117,7 @@ export function AccountSettings({ user }: { user: User }) {
           return;
         }
       }
-      
+
       if (hasChanges) {
         toast.success("Profile updated successfully");
         setSelectedFile(null);
@@ -160,7 +168,7 @@ export function AccountSettings({ user }: { user: User }) {
 
     try {
       const isEnabled = user?.twoFactorEnabled;
-      const response = isEnabled 
+      const response = isEnabled
         ? await authClient.twoFactor.disable({ password })
         : await authClient.twoFactor.enable({ password });
 
@@ -169,7 +177,9 @@ export function AccountSettings({ user }: { user: User }) {
         return;
       }
 
-      toast.success(`Two-factor authentication ${isEnabled ? "disabled" : "enabled"}`);
+      toast.success(
+        `Two-factor authentication ${isEnabled ? "disabled" : "enabled"}`
+      );
       setShow2FADialog(false);
       setPassword("");
     } catch (error) {
@@ -219,7 +229,6 @@ export function AccountSettings({ user }: { user: User }) {
     try {
       const { error } = await authClient.sendVerificationEmail({
         email: user.email,
-        callbackURL: "/workspace/settings",
       });
 
       if (error) {
@@ -359,7 +368,10 @@ export function AccountSettings({ user }: { user: User }) {
         <h2 className="text-lg md:text-xl font-semibold mb-4">Security</h2>
         <div className="space-y-6">
           <Form {...passwordForm}>
-            <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
+            <form
+              onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
+              className="space-y-4"
+            >
               <FormField
                 control={passwordForm.control}
                 name="currentPassword"
@@ -369,11 +381,7 @@ export function AccountSettings({ user }: { user: User }) {
                     <FormControl>
                       <div className="relative">
                         <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="password"
-                          className="pl-10"
-                          {...field}
-                        />
+                        <Input type="password" className="pl-10" {...field} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -387,10 +395,7 @@ export function AccountSettings({ user }: { user: User }) {
                   <FormItem>
                     <FormLabel>New Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        {...field}
-                      />
+                      <Input type="password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -403,10 +408,7 @@ export function AccountSettings({ user }: { user: User }) {
                   <FormItem>
                     <FormLabel>Confirm New Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        {...field}
-                      />
+                      <Input type="password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -453,11 +455,13 @@ export function AccountSettings({ user }: { user: User }) {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" />
-              {user?.twoFactorEnabled ? "Disable" : "Enable"} Two-Factor Authentication
+              {user?.twoFactorEnabled ? "Disable" : "Enable"} Two-Factor
+              Authentication
             </DialogTitle>
             <DialogDescription>
               Please enter your password to{" "}
-              {user?.twoFactorEnabled ? "disable" : "enable"} two-factor authentication.
+              {user?.twoFactorEnabled ? "disable" : "enable"} two-factor
+              authentication.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -489,10 +493,7 @@ export function AccountSettings({ user }: { user: User }) {
             >
               Cancel
             </Button>
-            <Button
-              onClick={toggle2FA}
-              disabled={isVerifying || !password}
-            >
+            <Button onClick={toggle2FA} disabled={isVerifying || !password}>
               {isVerifying ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
