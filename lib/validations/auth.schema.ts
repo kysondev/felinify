@@ -5,12 +5,24 @@ export const signUpSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, { message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character" })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      {
+        message:
+          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      }
+    )
     .max(20, { message: "Password must be less than 20 characters" }),
-  name: z.string()
+  name: z
+    .string()
     .min(3, { message: "Name must be at least 3 characters" })
     .max(20, { message: "Name must be less than 20 characters" })
-    .regex(/^[a-zA-Z0-9]+$/, { message: "Name must contain only letters and numbers" }),
+    .regex(/^[a-zA-Z0-9]+$/, {
+      message: "Name must contain only letters and numbers",
+    }),
+  terms: z
+    .boolean()
+    .refine((val) => val === true, "You must accept the terms and conditions"),
 });
 
 export const signInSchema = z.object({

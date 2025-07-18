@@ -9,9 +9,16 @@ import {
   CardTitle,
 } from "components/ui/Card";
 import { Input } from "components/ui/Input";
-import { Label } from "components/ui/Label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "components/ui/Form";
 import { useState, useTransition } from "react";
-import Form from "next/form";
+import NextForm from "next/form";
 import {
   signInWithEmail,
   signInWithGithub,
@@ -20,6 +27,9 @@ import {
 import { Loading } from "components/ui/Loading";
 import dynamic from "next/dynamic";
 import OTPSkeleton from "./skeletons/OTPSkeleton";
+import { useForm } from "react-hook-form";
+import { SignInSchema, signInSchema } from "lib/validations/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const OTPForm = dynamic(() => import("./OTPForm"), {
   loading: () => <OTPSkeleton />,
@@ -32,9 +42,25 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [isPending, startTransition] = useTransition();
   const [isOTPOpen, setIsOTPOpen] = useState(false);
+
+  const form = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: SignInSchema) => {
+    startTransition(async () => {
+      await signInWithEmail(values.email, values.password, setIsOTPOpen);
+    });
+  };
+
   if (isOTPOpen) {
     return <OTPForm onCancel={() => setIsOTPOpen(false)} />;
   }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -47,13 +73,13 @@ export function LoginForm({
         <CardContent>
           <div className="grid gap-6">
             <div className="flex flex-col gap-4">
-              <Form action={signInWithGithub}>
+              <NextForm action={signInWithGithub}>
                 <Button variant="outline" className="w-full" type="submit">
                   <img src="/github_light.svg" alt="github" />
                   Login with GitHub
                 </Button>
-              </Form>
-              <Form action={signInWithGoogle}>
+              </NextForm>
+              <NextForm action={signInWithGoogle}>
                 <Button variant="outline" className="w-full" type="submit">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -63,52 +89,64 @@ export function LoginForm({
                   </svg>
                   Login with Google
                 </Button>
-              </Form>
+              </NextForm>
             </div>
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">
                 Or continue with
               </span>
             </div>
-            <Form
-              action={async (formData) => {
-                startTransition(async () => {
-                  await signInWithEmail(formData, setIsOTPOpen);
-                });
-              }}
-              className="grid gap-6"
-            >
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="grid gap-6"
+              >
+                <FormField
+                  control={form.control}
                   name="email"
-                  required
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="m@example.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="/auth/forgot-password"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
+                <FormField
+                  control={form.control}
                   name="password"
-                  placeholder="••••••••"
-                  required
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center">
+                        <FormLabel>Password</FormLabel>
+                        <a
+                          href="/auth/forgot-password"
+                          className="ml-auto text-sm underline-offset-4 hover:underline"
+                        >
+                          Forgot your password?
+                        </a>
+                      </div>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <Button type="submit" disabled={isPending} className="w-full">
-                {isPending ? <Loading isWhite /> : "Sign in"}
-              </Button>
+                <Button type="submit" disabled={isPending} className="w-full">
+                  {isPending ? <Loading isWhite /> : "Sign in"}
+                </Button>
+              </form>
             </Form>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}

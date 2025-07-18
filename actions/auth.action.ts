@@ -4,11 +4,13 @@ import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 
-export const signUp = async (formData: FormData) => {
+export const signUp = async (
+  name: string,
+  email: string,
+  password: string,
+  terms: boolean
+) => {
   try {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
     if (!name || !email || !password) {
       toast.error("Please fill all the fields");
       return;
@@ -17,6 +19,7 @@ export const signUp = async (formData: FormData) => {
       name,
       email,
       password,
+      terms,
     });
     if (!result.success) {
       toast.error(result.error.issues[0].message);
@@ -39,12 +42,11 @@ export const signUp = async (formData: FormData) => {
 };
 
 export const signInWithEmail = async (
-  formData: FormData,
+  email: string,
+  password: string,
   setIsOTPOpen: any
 ) => {
   try {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
     if (!email || !password) {
       toast.error("Please fill all the fields");
       return;
