@@ -86,7 +86,8 @@ export const FinalResults = ({
               <div className="flex items-center justify-between">
                 <span className="font-medium">Mastery Gained</span>
                 <span className="font-semibold text-primary">
-                  {masteryChangeText || `${masteryGained > 0 ? "+" : ""}${masteryGained}%`}
+                  {masteryChangeText &&
+                    `${masteryGained > 0 ? "+" : ""}${masteryGained}%`}
                 </span>
               </div>
 

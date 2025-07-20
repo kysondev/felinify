@@ -19,7 +19,8 @@ Respond **only** in **valid JSON format** using this structure:
 **Rules:**
 - The question must be a single keyword, phrase, or concept (e.g., "Photosynthesis", "Newton's First Law", "Market equilibrium").
 - The answer should be 1–2 sentences max. No long explanations.
-- No extra text. Return JSON only.`;
+- No extra text. Return JSON only.
+- Flashcard answer cannot contain word from flashcard question.`;
 
     const { text } = await generateText({
       model: openai("gpt-4o-mini"),
@@ -102,7 +103,8 @@ Rules:
 - The originalFlashcardId MUST be copied exactly from the input (format: "ID: xyz")
 - The position of the correct answer should be random
 - Questions should be clear and concise (1-2 sentences)
-- No extra text or explanations outside the JSON structure`;
+- No extra text or explanations outside the JSON structure
+- Flashcard answer cannot contain word from flashcard question.`;
 
     const { text } = await generateText({
       model: openai("gpt-4o-mini"),
@@ -115,24 +117,24 @@ Rules:
       const cleaned = text.trim().replace(/^```json|```$/g, "");
       const parsed = JSON.parse(cleaned);
 
-      const questions = parsed.map((question: {
-        question: string;
-        correctAnswer: string;
-        options: string[];
-        originalFlashcardId: string;
-      }) => {
+      const questions = parsed.map(
+        (question: {
+          question: string;
+          correctAnswer: string;
+          options: string[];
+          originalFlashcardId: string;
+        }) => {
+          const idMatch = question.originalFlashcardId.match(/ID: (.*)/);
+          if (idMatch && idMatch[1]) {
+            question.originalFlashcardId = idMatch[1];
+          }
 
-        const idMatch = question.originalFlashcardId.match(/ID: (.*)/);
-        if (idMatch && idMatch[1]) {
-          question.originalFlashcardId = idMatch[1];
+          question.options = shuffle([...question.options]);
+
+          return question;
         }
-        
+      );
 
-        question.options = shuffle([...question.options]);
-        
-        return question;
-      });
-      
       console.log(questions);
       return { success: true, questions };
     } catch (error) {

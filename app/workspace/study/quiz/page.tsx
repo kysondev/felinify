@@ -330,6 +330,7 @@ export default function QuizPage() {
 
   if (quizCompleted) {
     const masteryGained = getNewMastery() - (deck?.progress?.mastery || 0);
+    console.log(masteryGained);
 
     return (
       <FinalResults
@@ -338,7 +339,7 @@ export default function QuizPage() {
         totalQuestions={quizQuestions.length}
         studyTime={studyTime}
         masteryGained={masteryGained}
-        masteryChangeText={`+${masteryGained}%`}
+        masteryChangeText={`${masteryGained}%`}
         isSaving={false}
         onFinish={handleFinish}
         explanationText={
