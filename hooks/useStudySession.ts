@@ -32,15 +32,54 @@ export const useStudySession = ({
 
   const studyStartTime = useRef<number>(0);
   const studyInterval = useRef<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const totalElapsedTime = useRef<number>(0);
 
   const startStudySession = useCallback(() => {
-    if (isStudying) return;
+    if (isStudying || isPaused) return;
 
     studyStartTime.current = Date.now();
     setIsStudying(true);
 
     studyInterval.current = setInterval(() => {
-      setStudyTime(Math.floor((Date.now() - studyStartTime.current) / 1000));
+      const now = Date.now();
+      const currentElapsed =
+        totalElapsedTime.current + (now - studyStartTime.current) / 1000;
+      setStudyTime(Math.floor(currentElapsed));
+    }, 1000);
+  }, [isStudying, isPaused]);
+
+  const pauseStudySession = useCallback(() => {
+    if (!isStudying || isPaused) return;
+
+    setIsPaused(true);
+    setIsStudying(false);
+
+    if (studyInterval.current) {
+      clearInterval(studyInterval.current);
+      studyInterval.current = null;
+    }
+
+    totalElapsedTime.current += (Date.now() - studyStartTime.current) / 1000;
+  }, [isStudying, isPaused]);
+
+  const resumeStudySession = useCallback(() => {
+    if (isStudying && studyInterval.current) return;
+
+    if (studyInterval.current) {
+      clearInterval(studyInterval.current);
+      studyInterval.current = null;
+    }
+
+    studyStartTime.current = Date.now();
+    setIsStudying(true);
+    setIsPaused(false);
+
+    studyInterval.current = setInterval(() => {
+      const now = Date.now();
+      const currentElapsed =
+        totalElapsedTime.current + (now - studyStartTime.current) / 1000;
+      setStudyTime(Math.floor(currentElapsed));
     }, 1000);
   }, [isStudying]);
 
@@ -49,8 +88,14 @@ export const useStudySession = ({
       clearInterval(studyInterval.current);
       studyInterval.current = null;
     }
+
+    if (isStudying) {
+      totalElapsedTime.current += (Date.now() - studyStartTime.current) / 1000;
+    }
+
     setIsStudying(false);
-  }, []);
+    setIsPaused(false);
+  }, [isStudying]);
 
   const getNewMastery = useCallback(() => {
     if (studyMode === "challenge" || studyMode === "quiz") {
@@ -165,6 +210,8 @@ export const useStudySession = ({
     isSaving,
     isLoading,
     startStudySession,
+    pauseStudySession,
+    resumeStudySession,
     stopStudySession,
     handleEndSession,
     saveSessionWithoutRedirect,

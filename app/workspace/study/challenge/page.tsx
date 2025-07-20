@@ -123,6 +123,8 @@ export default function ChallengePageContent() {
     handleEndSession,
     saveSessionWithoutRedirect,
     getNewMastery,
+    pauseStudySession,
+    resumeStudySession,
   } = useStudySession({
     deck,
     userId: userId.current,
@@ -213,6 +215,7 @@ export default function ChallengePageContent() {
     if (!deck?.flashcards) return;
 
     if (isRoundComplete()) {
+      pauseStudySession();
       if (currentRound < numOfRounds) {
         setShowRoundResults(true);
       } else {
@@ -239,6 +242,7 @@ export default function ChallengePageContent() {
   ]);
 
   const startNextRound = useCallback(() => {
+    resumeStudySession();
     setCurrentRound((prev) => prev + 1);
     setShowRoundResults(false);
     setRoundCorrectAnswers(0);
