@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  Book,
-  Bot,
   CircleFadingArrowUp,
   Compass,
-  FileText,
+  Library,
   LogOut,
   Menu,
-  Repeat,
   Settings2,
 } from "lucide-react";
 
@@ -74,32 +71,12 @@ const WorkspaceNavbar = async ({
     {
       title: "Library",
       url: "/workspace/library",
-      icon: <Compass className="size-4 shrink-0" />,
+      icon: <Library className="size-4 shrink-0" />,
     },
     {
-      title: "Study",
-      url: "#",
-      icon: <Book className="size-4 shrink-0" />,
-      items: [
-        {
-          title: "Adaptive Quiz",
-          description: "Reviewing based on past performance with AI",
-          icon: <Bot className="size-4 shrink-0" />,
-          url: "/workspace/study/smart",
-        },
-        {
-          title: "Classic Flip",
-          description: "Manually flip cards and review at your pace",
-          icon: <Repeat className="size-4 shrink-0" />,
-          url: "/workspace/study/flip",
-        },
-        {
-          title: "Challenge Mode",
-          description: "Test your knowledge with a quiz",
-          icon: <FileText className="size-4 shrink-0" />,
-          url: "/workspace/study/quiz",
-        },
-      ],
+      title: "Explore",
+      url: "/workspace/explore",
+      icon: <Compass className="size-4 shrink-0" />,
     },
   ],
 }: Navbar1Props) => {
