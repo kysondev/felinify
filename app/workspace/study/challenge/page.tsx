@@ -288,11 +288,18 @@ export default function ChallengePageContent() {
   }, [deckId, router]);
 
   useEffect(() => {
-    if (deck && !isStudying && !isLoading) {
+    if (deck && !isStudying && !isLoading && !showFinalScore) {
       startStudySession();
       selectCardsForRound();
     }
-  }, [deck, isStudying, isLoading, startStudySession, selectCardsForRound]);
+  }, [
+    deck,
+    isStudying,
+    isLoading,
+    startStudySession,
+    selectCardsForRound,
+    showFinalScore,
+  ]);
 
   useEffect(() => {
     if (

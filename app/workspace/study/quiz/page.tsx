@@ -416,7 +416,7 @@ export default function QuizPage() {
               >
                 {currentQuestionIndex < quizQuestions.length - 1
                   ? "Next Question"
-                  : "Finish Quiz"}
+                  : "View Results"}
               </Button>
             </div>
           )}
