@@ -22,6 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "components/ui/Sheet";
+import Image from "next/image";
 
 interface MenuItem {
   title: string;
@@ -59,57 +60,12 @@ const LandingNavbar = ({
   menu = [
     { title: "Home", url: "/" },
     {
-      title: "Product",
-      url: "#",
-      items: [
-        {
-          title: "AI Flashcards",
-          description: "Generate smart flashcards instantly from your notes.",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "/features/ai-flashcards",
-        },
-        {
-          title: "Spaced Repetition",
-          description: "Boost memory with science-backed study intervals.",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "/features/spaced-repetition",
-        },
-        {
-          title: "Smart Decks",
-          description:
-            "Organize your study material with smart categorization.",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "/features/decks",
-        },
-      ],
-    },
-    {
-      title: "Resources",
-      url: "#",
-      items: [
-        {
-          title: "Help Center",
-          description: "Find quick answers and helpful guides.",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "/help",
-        },
-        {
-          title: "Community",
-          description: "Join discussions and share strategies.",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "/community",
-        },
-        {
-          title: "Contact",
-          description: "Need help? We’re just a message away.",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "/contact",
-        },
-      ],
+      title: "Features",
+      url: "#features",
     },
     {
       title: "Pricing",
-      url: "/pricing",
+      url: "#pricing",
     },
   ],
   auth = {
@@ -125,6 +81,7 @@ const LandingNavbar = ({
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
+              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -152,6 +109,7 @@ const LandingNavbar = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
+              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -166,6 +124,12 @@ const LandingNavbar = ({
                 <SheetHeader>
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2">
+                      <Image
+                        src="/lumix.png"
+                        alt="Lumix"
+                        width={25}
+                        height={25}
+                      />
                       <span className="text-lg font-semibold tracking-tighter">
                         {logo.title}
                       </span>

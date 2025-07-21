@@ -62,7 +62,7 @@ const Feature = ({
   ],
 }: FeatureProps) => {
   return (
-    <section className="py-4">
+    <section className="py-4" id="features">
       <div className="container mx-auto max-w-7xl">
         <p className="mb-2 text-xs font-medium text-muted-foreground">
           {subheading}

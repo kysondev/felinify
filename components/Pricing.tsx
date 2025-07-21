@@ -16,7 +16,7 @@ const Pricing = () => {
   const eliteOriginalYearly = 90;
 
   return (
-    <section className="py-4 mt-12">
+    <section className="py-4 mt-12" id="pricing">
       <div className="">
         <div className="mx-auto flex max-w-7xl flex-col gap-6">
           <h2 className="text-pretty text-4xl font-semibold lg:text-4xl">
@@ -76,7 +76,7 @@ const Pricing = () => {
                 <ul className="text-muted-foreground space-y-4">
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Up to 15 flashcards</span>
+                    <span>Up to 15 flashcard Decks</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
@@ -117,19 +117,17 @@ const Pricing = () => {
                 <ul className="text-muted-foreground space-y-4">
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
+                    <span>Everything in free plan, plus:</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="size-4" />
                     <span>Unlimited flashcards & decks</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Advanced AI generation & suggestions</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Smart spaced repetition review</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Dark mode & custom themes</span>
+                    <span>
+                      Advanced AI generation with more powerful AI models
+                    </span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>

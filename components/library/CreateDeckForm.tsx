@@ -154,7 +154,9 @@ export function CreateDeckForm({ user }: { user: User }) {
         variant="destructive"
         className={`mb-2 ${user.emailVerified ? "hidden" : ""}`}
       >
-        <AlertTitle>Email verification is required to create a deck</AlertTitle>
+        <AlertTitle>
+          Warning: Email verification is required to create a deck
+        </AlertTitle>
       </Alert>
       <TabsList className="grid w-full grid-cols-2 mb-4">
         <TabsTrigger value="manual" className="flex items-center gap-2">

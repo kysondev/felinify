@@ -43,6 +43,7 @@ import { getUser } from "services/user.service";
 import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "actions/auth.action";
+import Image from "next/image";
 
 interface MenuItem {
   title: string;
@@ -86,7 +87,8 @@ const WorkspaceNavbar = async ({
       <div className="w-full">
         <nav className="hidden justify-between w-full lg:flex">
           <div className="flex items-center gap-6">
-            <Link href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-1">
+              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -110,10 +112,12 @@ const WorkspaceNavbar = async ({
             <DropdownMenuContent className="w-56" align="start">
               <DropdownMenuItem>
                 <div className="flex items-center gap-2">
-                  <img
+                  <Image
                     src={user?.image || "/default-avatar.png"}
                     alt="User Avatar"
                     className="w-8 h-8 rounded-full"
+                    width={32}
+                    height={32}
                   />
                   <div className="flex flex-col">
                     <span className="font-semibold">@{user?.name}</span>
@@ -152,7 +156,8 @@ const WorkspaceNavbar = async ({
 
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            <Link href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-1">
+              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -165,7 +170,13 @@ const WorkspaceNavbar = async ({
                 <SheetContent className="overflow-y-auto">
                   <SheetHeader>
                     <SheetTitle>
-                      <Link href={logo.url} className="flex items-center gap-2">
+                      <Link href={logo.url} className="flex items-center gap-1">
+                        <Image
+                          src="/lumix.png"
+                          alt="Lumix"
+                          width={25}
+                          height={25}
+                        />
                         <span className="text-lg font-semibold tracking-tighter">
                           {logo.title}
                         </span>
@@ -190,18 +201,22 @@ const WorkspaceNavbar = async ({
               </Sheet>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <img
+                  <Image
                     src={user?.image || "/default-avatar.png"}
                     alt="User Avatar"
+                    width={32}
+                    height={32}
                     className="w-8 h-8 rounded-full cursor-pointer"
                   />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="start">
                   <DropdownMenuItem>
                     <div className="flex items-center gap-2">
-                      <img
+                      <Image
                         src={user?.image || "/default-avatar.png"}
                         alt="User Avatar"
+                        width={32}
+                        height={32}
                         className="w-8 h-8 rounded-full"
                       />
                       <div className="flex flex-col">
