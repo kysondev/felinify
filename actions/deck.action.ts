@@ -23,9 +23,12 @@ export const createDeckAction = async (
   description?: string
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await createDeck({
       name: name as string,
@@ -49,9 +52,12 @@ export const createDeckAction = async (
 
 export const updateDeckAction = async (deckData: UpdateDeck) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await updateDeck(deckData);
     if (result.success) {
@@ -71,9 +77,12 @@ export const updateDeckAction = async (deckData: UpdateDeck) => {
 
 export const deleteDeckAction = async (deckId: string, userId: string) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await deleteDeck(deckId, userId);
     if (result.success) {
@@ -98,9 +107,12 @@ export const addFlashcardAction = async (
   answer: string
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await addFlashcard(userId, {
       question,
@@ -128,9 +140,12 @@ export const updateFlashcardAction = async (
   flashcardData: { question: string; answer: string }
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await updateFlashcard(flashcardId, flashcardData);
 
@@ -154,9 +169,12 @@ export const deleteFlashcardAction = async (
   userId: string
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await deleteFlashcard(flashcardId, userId);
     if (result.success) {
@@ -175,9 +193,12 @@ export const deleteFlashcardAction = async (
 
 export const saveStudyProgressAction = async (data: UpdateProgress) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
+    }
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
     const result = await saveStudyProgressToDeck(data as UpdateProgress);
     if (result.success) {
@@ -197,11 +218,13 @@ export const saveStudyProgressAction = async (data: UpdateProgress) => {
 
 export const saveStudySessionAction = async (data: NewStudySession) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
     }
-
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
+    }
     const result = await saveStudySession(data);
 
     if (result.success) {
@@ -243,19 +266,21 @@ export const updateFlashcardPerformanceAction = async (
   }[]
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return { success: false, message: "User not found" };
     }
-    
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
+    }
     const result = await updateFlashcardPerformance(userId, flashcardResults);
     return result;
   } catch (error) {
     console.error("Error updating flashcard performance:", error);
-    return { 
-      success: false, 
-      message: "Error updating flashcard performance", 
-      error 
+    return {
+      success: false,
+      message: "Error updating flashcard performance",
+      error,
     };
   }
 };

@@ -3,7 +3,6 @@
 import { Button } from "components/ui/Button";
 import { DialogFooter, useDialog } from "components/ui/Dialog";
 import { Input } from "components/ui/Input";
-import { Label } from "components/ui/Label";
 import { Textarea } from "components/ui/Textarea";
 import { Sparkles, Brain, Upload } from "lucide-react";
 import { useTransition } from "react";
@@ -22,12 +21,22 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { CreateDeckSchema, createDeckSchema, createDeckWithAISchema, CreateDeckWithAISchema } from "lib/validations/deck.schema";
-import { generateFlashcardsAction, addGeneratedFlashcardsToDeckAction } from "actions/ai-study.actions";
+import {
+  CreateDeckSchema,
+  createDeckSchema,
+  createDeckWithAISchema,
+  CreateDeckWithAISchema,
+} from "lib/validations/deck.schema";
+import {
+  generateFlashcardsAction,
+  addGeneratedFlashcardsToDeckAction,
+} from "actions/ai-study.actions";
 import { useState } from "react";
 import { Progress } from "components/ui/Progress";
+import { Alert, AlertDescription, AlertTitle } from "components/ui/Alert";
+import { User } from "db/types/models.types";
 
-export function CreateDeckForm({ userId }: { userId: string }) {
+export function CreateDeckForm({ user }: { user: User }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -52,7 +61,11 @@ export function CreateDeckForm({ userId }: { userId: string }) {
 
   const onSubmit = async (data: CreateDeckSchema) => {
     startTransition(async () => {
-      const result = await createDeckAction(userId, data.name, data.description);
+      const result = await createDeckAction(
+        user.id,
+        data.name,
+        data.description
+      );
       if (result.success) {
         setOpen(false);
         router.refresh();
@@ -70,47 +83,56 @@ export function CreateDeckForm({ userId }: { userId: string }) {
 
     try {
       setProgress(30);
-      const deckResult = await createDeckAction(userId, data.name, "AI generated deck");
-      
+      const deckResult = await createDeckAction(
+        user.id,
+        data.name,
+        "AI generated deck"
+      );
+
       if (!deckResult.success) {
         toast.error(deckResult.message || "Failed to create deck");
         setIsGenerating(false);
         return;
       }
-      
+
       const deckId = deckResult.data?.id;
       if (!deckId) {
         toast.error("Failed to get deck ID");
         setIsGenerating(false);
         return;
       }
-      
+
       setProgress(50);
-      
-      const flashcardsResult = await generateFlashcardsAction(data.name, data.notes);
+
+      const flashcardsResult = await generateFlashcardsAction(
+        data.name,
+        data.notes
+      );
       setProgress(70);
-      
+
       if (!flashcardsResult.success) {
-        toast.error(flashcardsResult.message || "Failed to generate flashcards");
+        toast.error(
+          flashcardsResult.message || "Failed to generate flashcards"
+        );
         setIsGenerating(false);
         return;
       }
-      
+
       setProgress(85);
       const addResult = await addGeneratedFlashcardsToDeckAction(
-        userId,
+        user.id,
         deckId,
         flashcardsResult.flashcards
       );
-      
+
       setProgress(100);
-      
+
       if (!addResult.success) {
         toast.error(addResult.message || "Failed to add flashcards to deck");
         setIsGenerating(false);
         return;
       }
-      
+
       setTimeout(() => {
         setIsGenerating(false);
         setOpen(false);
@@ -119,7 +141,6 @@ export function CreateDeckForm({ userId }: { userId: string }) {
         aiForm.reset();
         router.push(`/workspace/deck/${deckId}`);
       }, 500);
-      
     } catch (error) {
       console.error("Error in AI flashcard generation:", error);
       toast.error("Something went wrong during flashcard generation");
@@ -129,6 +150,12 @@ export function CreateDeckForm({ userId }: { userId: string }) {
 
   return (
     <Tabs defaultValue="manual" className="w-full">
+      <Alert
+        variant="destructive"
+        className={`mb-2 ${user.emailVerified ? "hidden" : ""}`}
+      >
+        <AlertTitle>Email verification is required to create a deck</AlertTitle>
+      </Alert>
       <TabsList className="grid w-full grid-cols-2 mb-4">
         <TabsTrigger value="manual" className="flex items-center gap-2">
           Manual Creation
@@ -145,14 +172,12 @@ export function CreateDeckForm({ userId }: { userId: string }) {
             <FormField
               control={form.control}
               name="name"
+              disabled={!user.emailVerified}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Deck Name</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Enter deck name" 
-                      {...field} 
-                    />
+                    <Input placeholder="Enter deck name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,6 +186,7 @@ export function CreateDeckForm({ userId }: { userId: string }) {
             <FormField
               control={form.control}
               name="description"
+              disabled={!user.emailVerified}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description (Optional)</FormLabel>
@@ -176,7 +202,7 @@ export function CreateDeckForm({ userId }: { userId: string }) {
               )}
             />
             <DialogFooter className="pt-4">
-              <Button type="submit" disabled={isPending}>
+              <Button type="submit" disabled={isPending || !user.emailVerified}>
                 {isPending ? <Loading isWhite /> : "Create Deck"}
               </Button>
             </DialogFooter>
@@ -209,10 +235,14 @@ export function CreateDeckForm({ userId }: { userId: string }) {
           )}
 
           <Form {...aiForm}>
-            <form onSubmit={aiForm.handleSubmit(onGenerateFlashcards)} className="space-y-4">
+            <form
+              onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+              className="space-y-4"
+            >
               <FormField
                 control={aiForm.control}
                 name="name"
+                disabled={!user.emailVerified}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Deck Name</FormLabel>
@@ -232,6 +262,7 @@ export function CreateDeckForm({ userId }: { userId: string }) {
               <FormField
                 control={aiForm.control}
                 name="notes"
+                disabled={!user.emailVerified}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Study Notes</FormLabel>
@@ -248,14 +279,15 @@ export function CreateDeckForm({ userId }: { userId: string }) {
                 )}
               />
               <span className="text-xs text-muted-foreground">
-                Note: AI can make mistakes, so please check the flashcards before using them.
+                Note: AI can make mistakes, so please check the flashcards
+                before using them.
               </span>
               <div className="flex items-center justify-between pt-2">
                 <Button
                   variant="outline"
                   type="button"
                   className="flex items-center gap-2 sm:hidden"
-                  disabled={isGenerating}
+                  disabled={isGenerating || !user.emailVerified}
                 >
                   <Upload className="h-4 w-4" />
                 </Button>
@@ -263,7 +295,7 @@ export function CreateDeckForm({ userId }: { userId: string }) {
                   variant="outline"
                   type="button"
                   className="hidden items-center gap-2 sm:flex"
-                  disabled={isGenerating}
+                  disabled={isGenerating || !user.emailVerified}
                 >
                   <Upload className="h-4 w-4" />
                   Upload Document
@@ -272,17 +304,25 @@ export function CreateDeckForm({ userId }: { userId: string }) {
                 <Button
                   type="submit"
                   className="flex items-center gap-2 sm:hidden"
-                  disabled={isGenerating}
+                  disabled={isGenerating || !user.emailVerified}
                 >
-                  {isGenerating ? <Loading isWhite /> : <Sparkles className="h-4 w-4" />}
+                  {isGenerating ? (
+                    <Loading isWhite />
+                  ) : (
+                    <Sparkles className="h-4 w-4" />
+                  )}
                   {isGenerating ? "" : "Generate"}
                 </Button>
                 <Button
                   type="submit"
                   className="hidden items-center gap-2 sm:flex"
-                  disabled={isGenerating}
+                  disabled={isGenerating || !user.emailVerified}
                 >
-                  {isGenerating ? <Loading isWhite /> : <Sparkles className="h-4 w-4" />}
+                  {isGenerating ? (
+                    <Loading isWhite />
+                  ) : (
+                    <Sparkles className="h-4 w-4" />
+                  )}
                   {isGenerating ? "Generating..." : "Generate Flashcards"}
                 </Button>
               </div>

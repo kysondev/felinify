@@ -20,12 +20,16 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
     if (!result.success) {
       return { success: false, message: result.error.issues[0].message };
     }
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return {
         success: false,
         message: "Unauthorized",
       };
+    }
+
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
 
     const generatedFlashcards = await generateFlashcards(notes);
@@ -55,12 +59,16 @@ export const addGeneratedFlashcardsToDeckAction = async (
   flashcards: { question: string; answer: string }[]
 ) => {
   try {
-    const { success } = await getUser();
-    if (!success) {
+    const { data: user } = await getUser();
+    if (!user) {
       return {
         success: false,
         message: "Unauthorized",
       };
+    }
+
+    if (user.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
 
     const results = [];
@@ -115,6 +123,10 @@ export const generateAdaptiveQuizAction = async (
         success: false,
         message: "Unauthorized",
       };
+    }
+
+    if (userResult.data.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
 
     const userId = userResult.data.id;
@@ -194,6 +206,9 @@ export const createQuizAccessTokenAction = async (
         message: "Unauthorized",
       };
     }
+    if (userResult.data.emailVerified) {
+      return { success: false, message: "Email not verified" };
+    }
 
     const userId = userResult.data.id;
 
@@ -265,6 +280,10 @@ export const validateQuizAccessTokenAction = async (
         success: false,
         message: "Unauthorized",
       };
+    }
+
+    if (userResult.data.emailVerified) {
+      return { success: false, message: "Email not verified" };
     }
 
     const userId = userResult.data.id;

@@ -6,7 +6,7 @@ import { DeckStats } from "components/library/DeckStats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { Deck } from "db/types/models.types";
 import Link from "next/link";
-import { ChevronRight, Compass, Home } from "lucide-react";
+import { ChevronRight, Home, Library } from "lucide-react";
 import { Button } from "components/ui/Button";
 
 export default async function DeckEditPage({
@@ -44,7 +44,7 @@ export default async function DeckEditPage({
           href="/workspace/library"
           className="flex items-center hover:text-foreground transition-colors"
         >
-          <Compass className="h-4 w-4 mr-1" />
+          <Library className="h-4 w-4 mr-1" />
           <span>Library</span>
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />

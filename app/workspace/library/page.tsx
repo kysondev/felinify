@@ -14,6 +14,7 @@ import {
 } from "components/ui/Dialog";
 import { CreateDeckForm } from "components/library/CreateDeckForm";
 import { DeckCard } from "components/library/DeckCard";
+import { User } from "db/types/models.types";
 
 export default async function LibraryPage() {
   const { data: user } = await getUser();
@@ -58,7 +59,7 @@ export default async function LibraryPage() {
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm userId={user?.id as string} />
+                    <CreateDeckForm user={user as User} />
                   </DialogContent>
                 </Dialog>
               </div>
@@ -83,7 +84,7 @@ export default async function LibraryPage() {
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm userId={user?.id as string} />
+                    <CreateDeckForm user={user as User} />
                   </DialogContent>
                 </Dialog>
               </div>
