@@ -23,9 +23,9 @@ import { Progress } from "components/ui/Progress";
 import { Loader2 } from "lucide-react";
 
 interface QuizQuestion {
-  q: string;
-  c: string;
-  o: string[];
+  question: string;
+  answer: string;
+  options: string[];
   id: string;
 }
 
@@ -187,7 +187,8 @@ export default function QuizPage() {
     (optionIndex: number) => {
       if (showAnswer) return;
 
-      const isCorrect = currentQuestion?.o[optionIndex] === currentQuestion?.c;
+      const isCorrect =
+        currentQuestion?.options[optionIndex] === currentQuestion?.answer;
 
       if (isCorrect) {
         setCorrectAnswers((prev) => prev + 1);
@@ -376,8 +377,8 @@ export default function QuizPage() {
           <QuestionCard
             currentCard={{
               id: currentQuestion?.id || "",
-              question: currentQuestion?.q || "",
-              answer: currentQuestion?.c || "",
+              question: currentQuestion?.question || "",
+              answer: currentQuestion?.answer || "",
             }}
             currentCardIndex={currentQuestionIndex}
             totalCards={quizQuestions.length}
@@ -385,7 +386,8 @@ export default function QuizPage() {
             answeredCards={{
               [currentQuestion?.id || ""]:
                 showAnswer &&
-                currentQuestion?.o[selectedOption || 0] === currentQuestion?.c,
+                currentQuestion?.options[selectedOption || 0] ===
+                  currentQuestion?.answer,
             }}
             questionTimeLeft={0}
             isTimed={false}
@@ -396,9 +398,9 @@ export default function QuizPage() {
           {!showAnswer ? (
             <MultipleChoiceOptions
               options={
-                currentQuestion?.o.map((option) => ({
+                currentQuestion?.options.map((option) => ({
                   text: option,
-                  isCorrect: option === currentQuestion.c,
+                  isCorrect: option === currentQuestion.answer,
                 })) || []
               }
               handleAnswer={handleAnswer}

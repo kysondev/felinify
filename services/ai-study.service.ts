@@ -12,8 +12,8 @@ Each flashcard should consist of a concise **question** (ideally a single vocabu
 Respond **only** in **valid JSON format** using this structure:
 
 [
-  { "question": "string", "answer": "string" },
-  { "question": "string", "answer": "string" }
+  { "q": "string", "a": "string" },
+  { "q": "string", "a": "string" }
 ]
 
 **Rules:**
@@ -26,10 +26,18 @@ Respond **only** in **valid JSON format** using this structure:
       model: openai("gpt-4o-mini"),
       system,
       prompt: notes,
+      temperature: 0.7,
     });
+
     const cleaned = text.trim().replace(/^```json|```$/g, "");
     const parsed = JSON.parse(cleaned);
-    return { success: true, flashcards: parsed };
+
+    const flashcards = parsed.map((card: { q: string; a: string }) => ({
+      question: card.q,
+      answer: card.a,
+    }));
+
+    return { success: true, flashcards };
   } catch (error) {
     console.error("Error generating flashcards:", error);
     return {
@@ -103,8 +111,16 @@ Rules:
     });
 
     const questions = await Promise.all(questionPromises);
+    const parsedQuestions = questions.map(
+      (question: { id: string; q: string; c: string; o: string[] }) => ({
+        id: question.id,
+        question: question.q,
+        answer: question.c,
+        options: question.o,
+      })
+    );
 
-    return { success: true, questions };
+    return { success: true, questions: parsedQuestions };
   } catch (error) {
     console.error("Error generating adaptive quiz:", error);
     return {
