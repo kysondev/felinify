@@ -61,11 +61,9 @@ export const generateAdaptiveQuiz = async (
     const sortedFlashcards = [...validatedFlashcards].sort((a, b) => {
       const aRatio = a.numIncorrect / Math.max(a.numCorrect, 1);
       const bRatio = b.numIncorrect / Math.max(b.numCorrect, 1);
-
       if (aRatio === 0 && bRatio === 0) {
         return a.numCorrect + a.numIncorrect - (b.numCorrect + b.numIncorrect);
       }
-
       return bRatio - aRatio;
     });
 
@@ -76,75 +74,37 @@ export const generateAdaptiveQuiz = async (
       )
     ).slice(0, numQuestions);
 
-    const flashcardsInput = targetFlashcards
-      .map((f) => `ID: ${f.id} | Q: ${f.question} | A: ${f.answer}`)
-      .join("\n\n");
-
-    const system = `
-You are an AI quiz generator that creates multiple-choice questions based on flashcards.
-For each flashcard, create a question that tests the user's understanding of the concept.
-The question should not be identical to the flashcard question but should test the same knowledge.
-
-Respond ONLY in valid JSON format using this structure:
-[
-  {
-    "question": "Your question here",
-    "correctAnswer": "The correct answer",
-    "options": ["option1", "option2", "option3", "option4"],
-    "originalFlashcardId": "the ID from the input flashcard"
-  }
-]
-
+    const questionPromises = targetFlashcards.map(async (flashcard) => {
+      const system = `You are an AI quiz generator. Create ONE multiple-choice question based on this flashcard.
+Respond ONLY in valid JSON format:
+{
+  "q": "Your question here",
+  "c": "The correct answer", 
+  "o": ["o1", "o2", "o3", "o4"],
+  "id": "${flashcard.id}"
+}
 Rules:
-- Generate exactly ${numQuestions} questions (one per flashcard)
-- Each question must have exactly 4 options
-- The correctAnswer must be one of the options
-- The options should be plausible but only one should be correct
-- The originalFlashcardId MUST be copied exactly from the input (format: "ID: xyz")
-- The position of the correct answer should be random
-- Questions should be clear and concise (1-2 sentences)
-- No extra text or explanations outside the JSON structure
-- Flashcard answer cannot contain word from flashcard question.`;
+- Create a question that tests understanding but isn't identical to the flashcard question
+- Include exactly 4 plausible options with only one correct
+- Make the question clear and concise
+- Position the correct answer randomly`;
 
-    const { text } = await generateText({
-      model: openai("gpt-4o-mini"),
-      system,
-      temperature: 0.5,
-      prompt: `Generate ${numQuestions} quiz questions based on these flashcards. Create one question per flashcard and ensure you copy the exact ID for each flashcard into the originalFlashcardId field.\n\n${flashcardsInput}`,
+      const { text } = await generateText({
+        model: openai("gpt-4o-mini"),
+        system,
+        temperature: 0.7,
+        prompt: `Flashcard: Q: ${flashcard.question} | A: ${flashcard.answer}`,
+      });
+
+      const cleaned = text.trim().replace(/^```json|```$/g, "");
+      const question = JSON.parse(cleaned);
+      question.o = shuffle([...question.o]);
+      return question;
     });
 
-    try {
-      const cleaned = text.trim().replace(/^```json|```$/g, "");
-      const parsed = JSON.parse(cleaned);
+    const questions = await Promise.all(questionPromises);
 
-      const questions = parsed.map(
-        (question: {
-          question: string;
-          correctAnswer: string;
-          options: string[];
-          originalFlashcardId: string;
-        }) => {
-          const idMatch = question.originalFlashcardId.match(/ID: (.*)/);
-          if (idMatch && idMatch[1]) {
-            question.originalFlashcardId = idMatch[1];
-          }
-
-          question.options = shuffle([...question.options]);
-
-          return question;
-        }
-      );
-
-      console.log(questions);
-      return { success: true, questions };
-    } catch (error) {
-      console.error("Error parsing quiz questions:", error);
-      return {
-        success: false,
-        message: "Error parsing generated quiz questions",
-        error,
-      };
-    }
+    return { success: true, questions };
   } catch (error) {
     console.error("Error generating adaptive quiz:", error);
     return {

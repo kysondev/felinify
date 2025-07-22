@@ -23,10 +23,10 @@ import { Progress } from "components/ui/Progress";
 import { Loader2 } from "lucide-react";
 
 interface QuizQuestion {
-  question: string;
-  correctAnswer: string;
-  options: string[];
-  originalFlashcardId: string;
+  q: string;
+  c: string;
+  o: string[];
+  id: string;
 }
 
 export default function QuizPage() {
@@ -167,7 +167,7 @@ export default function QuizPage() {
         setLoadingStage("complete");
 
         setTimeout(() => {
-          setQuizQuestions(quizResult.questions);
+          setQuizQuestions(quizResult.questions || []);
           setIsLoading(false);
           startStudySession();
         }, 500);
@@ -187,9 +187,7 @@ export default function QuizPage() {
     (optionIndex: number) => {
       if (showAnswer) return;
 
-      const isCorrect =
-        currentQuestion?.options[optionIndex] ===
-        currentQuestion?.correctAnswer;
+      const isCorrect = currentQuestion?.o[optionIndex] === currentQuestion?.c;
 
       if (isCorrect) {
         setCorrectAnswers((prev) => prev + 1);
@@ -199,7 +197,7 @@ export default function QuizPage() {
 
       setAnsweredQuestions((prev) => ({
         ...prev,
-        [currentQuestion?.originalFlashcardId || ""]: isCorrect,
+        [currentQuestion?.id || ""]: isCorrect,
       }));
 
       setShowAnswer(true);
@@ -377,18 +375,17 @@ export default function QuizPage() {
         <div className="w-full mx-auto">
           <QuestionCard
             currentCard={{
-              id: currentQuestion?.originalFlashcardId || "",
-              question: currentQuestion?.question || "",
-              answer: currentQuestion?.correctAnswer || "",
+              id: currentQuestion?.id || "",
+              question: currentQuestion?.q || "",
+              answer: currentQuestion?.c || "",
             }}
             currentCardIndex={currentQuestionIndex}
             totalCards={quizQuestions.length}
             showAnswer={showAnswer}
             answeredCards={{
-              [currentQuestion?.originalFlashcardId || ""]:
+              [currentQuestion?.id || ""]:
                 showAnswer &&
-                currentQuestion?.options[selectedOption || 0] ===
-                  currentQuestion?.correctAnswer,
+                currentQuestion?.o[selectedOption || 0] === currentQuestion?.c,
             }}
             questionTimeLeft={0}
             isTimed={false}
@@ -399,9 +396,9 @@ export default function QuizPage() {
           {!showAnswer ? (
             <MultipleChoiceOptions
               options={
-                currentQuestion?.options.map((option) => ({
+                currentQuestion?.o.map((option) => ({
                   text: option,
-                  isCorrect: option === currentQuestion.correctAnswer,
+                  isCorrect: option === currentQuestion.c,
                 })) || []
               }
               handleAnswer={handleAnswer}
