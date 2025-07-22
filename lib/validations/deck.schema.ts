@@ -38,7 +38,7 @@ export const createDeckWithAISchema = z.object({
   notes: z
     .string()
     .min(100, { message: "Notes must be at least 100 characters" })
-    .max(5000, { message: "Notes must be less than 5000 characters" }),
+    .max(8000, { message: "Notes must be less than 8000 characters" }),
 });
 
 export const updateDeckSchema = z.object({
