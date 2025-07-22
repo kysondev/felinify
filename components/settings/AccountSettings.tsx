@@ -17,7 +17,6 @@ import {
   Lock,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { upload } from "services/cloudinary.service";
 import { authClient } from "lib/auth-client";
 import { Switch } from "components/ui/Switch";
 import {
@@ -46,6 +45,7 @@ import {
   FormMessage,
 } from "components/ui/Form";
 import { useRouter } from "next/navigation";
+import { upload } from "actions/upload.action";
 
 export function AccountSettings({ user }: { user: User }) {
   const router = useRouter();
@@ -109,13 +109,7 @@ export function AccountSettings({ user }: { user: User }) {
       }
 
       if (selectedFile) {
-        const response = await upload(selectedFile);
-        if (response.success && response.data) {
-          await authClient.updateUser({ image: response.data.secure_url });
-        } else {
-          toast.error(response.message || "Failed to upload image");
-          return;
-        }
+        await upload(selectedFile);
       }
 
       if (hasChanges) {
