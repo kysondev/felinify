@@ -9,10 +9,10 @@
   <p align="center">
     Create, review, and manage flashcards with AI-assisted tools in a minimal, distraction-free interface.
     <br />
-    <a href="https://lumix.kyson.dev/"><strong>Learn More »</strong></a>
+    <a href="https://lumixapp.xyz/"><strong>Learn More »</strong></a>
     <br />
     <br />
-    <a href="https://lumix.kyson.dev/">View Demo</a>
+    <a href="https://lumixapp.xyz/">View Demo</a>
     ·
     <a href="https://github.com/kysondev/lumix/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
