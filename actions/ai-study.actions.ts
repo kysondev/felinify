@@ -28,7 +28,7 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
       };
     }
 
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
 
@@ -67,7 +67,7 @@ export const addGeneratedFlashcardsToDeckAction = async (
       };
     }
 
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
 
@@ -125,7 +125,7 @@ export const generateAdaptiveQuizAction = async (
       };
     }
 
-    if (userResult.data.emailVerified) {
+    if (!userResult.data.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
 
@@ -206,7 +206,7 @@ export const createQuizAccessTokenAction = async (
         message: "Unauthorized",
       };
     }
-    if (userResult.data.emailVerified) {
+    if (!userResult.data.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
 
@@ -282,7 +282,7 @@ export const validateQuizAccessTokenAction = async (
       };
     }
 
-    if (userResult.data.emailVerified) {
+    if (!userResult.data.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
 

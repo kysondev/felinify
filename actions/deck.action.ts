@@ -27,7 +27,7 @@ export const createDeckAction = async (
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await createDeck({
@@ -56,7 +56,7 @@ export const updateDeckAction = async (deckData: UpdateDeck) => {
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await updateDeck(deckData);
@@ -81,7 +81,7 @@ export const deleteDeckAction = async (deckId: string, userId: string) => {
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await deleteDeck(deckId, userId);
@@ -111,7 +111,7 @@ export const addFlashcardAction = async (
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await addFlashcard(userId, {
@@ -144,7 +144,7 @@ export const updateFlashcardAction = async (
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await updateFlashcard(flashcardId, flashcardData);
@@ -173,7 +173,7 @@ export const deleteFlashcardAction = async (
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await deleteFlashcard(flashcardId, userId);
@@ -197,7 +197,7 @@ export const saveStudyProgressAction = async (data: UpdateProgress) => {
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await saveStudyProgressToDeck(data as UpdateProgress);
@@ -222,7 +222,7 @@ export const saveStudySessionAction = async (data: NewStudySession) => {
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await saveStudySession(data);
@@ -270,7 +270,7 @@ export const updateFlashcardPerformanceAction = async (
     if (!user) {
       return { success: false, message: "User not found" };
     }
-    if (user.emailVerified) {
+    if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
     const result = await updateFlashcardPerformance(userId, flashcardResults);
