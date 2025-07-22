@@ -1,29 +1,99 @@
-# Lumix
+<br />
+<div align="center">
+  <a href="https://github.com/kysondev/lumix">
+    <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753120716/image_1_fdwonj.png" alt="Logo" width="80" height="80">
+  </a>
 
-An AI-enhanced flashcard platform that helps you create, organize, and review flashcards efficiently using spaced repetition and advanced AI generation tools.
+<h3 align="center">Lumix</h3>
 
-## Tech Stack
+  <p align="center">
+    Create, review, and manage flashcards with AI-assisted tools in a minimal, distraction-free interface.
+    <br />
+    <a href="https://lumix.kyson.dev/"><strong>Learn More »</strong></a>
+    <br />
+    <br />
+    <a href="https://lumix.kyson.dev/">View Demo</a>
+    ·
+    <a href="https://github.com/kysondev/lumix/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    ·
+    <a href="https://github.com/kysondev/lumix/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
 
-- **Next.js** – App Router-based React framework for building modern web applications
-- **TypeScript** – Static typing for safer and more scalable development
-- **PostgreSQL (Primary DB)** – Scalable relational database
-- **Redis (Secondary DB)** - Fast in memory No-SQL database for storing sessions and caching
-- **Prisma** - ORM for building and migrating database schema
-- **Kysely** - Type-safe and fast SQL query builder for typescript
-- **Better Auth** – Secure, flexible authentication and session management
-- **ShadCN/UI** – Accessible, modern UI components
-- **Tailwind CSS** – Utility-first CSS framework for fast, responsive design
-- **Resend** – Email service for verification, welcome emails, and password resets
-- **Zod** – Type-safe schema validation for forms and backend logic
+## About The Project
 
----
+[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753120531/Screenshot_2025-07-21_135431_vjudlb.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753119685/Screenshot_2025-07-21_132627_t79xih.png)
 
-## Features
+**Lumix** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Lumix** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, Lumix helps students study smarter, not harder.
 
-- Secure authentication via **Better Auth**
-- AI-assisted flashcard generation
-- Deck and card organization via **PostgreSQL + Redis**
-- Spaced repetition review system
-- Fully responsive and theme-aware UI (**ShadCN**)
-- Email verification and reset support via **Resend**
-- Type-safe backend + form validation using **Zod**
+### Tech Stack
+
+- NextJS
+- TypeScript
+- PostgreSQL (Primary Database)
+- Redis (Secondary Database)
+- Prisma (For building db schema)
+- Kysely (For building db query)
+- TailwindCSS
+- ShadCN
+- Better-Auth
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/kysondev/lumix.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Copy the environment example file and update with your API keys
+   ```sh
+   cp .env.example .env
+   ```
+4. Enter API Keys in `.env`
+   ```js
+   API_KEYs = "ENTER YOUR API";
+   ```
+5. Change git remote url to avoid accidental pushes to base project
+   ```sh
+   git remote set-url origin kysondev/lumix
+   git remote -v # confirm the changes
+   ```
+
+## Roadmap
+
+- [x] Landing Page
+- [x] Authentication & Settings
+- [x] Manual Flashcard & Deck creation
+- [x] Library & Edit Deck Page
+- [x] AI Flashcard Generation
+- [x] Classic Flip Study Mode
+- [x] Challenge Mode
+- [x] AI Adaptive Quiz Mode
+- [ ] Stripe Payment & Paid Plans
+- [ ] Explore Page & Flashcard Sharing
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Contact
+
+Kyson W. - email@kyson.dev
+
+Project Link: [https://github.com/kysondev/lumix](https://github.com/kysondev/lumix)
