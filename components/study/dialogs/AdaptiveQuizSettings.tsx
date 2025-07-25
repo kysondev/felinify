@@ -13,6 +13,7 @@ import { createQuizAccessTokenAction } from "actions/ai-study.actions";
 import { useRouter } from "next/navigation";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "components/ui/Alert";
+import { User } from "db/types/models.types";
 
 interface AdaptiveQuizSettingsProps {
   showQuizSettings: boolean;
@@ -20,6 +21,7 @@ interface AdaptiveQuizSettingsProps {
   numOfQuestions: number;
   setNumOfQuestions: (num: number) => void;
   deckId: string;
+  user: User;
 }
 
 const AdaptiveQuizSettings = ({
@@ -27,7 +29,8 @@ const AdaptiveQuizSettings = ({
   setShowQuizSettings,
   numOfQuestions,
   setNumOfQuestions,
-  deckId
+  deckId,
+  user
 }: AdaptiveQuizSettingsProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +38,11 @@ const AdaptiveQuizSettings = ({
 
   const handleStartQuiz = async () => {
     try {
+      if (!user.credits || user.credits <= 0) {
+        setError("You don't have enough credits to generate flashcards");
+        setIsGenerating(false);
+        return;
+      }
       setIsGenerating(true);
       setError(null);
       const result = await createQuizAccessTokenAction(deckId, numOfQuestions);

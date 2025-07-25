@@ -33,15 +33,29 @@ import {
 } from "actions/ai-study.actions";
 import { useState } from "react";
 import { Progress } from "components/ui/Progress";
-import { Alert, AlertDescription, AlertTitle } from "components/ui/Alert";
-import { User } from "db/types/models.types";
+import { Alert, AlertTitle } from "components/ui/Alert";
+import { Deck, Subscription, User } from "db/types/models.types";
+import { hasReachedMaxDeck } from "lib/subscription/limits";
 
-export function CreateDeckForm({ user }: { user: User }) {
+export function CreateDeckForm({
+  user,
+  subscription,
+  decks,
+}: {
+  user: User;
+  subscription: Subscription;
+  decks: Deck[];
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const { setOpen } = useDialog();
+
+  const userSubscription =
+    subscription !== undefined
+      ? subscription.plan.replace(/-yearly/g, "")
+      : "starter";
 
   const form = useForm<CreateDeckSchema>({
     resolver: zodResolver(createDeckSchema),
@@ -78,6 +92,10 @@ export function CreateDeckForm({ user }: { user: User }) {
   };
 
   const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
+    if (!user.credits || user.credits <= 0) {
+      toast.error("You don't have enough credits to generate flashcards");
+      return;
+    }
     setIsGenerating(true);
     setProgress(10);
 
@@ -136,10 +154,10 @@ export function CreateDeckForm({ user }: { user: User }) {
       setTimeout(() => {
         setIsGenerating(false);
         setOpen(false);
-        router.refresh();
         toast.success(`Deck created with ${addResult.addedCount} flashcards`);
         aiForm.reset();
         router.push(`/workspace/deck/${deckId}`);
+        window.location.reload();
       }, 500);
     } catch (error) {
       console.error("Error in AI flashcard generation:", error);
@@ -156,6 +174,21 @@ export function CreateDeckForm({ user }: { user: User }) {
       >
         <AlertTitle>
           Warning: Email verification is required to create a deck
+        </AlertTitle>
+      </Alert>
+      <Alert
+        variant="destructive"
+        className={`mb-2 ${
+          hasReachedMaxDeck(
+            userSubscription as "starter" | "pro" | "ultra",
+            decks
+          )
+            ? ""
+            : "hidden"
+        }`}
+      >
+        <AlertTitle>
+          Warning: You have reached your maximum number of decks
         </AlertTitle>
       </Alert>
       <TabsList className="grid w-full grid-cols-2 mb-4">
@@ -204,7 +237,17 @@ export function CreateDeckForm({ user }: { user: User }) {
               )}
             />
             <DialogFooter className="pt-4">
-              <Button type="submit" disabled={isPending || !user.emailVerified}>
+              <Button
+                type="submit"
+                disabled={
+                  isPending ||
+                  !user.emailVerified ||
+                  hasReachedMaxDeck(
+                    userSubscription as "starter" | "pro" | "ultra",
+                    decks
+                  )
+                }
+              >
                 {isPending ? <Loading isWhite /> : "Create Deck"}
               </Button>
             </DialogFooter>
@@ -297,7 +340,14 @@ export function CreateDeckForm({ user }: { user: User }) {
                   variant="outline"
                   type="button"
                   className="hidden items-center gap-2 sm:flex"
-                  disabled={isGenerating || !user.emailVerified}
+                  disabled={
+                    isGenerating ||
+                    !user.emailVerified ||
+                    hasReachedMaxDeck(
+                      userSubscription as "starter" | "pro" | "ultra",
+                      decks
+                    )
+                  }
                 >
                   <Upload className="h-4 w-4" />
                   Upload Document
@@ -318,7 +368,14 @@ export function CreateDeckForm({ user }: { user: User }) {
                 <Button
                   type="submit"
                   className="hidden items-center gap-2 sm:flex"
-                  disabled={isGenerating || !user.emailVerified}
+                  disabled={
+                    isGenerating ||
+                    !user.emailVerified ||
+                    hasReachedMaxDeck(
+                      userSubscription as "starter" | "pro" | "ultra",
+                      decks
+                    )
+                  }
                 >
                   {isGenerating ? (
                     <Loading isWhite />

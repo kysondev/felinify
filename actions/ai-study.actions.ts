@@ -10,6 +10,7 @@ import {
   validateQuizAccessToken,
 } from "services/deck.service";
 import { createDeckWithAISchema } from "lib/validations/deck.schema";
+import { authClient } from "lib/auth-client";
 
 export const generateFlashcardsAction = async (name: string, notes: string) => {
   try {
@@ -39,6 +40,8 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
         message: generatedFlashcards.message || "Failed to generate flashcards",
       };
     }
+
+    authClient.updateUser({ credits: user.credits - 1 });
 
     return {
       success: true,
@@ -180,6 +183,8 @@ export const generateAdaptiveQuizAction = async (
         message: quizResult.message || "Failed to generate quiz questions",
       };
     }
+
+    authClient.updateUser({ credits: userResult.data.credits - 1 });
 
     return {
       success: true,

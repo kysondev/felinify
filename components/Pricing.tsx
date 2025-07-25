@@ -12,8 +12,12 @@ import Link from "next/link";
 
 const Pricing = () => {
   const [isAnnually, setIsAnnually] = useState(false);
-  const proOriginalYearly = 60;
-  const eliteOriginalYearly = 90;
+  const proOriginalYearly = 35.99;
+  const ultraOriginalYearly = 95.99;
+  const proMonthly = 2.99;
+  const ultraMonthly = 7.99;
+  const proAnnualDiscount = 25.19;
+  const ultraAnnualDiscount = 67.19;
 
   return (
     <section className="py-4 mt-12" id="pricing">
@@ -58,7 +62,7 @@ const Pricing = () => {
                   >
                     Yearly
                     <span className="ml-1 rounded bg-primary px-1.5 py-0.5 text-xs text-background">
-                      Save 20%
+                      Save 30%
                     </span>
                   </Label>
                 </div>
@@ -76,7 +80,11 @@ const Pricing = () => {
                 <ul className="text-muted-foreground space-y-4">
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Up to 15 flashcard Decks</span>
+                    <span>Max 15 flashcard decks</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="size-4" />
+                    <span>10 Lumix credits per day</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
@@ -99,7 +107,9 @@ const Pricing = () => {
               {isAnnually ? (
                 <>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-medium">$48</span>
+                    <span className="text-4xl font-medium">
+                      ${proAnnualDiscount}
+                    </span>
                     <span className="text-muted-foreground line-through text-lg">
                       ${proOriginalYearly}
                     </span>
@@ -108,7 +118,7 @@ const Pricing = () => {
                 </>
               ) : (
                 <>
-                  <span className="text-4xl font-medium">$5</span>
+                  <span className="text-4xl font-medium">${proMonthly}</span>
                   <p className="text-muted-foreground">Per month</p>
                 </>
               )}
@@ -117,17 +127,15 @@ const Pricing = () => {
                 <ul className="text-muted-foreground space-y-4">
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Everything in free plan, plus:</span>
+                    <span>Everything in starter plan, plus:</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Unlimited flashcards & decks</span>
+                    <span>Max 30 flashcard decks</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>
-                      Advanced AI generation with more powerful AI models
-                    </span>
+                    <span>50 Lumix credits per day</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
@@ -136,22 +144,24 @@ const Pricing = () => {
               </div>
             </div>
 
-            {/* Elite Plan */}
+            {/* Ultra Plan */}
             <div className="bg-muted flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">Elite</Badge>
+              <Badge className="mb-8 block w-fit">Ultra</Badge>
               {isAnnually ? (
                 <>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-medium">$72</span>
+                    <span className="text-4xl font-medium">
+                      ${ultraAnnualDiscount}
+                    </span>
                     <span className="text-muted-foreground line-through text-lg">
-                      ${eliteOriginalYearly}
+                      ${ultraOriginalYearly}
                     </span>
                   </div>
                   <p className="text-muted-foreground">Per year</p>
                 </>
               ) : (
                 <>
-                  <span className="text-4xl font-medium">$10</span>
+                  <span className="text-4xl font-medium">${ultraMonthly}</span>
                   <p className="text-muted-foreground">Per month</p>
                 </>
               )}
@@ -164,15 +174,15 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Priority AI assistance & explanations</span>
+                    <span>Max 80 flashcard decks</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Advanced analytics on your learning progress</span>
+                    <span>100 Lumix credits per day</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Early access to new AI features</span>
+                    <span>Unlock AI assistance and explanations</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>

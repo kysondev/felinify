@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { User } from "db/types/models.types";
 import dynamic from "next/dynamic";
@@ -16,10 +18,10 @@ const AccountSettings = dynamic(
   }
 );
 
-const PaymentSettings = dynamic(
+const SubscriptionSettings = dynamic(
   () =>
-    import("components/settings/PaymentSettings").then((mod) => ({
-      default: mod.PaymentSettings,
+    import("components/settings/SubscriptionSettings").then((mod) => ({
+      default: mod.SubscriptionSettings,
     })),
   {
     loading: () => (
@@ -34,21 +36,31 @@ interface SettingsTabsProps {
 }
 
 export function SettingsTabs({ user }: SettingsTabsProps) {
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState("account");
+
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "subscription" || tabParam === "account") {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
+
   return (
-    <Tabs defaultValue="account" className="w-full">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="w-full max-w-full md:max-w-[400px] grid grid-cols-2">
         <TabsTrigger value="account" className="flex-1">
           Account
         </TabsTrigger>
-        <TabsTrigger value="payment" className="flex-1">
-          Payment
+        <TabsTrigger value="subscription" className="flex-1">
+          Subscription
         </TabsTrigger>
       </TabsList>
       <TabsContent value="account" className="space-y-6 mt-6">
         <AccountSettings user={user} />
       </TabsContent>
-      <TabsContent value="payment" className="mt-6">
-        <PaymentSettings />
+      <TabsContent value="subscription" className="mt-6">
+        <SubscriptionSettings user={user} />
       </TabsContent>
     </Tabs>
   );

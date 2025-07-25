@@ -14,6 +14,7 @@ import cuid from "cuid";
 import { jsonObjectFrom, jsonArrayFrom } from "kysely/helpers/postgres";
 
 export const getDecksByUserId = async (userId: string) => {
+  "use cache";
   try {
     const decks = await db
       .selectFrom("deck")
@@ -87,32 +88,31 @@ export const getDeckById = async (deckId: string, userId: string) => {
 
     if (deck.flashcards && deck.flashcards.length > 0) {
       const flashcardIds = deck.flashcards.map((f: any) => f.id);
-      
+
       const performances = await db
         .selectFrom("flashcardPerformance")
-        .select([
-          "flashcardId",
-          "correctCount",
-          "incorrectCount"
-        ])
+        .select(["flashcardId", "correctCount", "incorrectCount"])
         .where("userId", "=", userId)
         .where("flashcardId", "in", flashcardIds)
         .execute();
 
       const performanceMap = new Map();
-      performances.forEach(perf => {
+      performances.forEach((perf) => {
         performanceMap.set(perf.flashcardId, {
           numCorrect: perf.correctCount,
-          numIncorrect: perf.incorrectCount
+          numIncorrect: perf.incorrectCount,
         });
       });
 
       deck.flashcards = deck.flashcards.map((flashcard: any) => {
-        const performance = performanceMap.get(flashcard.id) || { numCorrect: 0, numIncorrect: 0 };
+        const performance = performanceMap.get(flashcard.id) || {
+          numCorrect: 0,
+          numIncorrect: 0,
+        };
         return {
           ...flashcard,
           numCorrect: performance.numCorrect,
-          numIncorrect: performance.numIncorrect
+          numIncorrect: performance.numIncorrect,
         };
       });
     }
@@ -469,7 +469,10 @@ export const saveStudySession = async (data: NewStudySession) => {
   }
 };
 
-export const updateChallengeCompletionCount = async (userId: string, deckId: string) => {
+export const updateChallengeCompletionCount = async (
+  userId: string,
+  deckId: string
+) => {
   try {
     const progressExists = await db
       .selectFrom("userDeckProgress")
@@ -497,13 +500,20 @@ export const updateChallengeCompletionCount = async (userId: string, deckId: str
       .executeTakeFirst();
 
     if (!updatedProgress) {
-      return { success: false, message: "Error updating challenge completion count" };
+      return {
+        success: false,
+        message: "Error updating challenge completion count",
+      };
     }
 
     return { success: true, data: updatedProgress };
   } catch (error) {
     console.error("Error updating challenge completion count:", error);
-    return { success: false, message: "Error updating challenge completion count", error };
+    return {
+      success: false,
+      message: "Error updating challenge completion count",
+      error,
+    };
   }
 };
 
@@ -559,12 +569,12 @@ export const createQuizAccessToken = async (
       return { success: false, message: "Error creating access token" };
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: {
         token: tokenString,
-        numQuestions
-      }
+        numQuestions,
+      },
     };
   } catch (error) {
     console.error("Error creating quiz access token:", error);
@@ -578,7 +588,6 @@ export const validateQuizAccessToken = async (
   deckId: string
 ) => {
   try {
-    
     const accessToken = await db
       .selectFrom("quizAccessToken")
       .selectAll()
@@ -599,11 +608,11 @@ export const validateQuizAccessToken = async (
       .where("id", "=", accessToken.id)
       .execute();
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: {
-        numQuestions: accessToken.numQuestions
-      }
+        numQuestions: accessToken.numQuestions,
+      },
     };
   } catch (error) {
     console.error("Error validating quiz access token:", error);
@@ -623,44 +632,56 @@ export const updateFlashcardPerformance = async (
       return { success: true, message: "No flashcard results to update" };
     }
 
-    const flashcardIds = flashcardResults.map(result => result.flashcardId);
+    const flashcardIds = flashcardResults.map((result) => result.flashcardId);
 
     const existingPerformances = await db
       .selectFrom("flashcardPerformance")
-      .select(["id", "flashcardId", "correctCount", "incorrectCount", "timesStudied"])
+      .select([
+        "id",
+        "flashcardId",
+        "correctCount",
+        "incorrectCount",
+        "timesStudied",
+      ])
       .where("userId", "=", userId)
       .where("flashcardId", "in", flashcardIds)
       .execute();
 
     const performanceMap = new Map();
-    existingPerformances.forEach(perf => {
+    existingPerformances.forEach((perf) => {
       performanceMap.set(perf.flashcardId, perf);
     });
 
     for (const result of flashcardResults) {
       const existingPerformance = performanceMap.get(result.flashcardId);
 
-        await db
-          .updateTable("flashcardPerformance")
-          .set({
-            correctCount: result.isCorrect 
-              ? existingPerformance.correctCount + 1 
-              : existingPerformance.correctCount,
-            incorrectCount: !result.isCorrect 
-              ? existingPerformance.incorrectCount + 1 
-              : existingPerformance.incorrectCount,
-            timesStudied: existingPerformance.timesStudied + 1,
-            lastStudied: new Date(),
-            updatedAt: new Date(),
-          })
-          .where("id", "=", existingPerformance.id)
-          .execute();
-      
+      await db
+        .updateTable("flashcardPerformance")
+        .set({
+          correctCount: result.isCorrect
+            ? existingPerformance.correctCount + 1
+            : existingPerformance.correctCount,
+          incorrectCount: !result.isCorrect
+            ? existingPerformance.incorrectCount + 1
+            : existingPerformance.incorrectCount,
+          timesStudied: existingPerformance.timesStudied + 1,
+          lastStudied: new Date(),
+          updatedAt: new Date(),
+        })
+        .where("id", "=", existingPerformance.id)
+        .execute();
     }
 
-    return { success: true, message: "Flashcard performance updated successfully" };
+    return {
+      success: true,
+      message: "Flashcard performance updated successfully",
+    };
   } catch (error) {
     console.error("Error updating flashcard performance:", error);
-    return { success: false, message: "Error updating flashcard performance", error };
+    return {
+      success: false,
+      message: "Error updating flashcard performance",
+      error,
+    };
   }
 };

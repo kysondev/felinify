@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "user" ADD COLUMN     "lastCreditRefillAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP;

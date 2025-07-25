@@ -3,7 +3,7 @@ import { Card } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { PlusCircle } from "lucide-react";
 import { getDecksByUserId } from "services/deck.service";
-import { getUser } from "services/user.service";
+import { getUser, getUserSubscription } from "services/user.service";
 import {
   Dialog,
   DialogContent,
@@ -14,11 +14,13 @@ import {
 } from "components/ui/Dialog";
 import { CreateDeckForm } from "components/library/CreateDeckForm";
 import { DeckCard } from "components/library/DeckCard";
-import { User } from "db/types/models.types";
+import { Subscription, User } from "db/types/models.types";
 
 export default async function LibraryPage() {
   const { data: user } = await getUser();
   const { data: decks } = await getDecksByUserId(user?.id as string);
+  const { data: subscription } = await getUserSubscription();
+
   return (
     <>
       <div className="container max-w-[1200px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
@@ -59,13 +61,17 @@ export default async function LibraryPage() {
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm user={user as User} />
+                    <CreateDeckForm
+                      user={user as User}
+                      subscription={subscription as Subscription}
+                      decks={decks}
+                    />
                   </DialogContent>
                 </Dialog>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {decks?.map((deck) => (
-                  <DeckCard deck={deck} key={deck.id} />
+                  <DeckCard deck={deck} key={deck.id} user={user as User} />
                 ))}
 
                 <Dialog>
@@ -84,7 +90,11 @@ export default async function LibraryPage() {
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm user={user as User} />
+                    <CreateDeckForm
+                      user={user as User}
+                      subscription={subscription as Subscription}
+                      decks={decks}
+                    />
                   </DialogContent>
                 </Dialog>
               </div>

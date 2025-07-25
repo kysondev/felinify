@@ -17,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "components/ui/Dialog";
-import { Deck } from "db/types/models.types";
+import { Deck, User } from "db/types/models.types";
 import { BookOpen, Clock, FlipHorizontal, Brain, Award } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -27,7 +27,7 @@ import { Badge } from "components/ui/Badge";
 import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
 import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
 
-export const DeckCard = ({ deck }: { deck: Deck }) => {
+export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
   const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
   const [showChallengeSettings, setShowChallengeSettings] =
@@ -178,6 +178,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
           numOfQuestions={numOfQuestions}
           setNumOfQuestions={setNumOfQuestions}
           deckId={deck.id}
+          user={user}
         />
       </CardFooter>
     </Card>

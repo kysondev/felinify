@@ -40,7 +40,7 @@ const ResetPassword = ({ url }: ResetPasswordProps) => {
 
               <Section className="text-center mb-8">
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium text-base transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-medium text-base transition-colors"
                   href={url}
                 >
                   Reset Password
@@ -52,7 +52,7 @@ const ResetPassword = ({ url }: ResetPasswordProps) => {
                 browser:
               </Text>
               <Text className="text-gray-600 text-sm text-center mb-8">
-                <Link href={url} className="text-blue-600 break-all">
+                <Link href={url} className="text-primary break-all">
                   {url}
                 </Link>
               </Text>

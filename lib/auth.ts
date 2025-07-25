@@ -7,12 +7,25 @@ import ResetPassword from "templates/emails/ResetPassword";
 import { sendEmail } from "./email";
 import { redis } from "./redis";
 import { db } from "./db";
+import { stripe } from "@better-auth/stripe";
+import { plans } from "config/plans";
+import Stripe from "stripe";
+import { refillCreditsForUser } from "services/credit-refill.service";
+
+const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const auth = betterAuth({
   appName: process.env.APP_NAME,
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
   database: {
     db: db,
+  },
+  user: {
+    additionalFields: {
+      credits: {
+        type: "number",
+      },
+    },
   },
   secondaryStorage: {
     async get(key: string): Promise<string | null> {
@@ -67,6 +80,47 @@ export const auth = betterAuth({
       skipVerificationOnEnable: true,
     }),
     admin(),
+    stripe({
+      stripeClient,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+      createCustomerOnSignUp: true,
+      subscription: {
+        enabled: true,
+        plans: plans,
+        getCheckoutSessionParams: async () => {
+          return {
+            params: {
+              allow_promotion_codes: true,
+              payment_method_types: ["card", "cashapp"],
+            },
+          };
+        },
+        onSubscriptionComplete: async ({ subscription }) => {
+          try {
+            if (subscription && subscription.referenceId) {
+              await refillCreditsForUser(subscription.referenceId);
+            }
+          } catch (error) {
+            console.error(
+              "Error refilling credits on subscription complete:",
+              error
+            );
+          }
+        },
+        onSubscriptionUpdate: async ({ subscription }) => {
+          try {
+            if (subscription && subscription.referenceId) {
+              await refillCreditsForUser(subscription.referenceId);
+            }
+          } catch (error) {
+            console.error(
+              "Error refilling credits on subscription update:",
+              error
+            );
+          }
+        },
+      },
+    }),
   ],
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {

@@ -39,7 +39,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
-import { getUser } from "services/user.service";
+import { getUser, getUserCredit } from "services/user.service";
 import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "actions/auth.action";
@@ -120,9 +120,9 @@ const WorkspaceNavbar = async ({
                     height={32}
                   />
                   <div className="flex flex-col">
-                    <span className="font-semibold">@{user?.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {user?.email}
+                    <span className="font-semibold">@{user?.name} </span>
+                    <span className="text-sm text-muted-foreground">
+                      {getUserCredit(user?.id as string)} Credits
                     </span>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ const WorkspaceNavbar = async ({
                     Settings
                   </DropdownMenuItem>
                 </Link>
-                <Link href="/workspace/upgrade" className="w-full h-full">
+                <Link href="/workspace/settings?tab=subscription&openUpgradeDialog=true">
                   <DropdownMenuItem className="cursor-pointer w-full h-full">
                     <CircleFadingArrowUp className="size-4 shrink-0" />
                     Upgrade Plan
@@ -221,8 +221,8 @@ const WorkspaceNavbar = async ({
                       />
                       <div className="flex flex-col">
                         <span className="font-semibold">@{user?.name}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {user?.email}
+                        <span className="text-sm text-muted-foreground">
+                          {user?.credits} Credits
                         </span>
                       </div>
                     </div>
@@ -235,7 +235,7 @@ const WorkspaceNavbar = async ({
                         Settings
                       </DropdownMenuItem>
                     </Link>
-                    <Link href="/workspace/upgrade" className="w-full h-full">
+                    <Link href="/workspace/settings?tab=subscription&openUpgradeDialog=true">
                       <DropdownMenuItem className="cursor-pointer w-full h-full">
                         <CircleFadingArrowUp className="size-4 shrink-0" />
                         Upgrade Plan

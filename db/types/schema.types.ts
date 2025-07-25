@@ -8,6 +8,9 @@ export interface UserTable {
   image: string | null;
   role: "user" | "admin";
   totalStudyTime: number | null;
+  credits: number | null;
+  stripeCustomerId: string | null;
+  lastCreditRefillAt: ColumnType<Date, string | undefined>;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
   twoFactorEnabled: boolean | null;
@@ -58,6 +61,21 @@ export interface TwoFactorTable {
   secret: string;
   backupCodes: string;
   userId: string;
+}
+
+export interface SubscriptionTable {
+  id: Generated<string>;
+  plan: string;
+  referenceId: string | null;
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  status: string;
+  periodStart: Date | null;
+  periodEnd: Date | null;
+  cancelAtPeriodEnd: boolean | null;
+  seats: number | null;
+  trialStart: Date | null;
+  trialEnd: Date | null;
 }
 
 export interface DeckTable {
@@ -138,4 +156,5 @@ export interface Database {
   flashcardPerformance: FlashcardPerformanceTable;
   studySession: StudySessionTable;
   quizAccessToken: QuizAccessTokenTable;
+  subscription: SubscriptionTable;
 }

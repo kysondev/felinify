@@ -64,7 +64,7 @@ const Footer = ({
       ],
     },
   ],
-  copyright = "© 2025 Kyson W. All rights reserved.",
+  copyright = "© 2025 Lumix. All rights reserved.",
   bottomLinks = [
     { text: "Terms and Conditions", url: "#" },
     { text: "Privacy Policy", url: "#" },

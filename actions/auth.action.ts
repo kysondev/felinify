@@ -29,6 +29,7 @@ export const signUp = async (
       email,
       password,
       name,
+      credits: 10,
     });
     if (error) {
       toast.error(error.message as string);

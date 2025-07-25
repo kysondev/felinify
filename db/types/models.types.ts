@@ -20,3 +20,5 @@ export type UpdateProgress = Updateable<Database["userDeckProgress"]>;
 export type StudySession = Selectable<Database["studySession"]>;
 export type NewStudySession = Insertable<Database["studySession"]>;
 export type UpdateStudySession = Updateable<Database["studySession"]>;
+
+export type Subscription = Selectable<Database["subscription"]>;
