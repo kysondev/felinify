@@ -1,5 +1,6 @@
 import { Plan } from "config/plans";
 import { authClient } from "lib/auth-client";
+import { redirect } from "next/navigation";
 import { createCustomerPortalSession } from "services/subscription.service";
 import { getUser } from "services/user.service";
 
@@ -53,53 +54,8 @@ export const createSubscriptionAction = async (
   }
 };
 
-export const cancelSubscriptionAction = async (subscriptionId: string) => {
-  try {
-    if (!subscriptionId) {
-      return { success: false, message: "No subscription ID provided" };
-    }
-
-    const { data: user } = await getUser();
-
-    if (!user) {
-      return { success: false, message: "Unauthorized" };
-    }
-
-    const { error } = await authClient.subscription.cancel({
-      subscriptionId: subscriptionId,
-      returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/workspace/settings?tab=subscription`,
-    });
-
-    if (error) {
-      console.error("Subscription cancellation failed:", error.message);
-      return {
-        success: false,
-        message: error.message || "Failed to cancel subscription",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Subscription will be canceled at the end of the billing period",
-    };
-  } catch (error) {
-    console.error("Subscription cancellation error:", error);
-
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "An unexpected error occurred while canceling your subscription";
-
-    return {
-      success: false,
-      message: errorMessage,
-    };
-  }
-};
-
 export const openCustomerPortalAction = async () => {
   const { data: user } = await getUser();
-
   if (!user) {
     return { success: false, message: "Unauthorized" };
   }
@@ -110,11 +66,5 @@ export const openCustomerPortalAction = async () => {
     return { success: false, message: "Failed to create customer portal URL" };
   }
 
-  window.open(customerPortalUrl.portalUrl, "_blank");
-
-  return {
-    success: true,
-    message: "Customer portal URL created successfully",
-    data: customerPortalUrl.portalUrl,
-  };
+  redirect(customerPortalUrl.portalUrl);
 };

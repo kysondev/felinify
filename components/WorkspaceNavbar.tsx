@@ -222,7 +222,7 @@ const WorkspaceNavbar = async ({
                       <div className="flex flex-col">
                         <span className="font-semibold">@{user?.name}</span>
                         <span className="text-sm text-muted-foreground">
-                          {user?.credits} Credits
+                          {getUserCredit(user?.id as string)} Credits
                         </span>
                       </div>
                     </div>
