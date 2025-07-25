@@ -3,6 +3,7 @@ import { authClient } from "lib/auth-client";
 import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
+import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
 
 export const signUp = async (
   name: string,
@@ -11,6 +12,11 @@ export const signUp = async (
   terms: boolean
 ) => {
   try {
+    if (!AUTH_CONFIG.isSignupEnabled) {
+      toast.error(AUTH_DISABLED_MESSAGES.signup);
+      return;
+    }
+
     if (!name || !email || !password) {
       toast.error("Please fill all the fields");
       return;
@@ -48,6 +54,7 @@ export const signInWithEmail = async (
   setIsOTPOpen: any
 ) => {
   try {
+
     if (!email || !password) {
       toast.error("Please fill all the fields");
       return;
@@ -88,6 +95,11 @@ export const signInWithEmail = async (
 
 export const signInWithGoogle = async () => {
   try {
+    if (!AUTH_CONFIG.isOAuthEnabled) {
+      toast.error(AUTH_DISABLED_MESSAGES.oauth);
+      return;
+    }
+
     const { error } = await authClient.signIn.social({
       provider: "google",
       callbackURL: "/workspace",
@@ -103,6 +115,11 @@ export const signInWithGoogle = async () => {
 
 export const signInWithGithub = async () => {
   try {
+    if (!AUTH_CONFIG.isOAuthEnabled) {
+      toast.error(AUTH_DISABLED_MESSAGES.oauth);
+      return;
+    }
+    
     const { error } = await authClient.signIn.social({
       provider: "github",
       callbackURL: "/workspace",
