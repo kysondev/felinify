@@ -24,10 +24,10 @@ export const getUser = async () => {
 export const getUserWithId = async (id: string) => {
   try {
     const user = await db
-    .selectFrom("user")
-    .selectAll()
-    .where("id", "=", id)
-    .executeTakeFirst();
+      .selectFrom("user")
+      .selectAll()
+      .where("id", "=", id)
+      .executeTakeFirst();
     return {
       success: true,
       message: "User fetched successfully",
@@ -54,6 +54,26 @@ export const getUserCredit = async (userId: string) => {
   }
 
   return credit.credits || 0;
+};
+
+export const updateUserCredit = async (userId: string, credit: number) => {
+  try {
+    await db
+      .updateTable("user")
+      .set({ credits: credit })
+      .where("id", "=", userId)
+      .execute();
+    return {
+      success: true,
+      message: "User credit updated successfully",
+    };
+  } catch (error) {
+    console.error("Error updating user credit:", error);
+    return {
+      success: false,
+      message: "Error updating user credit",
+    };
+  }
 };
 
 export const getUserSubscription = async () => {

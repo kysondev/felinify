@@ -78,11 +78,11 @@ const LandingNavbar = ({
       <div className="w-full">
         {/* Desktop Menu */}
         <nav className="hidden justify-between w-full lg:flex">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
               <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
             </a>
@@ -110,7 +110,7 @@ const LandingNavbar = ({
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
               <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
             </a>
@@ -130,7 +130,7 @@ const LandingNavbar = ({
                         width={25}
                         height={25}
                       />
-                      <span className="text-lg font-semibold tracking-tighter">
+                      <span className="text-lg font-semibold tracking-tighter text-primary">
                         {logo.title}
                       </span>
                     </a>

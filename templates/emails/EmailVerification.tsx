@@ -38,7 +38,7 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
 
               <Section className="text-center mb-8">
                 <Button
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-medium text-base transition-colors"
+                  className="bg-[#C96442] hover:bg-[#C96442]/90 text-white px-8 py-3 rounded-lg font-medium text-base transition-colors"
                   href={`${url}workspace/settings`}
                 >
                   Verify Email Address

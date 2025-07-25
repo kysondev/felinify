@@ -2,7 +2,11 @@ import {
   generateFlashcards,
   generateAdaptiveQuiz,
 } from "services/ai-study.service";
-import { getUser } from "services/user.service";
+import {
+  getUser,
+  getUserCredit,
+  updateUserCredit,
+} from "services/user.service";
 import {
   addFlashcard,
   getDeckById,
@@ -10,7 +14,6 @@ import {
   validateQuizAccessToken,
 } from "services/deck.service";
 import { createDeckWithAISchema } from "lib/validations/deck.schema";
-import { authClient } from "lib/auth-client";
 
 export const generateFlashcardsAction = async (name: string, notes: string) => {
   try {
@@ -33,6 +36,15 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
       return { success: false, message: "Email not verified" };
     }
 
+    const userCredits = await getUserCredit(user.id);
+
+    if (userCredits <= 0) {
+      return {
+        success: false,
+        message: "You don't have enough credits to generate flashcards",
+      };
+    }
+
     const generatedFlashcards = await generateFlashcards(notes);
     if (!generatedFlashcards.success) {
       return {
@@ -41,7 +53,14 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
       };
     }
 
-    authClient.updateUser({ credits: user.credits - 1 });
+    const updatedCredit = await updateUserCredit(user.id, userCredits - 1);
+
+    if (!updatedCredit.success) {
+      return {
+        success: false,
+        message: updatedCredit.message || "Failed to update user credit",
+      };
+    }
 
     return {
       success: true,
@@ -184,8 +203,6 @@ export const generateAdaptiveQuizAction = async (
       };
     }
 
-    authClient.updateUser({ credits: userResult.data.credits - 1 });
-
     return {
       success: true,
       questions: quizResult.questions,
@@ -257,6 +274,24 @@ export const createQuizAccessTokenAction = async (
       return {
         success: false,
         message: tokenResult.message || "Failed to create access token",
+      };
+    }
+
+    const userCredits = await getUserCredit(userId);
+
+    if (userCredits <= 0) {
+      return {
+        success: false,
+        message: "You don't have enough credits to generate flashcards",
+      };
+    }
+
+    const updatedCredit = await updateUserCredit(userId, userCredits - 1);
+
+    if (!updatedCredit.success) {
+      return {
+        success: false,
+        message: updatedCredit.message || "Failed to update user credit",
       };
     }
 

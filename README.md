@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/kysondev/lumix">
-    <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753120716/image_1_fdwonj.png" alt="Logo" width="80" height="80">
+    <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753470067/image_2_ehrhh8.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Lumix</h3>
@@ -22,7 +22,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753120531/Screenshot_2025-07-21_135431_vjudlb.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753119685/Screenshot_2025-07-21_132627_t79xih.png)
+[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753470146/Screenshot_2025-07-25_150132_ivxet8.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753470146/Screenshot_2025-07-25_150132_ivxet8.png)
 
 **Lumix** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Lumix** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, Lumix helps students study smarter, not harder.
 

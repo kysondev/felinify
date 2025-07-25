@@ -36,6 +36,7 @@ import { Progress } from "components/ui/Progress";
 import { Alert, AlertTitle } from "components/ui/Alert";
 import { Deck, Subscription, User } from "db/types/models.types";
 import { hasReachedMaxDeck } from "lib/subscription/limits";
+import { hasEnoughCredit } from "actions/user.action";
 
 export function CreateDeckForm({
   user,
@@ -92,12 +93,14 @@ export function CreateDeckForm({
   };
 
   const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
-    if (!user.credits || user.credits <= 0) {
-      toast.error("You don't have enough credits to generate flashcards");
-      return;
-    }
     setIsGenerating(true);
     setProgress(10);
+    const result = await hasEnoughCredit(user.id, 1);
+    if (!result) {
+      toast.error("You don't have enough credits to generate flashcards");
+      setIsGenerating(false);
+      return;
+    }
 
     try {
       setProgress(30);
@@ -157,7 +160,7 @@ export function CreateDeckForm({
         toast.success(`Deck created with ${addResult.addedCount} flashcards`);
         aiForm.reset();
         router.push(`/workspace/deck/${deckId}`);
-        window.location.reload();
+        router.refresh();
       }, 500);
     } catch (error) {
       console.error("Error in AI flashcard generation:", error);

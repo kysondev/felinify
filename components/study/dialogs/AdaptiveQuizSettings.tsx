@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "components/ui/Alert";
 import { User } from "db/types/models.types";
+import { getUserCredit } from "services/user.service";
+import { hasEnoughCredit } from "actions/user.action";
 
 interface AdaptiveQuizSettingsProps {
   showQuizSettings: boolean;
@@ -30,7 +32,7 @@ const AdaptiveQuizSettings = ({
   numOfQuestions,
   setNumOfQuestions,
   deckId,
-  user
+  user,
 }: AdaptiveQuizSettingsProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,22 +40,25 @@ const AdaptiveQuizSettings = ({
 
   const handleStartQuiz = async () => {
     try {
-      if (!user.credits || user.credits <= 0) {
+      setIsGenerating(true);
+      setError(null);
+      const userHasEnoughCredit = await hasEnoughCredit(user.id, 1);
+      if (!userHasEnoughCredit) {
         setError("You don't have enough credits to generate flashcards");
         setIsGenerating(false);
         return;
       }
-      setIsGenerating(true);
-      setError(null);
       const result = await createQuizAccessTokenAction(deckId, numOfQuestions);
-      
+
       if (!result.success || !result.token) {
         setError(result.message || "Failed to create quiz access token");
         setIsGenerating(false);
         return;
       }
-      
-      router.push(`/workspace/study/quiz?deckId=${deckId}&token=${result.token}`);
+
+      router.push(
+        `/workspace/study/quiz?deckId=${deckId}&token=${result.token}`
+      );
     } catch (error) {
       console.error("Error starting quiz:", error);
       setError("An error occurred while starting the quiz");
@@ -110,23 +115,23 @@ const AdaptiveQuizSettings = ({
               This will cost 1 Lumix credit
             </span>
           </div>
-          
+
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          
-          <Button 
-            onClick={handleStartQuiz} 
-            className="w-full" 
+
+          <Button
+            onClick={handleStartQuiz}
+            className="w-full"
             disabled={isGenerating}
           >
             {isGenerating ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Checking Requirements...
+                Generating...
               </>
             ) : (
               "Generate Quiz"

@@ -86,10 +86,10 @@ const WorkspaceNavbar = async ({
     <section className="py-4 px-6 flex justify-center fixed top-0 left-0 right-0 z-50 bg-background border-b">
       <div className="w-full">
         <nav className="hidden justify-between w-full lg:flex">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <Link href={logo.url} className="flex items-center gap-1">
               <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
             </Link>
@@ -158,7 +158,7 @@ const WorkspaceNavbar = async ({
           <div className="flex items-center justify-between">
             <Link href={logo.url} className="flex items-center gap-1">
               <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
             </Link>
@@ -177,7 +177,7 @@ const WorkspaceNavbar = async ({
                           width={25}
                           height={25}
                         />
-                        <span className="text-lg font-semibold tracking-tighter">
+                        <span className="text-lg font-semibold tracking-tighter text-primary">
                           {logo.title}
                         </span>
                       </Link>

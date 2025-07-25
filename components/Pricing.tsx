@@ -92,7 +92,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Minimalist study mode</span>
+                    <span>Limited Lumi AI use</span>
                   </li>
                 </ul>
                 <Button className="w-full mt-auto" asChild>
@@ -136,6 +136,10 @@ const Pricing = () => {
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
                     <span>50 Lumix credits per day</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="size-4" />
+                    <span>Extended Access to Lumi AI</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
@@ -182,7 +186,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Unlock AI assistance and explanations</span>
+                    <span>Full Access to Lumi AI</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>

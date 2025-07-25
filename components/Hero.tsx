@@ -19,8 +19,8 @@ interface HeroProps {
 }
 
 const Hero = ({
-  heading = "Smart Flashcards Built for Focused, Fast Learning",
-  description = "Create, review, and manage flashcards with AI-assisted tools in a minimal, distraction-free interface.",
+  heading = "AI Flashcards That Actually Make You Smarter",
+  description = "Built for students who want to stop wasting time. Create flashcards from notes, study with smart quizzes, and track mastery",
   button = {
     text: "Get Started",
     url: "/workspace",
@@ -45,11 +45,11 @@ const Hero = ({
               <picture>
                 <source
                   media="(max-width: 640px)"
-                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753119684/Screenshot_2025-07-21_132707_phtpjt.png"
+                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753469868/Screenshot_2025-07-25_145544_kyaked.png"
                 />
                 <img
                   className="w-full h-auto"
-                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753119685/Screenshot_2025-07-21_132627_t79xih.png"
+                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753469864/Screenshot_2025-07-25_145506_ejkba5.png"
                   alt="app screen"
                 />
               </picture>

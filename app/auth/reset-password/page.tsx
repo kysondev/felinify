@@ -3,12 +3,9 @@ import { Suspense } from "react";
 
 export default function Page() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#171717] px-4">
-      <div className="w-full max-w-sm bg-[#1c1c1c] p-8 rounded-md border border-[#2a2a2a]">
-        <h2 className="text-xl font-medium text-white mb-8">Reset Password</h2>
-        <Suspense>
-          <ResetPasswordForm />
-        </Suspense>
+    <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="flex w-full max-w-sm flex-col gap-6">
+        <ResetPasswordForm />
       </div>
     </div>
   );
