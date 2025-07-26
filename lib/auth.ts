@@ -4,7 +4,7 @@ import { admin, openAPI, twoFactor } from "better-auth/plugins";
 import { redis } from "./redis";
 import { db } from "./db";
 import { stripe } from "@better-auth/stripe";
-import { plans } from "config/plans";
+import { plans } from "config/plans.config";
 import Stripe from "stripe";
 import { refillCreditsForUser } from "services/credit-refill.service";
 import {

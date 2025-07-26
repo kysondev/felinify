@@ -8,7 +8,7 @@ import { UpgradePlanDialog } from "components/study/dialogs/UpgradePlanDialog";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { User } from "db/types/models.types";
-import { plans } from "config/plans";
+import { plans } from "config/plans.config";
 import { authClient } from "lib/auth-client";
 import { CalendarIcon } from "lucide-react";
 import { openCustomerPortalAction } from "actions/subscription.action";
@@ -20,11 +20,13 @@ export function SubscriptionSettings({ user }: { user: User }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [planName, setPlanName] = useState<string>("Starter");
   const [loading, setLoading] = useState(true);
-  const [stripeSubscriptionId, setStripeSubscriptionId] = useState<string | undefined>(undefined);
+  const [stripeSubscriptionId, setStripeSubscriptionId] = useState<
+    string | undefined
+  >(undefined);
   const [nextBillingDate, setNextBillingDate] = useState<string | null>(null);
   const [isCanceled, setIsCanceled] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
-  
+
   const getPlanDetails = () => {
     if (planName === "Starter") {
       return {
@@ -50,7 +52,7 @@ export function SubscriptionSettings({ user }: { user: User }) {
 
   const planDetails = getPlanDetails();
   const isPaidPlan = planName !== "Starter";
-  
+
   useEffect(() => {
     const fetchSubscription = async () => {
       try {
@@ -59,13 +61,17 @@ export function SubscriptionSettings({ user }: { user: User }) {
         });
         if (subscriptions) {
           setPlanName(subscriptions[0] ? subscriptions[0].plan : "Starter");
-          setStripeSubscriptionId(subscriptions[0] ? subscriptions[0].stripeSubscriptionId : undefined);
+          setStripeSubscriptionId(
+            subscriptions[0] ? subscriptions[0].stripeSubscriptionId : undefined
+          );
           setIsCanceled(subscriptions[0]?.cancelAtPeriodEnd ? true : false);
 
           if (subscriptions[0] && subscriptions[0].periodEnd) {
-            setNextBillingDate(new Date(subscriptions[0].periodEnd).toLocaleDateString());
+            setNextBillingDate(
+              new Date(subscriptions[0].periodEnd).toLocaleDateString()
+            );
           }
-          
+
           setLoading(false);
         }
       } catch (err) {
@@ -89,8 +95,6 @@ export function SubscriptionSettings({ user }: { user: User }) {
     }
   }, [searchParams, router]);
 
-
-
   const handleOpenCustomerPortal = async () => {
     setPortalLoading(true);
     try {
@@ -104,7 +108,12 @@ export function SubscriptionSettings({ user }: { user: User }) {
 
   return (
     <>
-      <UpgradePlanDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} currentPlan={planName} stripeSubscriptionId={stripeSubscriptionId || undefined} />
+      <UpgradePlanDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        currentPlan={planName}
+        stripeSubscriptionId={stripeSubscriptionId || undefined}
+      />
 
       <div className="space-y-6">
         <Card className="p-4 md:p-6">
@@ -122,7 +131,9 @@ export function SubscriptionSettings({ user }: { user: User }) {
                 variant={isPaidPlan ? "default" : "outline"}
                 className="w-fit capitalize"
               >
-                {loading ? "Loading..." : `${planDetails.name.split('-')[0].charAt(0).toUpperCase() + planDetails.name.split('-')[0].slice(1)} Plan`}
+                {loading
+                  ? "Loading..."
+                  : `${planDetails.name.split("-")[0].charAt(0).toUpperCase() + planDetails.name.split("-")[0].slice(1)} Plan`}
               </Badge>
             </div>
 
@@ -151,7 +162,9 @@ export function SubscriptionSettings({ user }: { user: User }) {
               </div>
               {isPaidPlan && nextBillingDate && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Next Billing Date</span>
+                  <span className="text-muted-foreground">
+                    Next Billing Date
+                  </span>
                   <span className="font-medium flex items-center">
                     <CalendarIcon className="h-4 w-4 mr-1" />
                     {nextBillingDate}

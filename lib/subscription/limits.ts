@@ -1,4 +1,4 @@
-import { plans } from "config/plans";
+import { plans } from "config/plans.config";
 import { Deck } from "db/types/models.types";
 
 export const hasReachedMaxDeck = (

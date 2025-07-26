@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { createSubscriptionAction } from "actions/subscription.action";
-import { plans } from "config/plans";
+import { plans } from "config/plans.config";
 
 interface UpgradePlanDialogProps {
   children?: React.ReactNode;
@@ -36,8 +36,8 @@ export function UpgradePlanDialog({
   const [selectedPlan, setSelectedPlan] = useState<"pro" | "ultra">("pro");
 
   const isCurrentPlanYearly = currentPlan.toLowerCase().includes("yearly");
-  const currentPlanBase = isCurrentPlanYearly 
-    ? currentPlan.toLowerCase().replace("-yearly", "") 
+  const currentPlanBase = isCurrentPlanYearly
+    ? currentPlan.toLowerCase().replace("-yearly", "")
     : currentPlan.toLowerCase();
 
   useEffect(() => {
@@ -51,13 +51,16 @@ export function UpgradePlanDialog({
   const ultraMonthly = plans.find((plan) => plan.name === "ultra")?.price || 0;
   const proOriginalYearly = 35.99;
   const ultraOriginalYearly = 95.99;
-  const proAnnualDiscount = plans.find((plan) => plan.name === "pro-yearly")?.price || 0;
-  const ultraAnnualDiscount = plans.find((plan) => plan.name === "ultra-yearly")?.price || 0;
+  const proAnnualDiscount =
+    plans.find((plan) => plan.name === "pro-yearly")?.price || 0;
+  const ultraAnnualDiscount =
+    plans.find((plan) => plan.name === "ultra-yearly")?.price || 0;
 
   const handleSubscribe = async () => {
     const planName = isAnnually ? `${selectedPlan}-yearly` : selectedPlan;
-    
-      await createSubscriptionAction({
+
+    await createSubscriptionAction(
+      {
         name: planName,
         priceId: plans.find((plan) => plan.name === planName)?.priceId || "",
         limits: plans.find((plan) => plan.name === planName)?.limits || {},
@@ -66,9 +69,8 @@ export function UpgradePlanDialog({
     );
   };
 
-  const isCurrentPlan = 
-    currentPlanBase === selectedPlan && 
-    isCurrentPlanYearly === isAnnually;
+  const isCurrentPlan =
+    currentPlanBase === selectedPlan && isCurrentPlanYearly === isAnnually;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -125,23 +127,27 @@ export function UpgradePlanDialog({
           <div
             className={`flex w-full flex-col rounded-lg border p-6 text-left cursor-pointer transition-all ${
               selectedPlan === "pro" ? "ring-2 ring-primary" : ""
-            } ${
-              currentPlanBase === "pro" ? "bg-primary/10" : ""
-            }`}
+            } ${currentPlanBase === "pro" ? "bg-primary/10" : ""}`}
             onClick={() => setSelectedPlan("pro")}
           >
             <div className="flex justify-between items-center mb-8">
               <Badge className="w-fit">Pro</Badge>
               {currentPlanBase === "pro" && (
                 <Badge variant="secondary">
-                  {isCurrentPlanYearly === isAnnually ? "Current Plan" : isAnnually ? "Upgrade to Yearly" : "Switch to Monthly"}
+                  {isCurrentPlanYearly === isAnnually
+                    ? "Current Plan"
+                    : isAnnually
+                      ? "Upgrade to Yearly"
+                      : "Switch to Monthly"}
                 </Badge>
               )}
             </div>
             {isAnnually ? (
               <>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-medium">${proAnnualDiscount}</span>
+                  <span className="text-4xl font-medium">
+                    ${proAnnualDiscount}
+                  </span>
                   <span className="text-muted-foreground line-through text-lg">
                     ${proOriginalYearly}
                   </span>
@@ -181,23 +187,27 @@ export function UpgradePlanDialog({
           <div
             className={`flex w-full flex-col rounded-lg border p-6 text-left cursor-pointer transition-all ${
               selectedPlan === "ultra" ? "ring-2 ring-primary" : ""
-            } ${
-              currentPlanBase === "ultra" ? "bg-primary/10" : ""
-            }`}
+            } ${currentPlanBase === "ultra" ? "bg-primary/10" : ""}`}
             onClick={() => setSelectedPlan("ultra")}
           >
             <div className="flex justify-between items-center mb-8">
               <Badge className="w-fit">Ultra</Badge>
               {currentPlanBase === "ultra" && (
                 <Badge variant="secondary">
-                  {isCurrentPlanYearly === isAnnually ? "Current Plan" : isAnnually ? "Upgrade to Yearly" : "Switch to Monthly"}
+                  {isCurrentPlanYearly === isAnnually
+                    ? "Current Plan"
+                    : isAnnually
+                      ? "Upgrade to Yearly"
+                      : "Switch to Monthly"}
                 </Badge>
               )}
             </div>
             {isAnnually ? (
               <>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-medium">${ultraAnnualDiscount}</span>
+                  <span className="text-4xl font-medium">
+                    ${ultraAnnualDiscount}
+                  </span>
                   <span className="text-muted-foreground line-through text-lg">
                     ${ultraOriginalYearly}
                   </span>
@@ -238,9 +248,10 @@ export function UpgradePlanDialog({
           <Button onClick={handleSubscribe} disabled={isCurrentPlan}>
             {isCurrentPlan
               ? "Current Plan"
-              : currentPlanBase === selectedPlan && isCurrentPlanYearly !== isAnnually
-                ? isAnnually 
-                  ? "Upgrade to Yearly Plan" 
+              : currentPlanBase === selectedPlan &&
+                  isCurrentPlanYearly !== isAnnually
+                ? isAnnually
+                  ? "Upgrade to Yearly Plan"
                   : "Switch to Monthly Plan"
                 : `Subscribe to ${
                     selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)
