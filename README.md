@@ -78,7 +78,7 @@ To get a local copy up and running follow these simple example steps.
 - [x] AI Adaptive Quiz Mode
 - [x] Stripe Payment & Paid Plans
 - [ ] Explore Page & Flashcard Sharing
-- [ ] Lumi AI Asistant
+- [ ] Lumi AI Assistant
 - [ ] Keyword Based AI Flashcard Generation
 
 ## Contributing
