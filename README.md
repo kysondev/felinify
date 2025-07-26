@@ -76,8 +76,10 @@ To get a local copy up and running follow these simple example steps.
 - [x] Classic Flip Study Mode
 - [x] Challenge Mode
 - [x] AI Adaptive Quiz Mode
-- [ ] Stripe Payment & Paid Plans
+- [x] Stripe Payment & Paid Plans
 - [ ] Explore Page & Flashcard Sharing
+- [ ] Lumi AI Asistant
+- [ ] Keyword Based AI Flashcard Generation
 
 ## Contributing
 
