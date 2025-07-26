@@ -67,6 +67,32 @@ export const checkUserNameAvailability = async (username: string) => {
   }
 };
 
+export const checkEmailAvailability = async (email: string) => {
+  try {
+    const user = await db
+    .selectFrom("user")
+    .selectAll()
+      .where("email", "=", email)
+      .executeTakeFirst();
+    if (user?.email?.toLocaleLowerCase() === email.toLocaleLowerCase()) {
+      return {
+        success: false,
+        message: "Email is already in use",
+      };
+    }
+    return {
+      success: true,
+      message: "Email is available",
+    };
+  } catch (error) {
+    console.error("Error checking email availability:", error);
+    return {
+      success: false,
+      message: "Error checking email availability",
+    };
+  }
+};
+
 export const getUserWithId = async (id: string) => {
   try {
     const user = await db
