@@ -46,6 +46,7 @@ import {
 } from "components/ui/Form";
 import { useRouter } from "next/navigation";
 import { upload } from "actions/upload.action";
+import { checkUserNameAvailability } from "services/user.service";
 
 export function AccountSettings({ user }: { user: User }) {
   const router = useRouter();
@@ -100,6 +101,13 @@ export function AccountSettings({ user }: { user: User }) {
     }
 
     if (!validateUsername()) return;
+
+    const isUsernameTaken = await checkUserNameAvailability(username);
+
+    if (!isUsernameTaken.success) {
+      toast.error("Username is taken");
+      return;
+    }
 
     setIsSaving(true);
 

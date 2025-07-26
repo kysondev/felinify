@@ -48,7 +48,6 @@ export const checkUserNameAvailability = async (username: string) => {
       user &&
       user.name?.toLocaleLowerCase() === username.toLocaleLowerCase()
     ) {
-      console.log("Username already exists");
       return {
         success: false,
         message: "Username already exists",
