@@ -18,7 +18,27 @@ export default function RootLayout({
         <div>
           <Toaster
             toastOptions={{
-              style: { background: "#ffffff", color: "#000000" },
+              style: {
+                background: "#ffffff",
+                color: "#000000",
+                border: "1px solid #E2E2E2",
+                padding: "12px 16px",
+                fontSize: "14px",
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+              },
+              success: {
+                iconTheme: {
+                  primary: "#C96442",
+                  secondary: "#ffffff",
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: "#C96442",
+                  secondary: "#ffffff",
+                },
+              },
             }}
           />
         </div>
