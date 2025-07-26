@@ -1,16 +1,17 @@
 import argon2 from "argon2";
 import { betterAuth } from "better-auth";
 import { admin, twoFactor } from "better-auth/plugins";
-import TwoFactorVerificationEmail from "templates/emails/TwoFactorVerificationEmail";
-import EmailVerification from "templates/emails/EmailVerification";
-import ResetPassword from "templates/emails/ResetPassword";
-import { sendEmail } from "./email";
 import { redis } from "./redis";
 import { db } from "./db";
 import { stripe } from "@better-auth/stripe";
 import { plans } from "config/plans";
 import Stripe from "stripe";
 import { refillCreditsForUser } from "services/credit-refill.service";
+import {
+  sendResetPasswordEmail,
+  sendTwoFAEmail,
+  sendVerificationEmail,
+} from "services/email.service";
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -35,7 +36,6 @@ export const auth = betterAuth({
         if (value !== null && typeof value === "object") {
           return JSON.stringify(value);
         }
-
         return String(value);
       } catch (error) {
         console.error(`Error retrieving key ${key} from Redis:`, error);
@@ -68,15 +68,9 @@ export const auth = betterAuth({
     twoFactor({
       otpOptions: {
         async sendOTP({ user, otp }) {
-          await sendEmail({
-            to: user.email,
-            senderEmail: process.env.TWO_FA_EMAIL,
-            subject: "Two-Factor Authentication (2FA)",
-            html: TwoFactorVerificationEmail({ otp }),
-          });
+          await sendTwoFAEmail(user, otp);
         },
       },
-
       skipVerificationOnEnable: true,
     }),
     admin(),
@@ -124,12 +118,7 @@ export const auth = betterAuth({
   ],
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
-      await sendEmail({
-        to: user.email,
-        senderEmail: process.env.VERIFICATION_EMAIL,
-        subject: "Email Verification",
-        html: EmailVerification({ url }),
-      });
+      await sendVerificationEmail(user, url);
     },
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
@@ -157,12 +146,7 @@ export const auth = betterAuth({
       },
     },
     sendResetPassword: async ({ user, url }) => {
-      await sendEmail({
-        to: user.email,
-        senderEmail: process.env.RESET_PASSWORD_EMAIL,
-        subject: "Reset your password",
-        html: ResetPassword({ url }),
-      });
+      await sendResetPasswordEmail(user, url);
     },
   },
   socialProviders: {
