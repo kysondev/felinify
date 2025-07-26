@@ -39,7 +39,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
-import { getUser, getUserCredit } from "services/user.service";
+import { getUserCredit, getUserWithoutCache } from "services/user.service";
 import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "actions/auth.action";
@@ -81,7 +81,7 @@ const WorkspaceNavbar = async ({
     },
   ],
 }: Navbar1Props) => {
-  const { data: user } = await getUser();
+  const { data: user } = await getUserWithoutCache();
   return (
     <section className="py-4 px-6 flex justify-center fixed top-0 left-0 right-0 z-50 bg-background border-b">
       <div className="w-full">

@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 import { betterAuth } from "better-auth";
-import { admin, twoFactor } from "better-auth/plugins";
+import { admin, openAPI, twoFactor } from "better-auth/plugins";
 import { redis } from "./redis";
 import { db } from "./db";
 import { stripe } from "@better-auth/stripe";
@@ -115,6 +115,7 @@ export const auth = betterAuth({
         },
       },
     }),
+    openAPI(),
   ],
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {

@@ -14,7 +14,6 @@ import cuid from "cuid";
 import { jsonObjectFrom, jsonArrayFrom } from "kysely/helpers/postgres";
 
 export const getDecksByUserId = async (userId: string) => {
-  "use cache";
   try {
     const decks = await db
       .selectFrom("deck")

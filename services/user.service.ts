@@ -21,6 +21,53 @@ export const getUser = async () => {
   return getCachedUser(headersList);
 };
 
+export const getUserWithoutCache = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+    query: {
+      disableCookieCache: true,
+    },
+  });
+  if (!session) return { success: false, message: "Unauthorized" };
+  return {
+    success: true,
+    message: "User fetched successfully",
+    data: session.user,
+  };
+};
+
+export const checkUserNameAvailability = async (username: string) => {
+  try {
+    const user = await db
+      .selectFrom("user")
+      .selectAll()
+      .where("name", "=", username)
+      .executeTakeFirst();
+
+    if (
+      user &&
+      user.name?.toLocaleLowerCase() === username.toLocaleLowerCase()
+    ) {
+      console.log("Username already exists");
+      return {
+        success: false,
+        message: "Username already exists",
+      };
+    }
+    return {
+      success: true,
+      message: "User fetched successfully",
+      data: user,
+    };
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return {
+      success: false,
+      message: "Error fetching user",
+    };
+  }
+};
+
 export const getUserWithId = async (id: string) => {
   try {
     const user = await db

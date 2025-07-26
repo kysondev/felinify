@@ -4,6 +4,7 @@ import { signInSchema, signUpSchema } from "lib/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
+import { checkUserNameAvailability } from "services/user.service";
 
 export const signUp = async (
   name: string,
@@ -31,6 +32,12 @@ export const signUp = async (
       toast.error(result.error.issues[0].message);
       return;
     }
+    const isNameTaken = await checkUserNameAvailability(name);
+
+    if (!isNameTaken.success) {
+      toast.error(isNameTaken.message);
+      return;
+    }
     const { error } = await authClient.signUp.email({
       email,
       password,
@@ -54,7 +61,6 @@ export const signInWithEmail = async (
   setIsOTPOpen: any
 ) => {
   try {
-
     if (!email || !password) {
       toast.error("Please fill all the fields");
       return;
@@ -103,6 +109,7 @@ export const signInWithGoogle = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
       callbackURL: "/workspace",
+      newUserCallbackURL: "/api/user/signup/callback",
     });
     if (error) {
       toast.error(error.message as string);
@@ -119,7 +126,7 @@ export const signInWithGithub = async () => {
       toast.error(AUTH_DISABLED_MESSAGES.oauth);
       return;
     }
-    
+
     const { error } = await authClient.signIn.social({
       provider: "github",
       callbackURL: "/workspace",
