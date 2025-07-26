@@ -1,6 +1,5 @@
 import { Plan } from "config/plans";
 import { authClient } from "lib/auth-client";
-import { redirect } from "next/navigation";
 import { createCustomerPortalSession } from "services/subscription.service";
 import { getUser } from "services/user.service";
 
@@ -66,5 +65,5 @@ export const openCustomerPortalAction = async () => {
     return { success: false, message: "Failed to create customer portal URL" };
   }
 
-  redirect(customerPortalUrl.portalUrl);
+  window.location.assign(customerPortalUrl.portalUrl);
 };
