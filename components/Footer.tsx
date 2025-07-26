@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface MenuItem {
   title: string;
   links: {
@@ -32,8 +34,8 @@ const Footer = ({
     {
       title: "Product",
       links: [
-        { text: "Features", url: "#" },
-        { text: "Pricing", url: "#" },
+        { text: "Features", url: "#features" },
+        { text: "Pricing", url: "#pricing" },
         { text: "AI Flashcards", url: "#" },
         { text: "Spaced Repetition", url: "#" },
       ],
@@ -51,7 +53,7 @@ const Footer = ({
       title: "Support",
       links: [
         { text: "Help Center", url: "#" },
-        { text: "FAQ", url: "#" },
+        { text: "FAQ", url: "#faq" },
         { text: "Community", url: "#" },
       ],
     },
@@ -71,24 +73,25 @@ const Footer = ({
   ],
 }: FooterProps) => {
   return (
-    <section className="mt-20 mb-8">
-      <div className="container">
+    <section className="py-16 border-t border-border mt-16">
+      <div className="px-4 max-w-[1200px] mx-auto">
         <footer>
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
             <div className="col-span-2 mb-8 lg:mb-0">
               <div className="flex items-center gap-2 lg:justify-start">
-                <p className="text-xl font-semibold">{logo.title}</p>
+                <Image src="/lumix.png" alt="Lumix" width={30} height={30} />
+                <p className="text-xl font-semibold text-primary">{logo.title}</p>
               </div>
-              <p className="mt-4 font-medium">{tagline}</p>
+              <p className="mt-4 text-muted-foreground">{tagline}</p>
             </div>
             {menuItems.map((section, sectionIdx) => (
               <div key={sectionIdx}>
-                <h3 className="mb-4 font-bold">{section.title}</h3>
-                <ul className="space-y-4 text-muted-foreground">
+                <h3 className="mb-4 font-bold text-sm text-primary">{section.title}</h3>
+                <ul className="space-y-3 text-muted-foreground">
                   {section.links.map((link, linkIdx) => (
                     <li
                       key={linkIdx}
-                      className="font-medium hover:text-primary"
+                      className="font-medium hover:text-primary transition-colors"
                     >
                       <a href={link.url}>{link.text}</a>
                     </li>
@@ -97,11 +100,11 @@ const Footer = ({
               </div>
             ))}
           </div>
-          <div className="mt-24 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
+          <div className="mt-16 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
             <p>{copyright}</p>
-            <ul className="flex gap-4">
+            <ul className="flex gap-6">
               {bottomLinks.map((link, linkIdx) => (
-                <li key={linkIdx} className="underline hover:text-primary">
+                <li key={linkIdx} className="hover:text-primary transition-colors">
                   <a href={link.url}>{link.text}</a>
                 </li>
               ))}
