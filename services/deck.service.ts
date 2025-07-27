@@ -518,14 +518,30 @@ export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
       .selectFrom("deck")
       .select("id")
       .where("id", "=", data.deckId as string)
-      .where("userId", "=", data.userId as string)
       .executeTakeFirst();
 
     if (!deckExists) {
       return {
         success: false,
-        message: "Deck not found or you don't have permission to update it",
+        message: "Deck not found",
       };
+    }
+
+    const progressExists = await db
+      .selectFrom("userDeckProgress")
+      .select("id")
+      .where("deckId", "=", data.deckId as string)
+      .where("userId", "=", data.userId as string)
+      .executeTakeFirst();
+
+    if (!progressExists) {
+      const newProgress = await createUserDeckProgress(
+        data.userId as string,
+        data.deckId as string
+      );
+      if (!newProgress.success) {
+        return newProgress;
+      }
     }
 
     const updatedProgress = await db
@@ -552,6 +568,38 @@ export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
   }
 };
 
+export const createUserDeckProgress = async (
+  userId: string,
+  deckId: string
+) => {
+  try {
+    const newProgress = await db
+      .insertInto("userDeckProgress")
+      .values({
+        id: cuid(),
+        userId: userId,
+        deckId: deckId,
+        mastery: 0,
+        completedSessions: 0,
+        challengeCompleted: 0,
+        lastStudied: null,
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
+      })
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!newProgress) {
+      return { success: false, message: "Error creating deck progress" };
+    }
+
+    return { success: true, data: newProgress };
+  } catch (error) {
+    console.error("Error creating user deck progress:", error);
+    return { success: false, message: "Error creating deck progress", error };
+  }
+};
+
 export const saveStudySession = async (data: NewStudySession) => {
   try {
     const newSession = await db
@@ -569,6 +617,44 @@ export const saveStudySession = async (data: NewStudySession) => {
 
     if (!newSession) {
       return { success: false, message: "Error saving study session" };
+    }
+
+    const existingDeck = await db
+      .selectFrom("deck")
+      .selectAll()
+      .where("id", "=", data.deckId as string)
+      .executeTakeFirst();
+
+    if (!existingDeck) {
+      return { success: false, message: "Deck not found" };
+    }
+
+    const updateDeckStudyCount = await db
+      .updateTable("deck")
+      .set({
+        studyCount: existingDeck.studyCount + 1,
+      })
+      .where("id", "=", data.deckId as string)
+      .execute();
+
+    if (!updateDeckStudyCount) {
+      return { success: false, message: "Error updating deck study count" };
+    }
+
+    const studyTime = data.lengthInSeconds as number;
+
+    const newStudyHour = Math.floor(existingDeck.studyHour + studyTime / 3600);
+
+    const updateDeckStudyHours = await db
+      .updateTable("deck")
+      .set({
+        studyHour: newStudyHour,
+      })
+      .where("id", "=", data.deckId as string)
+      .execute();
+
+    if (!updateDeckStudyHours) {
+      return { success: false, message: "Error updating deck study hours" };
     }
 
     const sumTotalStudyTime = await db
@@ -656,17 +742,23 @@ export const createQuizAccessToken = async (
   numQuestions: number
 ) => {
   try {
-    const deckExists = await db
+    const deck = await db
       .selectFrom("deck")
-      .select("id")
+      .select(["id", "userId", "visibility"])
       .where("id", "=", deckId)
-      .where("userId", "=", userId)
       .executeTakeFirst();
 
-    if (!deckExists) {
+    if (!deck) {
       return {
         success: false,
-        message: "Deck not found or you don't have permission to access it",
+        message: "Deck not found",
+      };
+    }
+
+    if (deck.visibility !== "public" && deck.userId !== userId) {
+      return {
+        success: false,
+        message: "You don't have permission to access this deck",
       };
     }
 

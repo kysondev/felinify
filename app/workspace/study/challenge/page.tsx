@@ -274,7 +274,7 @@ export default function ChallengePageContent() {
           return;
         }
 
-        if (deckResponse.data.userId !== user.id) {
+        if (deckResponse.data.visibility !== "public" && deckResponse.data.userId !== user.id) {
           setNoPermission(true);
           return;
         }

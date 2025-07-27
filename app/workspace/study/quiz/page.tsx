@@ -148,6 +148,12 @@ export default function QuizPage() {
           return;
         }
 
+        if (deckResult.data.visibility !== "public" && deckResult.data.userId !== userId) {
+          setError("You don't have permission to access this deck");
+          setIsLoading(false);
+          return;
+        }
+
         setDeck(deckResult.data);
         setLoadingStage("generating-quiz");
         setLoadingProgress(60);

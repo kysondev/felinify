@@ -10,33 +10,106 @@ import {
   Star,
   User,
   Compass,
+  Target,
+  AlertCircle,
+  ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "components/ui/Card";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
-import { Flashcard } from "components/library/Flashcard";
 import { getDeckById, getReviewsByDeckId } from "services/deck.service";
 import { getUser, getUserWithId } from "services/user.service";
-import { Review } from "db/types/models.types";
+import { Review, User as UserType } from "db/types/models.types";
+import { Progress } from "components/ui/Progress";
+import ExploreDeckStudyOptions from "components/explore/ExploreDeckStudyOptions";
+import ExploreFlashcardGrid from "components/explore/ExploreFlashcardList";
 
-export default async function DeckPage({
-  params,
-}: {
+interface DeckPageProps {
   params: Promise<{ deckId: string }>;
-}) {
+}
+
+export default async function DeckPage({ params }: DeckPageProps) {
   const { deckId } = await params;
   const { data: user } = await getUser();
   const { data: deck } = await getDeckById(deckId, user?.id as string);
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
   const { data: reviews } = await getReviewsByDeckId(deckId);
 
-  if (!deck) {
+  if (!deck || (deck.visibility === "private" && deck.userId !== user?.id)) {
     return (
       <div className="container max-w-5xl mx-auto py-8 px-4">
-        <h1 className="text-2xl font-bold">Deck not found</h1>
+        <nav className="flex items-center text-sm text-muted-foreground mt-16 mb-8">
+          <Link
+            href="/workspace"
+            className="flex items-center hover:text-foreground transition-colors"
+          >
+            <Home className="h-4 w-4 mr-1" />
+            <span>Workspace</span>
+          </Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <Link
+            href="/workspace/explore"
+            className="flex items-center hover:text-foreground transition-colors"
+          >
+            <Compass className="h-4 w-4 mr-1" />
+            <span>Explore</span>
+          </Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <span className="text-foreground font-medium truncate max-w-[200px]">
+            Deck Details
+          </span>
+        </nav>
+
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+          <div className="relative mb-8">
+            <div className="p-6 bg-muted/50 rounded-full">
+              <AlertCircle className="h-16 w-16 text-muted-foreground/60" />
+            </div>
+            <div className="absolute -top-2 -right-2 p-2 bg-destructive/10 rounded-full">
+              <BookOpen className="h-6 w-6 text-destructive" />
+            </div>
+          </div>
+
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            Deck Not Found
+          </h1>
+
+          <p className="text-muted-foreground text-lg max-w-md leading-relaxed mb-8">
+            {!deck
+              ? "The deck you're looking for doesn't exist or may have been removed."
+              : "This deck is private and you don't have permission to view it."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button asChild className="flex items-center gap-2">
+              <Link href="/workspace/explore">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Explore
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/workspace/library">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Go to Library
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-12 p-6 rounded-lg border border-border/60 bg-muted/30 max-w-md">
+            <h3 className="font-semibold text-foreground mb-3">
+              Looking for something specific?
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Try searching for similar decks in our explore section, or create
+              your own deck in the library.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
+
+  const masteryProgress = deck.progress?.mastery || 0;
 
   return (
     <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
@@ -62,57 +135,95 @@ export default async function DeckPage({
         </span>
       </nav>
 
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 border-b pb-6">
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold">{deck.name}</h1>
-          <p className="text-muted-foreground mt-2">{deck.description}</p>
+      <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-6 border-b pb-6">
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold">{deck.name}</h1>
+            <p className="text-muted-foreground mt-2">{deck.description}</p>
 
-          <div className="flex items-center mt-4 gap-4">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={deckOwner?.image || ""} />
-                <AvatarFallback>{deckOwner?.name?.charAt(0)}</AvatarFallback>
-              </Avatar>
+            <div className="flex items-center mt-4 gap-4">
+              <div className="flex items-center gap-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={deckOwner?.image || ""} />
+                  <AvatarFallback>{deckOwner?.name?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="text-sm">
+                  <div>Created by</div>
+                  <div className="font-medium">@{deckOwner?.name}</div>
+                </div>
+              </div>
+
               <div className="text-sm">
-                <div>Created by</div>
-                <div className="font-medium">@{deckOwner?.name}</div>
+                <div>Last updated</div>
+                <div className="font-medium">
+                  {new Date(deck.createdAt).toLocaleDateString()}
+                </div>
               </div>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-lg border border-border/60 bg-muted/50 mt-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Target className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">
+                  Your Progress
+                </span>
+              </div>
+              <span className="text-lg font-bold text-foreground">
+                {masteryProgress}%
+              </span>
             </div>
 
-            <div className="text-sm">
-              <div>Last updated</div>
-              <div className="font-medium">
-                {new Date(deck.createdAt).toLocaleDateString()}
-              </div>
-            </div>
+            <Progress value={masteryProgress} className="w-full h-2" />
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 min-w-[200px]">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1 text-sm">
-              <Star className="h-4 w-4 text-yellow-500" />
-              {deck.rating === 0 ? "N/A" : deck.rating} (0 reviews)
-            </span>
-            <span className="flex items-center gap-1 text-sm">
-              <User className="h-4 w-4" />
-              {deck.studyCount} studies
-            </span>
+        <div className="flex flex-col gap-4 min-w-[200px] h-full">
+          <div className="p-4 rounded-lg border border-border/60 bg-muted/30">
+            <h3 className="text-sm font-semibold text-foreground mb-3">
+              Deck Statistics
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Star className="h-4 w-4 text-yellow-500" />
+                  Rating
+                </span>
+                <span className="text-sm font-medium">
+                  {deck.rating === 0 ? "N/A" : deck.rating}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <User className="h-4 w-4" />
+                  Studies
+                </span>
+                <span className="text-sm font-medium">{deck.studyCount}</span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <BookOpen className="h-4 w-4" />
+                  Flashcards
+                </span>
+                <span className="text-sm font-medium">
+                  {deck.flashcards?.length || 0}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  Study Time
+                </span>
+                <span className="text-sm font-medium">{deck.studyHour}h</span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-1 text-sm">
-            <BookOpen className="h-4 w-4" />
-            <span>{deck.flashcards?.length || 0} flashcards</span>
-          </div>
-
-          <div className="flex items-center gap-1 text-sm">
-            <Clock className="h-4 w-4" />
-            <span>{deck.studyHour} hours</span>
-          </div>
-
-          <div className="flex gap-2 mt-2">
-            <Button className="w-full">Study Deck</Button>
-          </div>
+          <ExploreDeckStudyOptions deckId={deck.id} user={user as UserType} />
         </div>
       </div>
 
@@ -139,16 +250,7 @@ export default async function DeckPage({
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {deck.flashcards?.map((flashcard) => (
-                <Flashcard
-                  key={String(flashcard.id)}
-                  id={String(flashcard.id)}
-                  question={String(flashcard.question)}
-                  answer={String(flashcard.answer)}
-                />
-              ))}
-            </div>
+            <ExploreFlashcardGrid flashcards={deck.flashcards || []} />
           </div>
         </TabsContent>
 

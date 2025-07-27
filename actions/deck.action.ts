@@ -204,15 +204,14 @@ export const saveStudyProgressAction = async (data: UpdateProgress) => {
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
-    const result = await saveStudyProgressToDeck(data as UpdateProgress);
-    if (result.success) {
+    const { success, message } = await saveStudyProgressToDeck(data as UpdateProgress);
+    if (success) {
       return {
         success: true,
         message: "Study progress saved successfully",
-        data: result.data,
       };
     } else {
-      return { success: false, message: result.message };
+      return { success: false, message: message };
     }
   } catch (error) {
     console.error("Error saving study progress:", error);

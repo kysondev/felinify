@@ -25,7 +25,8 @@ import {
   Play,
   ChevronRight,
   Target,
-  Zap
+  Zap,
+  Info
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -34,6 +35,7 @@ import { Progress } from "components/ui/Progress";
 import { Badge } from "components/ui/Badge";
 import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
 import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
+import { formatDate } from "utils/date.utils";
 
 export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
@@ -108,7 +110,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
             </div>
             <p className="text-xs font-bold text-foreground">
               {deck.progress?.lastStudied
-                ? new Date(deck.progress.lastStudied as Date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                ? formatDate(deck.progress.lastStudied)
                 : "Never"}
             </p>
             <p className="text-xs text-muted-foreground">Last Study</p>
@@ -120,7 +122,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
                 <TrendingUp className="h-4 w-4 text-primary" />
               </div>
             </div>
-            <p className="text-xs font-bold text-foreground">{deck.studyCount || 0}</p>
+            <p className="text-xs font-bold text-foreground">{deck.progress?.completedSessions || 0}</p>
             <p className="text-xs text-muted-foreground">Sessions</p>
           </div>
         </div>
@@ -229,6 +231,17 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
                 </div>
+                <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border/50">
+              <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-primary" />
+                Adaptive Quiz Requirements
+              </h4>
+              <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
+                <li>Complete Challenge Mode at least 3 times</li>
+                <li>Achieve at least 10% mastery in this deck</li>
+                <li>Have at least 1 Lumix credit available</li>
+              </ul>
+            </div>
               </div>
             </DialogContent>
           </Dialog>

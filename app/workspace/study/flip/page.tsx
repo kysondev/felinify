@@ -105,7 +105,7 @@ export default function FlipStudyPage() {
           return;
         }
 
-        if (deckResponse.data.userId !== user.id) {
+        if (deckResponse.data.visibility !== "public" && deckResponse.data.userId !== user.id) {
           setNoPermission(true);
           return;
         }

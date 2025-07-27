@@ -157,6 +157,7 @@ export const useStudySession = ({
       }
       fetch(`/api/revalidate?path=/workspace/library`);
       fetch(`/api/revalidate?path=/workspace/explore`);
+      fetch(`/api/revalidate?path=/workspace/explore/deck/${deck?.id}`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
@@ -184,6 +185,7 @@ export const useStudySession = ({
       }
       fetch(`/api/revalidate?path=/workspace/library`);
       fetch(`/api/revalidate?path=/workspace/explore`);
+      fetch(`/api/revalidate?path=/workspace/explore/deck/${deck?.id}`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {

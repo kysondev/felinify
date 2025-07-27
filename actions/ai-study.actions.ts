@@ -304,7 +304,7 @@ export const createQuizAccessTokenAction = async (
     console.error("Error creating quiz access token:", error);
     return {
       success: false,
-      message: "Error creating quiz access token",
+      message: "Error creating quiz access token"
     };
   }
 };
