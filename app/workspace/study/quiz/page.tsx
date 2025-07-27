@@ -329,7 +329,6 @@ export default function QuizPage() {
 
   if (quizCompleted) {
     const masteryGained = getNewMastery() - (deck?.progress?.mastery || 0);
-    console.log(masteryGained);
 
     return (
       <FinalResults

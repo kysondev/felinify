@@ -13,6 +13,89 @@ import { db } from "lib/db";
 import cuid from "cuid";
 import { jsonObjectFrom, jsonArrayFrom } from "kysely/helpers/postgres";
 
+export const getFeaturedDecks = async () => {
+  try {
+    const decks = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+        "studyCount",
+        "studyHour",
+        "visibility",
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+      ])
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .orderBy("createdAt", "desc")
+      .execute();
+
+    return { success: true, data: decks as unknown as Deck[] };
+  } catch (error) {
+    console.error("Error fetching featured decks:", error);
+    throw error;
+  }
+};
+
+export const getPopularDecks = async () => {
+  try {
+    const decks = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+        "visibility",
+        "studyCount",
+        "studyHour",
+
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+      ])
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .orderBy("studyCount", "desc")
+      .execute();
+
+    return { success: true, data: decks as unknown as Deck[] };
+  } catch (error) {
+    console.error("Error fetching popular decks:", error);
+    throw error;
+  }
+};
+
 export const getDecksByUserId = async (userId: string) => {
   try {
     const decks = await db
@@ -24,6 +107,10 @@ export const getDecksByUserId = async (userId: string) => {
         "description",
         "createdAt",
         "updatedAt",
+        "rating",
+        "visibility",
+        "studyCount",
+        "studyHour",
 
         jsonArrayFrom(
           eb
@@ -62,6 +149,10 @@ export const getDeckById = async (deckId: string, userId: string) => {
         "description",
         "createdAt",
         "updatedAt",
+        "rating",
+        "visibility",
+        "studyCount",
+        "studyHour",
 
         jsonArrayFrom(
           eb
@@ -69,6 +160,13 @@ export const getDeckById = async (deckId: string, userId: string) => {
             .selectAll()
             .whereRef("flashcard.deckId", "=", "deck.id")
         ).as("flashcards"),
+
+        jsonArrayFrom(
+          eb
+            .selectFrom("review")
+            .selectAll()
+            .whereRef("review.deckId", "=", "deck.id")
+        ).as("reviews"),
 
         jsonObjectFrom(
           eb
@@ -123,6 +221,36 @@ export const getDeckById = async (deckId: string, userId: string) => {
   }
 };
 
+export const getReviewsByDeckId = async (deckId: string) => {
+  try {
+    const reviews = await db
+      .selectFrom("review")
+      .select((eb) => [
+        "id",
+        "userId",
+        "deckId",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+
+        jsonObjectFrom(
+          eb
+            .selectFrom("user")
+            .selectAll()
+            .whereRef("user.id", "=", "review.userId")
+        ).as("user"),
+      ])
+      .where("deckId", "=", deckId)
+      .execute();
+
+    return { success: true, data: reviews };
+  } catch (error) {
+    console.error("Error fetching reviews by deck ID:", error);
+    return { success: false, message: "Error fetching reviews", error };
+  }
+};
+
 export const createDeck = async (deckData: NewDeck) => {
   try {
     const newDeck = await db
@@ -132,6 +260,10 @@ export const createDeck = async (deckData: NewDeck) => {
         name: deckData.name,
         description: deckData.description || null,
         userId: deckData.userId,
+        rating: 0,
+        studyCount: 0,
+        studyHour: 0,
+        visibility: "public",
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
       })

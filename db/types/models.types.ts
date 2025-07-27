@@ -22,3 +22,11 @@ export type NewStudySession = Insertable<Database["studySession"]>;
 export type UpdateStudySession = Updateable<Database["studySession"]>;
 
 export type Subscription = Selectable<Database["subscription"]>;
+
+export type Review = Selectable<Database["review"]>;
+export type NewReview = Insertable<Database["review"]>;
+export type UpdateReview = Updateable<Database["review"]>;
+
+export type Tag = Selectable<Database["tag"]>;
+export type NewTag = Insertable<Database["tag"]>;
+export type UpdateTag = Updateable<Database["tag"]>;

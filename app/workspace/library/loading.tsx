@@ -2,10 +2,6 @@ import { Button } from "components/ui/Button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { PlusCircle } from "lucide-react";
@@ -69,36 +65,60 @@ export default function Loading() {
                 </Dialog>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Array.from({ length: 2 }).map((_, index) => (
-                  <Card key={index} className="overflow-hidden">
-                    <CardHeader className="pb-3">
-                      <CardTitle>
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <Card key={index} className="border-border">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-1">
                         <Skeleton className="h-6 w-3/4" />
-                      </CardTitle>
-                      <CardDescription>
+                        <Skeleton className="h-5 w-16" />
+                      </div>
+                      <div className="mb-2">
                         <Skeleton className="h-4 w-full mt-2" />
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="pb-2">
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span className="text-muted-foreground flex items-center gap-1">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <Skeleton className="h-4 w-12" />
-                        </span>
-                        <span className="text-muted-foreground flex items-center gap-1">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <Skeleton className="h-4 w-16" />
-                        </span>
+                        <Skeleton className="h-4 w-4/5 mt-2" />
                       </div>
-                      <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                        <Skeleton className="h-full w-1/3 rounded-full" />
+                      
+                      <div className="grid grid-cols-3 gap-3 mb-5">
+                        <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
+                          <div className="flex justify-center mb-2">
+                            <Skeleton className="h-7 w-7 rounded-md" />
+                          </div>
+                          <Skeleton className="h-3 w-8 mx-auto" />
+                          <Skeleton className="h-3 w-10 mx-auto mt-1" />
+                        </div>
+                        
+                        <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
+                          <div className="flex justify-center mb-2">
+                            <Skeleton className="h-7 w-7 rounded-md" />
+                          </div>
+                          <Skeleton className="h-3 w-8 mx-auto" />
+                          <Skeleton className="h-3 w-16 mx-auto mt-1" />
+                        </div>
+                        
+                        <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
+                          <div className="flex justify-center mb-2">
+                            <Skeleton className="h-7 w-7 rounded-md" />
+                          </div>
+                          <Skeleton className="h-3 w-8 mx-auto" />
+                          <Skeleton className="h-3 w-12 mx-auto mt-1" />
+                        </div>
                       </div>
-                      <Skeleton className="h-3 w-16 mt-1" />
+                      
+                      <div className="p-4 rounded-lg border border-border/60 bg-muted/50 mb-5">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Skeleton className="h-4 w-4" />
+                            <Skeleton className="h-4 w-32" />
+                          </div>
+                          <Skeleton className="h-5 w-8" />
+                        </div>
+                        <Skeleton className="h-2 w-full" />
+                      </div>
+                      
+                      <div className="flex gap-3">
+                        <Skeleton className="h-9 w-full" />
+                        <Skeleton className="h-9 w-full" />
+                      </div>
                     </CardContent>
-                    <CardFooter className="flex justify-between pt-2">
-                      <Skeleton className="h-8 w-16 rounded" />
-                      <Skeleton className="h-8 w-20 rounded" />
-                    </CardFooter>
                   </Card>
                 ))}
 

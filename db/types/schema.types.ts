@@ -1,4 +1,5 @@
 import { ColumnType, Generated } from "kysely";
+import { User } from "./models.types";
 
 export interface UserTable {
   id: Generated<string> | string;
@@ -82,9 +83,15 @@ export interface DeckTable {
   id: Generated<string> | string;
   name: string;
   description: string | null;
+  rating: number;
+  studyCount: number;
+  studyHour: number;
+  visibility: "public" | "private";
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
   userId: string;
+  tags: TagTable[] | null;
+  reviews: ReviewTable[] | null;
   flashcards: FlashcardTable[] | null;
   progress: UserDeckProgressTable | null;
 }
@@ -97,6 +104,24 @@ export interface UserDeckProgressTable {
   completedSessions: number;
   challengeCompleted: number;
   lastStudied: Date | null;
+  createdAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
+}
+
+export interface TagTable {
+  id: Generated<string> | string;
+  name: string;
+  createdAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
+}
+
+export interface ReviewTable {
+  id: Generated<string> | string;
+  description: string | null;
+  rating: number;
+  deckId: string;
+  userId: string;
+  user: User | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }
@@ -157,4 +182,6 @@ export interface Database {
   studySession: StudySessionTable;
   quizAccessToken: QuizAccessTokenTable;
   subscription: SubscriptionTable;
+  review: ReviewTable;
+  tag: TagTable;
 }

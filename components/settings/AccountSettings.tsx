@@ -102,16 +102,17 @@ export function AccountSettings({ user }: { user: User }) {
 
     if (!validateUsername()) return;
 
-    const isUsernameTaken = await checkUserNameAvailability(username);
-
-    if (!isUsernameTaken.success) {
-      toast.error("Username is taken");
-      return;
-    }
-
     setIsSaving(true);
 
     try {
+
+      const isUsernameTaken = await checkUserNameAvailability(username);
+
+      if (!isUsernameTaken.success && username !== user?.name) {
+        toast.error("Username is taken");
+        return;
+      }
+      
       if (username !== user?.name) {
         await authClient.updateUser({ name: username });
       }

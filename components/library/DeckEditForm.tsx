@@ -87,6 +87,7 @@ export const DeckEditForm = ({
           });
           router.refresh();
           toast.success("Deck updated successfully");
+          fetch(`/api/revalidate?path=/workspace/explore`)
         } else {
           toast.error(result.message || "Failed to update deck");
         }
@@ -106,6 +107,7 @@ export const DeckEditForm = ({
         toast.success("Deck deleted successfully");
         router.refresh();
         setDeleteDialogOpen(false);
+        fetch(`/api/revalidate?path=/workspace/explore`)
       } else {
         toast.error(result.message || "Failed to delete deck");
       }

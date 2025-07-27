@@ -34,6 +34,10 @@ export const createDeckAction = async (
       name: name as string,
       userId: userId,
       description: description as string,
+      visibility: "public",
+      rating: 0,
+      studyCount: 0,
+      studyHour: 0,
     });
     if (result.success) {
       return {

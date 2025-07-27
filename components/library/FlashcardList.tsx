@@ -30,7 +30,6 @@ export const FlashcardList = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isFullViewDialogOpen, setIsFullViewDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(null);
@@ -63,6 +62,7 @@ export const FlashcardList = ({
         data.question,
         data.answer
       );
+      fetch(`/api/revalidate?path=/workspace/explore`)
 
       if (result.success) {
         toast.success("Flashcard added successfully");
@@ -145,13 +145,6 @@ export const FlashcardList = ({
   const showFullContent = (title: string, content: string) => {
     setFullViewContent({title, content});
     setIsFullViewDialogOpen(true);
-  };
-
-  const toggleFlip = (id: string) => {
-    setFlippedCards(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
   };
 
   const filteredFlashcards = deck.flashcards?.filter(card => 
@@ -268,10 +261,9 @@ export const FlashcardList = ({
                 id={flashcard.id.toString()}
                 question={flashcard.question}
                 answer={flashcard.answer}
-                isFlipped={!!flippedCards[flashcard.id.toString()]}
-                onFlip={toggleFlip}
                 onEdit={handleEdit}
                 onShowFullContent={showFullContent}
+                isPreview={true}
               />
             ))}
           </div>
