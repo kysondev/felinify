@@ -94,6 +94,7 @@ export const checkEmailAvailability = async (email: string) => {
 };
 
 export const getUserWithId = async (id: string) => {
+  "use cache";
   try {
     const user = await db
       .selectFrom("user")
