@@ -3,6 +3,7 @@ import { getUser } from "services/user.service";
 import { DeckEditForm } from "components/library/DeckEditForm";
 import { FlashcardList } from "components/library/FlashcardList";
 import { DeckStats } from "components/library/DeckStats";
+import { DeckVisibilityToggle } from "components/library/DeckVisibilityToggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { Deck } from "db/types/models.types";
 import Link from "next/link";
@@ -85,9 +86,13 @@ export default async function DeckEditPage({
 
         <TabsContent
           value="details"
-          className="mt-0 animate-in fade-in-50 duration-300"
+          className="mt-0 animate-in fade-in-50 duration-300 space-y-6"
         >
           <DeckEditForm
+            deck={deck as unknown as Deck}
+            userId={user?.id as string}
+          />
+          <DeckVisibilityToggle
             deck={deck as unknown as Deck}
             userId={user?.id as string}
           />

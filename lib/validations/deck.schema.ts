@@ -28,6 +28,7 @@ export const createDeckSchema = z.object({
     .min(3, { message: "Name must be at least 3 characters" })
     .max(20, { message: "Name must be less than 20 characters" }),
   description: z.string().optional(),
+  visibility: z.enum(["public", "private"]),
 });
 
 export const createDeckWithAISchema = z.object({
@@ -39,6 +40,7 @@ export const createDeckWithAISchema = z.object({
     .string()
     .min(100, { message: "Notes must be at least 100 characters" })
     .max(8000, { message: "Notes must be less than 8000 characters" }),
+  visibility: z.enum(["public", "private"]),
 });
 
 export const updateDeckSchema = z.object({
@@ -48,6 +50,7 @@ export const updateDeckSchema = z.object({
     .max(20, { message: "Name must be less than 20 characters" })
     .optional(),
   description: z.string().optional(),
+  visibility: z.enum(["public", "private"]).optional(),
 });
 
 export const flashcardSchema = z

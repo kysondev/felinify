@@ -265,7 +265,7 @@ export const createDeck = async (deckData: NewDeck) => {
         rating: 0,
         studyCount: 0,
         studyHour: 0,
-        visibility: "public",
+        visibility: deckData.visibility || "public",
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
       })
@@ -325,6 +325,7 @@ export const updateDeck = async (deckData: UpdateDeck) => {
         ...(deckData.description !== undefined && {
           description: deckData.description,
         }),
+        ...(deckData.visibility && { visibility: deckData.visibility }),
         updatedAt: new Date(),
       })
       .where("id", "=", deckData.id as string)

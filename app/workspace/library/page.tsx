@@ -54,18 +54,20 @@ export default async function LibraryPage() {
                       <span className="hidden sm:block">Create Deck</span>
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
+                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+                    <DialogHeader className="pb-3">
                       <DialogTitle>Create New Flashcard Deck</DialogTitle>
                       <DialogDescription>
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm
-                      user={user as User}
-                      subscription={subscription as Subscription}
-                      decks={decks}
-                    />
+                    <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
+                      <CreateDeckForm
+                        user={user as User}
+                        subscription={subscription as Subscription}
+                        decks={decks}
+                      />
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>
@@ -83,18 +85,20 @@ export default async function LibraryPage() {
                       </p>
                     </Card>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
+                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+                    <DialogHeader className="pb-3">
                       <DialogTitle>Create New Flashcard Deck</DialogTitle>
                       <DialogDescription>
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <CreateDeckForm
-                      user={user as User}
-                      subscription={subscription as Subscription}
-                      decks={decks}
-                    />
+                    <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
+                      <CreateDeckForm
+                        user={user as User}
+                        subscription={subscription as Subscription}
+                        decks={decks}
+                      />
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>

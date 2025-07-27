@@ -4,7 +4,8 @@ import { Button } from "components/ui/Button";
 import { DialogFooter, useDialog } from "components/ui/Dialog";
 import { Input } from "components/ui/Input";
 import { Textarea } from "components/ui/Textarea";
-import { Sparkles, Brain, Upload } from "lucide-react";
+import { Switch } from "components/ui/Switch";
+import { Sparkles, Brain, Upload, Globe, Lock, Eye, EyeOff } from "lucide-react";
 import { useTransition } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { useRouter } from "next/navigation";
@@ -63,6 +64,7 @@ export function CreateDeckForm({
     defaultValues: {
       name: "",
       description: "",
+      visibility: "public",
     },
   });
 
@@ -71,6 +73,7 @@ export function CreateDeckForm({
     defaultValues: {
       name: "",
       notes: "",
+      visibility: "public",
     },
   });
 
@@ -79,7 +82,8 @@ export function CreateDeckForm({
       const result = await createDeckAction(
         user.id,
         data.name,
-        data.description
+        data.description,
+        data.visibility
       );
       if (result.success) {
         fetch(`/api/revalidate?path=/workspace/library`);
@@ -108,7 +112,8 @@ export function CreateDeckForm({
       const deckResult = await createDeckAction(
         user.id,
         data.name,
-        "AI generated deck"
+        "AI generated deck",
+        data.visibility
       );
 
       if (!deckResult.success) {
@@ -195,19 +200,19 @@ export function CreateDeckForm({
           Warning: You have reached your maximum number of decks
         </AlertTitle>
       </Alert>
-      <TabsList className="grid w-full grid-cols-2 mb-4">
-        <TabsTrigger value="manual" className="flex items-center gap-2">
+      <TabsList className="grid w-full grid-cols-2 mb-3">
+        <TabsTrigger value="manual" className="flex items-center gap-2 text-sm">
           Manual Creation
         </TabsTrigger>
-        <TabsTrigger value="ai" className="flex items-center gap-2">
+        <TabsTrigger value="ai" className="flex items-center gap-2 text-sm">
           <Sparkles className="h-4 w-4" />
           AI Generation
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="manual" className="space-y-4 py-2">
+      <TabsContent value="manual" className="space-y-3 py-1">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
               control={form.control}
               name="name"
@@ -232,10 +237,48 @@ export function CreateDeckForm({
                   <FormControl>
                     <Textarea
                       placeholder="Enter a description for your deck..."
-                      className="min-h-[100px] resize-none"
+                      className="min-h-[80px] resize-none"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="visibility"
+              disabled={!user.emailVerified}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Deck Visibility</FormLabel>
+                  <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        {field.value === "public" ? (
+                          <Eye className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        )}
+                        <span className="text-sm font-medium">
+                          {field.value === "public" ? "Public" : "Private"}
+                        </span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {field.value === "public" 
+                          ? "Anyone can view" 
+                          : "Only you can view"}
+                      </span>
+                    </div>
+                    <Switch
+                      checked={field.value === "public"}
+                      onCheckedChange={(checked) => 
+                        field.onChange(checked ? "public" : "private")
+                      }
+                      disabled={!user.emailVerified}
+                    />
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -259,13 +302,13 @@ export function CreateDeckForm({
         </Form>
       </TabsContent>
 
-      <TabsContent value="ai" className="space-y-4 py-2">
-        <div className="bg-secondary/50 rounded-lg p-4 border border-border">
-          <h3 className="text-lg font-medium flex items-center gap-2 mb-2">
-            <Brain className="h-5 w-5 text-primary" />
+      <TabsContent value="ai" className="space-y-3 py-1">
+        <div className="bg-secondary/50 rounded-lg p-3 border border-border">
+          <h3 className="text-base font-medium flex items-center gap-2 mb-2">
+            <Brain className="h-4 w-4 text-primary" />
             AI Flashcard Generation
           </h3>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-muted-foreground mb-3">
             Paste your study notes or upload a document, and our AI will
             automatically create a deck with flashcards for you.
           </p>
@@ -284,10 +327,10 @@ export function CreateDeckForm({
           )}
 
           <Form {...aiForm}>
-            <form
-              onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
-              className="space-y-4"
-            >
+                      <form
+            onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+            className="space-y-3"
+          >
               <FormField
                 control={aiForm.control}
                 name="name"
@@ -318,11 +361,49 @@ export function CreateDeckForm({
                     <FormControl>
                       <Textarea
                         placeholder="Paste your study notes here..."
-                        className="min-h-[100px] text-sm resize-none"
+                        className="min-h-[80px] text-sm resize-none"
                         disabled={isGenerating}
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={aiForm.control}
+                name="visibility"
+                disabled={!user.emailVerified}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deck Visibility</FormLabel>
+                                      <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        {field.value === "public" ? (
+                          <Eye className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        )}
+                        <span className="text-sm font-medium">
+                          {field.value === "public" ? "Public" : "Private"}
+                        </span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {field.value === "public" 
+                          ? "Anyone can view" 
+                          : "Only you can view"}
+                      </span>
+                    </div>
+                    <Switch
+                      checked={field.value === "public"}
+                      onCheckedChange={(checked) => 
+                        field.onChange(checked ? "public" : "private")
+                      }
+                      disabled={!user.emailVerified || isGenerating}
+                    />
+                  </div>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -20,7 +20,8 @@ import { getUser } from "services/user.service";
 export const createDeckAction = async (
   userId: string,
   name: string,
-  description?: string
+  description?: string,
+  visibility?: "public" | "private"
 ) => {
   try {
     const { data: user } = await getUser();
@@ -34,7 +35,7 @@ export const createDeckAction = async (
       name: name as string,
       userId: userId,
       description: description as string,
-      visibility: "public",
+      visibility: visibility || "public",
       rating: 0,
       studyCount: 0,
       studyHour: 0,
