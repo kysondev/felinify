@@ -4,18 +4,45 @@ import { useState } from "react";
 import { Deck } from "db/types/models.types";
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
-import { addFlashcardAction, deleteFlashcardAction, updateFlashcardAction } from "actions/deck.action";
+import {
+  addFlashcardAction,
+  deleteFlashcardAction,
+  updateFlashcardAction,
+} from "actions/deck.action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FlashcardSchema, flashcardSchema } from "lib/validations/deck.schema";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "components/ui/Dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "components/ui/Dialog";
 import { AlertCircle, Edit2, Eye, Plus, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Input } from "components/ui/Input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "components/ui/Form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "components/ui/Form";
 import { Textarea } from "components/ui/Textarea";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "components/ui/Alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "components/ui/Alert-dialog";
 import { Flashcard } from "./Flashcard";
 
 export const FlashcardList = ({
@@ -32,9 +59,18 @@ export const FlashcardList = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(null);
-  const [currentFlashcard, setCurrentFlashcard] = useState<{id: string, question: string, answer: string} | null>(null);
-  const [fullViewContent, setFullViewContent] = useState<{title: string, content: string} | null>(null);
+  const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(
+    null
+  );
+  const [currentFlashcard, setCurrentFlashcard] = useState<{
+    id: string;
+    question: string;
+    answer: string;
+  } | null>(null);
+  const [fullViewContent, setFullViewContent] = useState<{
+    title: string;
+    content: string;
+  } | null>(null);
   const router = useRouter();
 
   const addForm = useForm<FlashcardSchema>({
@@ -62,7 +98,10 @@ export const FlashcardList = ({
         data.question,
         data.answer
       );
-      fetch(`/api/revalidate?path=/workspace/explore`)
+      fetch(`/api/revalidate?path=/workspace/library`);
+      fetch(`/api/revalidate?path=/workspace/explore`);
+      fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+      fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
 
       if (result.success) {
         toast.success("Flashcard added successfully");
@@ -82,18 +121,24 @@ export const FlashcardList = ({
 
   const onSubmitEdit = async (data: FlashcardSchema) => {
     if (!currentFlashcard) return;
-    
+
     setIsLoading(true);
     try {
-      const updateResult = await updateFlashcardAction(currentFlashcard.id, data);
-        
-      if (updateResult.success) {
-          toast.success("Flashcard updated successfully");
-          editForm.reset();
-          setIsEditDialogOpen(false);
-          setCurrentFlashcard(null);
-          router.refresh();
+      const updateResult = await updateFlashcardAction(
+        currentFlashcard.id,
+        data
+      );
 
+      if (updateResult.success) {
+        toast.success("Flashcard updated successfully");
+        editForm.reset();
+        setIsEditDialogOpen(false);
+        setCurrentFlashcard(null);
+        fetch(`/api/revalidate?path=/workspace/library`);
+        fetch(`/api/revalidate?path=/workspace/explore`);
+        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+        router.refresh();
       } else {
         toast.error(updateResult.message || "Failed to update flashcard");
       }
@@ -112,13 +157,17 @@ export const FlashcardList = ({
 
   const handleDelete = async () => {
     if (!flashcardToDelete) return;
-    
+
     setIsDeleting(true);
     try {
       const result = await deleteFlashcardAction(flashcardToDelete, userId);
 
       if (result.success) {
         toast.success("Flashcard deleted successfully");
+        fetch(`/api/revalidate?path=/workspace/library`);
+        fetch(`/api/revalidate?path=/workspace/explore`);
+        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
         router.refresh();
         setDeleteDialogOpen(false);
         setFlashcardToDelete(null);
@@ -133,23 +182,28 @@ export const FlashcardList = ({
     }
   };
 
-  const handleEdit = (flashcard: {id: string, question: string, answer: string}) => {
+  const handleEdit = (flashcard: {
+    id: string;
+    question: string;
+    answer: string;
+  }) => {
     setCurrentFlashcard(flashcard);
     editForm.reset({
       question: flashcard.question,
-      answer: flashcard.answer
+      answer: flashcard.answer,
     });
     setIsEditDialogOpen(true);
   };
 
   const showFullContent = (title: string, content: string) => {
-    setFullViewContent({title, content});
+    setFullViewContent({ title, content });
     setIsFullViewDialogOpen(true);
   };
 
-  const filteredFlashcards = deck.flashcards?.filter(card => 
-    card.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    card.answer.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFlashcards = deck.flashcards?.filter(
+    (card) =>
+      card.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -188,7 +242,7 @@ export const FlashcardList = ({
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={addForm.control}
                   name="answer"
@@ -210,17 +264,17 @@ export const FlashcardList = ({
                 />
               </div>
               <DialogFooter className="mt-6">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setIsAddDialogOpen(false)}
                   disabled={isLoading}
                 >
                   Cancel
                 </Button>
-                <Button 
+                <Button
                   type="button"
-                  onClick={addForm.handleSubmit(onSubmitAdd)} 
+                  onClick={addForm.handleSubmit(onSubmitAdd)}
                   disabled={isLoading}
                 >
                   {isLoading ? "Adding..." : "Add Flashcard"}
@@ -245,15 +299,22 @@ export const FlashcardList = ({
         <>
           <div className="flex justify-between items-center text-sm text-muted-foreground">
             <p>
-              {searchTerm ? `${filteredFlashcards?.length || 0} results` : `${deck.flashcards.length} total flashcards`}
+              {searchTerm
+                ? `${filteredFlashcards?.length || 0} results`
+                : `${deck.flashcards.length} total flashcards`}
             </p>
             {searchTerm && (
-              <Button variant="ghost" size="sm" onClick={() => setSearchTerm("")} className="p-0 m-0 h-4 hover:bg-transparent">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchTerm("")}
+                className="p-0 m-0 h-4 hover:bg-transparent"
+              >
                 Clear search
               </Button>
             )}
           </div>
-          
+
           <div className="grid sm:grid-cols-2 gap-4">
             {filteredFlashcards?.map((flashcard) => (
               <Flashcard
@@ -274,7 +335,8 @@ export const FlashcardList = ({
             <AlertCircle className="h-12 w-12 text-muted-foreground/50 mb-4" />
             <h3 className="text-lg font-medium mb-1">No flashcards yet</h3>
             <p className="text-muted-foreground text-center max-w-md mb-6">
-              Add your first flashcard to start building your deck and begin studying.
+              Add your first flashcard to start building your deck and begin
+              studying.
             </p>
             <Button onClick={() => setIsAddDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
@@ -284,12 +346,16 @@ export const FlashcardList = ({
         </Card>
       )}
 
-      <AlertDialog open={deleteDialogOpen} onOpenChange={(open) => !isDeleting && setDeleteDialogOpen(open)}>
+      <AlertDialog
+        open={deleteDialogOpen}
+        onOpenChange={(open) => !isDeleting && setDeleteDialogOpen(open)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the flashcard.
+              This action cannot be undone. This will permanently delete the
+              flashcard.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -316,7 +382,9 @@ export const FlashcardList = ({
                 name="question"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium">Question</FormLabel>
+                    <FormLabel className="text-base font-medium">
+                      Question
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Enter the question"
@@ -330,13 +398,15 @@ export const FlashcardList = ({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={editForm.control}
                 name="answer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium">Answer</FormLabel>
+                    <FormLabel className="text-base font-medium">
+                      Answer
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Enter the answer"
@@ -352,9 +422,9 @@ export const FlashcardList = ({
               />
             </div>
             <DialogFooter className="mt-6 flex flex-row justify-between pt-4 border-t">
-              <Button 
-                type="button" 
-                variant="destructive" 
+              <Button
+                type="button"
+                variant="destructive"
                 size="icon"
                 onClick={() => {
                   if (currentFlashcard) {
@@ -368,18 +438,18 @@ export const FlashcardList = ({
                 <Trash2 className="h-4 w-4" />
               </Button>
               <div className="flex gap-2 w-auto">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setIsEditDialogOpen(false)}
                   disabled={isLoading}
                   className="flex-1 sm:flex-none"
                 >
                   Cancel
                 </Button>
-                <Button 
+                <Button
                   type="button"
-                  onClick={editForm.handleSubmit(onSubmitEdit)} 
+                  onClick={editForm.handleSubmit(onSubmitEdit)}
                   disabled={isLoading}
                   className="flex-1 sm:flex-none"
                 >
@@ -391,7 +461,10 @@ export const FlashcardList = ({
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isFullViewDialogOpen} onOpenChange={setIsFullViewDialogOpen}>
+      <Dialog
+        open={isFullViewDialogOpen}
+        onOpenChange={setIsFullViewDialogOpen}
+      >
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -400,10 +473,12 @@ export const FlashcardList = ({
             </DialogTitle>
           </DialogHeader>
           <div className="pt-4 max-h-[60vh] overflow-y-auto">
-            <p className="whitespace-pre-wrap break-words">{fullViewContent?.content}</p>
+            <p className="whitespace-pre-wrap break-words">
+              {fullViewContent?.content}
+            </p>
           </div>
           <DialogFooter className="mt-6 pt-4 border-t">
-            <Button 
+            <Button
               type="button"
               onClick={() => setIsFullViewDialogOpen(false)}
             >
@@ -414,4 +489,4 @@ export const FlashcardList = ({
       </Dialog>
     </div>
   );
-}; 
+};

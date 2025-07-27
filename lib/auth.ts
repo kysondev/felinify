@@ -93,6 +93,9 @@ export const auth = betterAuth({
           try {
             if (subscription && subscription.referenceId) {
               await refillCreditsForUser(subscription.referenceId);
+              fetch(
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+              );
             }
           } catch (error) {
             console.error(
@@ -105,6 +108,9 @@ export const auth = betterAuth({
           try {
             if (subscription && subscription.referenceId) {
               await refillCreditsForUser(subscription.referenceId);
+              fetch(
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+              );
             }
           } catch (error) {
             console.error(
@@ -112,6 +118,11 @@ export const auth = betterAuth({
               error
             );
           }
+        },
+        onSubscriptionCancel: async () => {
+          fetch(
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+          );
         },
       },
     }),

@@ -1,8 +1,5 @@
 import { Button } from "components/ui/Button";
-import {
-  Card,
-  CardContent,
-} from "components/ui/Card";
+import { Card, CardContent } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { PlusCircle } from "lucide-react";
 import {
@@ -76,7 +73,7 @@ export default function Loading() {
                         <Skeleton className="h-4 w-full mt-2" />
                         <Skeleton className="h-4 w-4/5 mt-2" />
                       </div>
-                      
+
                       <div className="grid grid-cols-3 gap-3 mb-5">
                         <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
                           <div className="flex justify-center mb-2">
@@ -85,7 +82,7 @@ export default function Loading() {
                           <Skeleton className="h-3 w-8 mx-auto" />
                           <Skeleton className="h-3 w-10 mx-auto mt-1" />
                         </div>
-                        
+
                         <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
                           <div className="flex justify-center mb-2">
                             <Skeleton className="h-7 w-7 rounded-md" />
@@ -93,7 +90,7 @@ export default function Loading() {
                           <Skeleton className="h-3 w-8 mx-auto" />
                           <Skeleton className="h-3 w-16 mx-auto mt-1" />
                         </div>
-                        
+
                         <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
                           <div className="flex justify-center mb-2">
                             <Skeleton className="h-7 w-7 rounded-md" />
@@ -102,7 +99,7 @@ export default function Loading() {
                           <Skeleton className="h-3 w-12 mx-auto mt-1" />
                         </div>
                       </div>
-                      
+
                       <div className="p-4 rounded-lg border border-border/60 bg-muted/50 mb-5">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
@@ -113,7 +110,7 @@ export default function Loading() {
                         </div>
                         <Skeleton className="h-2 w-full" />
                       </div>
-                      
+
                       <div className="flex gap-3">
                         <Skeleton className="h-9 w-full" />
                         <Skeleton className="h-9 w-full" />
@@ -124,7 +121,7 @@ export default function Loading() {
 
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Card className="border-dashed flex flex-col items-center justify-center p-6 min-h-[208px] cursor-pointer hover:bg-accent/10 transition-colors">
+                    <Card className="border-dashed flex flex-col items-center justify-center p-6 min-h-[380px] cursor-pointer hover:bg-accent/10 transition-colors">
                       <PlusCircle className="h-8 w-8 text-muted-foreground mb-2" />
                       <p className="text-muted-foreground font-medium">
                         Create New Deck

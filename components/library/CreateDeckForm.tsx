@@ -82,6 +82,7 @@ export function CreateDeckForm({
         data.description
       );
       if (result.success) {
+        fetch(`/api/revalidate?path=/workspace/library`);
         setOpen(false);
         router.refresh();
         toast.success("Deck created successfully");
@@ -153,7 +154,7 @@ export function CreateDeckForm({
         setIsGenerating(false);
         return;
       }
-
+      fetch(`/api/revalidate?path=/workspace/library`);
       setTimeout(() => {
         setIsGenerating(false);
         setOpen(false);

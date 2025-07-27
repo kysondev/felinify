@@ -19,7 +19,7 @@ import { Subscription, User } from "db/types/models.types";
 export default async function LibraryPage() {
   const { data: user } = await getUser();
   const { data: decks } = await getDecksByUserId(user?.id as string);
-  const { data: subscription } = await getUserSubscription();
+  const { data: subscription } = await getUserSubscription(user?.id as string);
 
   return (
     <>
@@ -76,7 +76,7 @@ export default async function LibraryPage() {
 
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Card className="border-dashed flex flex-col items-center justify-center p-6 min-h-[208px] cursor-pointer hover:bg-accent/10 transition-colors">
+                    <Card className="border-dashed flex flex-col items-center justify-center p-6 min-h-[380px] cursor-pointer hover:bg-accent/10 transition-colors">
                       <PlusCircle className="h-8 w-8 text-muted-foreground mb-2" />
                       <p className="text-muted-foreground font-medium">
                         Create New Deck

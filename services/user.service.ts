@@ -70,8 +70,8 @@ export const checkUserNameAvailability = async (username: string) => {
 export const checkEmailAvailability = async (email: string) => {
   try {
     const user = await db
-    .selectFrom("user")
-    .selectAll()
+      .selectFrom("user")
+      .selectAll()
       .where("email", "=", email)
       .executeTakeFirst();
     if (user?.email?.toLocaleLowerCase() === email.toLocaleLowerCase()) {
@@ -148,15 +148,12 @@ export const updateUserCredit = async (userId: string, credit: number) => {
   }
 };
 
-export const getUserSubscription = async () => {
-  const { data: user } = await getUser();
-  if (!user) {
-    return { success: false, message: "Unauthorized" };
-  }
+export const getUserSubscription = async (userId: string) => {
+  "use cache";
   const subscription = await db
     .selectFrom("subscription")
     .selectAll()
-    .where("referenceId", "=", user.id)
+    .where("referenceId", "=", userId)
     .where("status", "=", "active")
     .executeTakeFirst();
 

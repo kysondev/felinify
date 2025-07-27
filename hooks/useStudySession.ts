@@ -155,9 +155,12 @@ export const useStudySession = ({
           });
         }
       }
+      fetch(`/api/revalidate?path=/workspace/library`);
+      fetch(`/api/revalidate?path=/workspace/explore`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
+      router.refresh();
       setIsSaving(false);
     }
   }, [calculateStudyProgress, deck, stopStudySession, studyTime, userId]);
@@ -179,10 +182,13 @@ export const useStudySession = ({
           });
         }
       }
+      fetch(`/api/revalidate?path=/workspace/library`);
+      fetch(`/api/revalidate?path=/workspace/explore`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
       router.push("/workspace/library");
+      router.refresh();
       setIsSaving(false);
       setIsLoading(false);
     }

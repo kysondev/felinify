@@ -97,6 +97,7 @@ export const getPopularDecks = async () => {
 };
 
 export const getDecksByUserId = async (userId: string) => {
+  "use cache";
   try {
     const decks = await db
       .selectFrom("deck")
@@ -139,6 +140,7 @@ export const getDecksByUserId = async (userId: string) => {
 };
 
 export const getDeckById = async (deckId: string, userId: string) => {
+  "use cache";
   try {
     const deck = await db
       .selectFrom("deck")

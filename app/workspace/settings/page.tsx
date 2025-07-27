@@ -1,10 +1,10 @@
-import { getUserWithoutCache } from "services/user.service";
+import { getUser } from "services/user.service";
 import { Alert } from "components/ui/Alert";
 import { User } from "db/types/models.types";
 import { SettingsTabs } from "components/settings/SettingsTabs";
 
 export default async function SettingsPage() {
-  const { data: user } = await getUserWithoutCache();
+  const { data: user } = await getUser();
 
   return (
     <div className="container max-w-[900px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
