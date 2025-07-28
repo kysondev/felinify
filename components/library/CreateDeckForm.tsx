@@ -5,7 +5,15 @@ import { DialogFooter, useDialog } from "components/ui/Dialog";
 import { Input } from "components/ui/Input";
 import { Textarea } from "components/ui/Textarea";
 import { Switch } from "components/ui/Switch";
-import { Sparkles, Brain, Upload, Globe, Lock, Eye, EyeOff } from "lucide-react";
+import {
+  Sparkles,
+  Brain,
+  Upload,
+  Globe,
+  Lock,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { useTransition } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { useRouter } from "next/navigation";
@@ -133,7 +141,8 @@ export function CreateDeckForm({
 
       const flashcardsResult = await generateFlashcardsAction(
         data.name,
-        data.notes
+        data.notes,
+        data.visibility
       );
       setProgress(70);
 
@@ -266,14 +275,14 @@ export function CreateDeckForm({
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {field.value === "public" 
-                          ? "Anyone can view" 
+                        {field.value === "public"
+                          ? "Anyone can view"
                           : "Only you can view"}
                       </span>
                     </div>
                     <Switch
                       checked={field.value === "public"}
-                      onCheckedChange={(checked) => 
+                      onCheckedChange={(checked) =>
                         field.onChange(checked ? "public" : "private")
                       }
                       disabled={!user.emailVerified}
@@ -327,10 +336,10 @@ export function CreateDeckForm({
           )}
 
           <Form {...aiForm}>
-                      <form
-            onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
-            className="space-y-3"
-          >
+            <form
+              onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+              className="space-y-3"
+            >
               <FormField
                 control={aiForm.control}
                 name="name"
@@ -378,32 +387,32 @@ export function CreateDeckForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Deck Visibility</FormLabel>
-                                      <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
                       <div className="flex items-center gap-2">
-                        {field.value === "public" ? (
-                          <Eye className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        )}
-                        <span className="text-sm font-medium">
-                          {field.value === "public" ? "Public" : "Private"}
+                        <div className="flex items-center gap-2">
+                          {field.value === "public" ? (
+                            <Eye className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                          )}
+                          <span className="text-sm font-medium">
+                            {field.value === "public" ? "Public" : "Private"}
+                          </span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {field.value === "public"
+                            ? "Anyone can view"
+                            : "Only you can view"}
                         </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">
-                        {field.value === "public" 
-                          ? "Anyone can view" 
-                          : "Only you can view"}
-                      </span>
+                      <Switch
+                        checked={field.value === "public"}
+                        onCheckedChange={(checked) =>
+                          field.onChange(checked ? "public" : "private")
+                        }
+                        disabled={!user.emailVerified || isGenerating}
+                      />
                     </div>
-                    <Switch
-                      checked={field.value === "public"}
-                      onCheckedChange={(checked) => 
-                        field.onChange(checked ? "public" : "private")
-                      }
-                      disabled={!user.emailVerified || isGenerating}
-                    />
-                  </div>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -15,12 +15,18 @@ import {
 } from "services/deck.service";
 import { createDeckWithAISchema } from "lib/validations/deck.schema";
 
-export const generateFlashcardsAction = async (name: string, notes: string) => {
+export const generateFlashcardsAction = async (
+  name: string,
+  notes: string,
+  visibility: "public" | "private"
+) => {
   try {
     const result = createDeckWithAISchema.safeParse({
       name,
       notes,
+      visibility,
     });
+
     if (!result.success) {
       return { success: false, message: result.error.issues[0].message };
     }
@@ -35,6 +41,8 @@ export const generateFlashcardsAction = async (name: string, notes: string) => {
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
+
+    console.log(user);
 
     const userCredits = await getUserCredit(user.id);
 
@@ -304,7 +312,7 @@ export const createQuizAccessTokenAction = async (
     console.error("Error creating quiz access token:", error);
     return {
       success: false,
-      message: "Error creating quiz access token"
+      message: "Error creating quiz access token",
     };
   }
 };

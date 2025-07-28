@@ -53,11 +53,11 @@ const Hero = ({
               <picture>
                 <source
                   media="(max-width: 640px)"
-                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753469868/Screenshot_2025-07-25_145544_kyaked.png"
+                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674597/Screenshot_2025-07-27_234900_ntggzz.png"
                 />
                 <img
                   className="w-full h-auto"
-                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753469864/Screenshot_2025-07-25_145506_ejkba5.png"
+                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674459/Screenshot_2025-07-27_234620_ghc4zc.png"
                   alt="app screen"
                 />
               </picture>
