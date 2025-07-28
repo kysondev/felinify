@@ -22,7 +22,9 @@
 
 ## About The Project
 
-[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753553603/Screenshot_2025-07-26_141129_b1q1ri.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753553603/Screenshot_2025-07-26_141129_b1q1ri.png)
+[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674784/Screenshot_2025-07-27_235213_yeo5w8.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674784/Screenshot_2025-07-27_235213_yeo5w8.png)
+
+> ⭐️ If you find this project helpful, consider leaving a star. Thanks!
 
 **Lumix** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Lumix** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, Lumix helps students study smarter, not harder.
 
