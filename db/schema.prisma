@@ -121,7 +121,7 @@ model Deck {
   id        String    @id @default(cuid())
   name      String
   description String?
-  rating Int @default(0)
+  rating Float @default(0)
   studyCount Int @default(0)
   studyHour Int @default(0)
   visibility Visibility @default(public)

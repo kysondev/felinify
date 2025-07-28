@@ -5,24 +5,22 @@ import {
   ChevronRight,
   Clock,
   Home,
-  PenTool,
-  MessageSquare,
-  Star,
   User,
   Compass,
   Target,
   AlertCircle,
   ArrowLeft,
+  Star,
 } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent } from "components/ui/Card";
-import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
 import { getDeckById, getReviewsByDeckId } from "services/deck.service";
 import { getUser, getUserWithId } from "services/user.service";
-import { Review, User as UserType } from "db/types/models.types";
+import { User as UserType } from "db/types/models.types";
 import { Progress } from "components/ui/Progress";
 import ExploreDeckStudyOptions from "components/explore/ExploreDeckStudyOptions";
 import ExploreFlashcardGrid from "components/explore/ExploreFlashcardList";
+import { ReviewSection } from "components/explore/ReviewSection";
+import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
 
 interface DeckPageProps {
   params: Promise<{ deckId: string }>;
@@ -270,105 +268,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
               </div>
             </div>
 
-            <div className="space-y-4">
-              {reviews?.length === 0 && (
-                <Card className="border-dashed border-2 border-border/50">
-                  <CardContent className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                    <div className="relative mb-6">
-                      <div className="p-4 bg-muted/50 rounded-full">
-                        <MessageSquare className="h-12 w-12 text-muted-foreground/50" />
-                      </div>
-                      <div className="absolute -top-1 -right-1 p-1.5 bg-primary/10 rounded-full">
-                        <Star className="h-4 w-4 text-primary" />
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
-                      No reviews yet
-                    </h3>
-
-                    <p className="text-muted-foreground text-sm max-w-md leading-relaxed mb-6">
-                      This deck hasn't received any reviews yet. Be the first to
-                      share your experience and help other learners discover
-                      great content!
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Button
-                        variant="outline"
-                        className="flex items-center gap-2"
-                      >
-                        <PenTool className="h-4 w-4" />
-                        Write a Review
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        Study First
-                      </Button>
-                    </div>
-
-                    <div className="mt-8 flex items-center gap-8 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <div className="flex">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="h-3 w-3 text-muted-foreground/30"
-                            />
-                          ))}
-                        </div>
-                        <span>Rate this deck</span>
-                      </div>
-                      <span>•</span>
-                      <span>Share your thoughts</span>
-                      <span>•</span>
-                      <span>Help others learn</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-              {reviews?.map((review: Review) => (
-                <Card key={review.id}>
-                  <CardContent className="p-4">
-                    <div className="flex justify-between">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={review?.user?.image || ""} />
-                          <AvatarFallback>
-                            {review?.user?.name?.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">
-                            {review?.user?.name}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="flex">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${
-                                i < review.rating
-                                  ? "text-yellow-500 fill-yellow-500"
-                                  : "text-gray-300"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(review.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="mt-2 text-sm">{review.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <ReviewSection reviews={reviews} deckId={deckId} currentUserId={user?.id} />
           </div>
         </TabsContent>
       </Tabs>
