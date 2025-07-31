@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/workspace",
-        destination: "/workspace/library",
+        destination: "/workspace/explore",
         permanent: true,
       },
     ];

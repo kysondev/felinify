@@ -64,7 +64,7 @@ const SignOutButton = ({ className }: { className?: string }) => {
 
 const WorkspaceNavbar = async ({
   logo = {
-    url: "/workspace/library",
+    url: "/workspace/explore",
     alt: "logo",
     title: "Lumix",
   },
