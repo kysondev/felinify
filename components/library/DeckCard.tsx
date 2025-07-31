@@ -26,7 +26,8 @@ import {
   ChevronRight,
   Target,
   Zap,
-  Info
+  Info,
+  CreditCard
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -94,8 +95,8 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
         <div className="grid grid-cols-3 gap-3 mb-5">
           <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
             <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <BookOpen className="h-4 w-4 text-primary" />
+              <div className="p-1.5 bg-muted rounded-md">
+                <CreditCard className="h-4 w-4 text-primary rotate-180" />
               </div>
             </div>
             <p className="text-xs font-bold text-foreground">{deck.flashcards?.length || 0}</p>
@@ -104,8 +105,8 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
           
           <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
             <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <Calendar className="h-4 w-4 text-primary" />
+              <div className="p-1.5 bg-muted rounded-md">
+                <Calendar className="h-4 w-4 text-purple-500" />
               </div>
             </div>
             <p className="text-xs font-bold text-foreground">
@@ -118,8 +119,8 @@ export const DeckCard = ({ deck, user }: { deck: Deck, user: User }) => {
           
           <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
             <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-primary/10 rounded-md">
-                <TrendingUp className="h-4 w-4 text-primary" />
+              <div className="p-1.5 bg-muted rounded-md">
+                <TrendingUp className="h-4 w-4 text-green-500" />
               </div>
             </div>
             <p className="text-xs font-bold text-foreground">{deck.progress?.completedSessions || 0}</p>

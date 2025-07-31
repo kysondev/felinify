@@ -42,8 +42,6 @@ export const generateFlashcardsAction = async (
       return { success: false, message: "Email not verified" };
     }
 
-    console.log(user);
-
     const userCredits = await getUserCredit(user.id);
 
     if (userCredits <= 0) {

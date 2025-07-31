@@ -1,28 +1,17 @@
 import React from "react";
 import {
-  CircleFadingArrowUp,
   Compass,
   Library,
   LogOut,
   Menu,
   Settings2,
+  Crown,
+  Bell,
+  Search,
+  Zap,
 } from "lucide-react";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "components/ui/Accordion";
 import { Button } from "components/ui/Button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "components/ui/Navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -44,6 +33,7 @@ import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "actions/auth.action";
 import Image from "next/image";
+import { Input } from "./ui/Input";
 
 interface MenuItem {
   title: string;
@@ -61,6 +51,16 @@ interface Navbar1Props {
   };
   menu?: MenuItem[];
 }
+const SignOutButton = ({ className }: { className?: string }) => {
+  return (
+    <Form action={signOut}>
+      <button type="submit" className={className}>
+        <LogOut className="w-4 h-4 mr-2" />
+        Sign out
+      </button>
+    </Form>
+  );
+};
 
 const WorkspaceNavbar = async ({
   logo = {
@@ -70,312 +70,238 @@ const WorkspaceNavbar = async ({
   },
   menu = [
     {
-      title: "Library",
-      url: "/workspace/library",
-      icon: <Library className="size-4 shrink-0" />,
-    },
-    {
       title: "Explore",
       url: "/workspace/explore",
       icon: <Compass className="size-4 shrink-0" />,
     },
+    {
+      title: "Library",
+      url: "/workspace/library",
+      icon: <Library className="size-4 shrink-0" />,
+    },
   ],
 }: Navbar1Props) => {
   const { data: user } = await getUserWithoutCache();
+  const userCredits = getUserCredit(user?.id as string);
+
   return (
-    <section className="py-4 px-6 flex justify-center fixed top-0 left-0 right-0 z-50 bg-background border-b">
-      <div className="w-full">
-        <nav className="hidden justify-between w-full lg:flex">
-          <div className="flex items-center gap-4">
-            <Link href={logo.url} className="flex items-center gap-1">
-              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter text-primary">
-                {logo.title}
-              </span>
+    <header className="sticky top-4 z-50 w-full px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <nav className="flex h-16 items-center justify-between rounded-2xl bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg shadow-gray-200/50">
+          <div className="flex items-center space-x-3 px-6">
+            <Link href={logo.url} className="flex items-center space-x-3 group">
+              <Image
+                src="/Lumix.png"
+                alt={logo.alt}
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              <span className="font-semibold text-primary">{logo.title}</span>
             </Link>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
-                </NavigationMenuList>
-              </NavigationMenu>
+            <div className="hidden md:flex items-center space-x-1">
+              {menu.map((item) => (
+                <Link
+                  key={item.title}
+                  href={item.url}
+                  className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                >
+                  {item.icon}
+                  <span>{item.title}</span>
+                </Link>
+              ))}
             </div>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <img
-                src={user?.image || "/default-avatar.png"}
-                alt="User Avatar"
-                className="w-8 h-8 rounded-full cursor-pointer"
+          <div className="flex items-center space-x-3 px-6">
+            <div className="hidden lg:flex relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search..."
+                className="pl-10 w-64 bg-gray-50 border-0 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg"
               />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
-              <DropdownMenuItem>
-                <div className="flex items-center gap-2">
+            </div>
+            <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {userCredits}
+              </span>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative h-9 w-9 rounded-lg"
+            >
+              <Bell className="w-4 h-4 text-gray-600" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full hidden" />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-9 w-9 rounded-lg p-0 hidden md:block"
+                >
                   <Image
                     src={user?.image || "/default-avatar.png"}
                     alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                    width={32}
-                    height={32}
+                    width={36}
+                    height={36}
+                    className="rounded-lg object-cover"
                   />
-                  <div className="flex flex-col">
-                    <span className="font-semibold">@{user?.name} </span>
-                    <span className="text-sm text-muted-foreground">
-                      {getUserCredit(user?.id as string)} Credits
-                    </span>
-                  </div>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <Link href="/workspace/settings" className="w-full h-full">
-                  <DropdownMenuItem className="cursor-pointer w-full h-full">
-                    <Settings2 className="size-4 shrink-0" />
-                    Settings
-                  </DropdownMenuItem>
-                </Link>
-                <Link href="/workspace/settings?tab=subscription&openUpgradeDialog=true">
-                  <DropdownMenuItem className="cursor-pointer w-full h-full">
-                    <CircleFadingArrowUp className="size-4 shrink-0" />
-                    Upgrade Plan
-                  </DropdownMenuItem>
-                </Link>
-                <Form action={signOut}>
-                  <button type="submit" className="w-full h-full text-left">
-                    <DropdownMenuItem className="cursor-pointer w-full h-full">
-                      <LogOut className="size-4 shrink-0" />
-                      Log out
-                    </DropdownMenuItem>
-                  </button>
-                </Form>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </nav>
-
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <Link href={logo.url} className="flex items-center gap-1">
-              <Image src="/lumix.png" alt="Lumix" width={25} height={25} />
-              <span className="text-lg font-semibold tracking-tighter text-primary">
-                {logo.title}
-              </span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Menu className="size-5 cursor-pointer" color="#292929" />
-                </SheetTrigger>
-                <SheetContent className="overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>
-                      <Link href={logo.url} className="flex items-center gap-1">
-                        <Image
-                          src="/lumix.png"
-                          alt="Lumix"
-                          width={25}
-                          height={25}
-                        />
-                        <span className="text-lg font-semibold tracking-tighter text-primary">
-                          {logo.title}
-                        </span>
-                      </Link>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-6 p-4">
-                    <Accordion
-                      type="single"
-                      collapsible
-                      className="flex w-full flex-col gap-4"
-                    >
-                      {menu.map((item) => renderMobileMenuItem(item))}
-                    </Accordion>
-
-                    <div className="flex flex-col gap-3">
-                      <Button asChild variant="outline"></Button>
-                      <Button asChild></Button>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-64 bg-white border border-gray-200 shadow-xl rounded-xl hidden md:block"
+                align="end"
+              >
+                <div className="flex items-center space-x-3 p-4">
+                  <Image
+                    src={user?.image || "/default-avatar.png"}
+                    alt="User Avatar"
+                    width={40}
+                    height={40}
+                    className="rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      @{user?.name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user?.email}
+                    </p>
+                    <div className="flex items-center space-x-1 mt-1">
+                      <Zap className="w-3 h-3 text-primary" />
+                      <span className="text-xs font-medium text-primary">
+                        {userCredits} credits
+                      </span>
                     </div>
                   </div>
-                </SheetContent>
-              </Sheet>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Image
-                    src={user?.image || "/default-avatar.png"}
-                    alt="User Avatar"
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full cursor-pointer"
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <Link href="/workspace/settings" className="w-full">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Settings2 className="w-4 h-4 mr-2" />
+                      Settings
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link
+                    href="/workspace/settings?tab=subscription&openUpgradeDialog=true"
+                    className="w-full"
+                  >
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Crown className="w-4 h-4 mr-2" />
+                      <div className="flex items-center justify-between w-full">
+                        <span>Upgrade Plan</span>
+                        <Badge className="bg-primary/10 text-primary text-xs">
+                          PRO
+                        </Badge>
+                      </div>
+                    </DropdownMenuItem>
+                  </Link>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer text-red-600 p-0">
+                  <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="md:hidden h-9 w-9 rounded-lg"
+                >
+                  <Menu className="w-4 h-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] bg-white">
+                <SheetHeader className="pb-6">
+                  <SheetTitle>
+                    <Link
+                      href={logo.url}
+                      className="flex items-center space-x-3"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">L</span>
+                      </div>
+                      <span className="text-xl font-semibold text-gray-900">
+                        {logo.title}
+                      </span>
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="relative mb-6">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Search..."
+                    className="pl-10 bg-gray-50 border-0 rounded-lg"
                   />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="start">
-                  <DropdownMenuItem>
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={user?.image || "/default-avatar.png"}
-                        alt="User Avatar"
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-semibold">@{user?.name}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {getUserCredit(user?.id as string)} Credits
+                </div>
+                <div className="space-y-2">
+                  {menu.map((item) => (
+                    <Link
+                      key={item.title}
+                      href={item.url}
+                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    >
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-8 pt-6 border-t">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Image
+                      src={user?.image || "/default-avatar.png"}
+                      alt="User Avatar"
+                      width={40}
+                      height={40}
+                      className="rounded-lg object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        @{user?.name}
+                      </p>
+                      <div className="flex items-center space-x-1">
+                        <Zap className="w-3 h-3 text-primary" />
+                        <span className="text-sm text-gray-500">
+                          {userCredits} credits
                         </span>
                       </div>
                     </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <Link href="/workspace/settings" className="w-full h-full">
-                      <DropdownMenuItem className="cursor-pointer w-full h-full">
-                        <Settings2 className="size-4 shrink-0" />
+                  </div>
+
+                  <div className="space-y-1">
+                    <Link href="/workspace/settings" className="w-full">
+                      <Button variant="ghost" className="w-full justify-start">
+                        <Settings2 className="w-4 h-4 mr-2" />
                         Settings
-                      </DropdownMenuItem>
+                      </Button>
                     </Link>
-                    <Link href="/workspace/settings?tab=subscription&openUpgradeDialog=true">
-                      <DropdownMenuItem className="cursor-pointer w-full h-full">
-                        <CircleFadingArrowUp className="size-4 shrink-0" />
-                        Upgrade Plan
-                      </DropdownMenuItem>
+                    <Link
+                      href="/workspace/settings?tab=subscription&openUpgradeDialog=true"
+                      className="w-full"
+                    >
+                      <Button variant="ghost" className="w-full justify-start">
+                        <Crown className="w-4 h-4 mr-2" />
+                        <span className="flex-1 text-left">Upgrade Plan</span>
+                        <Badge className="bg-primary/10 text-primary text-xs">
+                          PRO
+                        </Badge>
+                      </Button>
                     </Link>
-                    <Form action={signOut}>
-                      <button type="submit" className="w-full h-full text-left">
-                        <DropdownMenuItem className="cursor-pointer w-full h-full">
-                          <LogOut className="size-4 shrink-0" />
-                          Log out
-                        </DropdownMenuItem>
-                      </button>
-                    </Form>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                    <div className="w-full px-2">
+                      <SignOutButton className="w-full flex gap-2 items-center text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200" />
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
-        </div>
+        </nav>
       </div>
-    </section>
-  );
-};
-
-const renderMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>
-          <div className="flex items-center gap-[5px]">
-            {item.icon && (
-              <span className="flex items-center justify-center w-4 h-4 text-foreground">
-                {React.isValidElement(item.icon)
-                  ? React.cloneElement(
-                      item.icon as React.ReactElement<{ className?: string }>,
-                      {
-                        className: "w-4 h-4",
-                      }
-                    )
-                  : item.icon}
-              </span>
-            )}
-            <span>{item.title}</span>
-          </div>
-        </NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
-          {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    );
-  }
-
-  return (
-    <NavigationMenuItem key={item.title}>
-      <Link href={item.url} legacyBehavior passHref>
-        <NavigationMenuLink className="group flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground">
-          <div className="flex items-center gap-[5px]">
-            {item.icon && (
-              <span className="flex items-center justify-center w-4 h-4 text-foreground">
-                {React.isValidElement(item.icon)
-                  ? React.cloneElement(
-                      item.icon as React.ReactElement<{ className?: string }>,
-                      {
-                        className: "w-4 h-4",
-                      }
-                    )
-                  : item.icon}
-              </span>
-            )}
-            <span>{item.title}</span>
-          </div>
-        </NavigationMenuLink>
-      </Link>
-    </NavigationMenuItem>
-  );
-};
-
-const renderMobileMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
-          {item.title}
-        </AccordionTrigger>
-        <AccordionContent className="mt-2">
-          {item.items.map((subItem) => (
-            <SubMenuLink key={subItem.title} item={subItem} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    );
-  }
-
-  const isSmartReview = item.title === "Adaptive Quiz";
-  return (
-    <Link
-      key={item.title}
-      href={item.url}
-      className="text-md font-semibold flex items-center gap-1"
-    >
-      {item.title}
-      {isSmartReview && (
-        <Badge variant="secondary" className="bg-primary text-white ml-1">
-          AI
-        </Badge>
-      )}
-    </Link>
-  );
-};
-
-const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  const isSmartReview = item.title === "Adaptive Quiz";
-  return (
-    <Link
-      href={item.url}
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
-    >
-      <div className="flex items-center justify-center w-4 h-4 text-foreground flex-shrink-0">
-        {item.icon}
-      </div>
-      <div className="flex-1">
-        <div className="text-sm font-semibold flex items-center gap-1">
-          {item.title}
-          {isSmartReview && (
-            <Badge variant="secondary" className="bg-primary text-white ml-1">
-              AI
-            </Badge>
-          )}
-        </div>
-        {item.description && (
-          <p className="text-sm leading-snug text-muted-foreground">
-            {item.description}
-          </p>
-        )}
-      </div>
-    </Link>
+    </header>
   );
 };
 

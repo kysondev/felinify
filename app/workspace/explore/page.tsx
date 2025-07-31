@@ -1,70 +1,204 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { Search } from "lucide-react";
+import {
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Sparkles,
+  TrendingUp,
+  Clock,
+  Star,
+  BookOpen,
+} from "lucide-react";
 import { Input } from "components/ui/Input";
+import { Button } from "components/ui/Button";
+import { Badge } from "components/ui/Badge";
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
 import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
+import { Card, CardContent } from "components/ui/Card";
 
 export default async function Explore() {
-    "use cache";
-    const { data: featuredDecks} = await getFeaturedDecks();
-    const { data: popularDecks} = await getPopularDecks();
+  "use cache";
+  const { data: featuredDecks } = await getFeaturedDecks();
+  const { data: popularDecks } = await getPopularDecks();
+
+  const categories = [
+    "All",
+    "Science",
+    "Mathematics",
+    "History",
+    "Language",
+    "Technology",
+    "Medicine",
+    "Business",
+    "Arts",
+  ];
+
   return (
-    <div className="container max-w-[1200px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
-      <div className="flex flex-col gap-6 md:gap-8">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-semibold">
-            Explore Flashcard Decks
-          </h1>
-          <p className="text-muted-foreground text-sm md:text-base">
-            Discover popular flashcard decks created by the community
-          </p>
+    <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-medium text-sm mb-4">
+          <Sparkles className="w-4 h-4" />
+          Discover Amazing Decks
         </div>
-        
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input 
-            placeholder="Search for decks by topic, subject, or creator..." 
-            className="pl-10 py-6"
-          />
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          Explore Flashcard Decks
+        </h1>
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          Discover thousands of high-quality flashcard decks created by
+          students, educators, and professionals worldwide
+        </p>
+      </div>
+
+      <div className="mb-8">
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+            <Input
+              placeholder="Search for decks by topic, subject, or creator..."
+              className="pl-12 py-3 text-base border-2 focus:border-primary transition-colors"
+            />
+          </div>
+
+          <Button variant="outline" className="lg:w-auto">
+            <Filter className="w-4 h-4 mr-2" />
+            Filters
+          </Button>
         </div>
 
-        <Tabs defaultValue="featured" className="w-full">
-          <TabsList className="w-full max-w-full md:max-w-[400px] grid grid-cols-2">
-            <TabsTrigger value="featured" className="flex-1">
-              Featured
-            </TabsTrigger>
-            <TabsTrigger value="popular" className="flex-1">
-              Popular
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="featured" className="space-y-6 mt-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-medium">
-                Featured Decks
-              </h2>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <Badge
+              key={category}
+              variant={category === "All" ? "default" : "secondary"}
+              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors px-4 py-2"
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-6 mt-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">
+              Featured Decks
+            </h2>
+            <p className="text-muted-foreground">
+              Curated collections of the best flashcard decks
+            </p>
+          </div>
+          <Button variant="outline" size="sm">
+            View All Featured
+          </Button>
+        </div>
+
+        {featuredDecks.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {featuredDecks.slice(0, 4).map((deck) => (
+              <ExploreDeckCard key={deck.id} deck={deck as Deck} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <BookOpen className="w-8 h-8 text-muted-foreground" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {featuredDecks.map((deck) => (
-                <ExploreDeckCard key={deck.id} deck={deck as Deck} />
-              ))}
+            <h3 className="text-lg font-semibold mb-2">No Featured Decks</h3>
+            <p className="text-muted-foreground">
+              Check back later for featured content
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-6 mt-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">
+              Popular Decks
+            </h2>
+            <p className="text-muted-foreground">
+              Most studied and highly rated flashcard decks
+            </p>
+          </div>
+          <Button variant="outline" size="sm">
+            View All Popular
+          </Button>
+        </div>
+
+        {popularDecks.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {popularDecks.slice(0, 4).map((deck) => (
+              <ExploreDeckCard key={deck.id} deck={deck} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <TrendingUp className="w-8 h-8 text-muted-foreground" />
             </div>
-          </TabsContent>
-          
-          <TabsContent value="popular" className="space-y-6 mt-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-medium">
-                Popular Decks
-              </h2>
+            <h3 className="text-lg font-semibold mb-2">No Popular Decks</h3>
+            <p className="text-muted-foreground">
+              Start studying to see popular decks
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-6 mt-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">
+              Recently Added
+            </h2>
+            <p className="text-muted-foreground">
+              Fresh flashcard decks added to the community
+            </p>
+          </div>
+          <Button variant="outline" size="sm">
+            View All Recent
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {featuredDecks.slice(0, 4).map((deck) => (
+            <ExploreDeckCard key={deck.id} deck={deck as Deck} />
+          ))}
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="mt-16 text-center">
+        <Card className="bg-primary text-primary-foreground border-primary">
+          <CardContent className="p-8">
+            <h3 className="text-2xl font-bold mb-4">
+              Can't find what you're looking for?
+            </h3>
+            <p className="text-primary-foreground/90 mb-6 max-w-md mx-auto">
+              Create your own flashcard deck and share it with the community.
+              Help others learn while building your own knowledge.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-primary hover:bg-gray-100"
+              >
+                Create Your Own Deck
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white text-primary hover:bg-white hover:text-primary"
+              >
+                Browse All Categories
+              </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {popularDecks.map((deck) => (
-                <ExploreDeckCard key={deck.id} deck={deck} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

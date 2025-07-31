@@ -36,29 +36,28 @@ export default async function DeckPage({ params }: DeckPageProps) {
   if (!deck || (deck.visibility === "private" && deck.userId !== user?.id)) {
     return (
       <div className="container max-w-5xl mx-auto py-8 px-4">
-        <nav className="flex items-center text-sm text-muted-foreground mt-16 mb-8">
-          <Link
-            href="/workspace"
-            className="flex items-center hover:text-foreground transition-colors"
-          >
-            <Home className="h-4 w-4 mr-1" />
-            <span>Workspace</span>
-          </Link>
-          <ChevronRight className="h-4 w-4 mx-2" />
-          <Link
-            href="/workspace/explore"
-            className="flex items-center hover:text-foreground transition-colors"
-          >
-            <Compass className="h-4 w-4 mr-1" />
-            <span>Explore</span>
-          </Link>
-          <ChevronRight className="h-4 w-4 mx-2" />
-          <span className="text-foreground font-medium truncate max-w-[200px]">
-            Deck Details
-          </span>
-        </nav>
-
-        <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+              <nav className="flex items-center text-sm text-muted-foreground mt-16">
+        <Link
+          href="/workspace"
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <Home className="h-4 w-4 mr-1" />
+          <span>Workspace</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <Link
+          href="/workspace/explore"
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <Compass className="h-4 w-4 mr-1" />
+          <span>Explore</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <span className="text-foreground font-medium truncate max-w-[200px]">
+          Deck Details
+        </span>
+      </nav>
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center mt-20">
           <div className="relative mb-8">
             <div className="p-6 bg-muted/50 rounded-full">
               <AlertCircle className="h-16 w-16 text-muted-foreground/60" />
@@ -111,7 +110,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
 
   return (
     <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
-      <nav className="flex items-center text-sm text-muted-foreground mt-16">
+      <nav className="flex items-center text-sm text-muted-foreground mt-12">
         <Link
           href="/workspace"
           className="flex items-center hover:text-foreground transition-colors"
@@ -132,8 +131,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
           {deck.name}
         </span>
       </nav>
-
-      <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-6 border-b pb-6">
+      <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-6 border-b pb-6 mt-12">
         <div className="flex-1 flex flex-col">
           <div className="flex-1">
             <h1 className="text-3xl font-bold">{deck.name}</h1>
