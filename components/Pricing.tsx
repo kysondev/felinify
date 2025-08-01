@@ -8,6 +8,7 @@ import { Button } from "components/ui/Button";
 import { Label } from "components/ui/Label";
 import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
 import { Separator } from "components/ui/Separator";
+import { Alert, AlertDescription } from "components/ui/Alert";
 import Link from "next/link";
 
 const Pricing = () => {
@@ -19,6 +20,8 @@ const Pricing = () => {
   const proAnnualDiscount = 25.19;
   const ultraAnnualDiscount = 67.19;
 
+  const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+
   return (
     <section className="py-4 mt-12" id="pricing">
       <div className="">
@@ -26,51 +29,63 @@ const Pricing = () => {
           <h2 className="text-pretty text-4xl font-semibold lg:text-4xl">
             Pricing
           </h2>
+
+          {isBetaMode && (
+            <Alert className="border-orange-200 bg-orange-50">
+              <AlertDescription className="text-orange-800">
+                🚀 <strong>Open Beta:</strong> Paid plans are temporarily
+                disabled during our open beta period. All features are currently
+                free to use!
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="flex flex-col justify-between gap-10 md:flex-row">
             <p className="text-muted-foreground max-w-3xl lg:text-xl">
               Choose a plan that fits your study style and unlock AI-powered
               flashcards designed to help you learn smarter and faster.
             </p>
-            <div className="bg-muted flex h-11 w-fit shrink-0 items-center rounded-md p-1 text-lg">
-              <RadioGroup
-                defaultValue="monthly"
-                className="h-full grid-cols-2"
-                onValueChange={(value) => setIsAnnually(value === "annually")}
-              >
-                <div className='has-[button[data-state="checked"]]:bg-background h-full rounded-md transition-all'>
-                  <RadioGroupItem
-                    value="monthly"
-                    id="monthly"
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor="monthly"
-                    className="text-muted-foreground peer-data-[state=checked]:text-primary flex h-full cursor-pointer items-center justify-center px-7 font-semibold"
-                  >
-                    Monthly
-                  </Label>
-                </div>
-                <div className='has-[button[data-state="checked"]]:bg-background h-full rounded-md transition-all'>
-                  <RadioGroupItem
-                    value="annually"
-                    id="annually"
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor="annually"
-                    className="text-muted-foreground peer-data-[state=checked]:text-primary flex h-full cursor-pointer items-center justify-center gap-1 px-7 font-semibold"
-                  >
-                    Yearly
-                    <span className="ml-1 rounded bg-primary px-1.5 py-0.5 text-xs text-background">
-                      Save 30%
-                    </span>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
+            {!isBetaMode && (
+              <div className="bg-muted flex h-11 w-fit shrink-0 items-center rounded-md p-1 text-lg">
+                <RadioGroup
+                  defaultValue="monthly"
+                  className="h-full grid-cols-2"
+                  onValueChange={(value) => setIsAnnually(value === "annually")}
+                >
+                  <div className='has-[button[data-state="checked"]]:bg-background h-full rounded-md transition-all'>
+                    <RadioGroupItem
+                      value="monthly"
+                      id="monthly"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="monthly"
+                      className="text-muted-foreground peer-data-[state=checked]:text-primary flex h-full cursor-pointer items-center justify-center px-7 font-semibold"
+                    >
+                      Monthly
+                    </Label>
+                  </div>
+                  <div className='has-[button[data-state="checked"]]:bg-background h-full rounded-md transition-all'>
+                    <RadioGroupItem
+                      value="annually"
+                      id="annually"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="annually"
+                      className="text-muted-foreground peer-data-[state=checked]:text-primary flex h-full cursor-pointer items-center justify-center gap-1 px-7 font-semibold"
+                    >
+                      Yearly
+                      <span className="ml-1 rounded bg-primary px-1.5 py-0.5 text-xs text-background">
+                        Save 30%
+                      </span>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            )}
           </div>
           <div className="flex w-full flex-col items-stretch gap-6 md:flex-row">
-            {/* Starter Plan */}
             <div className="flex w-full flex-col rounded-lg border p-6 text-left">
               <Badge className="mb-8 block w-fit">Starter</Badge>
               <span className="text-4xl font-medium">$0</span>
@@ -101,10 +116,14 @@ const Pricing = () => {
               </div>
             </div>
 
-            {/* Pro Plan */}
             <div className="flex w-full flex-col rounded-lg border p-6 text-left">
               <Badge className="mb-8 block w-fit">Pro</Badge>
-              {isAnnually ? (
+              {isBetaMode ? (
+                <>
+                  <span className="text-4xl font-medium">$0</span>
+                  <p className="text-muted-foreground">Free during beta</p>
+                </>
+              ) : isAnnually ? (
                 <>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-medium">
@@ -143,15 +162,21 @@ const Pricing = () => {
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
-                  <Link href="/workspace">Purchase</Link>
+                  <Link href="/workspace">
+                    {isBetaMode ? "Get Started" : "Purchase"}
+                  </Link>
                 </Button>
               </div>
             </div>
 
-            {/* Ultra Plan */}
             <div className="bg-muted flex w-full flex-col rounded-lg border p-6 text-left">
               <Badge className="mb-8 block w-fit">Ultra</Badge>
-              {isAnnually ? (
+              {isBetaMode ? (
+                <>
+                  <span className="text-4xl font-medium">$0</span>
+                  <p className="text-muted-foreground">Free during beta</p>
+                </>
+              ) : isAnnually ? (
                 <>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-medium">
@@ -190,7 +215,9 @@ const Pricing = () => {
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
-                  <Link href="/workspace">Purchase</Link>
+                  <Link href="/workspace">
+                    {isBetaMode ? "Get Started" : "Purchase"}
+                  </Link>
                 </Button>
               </div>
             </div>

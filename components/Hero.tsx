@@ -32,7 +32,7 @@ const Hero = ({
       <div className="container text-center">
         <div className="mx-auto flex max-w-5xl flex-col gap-6">
           <div className="inline-block mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2">
-            Launching August 16, 2025
+            Open Beta: August 24, 2025
           </div>
           <h1 className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             {heading}
