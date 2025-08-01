@@ -28,18 +28,6 @@
 
 **Lumix** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Lumix** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, Lumix helps students study smarter, not harder.
 
-### Tech Stack
-
-- NextJS
-- TypeScript
-- PostgreSQL (Primary Database)
-- Redis (Secondary Database)
-- Prisma (For building db schema)
-- Kysely (For building db query)
-- TailwindCSS
-- ShadCN
-- Better-Auth
-
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
@@ -82,6 +70,9 @@ To get a local copy up and running follow these simple example steps.
 - [ ] Explore Page & Flashcard Sharing
 - [ ] Lumi AI Assistant
 - [ ] Keyword Based AI Flashcard Generation
+- [ ] Leveling System
+- [ ] Study Streak System
+- [ ] Weekly Study Minutes Leaderboard
 
 ## Contributing
 
@@ -95,6 +86,13 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## License
+
+This project was originally licensed under the MIT License but is now licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+This means any modifications or usage of this project, including over a network, must also be made available under the AGPL v3 license terms.
+
+For more details, see the [LICENSE](./LICENSE) file.
 
 ## Contact
 
