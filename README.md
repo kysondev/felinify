@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/kysondev/clami">
-    <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753470067/image_2_ehrhh8.png" alt="Logo" width="80" height="80">
+    <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754020433/image_3_b51fzd.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Clami</h3>
