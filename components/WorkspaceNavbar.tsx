@@ -9,6 +9,7 @@ import {
   Bell,
   Search,
   Zap,
+  Trophy,
 } from "lucide-react";
 
 import { Button } from "components/ui/Button";
@@ -78,6 +79,11 @@ const WorkspaceNavbar = async ({
       title: "Library",
       url: "/workspace/library",
       icon: <Library className="size-4 shrink-0" />,
+    },
+    {
+      title: "Leaderboard",
+      url: "/workspace/leaderboard",
+      icon: <Trophy className="size-4 shrink-0" />,
     },
   ],
 }: Navbar1Props) => {
