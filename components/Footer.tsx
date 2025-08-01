@@ -26,7 +26,7 @@ interface FooterProps {
 const Footer = ({
   logo = {
     alt: "Logo",
-    title: "Lumix",
+    title: "Clami",
     url: "#",
   },
   tagline = "Smarter studying starts here.",
@@ -66,7 +66,7 @@ const Footer = ({
       ],
     },
   ],
-  copyright = "© 2025 Lumix. All rights reserved.",
+  copyright = "© 2025 Shi Jun(Kyson) W. All rights reserved.",
   bottomLinks = [
     { text: "Terms and Conditions", url: "#" },
     { text: "Privacy Policy", url: "#" },
@@ -79,14 +79,18 @@ const Footer = ({
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
             <div className="col-span-2 mb-8 lg:mb-0">
               <div className="flex items-center gap-2 lg:justify-start">
-                <Image src="/lumix.png" alt="Lumix" width={30} height={30} />
-                <p className="text-xl font-semibold text-primary">{logo.title}</p>
+                <Image src="/clami.png" alt="Clami" width={30} height={30} />
+                <p className="text-xl font-semibold text-primary">
+                  {logo.title}
+                </p>
               </div>
               <p className="mt-4 text-muted-foreground">{tagline}</p>
             </div>
             {menuItems.map((section, sectionIdx) => (
               <div key={sectionIdx}>
-                <h3 className="mb-4 font-bold text-sm text-primary">{section.title}</h3>
+                <h3 className="mb-4 font-bold text-sm text-primary">
+                  {section.title}
+                </h3>
                 <ul className="space-y-3 text-muted-foreground">
                   {section.links.map((link, linkIdx) => (
                     <li
@@ -104,7 +108,10 @@ const Footer = ({
             <p>{copyright}</p>
             <ul className="flex gap-6">
               {bottomLinks.map((link, linkIdx) => (
-                <li key={linkIdx} className="hover:text-primary transition-colors">
+                <li
+                  key={linkIdx}
+                  className="hover:text-primary transition-colors"
+                >
                   <a href={link.url}>{link.text}</a>
                 </li>
               ))}

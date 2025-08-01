@@ -84,13 +84,13 @@ export function SignUpForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="space-y-1 text-center pb-4">
           <div className="mx-auto mb-2">
-            <img src="/lumix.png" alt="Lumix" className="h-10 w-auto" />
+            <img src="/clami.png" alt="Clami" className="h-10 w-auto" />
           </div>
           <CardTitle className="text-2xl font-semibold">
             Create Account
           </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
-            Sign up to get started with Lumix
+            Sign up to get started with Clami
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -67,7 +67,7 @@ const WorkspaceNavbar = async ({
   logo = {
     url: "/workspace/explore",
     alt: "logo",
-    title: "Lumix",
+    title: "Clami",
   },
   menu = [
     {
@@ -97,7 +97,7 @@ const WorkspaceNavbar = async ({
           <div className="flex items-center space-x-3 px-6">
             <Link href={logo.url} className="flex items-center space-x-3 group">
               <Image
-                src="/lumix.png"
+                src="/clami.png"
                 alt={logo.alt}
                 width={24}
                 height={24}

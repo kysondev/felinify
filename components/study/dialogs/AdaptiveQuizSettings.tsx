@@ -112,7 +112,7 @@ const AdaptiveQuizSettings = ({
               </div>
             </RadioGroup>
             <span className="text-xs text-muted-foreground">
-              This will cost 1 Lumix credit
+              This will cost 1 Clami credit
             </span>
           </div>
 

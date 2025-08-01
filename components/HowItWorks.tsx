@@ -13,7 +13,7 @@ interface HowItWorksProps {
 }
 
 export function HowItWorks({
-  title = "How Lumix Works",
+  title = "How Clami Works",
   subtitle = "Our simple 3-step process to supercharge your learning",
   steps = [
     {
@@ -25,7 +25,7 @@ export function HowItWorks({
     {
       title: "Study Smarter",
       description:
-        "Use our distraction-free study modes: flip cards, quiz yourself, or challenge mode. Lumix adapts to your learning style and knowledge gaps.",
+        "Use our distraction-free study modes: flip cards, quiz yourself, or challenge mode. Clami adapts to your learning style and knowledge gaps.",
       icon: <Lightbulb className="w-8 h-8 text-primary" />,
     },
     {

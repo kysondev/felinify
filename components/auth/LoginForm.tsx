@@ -85,7 +85,7 @@ export function LoginForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="space-y-1 text-center pb-4">
           <div className="mx-auto mb-2">
-            <img src="/lumix.png" alt="Lumix" className="h-10 w-auto" />
+            <img src="/clami.png" alt="Clami" className="h-10 w-auto" />
           </div>
           <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
@@ -98,29 +98,39 @@ export function LoginForm({
               <>
                 {!AUTH_CONFIG.isOAuthEnabled && (
                   <Alert className="mb-2">
-                    <AlertDescription>{AUTH_DISABLED_MESSAGES.oauth}</AlertDescription>
+                    <AlertDescription>
+                      {AUTH_DISABLED_MESSAGES.oauth}
+                    </AlertDescription>
                   </Alert>
                 )}
                 <div className="flex flex-col gap-3">
                   <NextForm action={signInWithGithub}>
-                    <Button 
-                      variant="outline" 
-                      className="w-full relative pl-10" 
+                    <Button
+                      variant="outline"
+                      className="w-full relative pl-10"
                       type="submit"
                       disabled={!AUTH_CONFIG.isOAuthEnabled}
                     >
-                      <img src="/github_light.svg" alt="github" className="absolute left-4 h-5 w-5" />
+                      <img
+                        src="/github_light.svg"
+                        alt="github"
+                        className="absolute left-4 h-5 w-5"
+                      />
                       <span>Continue with GitHub</span>
                     </Button>
                   </NextForm>
                   <NextForm action={signInWithGoogle}>
-                    <Button 
-                      variant="outline" 
-                      className="w-full relative pl-10" 
+                    <Button
+                      variant="outline"
+                      className="w-full relative pl-10"
                       type="submit"
                       disabled={!AUTH_CONFIG.isOAuthEnabled}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="absolute left-4 h-5 w-5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="absolute left-4 h-5 w-5"
+                      >
                         <path
                           d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
                           fill="currentColor"
@@ -149,7 +159,9 @@ export function LoginForm({
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">Email</FormLabel>
+                        <FormLabel className="text-sm font-medium">
+                          Email
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -161,10 +173,7 @@ export function LoginForm({
                       </FormItem>
                     )}
                   />
-                  <Button 
-                    type="submit" 
-                    className="w-full mt-2"
-                  >
+                  <Button type="submit" className="w-full mt-2">
                     Continue
                   </Button>
                 </form>
@@ -176,15 +185,25 @@ export function LoginForm({
                   className="grid gap-4"
                 >
                   <div className="flex items-center mb-2 text-sm">
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
                       className="p-0 h-auto hover:bg-transparent"
                       onClick={handleBack}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="m15 18-6-6 6-6"/>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="m15 18-6-6 6-6" />
                       </svg>
                       <span className="text-muted-foreground">{email}</span>
                     </Button>
@@ -195,7 +214,9 @@ export function LoginForm({
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex items-center justify-between">
-                          <FormLabel className="text-sm font-medium">Password</FormLabel>
+                          <FormLabel className="text-sm font-medium">
+                            Password
+                          </FormLabel>
                           <a
                             href="/auth/forgot-password"
                             className="text-xs text-primary font-medium hover:underline"
@@ -215,9 +236,9 @@ export function LoginForm({
                       </FormItem>
                     )}
                   />
-                  <Button 
-                    type="submit" 
-                    disabled={isPending} 
+                  <Button
+                    type="submit"
+                    disabled={isPending}
                     className="w-full mt-2"
                   >
                     {isPending ? <Loading isWhite /> : "Sign in"}
@@ -228,7 +249,10 @@ export function LoginForm({
 
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/auth/signup" className="text-primary font-medium hover:underline">
+              <a
+                href="/auth/signup"
+                className="text-primary font-medium hover:underline"
+              >
                 Sign up
               </a>
             </div>

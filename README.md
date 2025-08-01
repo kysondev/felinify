@@ -1,22 +1,22 @@
 <br />
 <div align="center">
-  <a href="https://github.com/kysondev/lumix">
+  <a href="https://github.com/kysondev/clami">
     <img src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753470067/image_2_ehrhh8.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Lumix</h3>
+<h3 align="center">Clami</h3>
 
   <p align="center">
     Create, review, and manage flashcards with AI-assisted tools in a minimal, distraction-free interface.
     <br />
-    <a href="https://lumixapp.xyz/"><strong>Learn More »</strong></a>
+    <a href="https://clami.app/"><strong>Learn More »</strong></a>
     <br />
     <br />
-    <a href="https://lumixapp.xyz/">View Demo</a>
+    <a href="https://clami.app/">View Demo</a>
     ·
-    <a href="https://github.com/kysondev/lumix/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/kysondev/clami/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/kysondev/lumix/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/kysondev/clami/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -26,7 +26,7 @@
 
 > ⭐️ If you find this project helpful, consider leaving a star. Thanks!
 
-**Lumix** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Lumix** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, Lumix helps students study smarter, not harder.
+**Clami** is an AI-powered flashcard app built to make studying easier and more effective. Users can turn their notes into flashcards in seconds and study them using three unique modes. The AI study mode adapts to performance and focuses on areas that need the most work. **Clami** also tracks progress over time and automatically creates new questions based on past mistakes, so studying stays personalized and efficient. Whether it's for test prep or daily review, **Clami** helps students study smarter, not harder.
 
 ## Getting Started
 
@@ -36,7 +36,7 @@ To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/kysondev/lumix.git
+   git clone https://github.com/kysondev/clami.git
    ```
 2. Install NPM packages
    ```sh
@@ -52,7 +52,7 @@ To get a local copy up and running follow these simple example steps.
    ```
 5. Change git remote url to avoid accidental pushes to base project
    ```sh
-   git remote set-url origin kysondev/lumix
+   git remote set-url origin kysondev/clami
    git remote -v # confirm the changes
    ```
 
@@ -98,4 +98,4 @@ For more details, see the [LICENSE](./LICENSE) file.
 
 Kyson W. - email@kyson.dev
 
-Project Link: [https://github.com/kysondev/lumix](https://github.com/kysondev/lumix)
+Project Link: [https://github.com/kysondev/clami](https://github.com/kysondev/clami)

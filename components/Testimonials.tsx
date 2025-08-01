@@ -13,27 +13,27 @@ interface TestimonialProps {
 
 export function Testimonials({
   title = "What Our Users Say",
-  subtitle = "Join thousands of students who've transformed their study habits with Lumix",
+  subtitle = "Join thousands of students who've transformed their study habits with Clami",
   testimonials = [
     {
       name: "Emily Carter",
       role: "High School Junior",
       quote:
-        "Lumix made studying for my AP Biology test way easier. The flashcards were actually fun to use and helped me remember stuff I usually forget, like cell parts and processes.",
+        "Clami made studying for my AP Biology test way easier. The flashcards were actually fun to use and helped me remember stuff I usually forget, like cell parts and processes.",
       rating: 5,
     },
     {
       name: "Jaden Brooks",
       role: "High School Sophomore",
       quote:
-        "I used Lumix to make flashcards for history and vocab quizzes. It's cool how it pulls stuff from my notes automatically. The quizzes helped me figure out what I needed to review more.",
+        "I used Clami to make flashcards for history and vocab quizzes. It's cool how it pulls stuff from my notes automatically. The quizzes helped me figure out what I needed to review more.",
       rating: 5,
     },
     {
       name: "Sofia Nguyen",
       role: "High School Senior",
       quote:
-        "Studying for finals stressed me out, but Lumix kept me on track. The app’s layout is super simple, and it helped me stay focused and actually remember what I studied.",
+        "Studying for finals stressed me out, but Clami kept me on track. The app’s layout is super simple, and it helped me stay focused and actually remember what I studied.",
       rating: 4,
     },
   ],

@@ -5,7 +5,7 @@ services:
     build:
       context: .
       target: prod
-    container_name: lumix
+    container_name: clami
     restart: always
     ports:
       - "3000:3000"

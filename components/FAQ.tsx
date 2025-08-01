@@ -18,17 +18,17 @@ interface FAQProps {
 
 export function FAQ({
   title = "Frequently Asked Questions",
-  subtitle = "Everything you need to know about Lumix",
+  subtitle = "Everything you need to know about Clami",
   faqs = [
     {
-      question: "How does Lumix's AI flashcard generation work?",
+      question: "How does Clami's AI flashcard generation work?",
       answer:
-        "Lumix uses advanced AI to analyze your notes or documents and extract key concepts. It then creates flashcards with questions on one side and answers on the other. The AI is trained to identify important information and create effective study materials tailored to your content.",
+        "Clami uses advanced AI to analyze your notes or documents and extract key concepts. It then creates flashcards with questions on one side and answers on the other. The AI is trained to identify important information and create effective study materials tailored to your content.",
     },
     {
-      question: "Can I use Lumix on multiple devices?",
+      question: "Can I use Clami on multiple devices?",
       answer:
-        "Yes! Lumix is accessible on any device with a web browser. Your flashcards and progress sync automatically across all your devices, so you can study seamlessly whether you're on your laptop, tablet, or smartphone.",
+        "Yes! Clami is accessible on any device with a web browser. Your flashcards and progress sync automatically across all your devices, so you can study seamlessly whether you're on your laptop, tablet, or smartphone.",
     },
     {
       question: "Is there a limit to how many flashcards I can create?",

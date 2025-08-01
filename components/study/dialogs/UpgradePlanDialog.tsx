@@ -173,7 +173,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>50 Lumix credits per day</span>
+                  <span>50 Clami credits per day</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
@@ -229,7 +229,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>100 Lumix credits per day</span>
+                  <span>100 Clami credits per day</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />

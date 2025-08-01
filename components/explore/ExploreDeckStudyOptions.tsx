@@ -30,10 +30,15 @@ interface ExploreDeckStudyOptionsProps {
   user: User;
 }
 
-export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStudyOptionsProps) {
+export default function ExploreDeckStudyOptions({
+  deckId,
+  user,
+}: ExploreDeckStudyOptionsProps) {
   const router = useRouter();
-  const [showStudyModeDialog, setShowStudyModeDialog] = useState<boolean>(false);
-  const [showChallengeSettings, setShowChallengeSettings] = useState<boolean>(false);
+  const [showStudyModeDialog, setShowStudyModeDialog] =
+    useState<boolean>(false);
+  const [showChallengeSettings, setShowChallengeSettings] =
+    useState<boolean>(false);
   const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
   const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
@@ -64,10 +69,7 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
 
   return (
     <>
-      <Dialog
-        open={showStudyModeDialog}
-        onOpenChange={setShowStudyModeDialog}
-      >
+      <Dialog open={showStudyModeDialog} onOpenChange={setShowStudyModeDialog}>
         <DialogTrigger asChild>
           <Button className="w-full">
             <Play className="h-4 w-4 mr-2" />
@@ -76,12 +78,14 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader className="space-y-3">
-            <DialogTitle className="text-xl font-semibold">Choose Study Mode</DialogTitle>
+            <DialogTitle className="text-xl font-semibold">
+              Choose Study Mode
+            </DialogTitle>
             <DialogDescription className="text-muted-foreground">
               Select the perfect study method for your learning goals
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-3 py-4">
             <div
               className="group/mode flex items-center gap-4 p-4 border border-border rounded-lg cursor-pointer hover:border-primary/50 hover:bg-accent/50 transition-all duration-200"
@@ -91,7 +95,9 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
                 <FlipHorizontal className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-foreground mb-1">Classic Flip</h3>
+                <h3 className="font-semibold text-foreground mb-1">
+                  Classic Flip
+                </h3>
                 <p className="text-sm text-muted-foreground line-clamp-2">
                   Simple flashcard flipping for quick review and memorization
                 </p>
@@ -107,7 +113,9 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
                 <Award className="h-5 w-5 text-orange-600 dark:text-orange-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-foreground mb-1">Challenge Mode</h3>
+                <h3 className="font-semibold text-foreground mb-1">
+                  Challenge Mode
+                </h3>
                 <p className="text-sm text-muted-foreground line-clamp-2">
                   Test your knowledge with multiple choice challenges
                 </p>
@@ -124,7 +132,9 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-foreground">Adaptive Quiz</h3>
+                  <h3 className="font-semibold text-foreground">
+                    Adaptive Quiz
+                  </h3>
                   <Badge className="bg-primary text-primary-foreground text-xs px-2 py-0.5 font-semibold">
                     <Zap className="h-3 w-3 mr-1" />
                     AI
@@ -145,7 +155,7 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
               <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
                 <li>Complete Challenge Mode at least 3 times</li>
                 <li>Achieve at least 10% mastery in this deck</li>
-                <li>Have at least 1 Lumix credit available</li>
+                <li>Have at least 1 Clami credit available</li>
               </ul>
             </div>
           </div>
@@ -173,4 +183,4 @@ export default function ExploreDeckStudyOptions({ deckId, user }: ExploreDeckStu
       )}
     </>
   );
-} 
+}

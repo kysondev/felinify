@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Lumix",
+  title: "Clami",
   description: "AI powered flashcards for focused, fast learning",
 };
 

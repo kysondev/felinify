@@ -14,7 +14,7 @@ interface StatsProps {
 
 export function Stats({
   title = "Trusted by Students Worldwide",
-  subtitle = "Join thousands who are already studying smarter with Lumix",
+  subtitle = "Join thousands who are already studying smarter with Clami",
   stats = [
     {
       value: "6+",
