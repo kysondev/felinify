@@ -251,7 +251,7 @@ export default async function LibraryPage() {
                     <DialogTrigger asChild>
                       <Button size="lg" className="gap-2">
                         <PlusCircle className="h-5 w-5" />
-                        Create Your First Deck
+                        Create Deck
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
@@ -336,12 +336,14 @@ export default async function LibraryPage() {
                         <div>
                           <p className="font-medium">Most Studied</p>
                           <p className="text-sm text-muted-foreground">
-                            {decks?.reduce((max, deck) =>
-                              (deck.progress?.completedSessions || 0) >
-                              (max.progress?.completedSessions || 0)
-                                ? deck
-                                : max
-                            )?.name || "No data"}
+                            {(decks.length > 0 &&
+                              decks?.reduce((max, deck) =>
+                                (deck.progress?.completedSessions || 0) >
+                                (max.progress?.completedSessions || 0)
+                                  ? deck
+                                  : max
+                              )?.name) ||
+                              "No data"}
                           </p>
                         </div>
                       </div>
@@ -355,12 +357,14 @@ export default async function LibraryPage() {
                         <div>
                           <p className="font-medium">Highest Mastery</p>
                           <p className="text-sm text-muted-foreground">
-                            {decks?.reduce((max, deck) =>
-                              (deck.progress?.mastery || 0) >
-                              (max.progress?.mastery || 0)
-                                ? deck
-                                : max
-                            )?.name || "No data"}
+                            {(decks.length > 0 &&
+                              decks?.reduce((max, deck) =>
+                                (deck.progress?.mastery || 0) >
+                                (max.progress?.mastery || 0)
+                                  ? deck
+                                  : max
+                              )?.name) ||
+                              "No data"}
                           </p>
                         </div>
                       </div>
