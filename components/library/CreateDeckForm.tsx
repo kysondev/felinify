@@ -262,7 +262,7 @@ export function CreateDeckForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Deck Visibility</FormLabel>
-                  <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
+                  <div className="flex items-center justify-between p-3 border rounded-lg bg-white">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-2">
                         {field.value === "public" ? (
@@ -316,6 +316,9 @@ export function CreateDeckForm({
           <h3 className="text-base font-medium flex items-center gap-2 mb-2">
             <Brain className="h-4 w-4 text-primary" />
             AI Flashcard Generation
+            <span className="text-xs text-muted-foreground">
+              (1 credit)
+            </span>
           </h3>
           <p className="text-sm text-muted-foreground mb-3">
             Paste your study notes or upload a document, and our AI will
@@ -387,7 +390,7 @@ export function CreateDeckForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Deck Visibility</FormLabel>
-                    <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
+                    <div className="flex items-center justify-between p-3 border rounded-lg bg-white">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-2">
                           {field.value === "public" ? (

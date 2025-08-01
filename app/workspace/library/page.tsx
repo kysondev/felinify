@@ -74,14 +74,14 @@ export default async function LibraryPage() {
                   Create Deck
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+              <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6">
                 <DialogHeader className="pb-3">
                   <DialogTitle>Create New Flashcard Deck</DialogTitle>
                   <DialogDescription>
                     Create a new deck to organize your flashcards.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
+                <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
                   <CreateDeckForm
                     user={user as User}
                     subscription={subscription as Subscription}
@@ -185,10 +185,10 @@ export default async function LibraryPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="Search your decks..."
-                  className="pl-10 w-full lg:w-64"
+                  className="pl-10 w-full lg:w-64 bg-white"
                 />
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="bg-white">
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
@@ -219,14 +219,14 @@ export default async function LibraryPage() {
                       </CardContent>
                     </Card>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6">
                     <DialogHeader className="pb-3">
                       <DialogTitle>Create New Flashcard Deck</DialogTitle>
                       <DialogDescription>
                         Create a new deck to organize your flashcards.
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
+                    <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
                       <CreateDeckForm
                         user={user as User}
                         subscription={subscription as Subscription}
@@ -254,14 +254,14 @@ export default async function LibraryPage() {
                         Create Deck
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+                    <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6">
                       <DialogHeader className="pb-3">
                         <DialogTitle>Create New Flashcard Deck</DialogTitle>
                         <DialogDescription>
                           Create a new deck to organize your flashcards.
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
+                      <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
                         <CreateDeckForm
                           user={user as User}
                           subscription={subscription as Subscription}
@@ -275,67 +275,94 @@ export default async function LibraryPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Learning Progress
+          <TabsContent value="analytics" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Card className="lg:col-span-2 border border-border/50">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <BarChart3 className="h-5 w-5 text-primary" />
+                    </div>
+                    Learning Progress Overview
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium">
-                          Overall Mastery
-                        </span>
-                        <span className="text-sm font-bold">
-                          {averageMastery}%
-                        </span>
+                <CardContent className="space-y-8">
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-semibold text-foreground">Overall Progress</h3>
+                      <div className="text-right">
+                        <p className="text-2xl font-bold text-primary">{averageMastery}%</p>
+                        <p className="text-sm text-muted-foreground">Mastery Level</p>
                       </div>
-                      <Progress value={averageMastery} className="h-2" />
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <p className="text-2xl font-bold text-primary">
-                          {totalSessions}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Total Sessions
-                        </p>
+                    
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <Progress value={averageMastery} className="h-4" />
+                        <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                          <span>Learner</span>
+                          <span>Intermediate</span>
+                          <span>Master</span>
+                        </div>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <p className="text-2xl font-bold text-green-500">
-                          {totalCards}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Total Cards
-                        </p>
-                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-foreground">Deck Performance</h3>
+                      <p className="text-sm text-muted-foreground">Top 5 decks by mastery</p>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {decks?.sort((a, b) => (b.progress?.mastery || 0) - (a.progress?.mastery || 0)).slice(0, 5).map((deck, index) => (
+                        <div key={deck.id} className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors">
+                          <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-semibold text-primary">{index + 1}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{deck.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {deck.flashcards?.length || 0} cards • {deck.progress?.completedSessions || 0} sessions
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-20 bg-muted rounded-full h-2">
+                              <div 
+                                className="bg-primary h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${deck.progress?.mastery || 0}%` }}
+                              />
+                            </div>
+                            <span className="text-sm font-semibold w-12 text-right">
+                              {deck.progress?.mastery || 0}%
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
+              <Card className="border border-border/50 h-fit">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <TrendingUp className="h-5 w-5 text-primary" />
+                    </div>
                     Study Insights
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-primary/20 rounded-lg">
-                          <Zap className="h-4 w-4 text-primary" />
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-1.5 bg-muted rounded-lg">
+                          <Zap className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-medium">Most Studied</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="font-semibold text-sm text-foreground">Most Studied</p>
+                          <p className="text-xs text-muted-foreground">
                             {(decks.length > 0 &&
                               decks?.reduce((max, deck) =>
                                 (deck.progress?.completedSessions || 0) >
@@ -347,16 +374,25 @@ export default async function LibraryPage() {
                           </p>
                         </div>
                       </div>
+                      <div className="text-xs text-muted-foreground">
+                        {decks.length > 0 &&
+                          decks?.reduce((max, deck) =>
+                            (deck.progress?.completedSessions || 0) >
+                            (max.progress?.completedSessions || 0)
+                              ? deck
+                              : max
+                          )?.progress?.completedSessions || 0} sessions completed
+                      </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-green-500/20 rounded-lg">
-                          <Target className="h-4 w-4 text-green-500" />
+                    <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-1.5 bg-muted rounded-lg">
+                          <Target className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-medium">Highest Mastery</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="font-semibold text-sm text-foreground">Highest Mastery</p>
+                          <p className="text-xs text-muted-foreground">
                             {(decks.length > 0 &&
                               decks?.reduce((max, deck) =>
                                 (deck.progress?.mastery || 0) >
@@ -367,6 +403,63 @@ export default async function LibraryPage() {
                               "No data"}
                           </p>
                         </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {decks.length > 0 &&
+                          decks?.reduce((max, deck) =>
+                            (deck.progress?.mastery || 0) >
+                            (max.progress?.mastery || 0)
+                              ? deck
+                              : max
+                          )?.progress?.mastery || 0}% mastery achieved
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-1.5 bg-muted rounded-lg">
+                          <Package className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-foreground">Largest Deck</p>
+                          <p className="text-xs text-muted-foreground">
+                            {(decks.length > 0 &&
+                              decks?.reduce((max, deck) =>
+                                (deck.flashcards?.length || 0) >
+                                (max.flashcards?.length || 0)
+                                  ? deck
+                                  : max
+                              )?.name) ||
+                              "No data"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {decks.length > 0 &&
+                          decks?.reduce((max, deck) =>
+                            (deck.flashcards?.length || 0) >
+                            (max.flashcards?.length || 0)
+                              ? deck
+                              : max
+                          )?.flashcards?.length || 0} cards total
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-border/50">
+                    <h4 className="font-semibold text-sm text-foreground mb-3">Quick Stats</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="text-center p-3 bg-muted/30 rounded-lg">
+                        <p className="text-lg font-bold text-primary">
+                          {decks?.filter(d => (d.progress?.mastery || 0) >= 80).length || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Mastered</p>
+                      </div>
+                      <div className="text-center p-3 bg-muted/30 rounded-lg">
+                        <p className="text-lg font-bold text-orange-500">
+                          {decks?.filter(d => (d.progress?.mastery || 0) < 50).length || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Needs Work</p>
                       </div>
                     </div>
                   </div>
