@@ -107,7 +107,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Limited Lumi AI use</span>
+                    <span>Limited Clami AI use</span>
                   </li>
                 </ul>
                 <Button className="w-full mt-auto" asChild>
@@ -158,7 +158,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Extended Access to Lumi AI</span>
+                    <span>Extended Access to Clami AI</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
@@ -211,7 +211,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Full Access to Lumi AI</span>
+                    <span>Full Access to Clami AI</span>
                   </li>
                 </ul>
                 <Button className="w-full" asChild>
