@@ -10,17 +10,21 @@ import {
   DialogFooter,
 } from "components/ui/Dialog";
 import { Button } from "components/ui/Button";
-import { Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { Flashcard as FlashcardType } from "db/types/models.types";
 
 interface ExploreFlashcardGridProps {
   flashcards: FlashcardType[];
 }
 
-export default function ExploreFlashcardGrid({ flashcards }: ExploreFlashcardGridProps) {
+export default function ExploreFlashcardGrid({
+  flashcards,
+}: ExploreFlashcardGridProps) {
   const [showFullContentDialog, setShowFullContentDialog] = useState(false);
   const [fullContentTitle, setFullContentTitle] = useState("");
   const [fullContent, setFullContent] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const cardsPerPage = 6;
 
   const handleShowFullContent = (title: string, content: string) => {
     setFullContentTitle(title);
@@ -28,10 +32,29 @@ export default function ExploreFlashcardGrid({ flashcards }: ExploreFlashcardGri
     setShowFullContentDialog(true);
   };
 
+  const totalPages = Math.ceil(flashcards?.length / cardsPerPage);
+
+  const currentCards = flashcards?.slice(
+    currentPage * cardsPerPage,
+    (currentPage + 1) * cardsPerPage
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <>
       <div className="grid sm:grid-cols-2 gap-4">
-        {flashcards?.map((flashcard) => (
+        {currentCards?.map((flashcard) => (
           <Flashcard
             key={String(flashcard.id)}
             id={String(flashcard.id)}
@@ -42,8 +65,41 @@ export default function ExploreFlashcardGrid({ flashcards }: ExploreFlashcardGri
           />
         ))}
       </div>
+      
+      {flashcards?.length > cardsPerPage && (
+        <div className="flex justify-between items-center pt-4 border-t mt-6">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrevPage}
+            disabled={currentPage === 0}
+            className="flex items-center gap-1"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Previous
+          </Button>
 
-      <Dialog open={showFullContentDialog} onOpenChange={setShowFullContentDialog}>
+          <p className="text-sm text-muted-foreground">
+            Page {currentPage + 1} of {totalPages}
+          </p>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNextPage}
+            disabled={currentPage >= totalPages - 1}
+            className="flex items-center gap-1"
+          >
+            Next
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      <Dialog
+        open={showFullContentDialog}
+        onOpenChange={setShowFullContentDialog}
+      >
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -66,4 +122,4 @@ export default function ExploreFlashcardGrid({ flashcards }: ExploreFlashcardGri
       </Dialog>
     </>
   );
-} 
+}

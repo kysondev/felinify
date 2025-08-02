@@ -21,7 +21,16 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "components/ui/Dialog";
-import { AlertCircle, ChevronLeft, ChevronRight, Edit2, Eye, Plus, Search, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  Edit2,
+  Eye,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Input } from "components/ui/Input";
 import {
@@ -71,11 +80,10 @@ export const FlashcardList = ({
     title: string;
     content: string;
   } | null>(null);
-  
-  // Pagination state
+
   const [currentPage, setCurrentPage] = useState(0);
   const cardsPerPage = 6;
-  
+
   const router = useRouter();
 
   const addForm = useForm<FlashcardSchema>({
@@ -210,21 +218,21 @@ export const FlashcardList = ({
       card.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       card.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const totalFilteredCards = filteredFlashcards?.length || 0;
   const totalPages = Math.ceil(totalFilteredCards / cardsPerPage);
-  
+
   const currentCards = filteredFlashcards?.slice(
     currentPage * cardsPerPage,
     (currentPage + 1) * cardsPerPage
   );
-  
+
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
-  
+
   const handlePrevPage = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
@@ -361,9 +369,9 @@ export const FlashcardList = ({
           </div>
           {totalFilteredCards > cardsPerPage && (
             <div className="flex justify-between items-center pt-4 border-t mt-6">
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handlePrevPage}
                 disabled={currentPage === 0}
                 className="flex items-center gap-1"
@@ -371,14 +379,14 @@ export const FlashcardList = ({
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
-              
+
               <p className="text-sm text-muted-foreground">
                 Page {currentPage + 1} of {totalPages}
               </p>
-              
-              <Button 
-                variant="outline" 
-                size="sm" 
+
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleNextPage}
                 disabled={currentPage >= totalPages - 1}
                 className="flex items-center gap-1"
