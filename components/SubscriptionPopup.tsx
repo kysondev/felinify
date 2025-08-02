@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
-  DialogFooter
 } from "./ui/Dialog";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
@@ -27,9 +26,12 @@ interface SubscriptionPopupProps {
   setOpen?: (open: boolean) => void;
 }
 
-export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: SubscriptionPopupProps = {}) {
+export function SubscriptionPopup({
+  open: propOpen,
+  setOpen: propSetOpen,
+}: SubscriptionPopupProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false);
-  
+
   const open = propOpen !== undefined ? propOpen : internalOpen;
   const setOpen = propSetOpen || setInternalOpen;
   const [isLoading, setIsLoading] = useState(false);
@@ -44,14 +46,13 @@ export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: Subs
   });
 
   useEffect(() => {
-    // Only auto-show if we're using internal state and not controlled by props
     if (propOpen === undefined && propSetOpen === undefined) {
       const timer = setTimeout(() => {
         const hasSubscribed = localStorage.getItem("emailSubscribed");
         if (!hasSubscribed) {
           setInternalOpen(true);
         }
-      }, 2000);
+      }, 8000);
 
       return () => clearTimeout(timer);
     }
@@ -69,7 +70,7 @@ export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: Subs
       });
 
       const result = await response.json();
-      
+
       if (response.ok) {
         toast.success("Thank you for subscribing!");
         localStorage.setItem("emailSubscribed", "true");
@@ -91,29 +92,37 @@ export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: Subs
         <div className="flex flex-col md:flex-row">
           <div className="bg-primary p-6 md:w-1/3 flex flex-col justify-center items-center text-white">
             <div className="text-center">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth={1.5} 
-                stroke="currentColor" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
                 className="w-12 h-12 mx-auto mb-4"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                />
               </svg>
               <h3 className="text-xl font-bold mb-2">Be the first</h3>
-              <p className="text-sm opacity-90">Get early access and exclusive offers</p>
+              <p className="text-sm opacity-90">
+                Get early access and exclusive offers
+              </p>
             </div>
           </div>
 
           <div className="p-6 md:w-2/3 bg-white">
             <DialogHeader className="mb-4">
-              <DialogTitle className="text-2xl font-bold text-gray-900">Stay Updated</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-gray-900">
+                Stay Updated
+              </DialogTitle>
               <DialogDescription className="text-gray-600">
                 Subscribe to our newsletter to be notified when Clami launches!
               </DialogDescription>
             </DialogHeader>
-            
+
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-4 py-2">
                 <div className="space-y-2">
@@ -125,10 +134,12 @@ export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: Subs
                     disabled={isLoading}
                   />
                   {errors.email && (
-                    <p className="text-sm text-red-500">{errors.email.message}</p>
+                    <p className="text-sm text-red-500">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
-                
+
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <Button
                     type="button"
@@ -139,15 +150,15 @@ export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: Subs
                   >
                     Maybe Later
                   </Button>
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     disabled={isLoading}
                     className="flex-1 h-11 bg-primary hover:bg-primary/80 text-white"
                   >
                     {isLoading ? "Subscribing..." : "Subscribe Now"}
                   </Button>
                 </div>
-                
+
                 <p className="text-xs text-center text-gray-500 mt-4">
                   We respect your privacy. Unsubscribe at any time.
                 </p>
