@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://clami.app/api/og?title=Log%20In&description=Access%20Your%20Flashcards",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
         width: 1200,
         height: 630,
         alt: "Clami Login",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Log In | Clami",
     description: "Log in to your Clami account to access your flashcards and continue your learning journey.",
-    images: ["https://clami.app/api/og?title=Log%20In&description=Access%20Your%20Flashcards"],
+    images: ["https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png"],
   },
 };
 

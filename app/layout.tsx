@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "Clami",
     images: [
       {
-        url: "https://clami.app/api/og?title=AI%20Flashcards&description=For%20Focused%2C%20Fast%20Learning",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
         width: 1200,
         height: 630,
         alt: "Clami - AI Flashcards For Focused, Fast Learning",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Clami | AI Flashcards For Focused, Fast Learning",
     description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    images: ["https://clami.app/api/og?title=AI%20Flashcards&description=For%20Focused%2C%20Fast%20Learning"],
+    images: ["https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png"],
   },
   robots: {
     index: true,

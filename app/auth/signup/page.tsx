@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://clami.app/api/og?title=Sign%20Up&description=Start%20Learning%20Faster",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
         width: 1200,
         height: 630,
         alt: "Clami Sign Up",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sign Up | Clami",
     description: "Create your Clami account and start using AI-powered flashcards for focused, fast learning.",
-    images: ["https://clami.app/api/og?title=Sign%20Up&description=Start%20Learning%20Faster"],
+    images: ["https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png"],
   },
 };
 
