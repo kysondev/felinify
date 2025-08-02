@@ -8,10 +8,12 @@ import { LandingNavbar } from "components/LandingNavbar";
 import { Pricing } from "components/Pricing";
 import { Stats } from "components/Stats";
 import { Testimonials } from "components/Testimonials";
+import { SubscriptionPopup } from "components/SubscriptionPopup";
 
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
+      <SubscriptionPopup />
       <div className="px-4 max-w-[1200px] mx-auto">
         <LandingNavbar />
         <Hero />

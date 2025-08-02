@@ -169,6 +169,13 @@ export interface QuizAccessTokenTable {
   updatedAt: ColumnType<Date, string | undefined>;
 }
 
+export interface SubscriptionEmailTable {
+  id: Generated<string> | string;
+  email: string;
+  createdAt: ColumnType<Date, string | undefined, never>;
+  updatedAt: ColumnType<Date, string | undefined>;
+}
+
 export interface Database {
   user: UserTable;
   session: SessionTable;
@@ -184,4 +191,5 @@ export interface Database {
   subscription: SubscriptionTable;
   review: ReviewTable;
   tag: TagTable;
+  subscriptionEmail: SubscriptionEmailTable;
 }

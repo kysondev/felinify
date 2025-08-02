@@ -1,4 +1,6 @@
+"use server";
 import { User } from "better-auth";
+import { db } from "lib/db";
 import { sendEmail } from "lib/email";
 import EmailVerification from "templates/emails/EmailVerification";
 import ResetPassword from "templates/emails/ResetPassword";
@@ -30,3 +32,16 @@ export const sendResetPasswordEmail = async (user: User, url: string) => {
     html: ResetPassword({ url }),
   });
 };
+
+export const subscribeEmail = async (email: string) => {
+  const existingEmail = await db
+  .selectFrom("subscriptionEmail")
+  .where("email", "=", email)
+  .selectAll()
+  .executeTakeFirst();
+  if (existingEmail) {
+    return { success: false, message: "Email already subscribed" };
+  }
+  await db.insertInto("subscriptionEmail").values({ id: crypto.randomUUID(), email, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }).execute();
+  return { success: true, message: "Email subscribed successfully" };
+}

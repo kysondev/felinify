@@ -236,3 +236,11 @@ model QuizAccessToken {
   updatedAt  DateTime  @updatedAt
   @@map("quizAccessToken")
 }
+
+model SubscriptionEmail {
+  id         String    @id @default(cuid())
+  email      String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  @@map("subscriptionEmail")
+}
