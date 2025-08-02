@@ -54,7 +54,7 @@ export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
                                     alt={user.name || "User"}
                                     width={24}
                                     height={24}
-                                    className="rounded-full object-cover border border-gray-200"
+                                    className="rounded-full object-cover border border-gray-200 w-6 h-6"
                                 />
                             ) : (
                                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">

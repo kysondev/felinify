@@ -151,7 +151,7 @@ const WorkspaceNavbar = async ({
                     alt="User Avatar"
                     width={36}
                     height={36}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-cover w-9 h-9"
                   />
                 </Button>
               </DropdownMenuTrigger>
@@ -165,7 +165,7 @@ const WorkspaceNavbar = async ({
                     alt="User Avatar"
                     width={40}
                     height={40}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-cover w-10 h-10"
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">
@@ -263,7 +263,7 @@ const WorkspaceNavbar = async ({
                       alt="User Avatar"
                       width={40}
                       height={40}
-                      className="rounded-lg object-cover"
+                      className="rounded-lg object-cover w-10 h-10"
                     />
                     <div>
                       <p className="font-semibold text-gray-900">

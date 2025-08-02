@@ -289,13 +289,19 @@ export default async function LibraryPage() {
                 <CardContent className="space-y-8">
                   <div className="space-y-6">
                     <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-semibold text-foreground">Overall Progress</h3>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        Overall Progress
+                      </h3>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-primary">{averageMastery}%</p>
-                        <p className="text-sm text-muted-foreground">Mastery Level</p>
+                        <p className="text-2xl font-bold text-primary">
+                          {averageMastery}%
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Mastery Average
+                        </p>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div className="relative">
                         <Progress value={averageMastery} className="h-4" />
@@ -310,35 +316,56 @@ export default async function LibraryPage() {
 
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-foreground">Deck Performance</h3>
-                      <p className="text-sm text-muted-foreground">Top 5 decks by mastery</p>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        Deck Performance
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Top 5 decks by mastery
+                      </p>
                     </div>
-                    
+
                     <div className="space-y-3">
-                      {decks?.sort((a, b) => (b.progress?.mastery || 0) - (a.progress?.mastery || 0)).slice(0, 5).map((deck, index) => (
-                        <div key={deck.id} className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors">
-                          <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-semibold text-primary">{index + 1}</span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{deck.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {deck.flashcards?.length || 0} cards • {deck.progress?.completedSessions || 0} sessions
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="w-20 bg-muted rounded-full h-2">
-                              <div 
-                                className="bg-primary h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${deck.progress?.mastery || 0}%` }}
-                              />
+                      {decks
+                        ?.sort(
+                          (a, b) =>
+                            (b.progress?.mastery || 0) -
+                            (a.progress?.mastery || 0)
+                        )
+                        .slice(0, 5)
+                        .map((deck, index) => (
+                          <div
+                            key={deck.id}
+                            className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors"
+                          >
+                            <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                              <span className="text-sm font-semibold text-primary">
+                                {index + 1}
+                              </span>
                             </div>
-                            <span className="text-sm font-semibold w-12 text-right">
-                              {deck.progress?.mastery || 0}%
-                            </span>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">
+                                {deck.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {deck.flashcards?.length || 0} cards •{" "}
+                                {deck.progress?.completedSessions || 0} sessions
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="w-20 bg-muted rounded-full h-2">
+                                <div
+                                  className="bg-primary h-2 rounded-full transition-all duration-300"
+                                  style={{
+                                    width: `${deck.progress?.mastery || 0}%`,
+                                  }}
+                                />
+                              </div>
+                              <span className="text-sm font-semibold w-12 text-right">
+                                {deck.progress?.mastery || 0}%
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                   </div>
                 </CardContent>
@@ -361,7 +388,9 @@ export default async function LibraryPage() {
                           <Zap className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-semibold text-sm text-foreground">Most Studied</p>
+                          <p className="font-semibold text-sm text-foreground">
+                            Most Studied
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {(decks.length > 0 &&
                               decks?.reduce((max, deck) =>
@@ -375,13 +404,15 @@ export default async function LibraryPage() {
                         </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {decks.length > 0 &&
+                        {(decks.length > 0 &&
                           decks?.reduce((max, deck) =>
                             (deck.progress?.completedSessions || 0) >
                             (max.progress?.completedSessions || 0)
                               ? deck
                               : max
-                          )?.progress?.completedSessions || 0} sessions completed
+                          )?.progress?.completedSessions) ||
+                          0}{" "}
+                        sessions completed
                       </div>
                     </div>
 
@@ -391,7 +422,9 @@ export default async function LibraryPage() {
                           <Target className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-semibold text-sm text-foreground">Highest Mastery</p>
+                          <p className="font-semibold text-sm text-foreground">
+                            Highest Mastery
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {(decks.length > 0 &&
                               decks?.reduce((max, deck) =>
@@ -405,13 +438,15 @@ export default async function LibraryPage() {
                         </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {decks.length > 0 &&
+                        {(decks.length > 0 &&
                           decks?.reduce((max, deck) =>
                             (deck.progress?.mastery || 0) >
                             (max.progress?.mastery || 0)
                               ? deck
                               : max
-                          )?.progress?.mastery || 0}% mastery achieved
+                          )?.progress?.mastery) ||
+                          0}
+                        % mastery achieved
                       </div>
                     </div>
 
@@ -421,7 +456,9 @@ export default async function LibraryPage() {
                           <Package className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-semibold text-sm text-foreground">Largest Deck</p>
+                          <p className="font-semibold text-sm text-foreground">
+                            Largest Deck
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {(decks.length > 0 &&
                               decks?.reduce((max, deck) =>
@@ -435,31 +472,42 @@ export default async function LibraryPage() {
                         </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {decks.length > 0 &&
+                        {(decks.length > 0 &&
                           decks?.reduce((max, deck) =>
                             (deck.flashcards?.length || 0) >
                             (max.flashcards?.length || 0)
                               ? deck
                               : max
-                          )?.flashcards?.length || 0} cards total
+                          )?.flashcards?.length) ||
+                          0}{" "}
+                        cards total
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-3 border-t border-border/50">
-                    <h4 className="font-semibold text-sm text-foreground mb-3">Quick Stats</h4>
+                    <h4 className="font-semibold text-sm text-foreground mb-3">
+                      Quick Stats
+                    </h4>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="text-center p-3 bg-muted/30 rounded-lg">
                         <p className="text-lg font-bold text-primary">
-                          {decks?.filter(d => (d.progress?.mastery || 0) >= 80).length || 0}
+                          {decks?.filter(
+                            (d) => (d.progress?.mastery || 0) >= 80
+                          ).length || 0}
                         </p>
-                        <p className="text-xs text-muted-foreground">Mastered</p>
+                        <p className="text-xs text-muted-foreground">
+                          Mastered
+                        </p>
                       </div>
                       <div className="text-center p-3 bg-muted/30 rounded-lg">
                         <p className="text-lg font-bold text-orange-500">
-                          {decks?.filter(d => (d.progress?.mastery || 0) < 50).length || 0}
+                          {decks?.filter((d) => (d.progress?.mastery || 0) < 50)
+                            .length || 0}
                         </p>
-                        <p className="text-xs text-muted-foreground">Needs Work</p>
+                        <p className="text-xs text-muted-foreground">
+                          Needs Work
+                        </p>
                       </div>
                     </div>
                   </div>
