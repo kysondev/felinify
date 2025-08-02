@@ -30,6 +30,7 @@ import { Subscription, User } from "db/types/models.types";
 import { Input } from "components/ui/Input";
 import { Progress } from "components/ui/Progress";
 import { Metadata } from "next";
+import JsonLd from "components/SEO/JsonLd";
 
 export const metadata: Metadata = {
   title: "My Library | Clami",
@@ -48,6 +49,27 @@ export default async function LibraryPage() {
   const { data: user } = await getUser();
   const { data: decks } = await getDecksByUserId(user?.id as string);
   const { data: subscription } = await getUserSubscription(user?.id as string);
+  
+  const librarySchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "My Flashcard Library",
+    "description": "Personal collection of flashcard decks for studying",
+    "itemListElement": decks?.map((deck, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "CreativeWork",
+        "name": deck.name,
+        "description": deck.description || "Flashcard deck for studying",
+        "author": {
+          "@type": "Person",
+          "name": user?.name || "Clami User"
+        },
+        "dateCreated": deck.createdAt
+      }
+    })) || []
+  };
 
   const totalCards =
     decks?.reduce((sum, deck) => sum + (deck.flashcards?.length || 0), 0) || 0;
@@ -66,6 +88,7 @@ export default async function LibraryPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={librarySchema} />
       <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">

@@ -18,6 +18,7 @@ import { Deck } from "db/types/models.types";
 import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
 import { Metadata } from "next";
+import JsonLd from "components/SEO/JsonLd";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",
@@ -51,8 +52,28 @@ export default async function Explore() {
     "Arts",
   ];
 
+  const explorePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Explore Flashcard Decks",
+    "description": "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+    "url": "https://clami.app/workspace/explore",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Clami",
+      "url": "https://clami.app"
+    },
+    "about": {
+      "@type": "Thing",
+      "name": "Educational flashcards",
+      "description": "Digital flashcards for studying various subjects"
+    },
+    "keywords": "flashcards, study decks, educational resources, learning materials"
+  };
+
   return (
     <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+      <JsonLd data={explorePageSchema} />
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-medium text-sm mb-4">
           <Sparkles className="w-4 h-4" />
