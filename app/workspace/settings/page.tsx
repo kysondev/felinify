@@ -2,6 +2,20 @@ import { getUser } from "services/user.service";
 import { Alert } from "components/ui/Alert";
 import { User } from "db/types/models.types";
 import { SettingsTabs } from "components/settings/SettingsTabs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Account Settings | Clami",
+  description: "Manage your account settings and preferences for Clami.",
+  keywords: ["account settings", "user preferences", "profile management"],
+  alternates: {
+    canonical: "/workspace/settings",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default async function SettingsPage() {
   const { data: user } = await getUser();

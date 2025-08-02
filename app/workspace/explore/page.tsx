@@ -17,6 +17,22 @@ import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
 import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Explore Flashcard Decks | Clami",
+  description: "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+  keywords: ["flashcards", "study decks", "educational resources", "learning materials"],
+  alternates: {
+    canonical: "/workspace/explore",
+  },
+  openGraph: {
+    title: "Explore Flashcard Decks | Clami",
+    description: "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+    url: "https://clami.app/workspace/explore",
+    type: "website",
+  },
+};
 
 export default async function Explore() {
   "use cache";

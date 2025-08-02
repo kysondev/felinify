@@ -29,6 +29,20 @@ import { DeckCard } from "components/library/DeckCard";
 import { Subscription, User } from "db/types/models.types";
 import { Input } from "components/ui/Input";
 import { Progress } from "components/ui/Progress";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Library | Clami",
+  description: "Create, organize, and track your progress across all your flashcard decks.",
+  keywords: ["flashcards", "study library", "personal decks", "learning progress"],
+  alternates: {
+    canonical: "/workspace/library",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default async function LibraryPage() {
   const { data: user } = await getUser();

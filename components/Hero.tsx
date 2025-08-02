@@ -58,7 +58,10 @@ const Hero = ({
                 <img
                   className="w-full h-auto"
                   src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754074170/Screenshot_2025-08-01_144634_ozanrj.png"
-                  alt="app screen"
+                  alt="Clami AI flashcard application interface showing study dashboard"
+                  loading="eager"
+                  width="1200"
+                  height="675"
                 />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-b from-transparent from-40% via-white/20 to-white dark:via-gray-950/20 dark:to-gray-950"></div>
