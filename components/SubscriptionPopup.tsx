@@ -22,8 +22,16 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export function SubscriptionPopup() {
-  const [open, setOpen] = useState(false);
+interface SubscriptionPopupProps {
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+}
+
+export function SubscriptionPopup({ open: propOpen, setOpen: propSetOpen }: SubscriptionPopupProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  
+  const open = propOpen !== undefined ? propOpen : internalOpen;
+  const setOpen = propSetOpen || setInternalOpen;
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -36,15 +44,18 @@ export function SubscriptionPopup() {
   });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const hasSubscribed = localStorage.getItem("emailSubscribed");
-      if (!hasSubscribed) {
-        setOpen(true);
-      }
-    }, 2000);
+    // Only auto-show if we're using internal state and not controlled by props
+    if (propOpen === undefined && propSetOpen === undefined) {
+      const timer = setTimeout(() => {
+        const hasSubscribed = localStorage.getItem("emailSubscribed");
+        if (!hasSubscribed) {
+          setInternalOpen(true);
+        }
+      }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [propOpen, propSetOpen]);
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);

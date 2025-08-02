@@ -1,11 +1,18 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { SubscriptionPopup } from "./SubscriptionPopup";
+
+interface FooterLink {
+  text: string;
+  url: string;
+  action?: () => void;
+}
 
 interface MenuItem {
   title: string;
-  links: {
-    text: string;
-    url: string;
-  }[];
+  links: FooterLink[];
 }
 
 interface FooterProps {
@@ -17,13 +24,17 @@ interface FooterProps {
   tagline?: string;
   menuItems?: MenuItem[];
   copyright?: string;
-  bottomLinks?: {
-    text: string;
-    url: string;
-  }[];
+  bottomLinks?: FooterLink[];
 }
 
-const Footer = ({
+const Footer = (props: FooterProps) => {
+  const [showSubscribe, setShowSubscribe] = useState(false);
+  
+  function handleNewsletterClick() {
+    setShowSubscribe(true);
+  }
+  
+  const {
   logo = {
     alt: "Logo",
     title: "Clami",
@@ -36,43 +47,44 @@ const Footer = ({
       links: [
         { text: "Features", url: "#features" },
         { text: "Pricing", url: "#pricing" },
-        { text: "AI Flashcards", url: "#" },
-        { text: "Spaced Repetition", url: "#" },
+        { text: "AI Study Tools", url: "/workspace/study/challenge" },
+        { text: "Explore Decks", url: "/workspace/explore" },
       ],
     },
     {
-      title: "Company",
+      title: "Account",
       links: [
-        { text: "About Us", url: "#" },
-        { text: "Careers", url: "#" },
-        { text: "Press", url: "#" },
-        { text: "Contact", url: "#" },
+        { text: "Login", url: "/auth/login" },
+        { text: "Sign Up", url: "/auth/signup" },
+        { text: "Library", url: "/workspace/library" },
+        { text: "Settings", url: "/workspace/settings" },
       ],
     },
     {
       title: "Support",
       links: [
-        { text: "Help Center", url: "#" },
         { text: "FAQ", url: "#faq" },
-        { text: "Community", url: "#" },
+        { text: "Newsletter", url: "#", action: handleNewsletterClick },
       ],
     },
     {
-      title: "Follow Us",
+      title: "Connect",
       links: [
-        { text: "Twitter", url: "#" },
-        { text: "Instagram", url: "#" },
-        { text: "YouTube", url: "#" },
+        { text: "Email", url: "mailto:contact@clami.ai" },
+        { text: "GitHub", url: "https://github.com/kysondev/clami" },
       ],
     },
   ],
   copyright = "© 2025 Shi Jun(Kyson) W. All rights reserved.",
   bottomLinks = [
-    { text: "Terms and Conditions", url: "#" },
+    { text: "Terms of Service", url: "#" },
     { text: "Privacy Policy", url: "#" },
+    { text: "Subscribe", url: "#", action: handleNewsletterClick },
   ],
-}: FooterProps) => {
+} = props;
   return (
+    <>
+      <SubscriptionPopup open={showSubscribe} setOpen={setShowSubscribe} />
     <section className="py-16 border-t border-border mt-16">
       <div className="px-4 max-w-[1200px] mx-auto">
         <footer>
@@ -97,7 +109,13 @@ const Footer = ({
                       key={linkIdx}
                       className="font-medium hover:text-primary transition-colors"
                     >
-                      <a href={link.url}>{link.text}</a>
+                      {link.action ? (
+                        <button onClick={link.action} className="cursor-pointer">
+                          {link.text}
+                        </button>
+                      ) : (
+                        <a href={link.url}>{link.text}</a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -120,6 +138,7 @@ const Footer = ({
         </footer>
       </div>
     </section>
+    </>
   );
 };
 
