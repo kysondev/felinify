@@ -9,9 +9,9 @@ export interface UserTable {
   image: string | null;
   role: "user" | "admin";
   totalStudyTime: number | null;
-  credits: number | null;
+  energy: number | null;
   stripeCustomerId: string | null;
-  lastCreditRefillAt: ColumnType<Date, string | undefined>;
+  lastEnergyRefillAt: ColumnType<Date, string | undefined>;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
   twoFactorEnabled: boolean | null;

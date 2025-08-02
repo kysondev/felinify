@@ -4,8 +4,8 @@ import {
 } from "services/ai-study.service";
 import {
   getUser,
-  getUserCredit,
-  updateUserCredit,
+  getUserEnergy,
+  updateUserEnergy,
 } from "services/user.service";
 import {
   addFlashcard,
@@ -42,12 +42,12 @@ export const generateFlashcardsAction = async (
       return { success: false, message: "Email not verified" };
     }
 
-    const userCredits = await getUserCredit(user.id);
+    const userEnergy = await getUserEnergy(user.id);
 
-    if (userCredits <= 0) {
+    if (userEnergy <= 0) {
       return {
         success: false,
-        message: "You don't have enough credits to generate flashcards",
+        message: "You don't have enough energy to generate flashcards",
       };
     }
 
@@ -59,12 +59,12 @@ export const generateFlashcardsAction = async (
       };
     }
 
-    const updatedCredit = await updateUserCredit(user.id, userCredits - 1);
+    const updatedEnergy = await updateUserEnergy(user.id, userEnergy - 1);
 
-    if (!updatedCredit.success) {
+    if (!updatedEnergy.success) {
       return {
         success: false,
-        message: updatedCredit.message || "Failed to update user credit",
+        message: updatedEnergy.message || "Failed to update user energy",
       };
     }
 
@@ -283,21 +283,21 @@ export const createQuizAccessTokenAction = async (
       };
     }
 
-    const userCredits = await getUserCredit(userId);
+    const userEnergy = await getUserEnergy(userId);
 
-    if (userCredits <= 0) {
+    if (userEnergy <= 0) {
       return {
         success: false,
-        message: "You don't have enough credits to generate flashcards",
+        message: "You don't have enough energy to generate flashcards",
       };
     }
 
-    const updatedCredit = await updateUserCredit(userId, userCredits - 1);
+    const updatedEnergy = await updateUserEnergy(userId, userEnergy - 1);
 
-    if (!updatedCredit.success) {
+    if (!updatedEnergy.success) {
       return {
         success: false,
-        message: updatedCredit.message || "Failed to update user credit",
+        message: updatedEnergy.message || "Failed to update user energy",
       };
     }
 

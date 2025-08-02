@@ -16,11 +16,11 @@ model User {
   emailVerified Boolean   @default(false)
   image         String?   @default("https://res.cloudinary.com/dyu7ogoqc/image/upload/v1751746247/3b27a87fcf7d90ae564be23d7a37f778-modified_1_knthse.png")
   role          ROLE      @default(user)
-  credits       Int       @default(10)
+  energy       Int       @default(10)
   stripeCustomerId String?
   createdAt     DateTime
   updatedAt     DateTime
-  lastCreditRefillAt    DateTime?   @default(now())
+  lastEnergyRefillAt    DateTime?   @default(now())
   sessions      Session[]
   accounts      Account[]
   twoFactorEnabled Boolean?

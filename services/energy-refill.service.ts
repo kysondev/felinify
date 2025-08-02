@@ -1,6 +1,6 @@
 import { db } from "lib/db";
 
-export const refillCredits = async (dateNow: Date) => {
+export const refillEnergy = async (dateNow: Date) => {
   try {
     const subscriptionsData = await db
       .selectFrom("subscription")
@@ -20,9 +20,9 @@ export const refillCredits = async (dateNow: Date) => {
         .select(["id", "stripeCustomerId"])
         .where((eb) =>
           eb.or([
-            eb("lastCreditRefillAt", "is", null),
+            eb("lastEnergyRefillAt", "is", null),
             eb(
-              "lastCreditRefillAt",
+              "lastEnergyRefillAt",
               "<",
               new Date(dateNow.getTime() - 24 * 60 * 60 * 1000)
             ),
@@ -54,8 +54,8 @@ export const refillCredits = async (dateNow: Date) => {
         await trx
           .updateTable("user")
           .set({
-            credits: 10,
-            lastCreditRefillAt: dateNow,
+            energy: 10,
+            lastEnergyRefillAt: dateNow,
           })
           .where("id", "in", usersByPlan.starter)
           .execute();
@@ -65,8 +65,8 @@ export const refillCredits = async (dateNow: Date) => {
         await trx
           .updateTable("user")
           .set({
-            credits: 50,
-            lastCreditRefillAt: dateNow,
+            energy: 50,
+            lastEnergyRefillAt: dateNow,
           })
           .where("id", "in", usersByPlan.pro)
           .execute();
@@ -76,26 +76,26 @@ export const refillCredits = async (dateNow: Date) => {
         await trx
           .updateTable("user")
           .set({
-            credits: 100,
-            lastCreditRefillAt: dateNow,
+            energy: 100,
+            lastEnergyRefillAt: dateNow,
           })
           .where("id", "in", usersByPlan.ultra)
           .execute();
       }
     });
 
-    return { success: true, message: "Credits refilled" };
+    return { success: true, message: "Energy refilled" };
   } catch (error) {
-    console.error("Credit refill error:", error);
+    console.error("Energy refill error:", error);
     return {
       success: false,
-      message: "Failed to refill credits",
+      message: "Failed to refill energy",
       error: error,
     };
   }
 };
 
-export const refillCreditsForUser = async (userId: string) => {
+export const refillEnergyForUser = async (userId: string) => {
   try {
     const user = await db
       .selectFrom("user")
@@ -108,7 +108,7 @@ export const refillCreditsForUser = async (userId: string) => {
       return { success: false, message: "User not found" };
     }
 
-    let creditAmount = 10;
+    let energyAmount = 10;
     if (user.stripeCustomerId) {
       const subscription = await db
         .selectFrom("subscription")
@@ -118,9 +118,9 @@ export const refillCreditsForUser = async (userId: string) => {
 
       if (subscription) {
         if (subscription.plan.startsWith("pro")) {
-          creditAmount = 50;
+          energyAmount = 50;
         } else if (subscription.plan.startsWith("ultra")) {
-          creditAmount = 100;
+          energyAmount = 100;
         }
       }
     }
@@ -128,22 +128,22 @@ export const refillCreditsForUser = async (userId: string) => {
     await db
       .updateTable("user")
       .set({
-        credits: creditAmount,
-        lastCreditRefillAt: new Date(),
+        energy: energyAmount,
+        lastEnergyRefillAt: new Date(),
       })
       .where("id", "=", user.id)
       .execute();
 
     return {
       success: true,
-      message: `Credits refilled for user: ${creditAmount} credits added`,
-      data: { credits: creditAmount },
+      message: `Energy refilled for user: ${energyAmount} Energy added`,
+      data: { energy: energyAmount },
     };
   } catch (error) {
-    console.error("Credit refill error for user:", error);
+    console.error("Energy refill error for user:", error);
     return {
       success: false,
-      message: "Failed to refill credits for user",
+      message: "Failed to refill energy for user",
       error: error,
     };
   }

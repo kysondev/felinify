@@ -14,8 +14,8 @@ import { useRouter } from "next/navigation";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "components/ui/Alert";
 import { User } from "db/types/models.types";
-import { getUserCredit } from "services/user.service";
-import { hasEnoughCredit } from "actions/user.action";
+import { getUserEnergy } from "services/user.service";
+import { hasEnoughEnergy } from "actions/user.action";
 
 interface AdaptiveQuizSettingsProps {
   showQuizSettings: boolean;
@@ -42,9 +42,9 @@ const AdaptiveQuizSettings = ({
     try {
       setIsGenerating(true);
       setError(null);
-      const userHasEnoughCredit = await hasEnoughCredit(user.id, 1);
-      if (!userHasEnoughCredit) {
-        setError("You don't have enough credits to generate flashcards");
+      const userHasEnoughEnergy = await hasEnoughEnergy(user.id, 1);
+      if (!userHasEnoughEnergy) {
+        setError("You don't have enough energy to generate flashcards");
         setIsGenerating(false);
         return;
       }
@@ -112,7 +112,7 @@ const AdaptiveQuizSettings = ({
               </div>
             </RadioGroup>
             <span className="text-xs text-muted-foreground">
-              This will cost 1 Clami credit
+              This will cost 1 Energy
             </span>
           </div>
 

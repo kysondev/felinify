@@ -33,7 +33,7 @@ export function SubscriptionSettings({ user }: { user: User }) {
         name: "Starter",
         limits: {
           decks: 15,
-          credits: 10,
+          energy: 10,
         },
       };
     }
@@ -44,7 +44,7 @@ export function SubscriptionSettings({ user }: { user: User }) {
         name: "Starter",
         limits: {
           decks: 15,
-          credits: 10,
+          energy: 10,
         },
       }
     );
@@ -155,9 +155,7 @@ export function SubscriptionSettings({ user }: { user: User }) {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">AI Generation</span>
                 <span className="font-medium">
-                  {loading
-                    ? "..."
-                    : `${planDetails.limits.credits} Credits/Day`}
+                  {loading ? "..." : `${planDetails.limits.energy} Energy/Day`}
                 </span>
               </div>
               {isPaidPlan && nextBillingDate && (

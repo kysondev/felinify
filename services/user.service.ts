@@ -115,36 +115,36 @@ export const getUserWithId = async (id: string) => {
   }
 };
 
-export const getUserCredit = async (userId: string) => {
-  const credit = await db
+export const getUserEnergy = async (userId: string) => {
+  const energy = await db
     .selectFrom("user")
-    .select("credits")
+    .select("energy")
     .where("id", "=", userId)
     .executeTakeFirst();
 
-  if (!credit) {
+  if (!energy) {
     return 0;
   }
 
-  return credit.credits || 0;
+  return energy.energy || 0;
 };
 
-export const updateUserCredit = async (userId: string, credit: number) => {
+export const updateUserEnergy = async (userId: string, energy: number) => {
   try {
     await db
       .updateTable("user")
-      .set({ credits: credit })
+      .set({ energy })
       .where("id", "=", userId)
       .execute();
     return {
       success: true,
-      message: "User credit updated successfully",
+      message: "User energy updated successfully",
     };
   } catch (error) {
-    console.error("Error updating user credit:", error);
+    console.error("Error updating user energy:", error);
     return {
       success: false,
-      message: "Error updating user credit",
+      message: "Error updating user energy",
     };
   }
 };

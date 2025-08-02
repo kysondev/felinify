@@ -1,9 +1,9 @@
-import { getUserCredit } from "services/user.service";
+import { getUserEnergy } from "services/user.service";
 
-export const hasEnoughCredit = async (userId: string, credit: number) => {
-  const userCredits = await getUserCredit(userId);
+export const hasEnoughEnergy = async (userId: string, energy: number) => {
+  const userEnergy = await getUserEnergy(userId);
 
-  if (userCredits >= credit) {
+  if (userEnergy >= energy) {
     return true;
   } else {
     return false;

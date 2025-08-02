@@ -6,7 +6,7 @@ import { db } from "./db";
 import { stripe } from "@better-auth/stripe";
 import { plans } from "config/plans.config";
 import Stripe from "stripe";
-import { refillCreditsForUser } from "services/credit-refill.service";
+import { refillEnergyForUser } from "services/energy-refill.service";
 import {
   sendResetPasswordEmail,
   sendTwoFAEmail,
@@ -23,7 +23,7 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      credits: {
+      energy: {
         type: "number",
       },
     },
@@ -92,14 +92,14 @@ export const auth = betterAuth({
         onSubscriptionComplete: async ({ subscription }) => {
           try {
             if (subscription && subscription.referenceId) {
-              await refillCreditsForUser(subscription.referenceId);
+              await refillEnergyForUser(subscription.referenceId);
               fetch(
                 `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
               );
             }
           } catch (error) {
             console.error(
-              "Error refilling credits on subscription complete:",
+              "Error refilling energy on subscription complete:",
               error
             );
           }
@@ -107,14 +107,14 @@ export const auth = betterAuth({
         onSubscriptionUpdate: async ({ subscription }) => {
           try {
             if (subscription && subscription.referenceId) {
-              await refillCreditsForUser(subscription.referenceId);
+              await refillEnergyForUser(subscription.referenceId);
               fetch(
                 `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
               );
             }
           } catch (error) {
             console.error(
-              "Error refilling credits on subscription update:",
+              "Error refilling energy on subscription update:",
               error
             );
           }

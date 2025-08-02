@@ -249,7 +249,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
                   <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
                     <li>Complete Challenge Mode at least 3 times</li>
                     <li>Achieve at least 10% mastery in this deck</li>
-                    <li>Have at least 1 Clami credit available</li>
+                    <li>Have at least 1 energy available</li>
                   </ul>
                 </div>
               </div>

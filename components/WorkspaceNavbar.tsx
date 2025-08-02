@@ -29,7 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
-import { getUserCredit, getUserWithoutCache } from "services/user.service";
+import { getUserEnergy, getUserWithoutCache } from "services/user.service";
 import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "actions/auth.action";
@@ -88,7 +88,7 @@ const WorkspaceNavbar = async ({
   ],
 }: Navbar1Props) => {
   const { data: user } = await getUserWithoutCache();
-  const userCredits = getUserCredit(user?.id as string);
+  const userEnergy = getUserEnergy(user?.id as string);
 
   return (
     <header className="sticky top-4 z-50 w-full px-4 sm:px-6 lg:px-8">
@@ -129,7 +129,7 @@ const WorkspaceNavbar = async ({
             <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full">
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {userCredits}
+                {userEnergy}
               </span>
             </div>
             <Button
@@ -177,7 +177,7 @@ const WorkspaceNavbar = async ({
                     <div className="flex items-center space-x-1 mt-1">
                       <Zap className="w-3 h-3 text-primary" />
                       <span className="text-xs font-medium text-primary">
-                        {userCredits} credits
+                        {userEnergy} Energy
                       </span>
                     </div>
                   </div>
@@ -272,7 +272,7 @@ const WorkspaceNavbar = async ({
                       <div className="flex items-center space-x-1">
                         <Zap className="w-3 h-3 text-primary" />
                         <span className="text-sm text-gray-500">
-                          {userCredits} credits
+                          {userEnergy} Energy
                         </span>
                       </div>
                     </div>

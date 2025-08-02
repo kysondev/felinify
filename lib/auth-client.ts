@@ -13,7 +13,7 @@ export const authClient = createAuthClient({
     }),
     inferAdditionalFields({
       user: {
-        credits: {
+        energy: {
           type: "number",
         },
       },

@@ -8,11 +8,9 @@ import {
   TrendingUp,
   Search,
   Filter,
-  Brain,
   BarChart3,
   Zap,
   Package,
-  FolderOpen,
   CreditCard,
   Container,
 } from "lucide-react";

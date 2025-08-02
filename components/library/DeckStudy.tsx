@@ -3,12 +3,7 @@
 import { useState } from "react";
 import { Deck, User } from "db/types/models.types";
 import { Button } from "components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import {
   Dialog,
   DialogContent,
@@ -35,8 +30,10 @@ import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings"
 export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
   const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
-  const [showChallengeSettings, setShowChallengeSettings] = useState<boolean>(false);
-  const [showStudyModeDialog, setShowStudyModeDialog] = useState<boolean>(false);
+  const [showChallengeSettings, setShowChallengeSettings] =
+    useState<boolean>(false);
+  const [showStudyModeDialog, setShowStudyModeDialog] =
+    useState<boolean>(false);
   const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
   const [selectedMode, setSelectedMode] = useState<string>("");
   const [isTimed, setIsTimed] = useState<boolean>(false);
@@ -77,7 +74,10 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col gap-2">
-          <Dialog open={showStudyModeDialog} onOpenChange={setShowStudyModeDialog}>
+          <Dialog
+            open={showStudyModeDialog}
+            onOpenChange={setShowStudyModeDialog}
+          >
             <DialogTrigger asChild>
               <Button className="w-full font-medium">
                 <Play className="h-4 w-4 mr-2" />
@@ -107,7 +107,8 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
                       Classic Flip
                     </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">
-                      Simple flashcard flipping for quick review and memorization
+                      Simple flashcard flipping for quick review and
+                      memorization
                     </p>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
@@ -125,7 +126,8 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
                       Challenge Mode
                     </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">
-                      Test your knowledge with multiple choice challenges and compete
+                      Test your knowledge with multiple choice challenges and
+                      compete
                     </p>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
@@ -149,7 +151,8 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground line-clamp-2">
-                      Smart quizzes that adapt to your learning progress and weak spots
+                      Smart quizzes that adapt to your learning progress and
+                      weak spots
                     </p>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
@@ -162,7 +165,7 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
                   <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
                     <li>Complete Challenge Mode at least 3 times</li>
                     <li>Achieve at least 10% mastery in this deck</li>
-                    <li>Have at least 1 Clami credit available</li>
+                    <li>Have at least 1 energy available</li>
                   </ul>
                 </div>
               </div>

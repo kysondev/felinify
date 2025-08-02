@@ -45,7 +45,7 @@ import { Progress } from "components/ui/Progress";
 import { Alert, AlertTitle } from "components/ui/Alert";
 import { Deck, Subscription, User } from "db/types/models.types";
 import { hasReachedMaxDeck } from "lib/subscription/limits";
-import { hasEnoughCredit } from "actions/user.action";
+import { hasEnoughEnergy } from "actions/user.action";
 
 export function CreateDeckForm({
   user,
@@ -108,9 +108,9 @@ export function CreateDeckForm({
   const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
     setIsGenerating(true);
     setProgress(10);
-    const result = await hasEnoughCredit(user.id, 1);
+    const result = await hasEnoughEnergy(user.id, 1);
     if (!result) {
-      toast.error("You don't have enough credits to generate flashcards");
+      toast.error("You don't have enough energy to generate flashcards");
       setIsGenerating(false);
       return;
     }
@@ -316,9 +316,7 @@ export function CreateDeckForm({
           <h3 className="text-base font-medium flex items-center gap-2 mb-2">
             <Brain className="h-4 w-4 text-primary" />
             AI Flashcard Generation
-            <span className="text-xs text-muted-foreground">
-              (1 credit)
-            </span>
+            <span className="text-xs text-muted-foreground">(1 energy)</span>
           </h3>
           <p className="text-sm text-muted-foreground mb-3">
             Paste your study notes or upload a document, and our AI will

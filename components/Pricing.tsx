@@ -99,7 +99,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>10 Clami credits per day</span>
+                    <span>10 Energy per day</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
@@ -154,7 +154,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>50 Clami credits per day</span>
+                    <span>50 Energy per day</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
@@ -207,7 +207,7 @@ const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>100 Clami credits per day</span>
+                    <span>100 Energy per day</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />

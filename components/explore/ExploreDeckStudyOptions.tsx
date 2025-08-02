@@ -141,7 +141,7 @@ export default function ExploreDeckStudyOptions({
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2">
-                  Smart quizzes that adapt to your learning progress (1 credit)
+                  Smart quizzes that adapt to your learning progress (1 Energy)
                 </p>
               </div>
               <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
@@ -155,7 +155,7 @@ export default function ExploreDeckStudyOptions({
               <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
                 <li>Complete Challenge Mode at least 3 times</li>
                 <li>Achieve at least 10% mastery in this deck</li>
-                <li>Have at least 1 Clami credit available</li>
+                <li>Have at least 1 Energy available</li>
               </ul>
             </div>
           </div>

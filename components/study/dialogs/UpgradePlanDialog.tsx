@@ -173,13 +173,11 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>50 Clami credits per day</span>
+                  <span>50 Energy per day</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>
-                    Advanced AI generation with more powerful AI models
-                  </span>
+                  <span>Extended Access to Clami AI</span>
                 </li>
               </ul>
             </div>
@@ -229,7 +227,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>100 Clami credits per day</span>
+                  <span>100 Energy per day</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
@@ -237,7 +235,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>Priority AI assistance & explanations</span>
+                  <span>Full Access to Clami AI</span>
                 </li>
               </ul>
             </div>
