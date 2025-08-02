@@ -21,7 +21,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "components/ui/Dialog";
-import { AlertCircle, Edit2, Eye, Plus, Search, Trash2 } from "lucide-react";
+import { AlertCircle, ChevronLeft, ChevronRight, Edit2, Eye, Plus, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Input } from "components/ui/Input";
 import {
@@ -71,6 +71,11 @@ export const FlashcardList = ({
     title: string;
     content: string;
   } | null>(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const cardsPerPage = 6;
+  
   const router = useRouter();
 
   const addForm = useForm<FlashcardSchema>({
@@ -205,15 +210,35 @@ export const FlashcardList = ({
       card.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       card.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  const totalFilteredCards = filteredFlashcards?.length || 0;
+  const totalPages = Math.ceil(totalFilteredCards / cardsPerPage);
+  
+  const currentCards = filteredFlashcards?.slice(
+    currentPage * cardsPerPage,
+    (currentPage + 1) * cardsPerPage
+  );
+  
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-xl font-semibold">Flashcards</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-xl font-semibold">Manage Flashcards</h2>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="shrink-0">
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4 mr-1" />
               Add Flashcard
             </Button>
           </DialogTrigger>
@@ -291,7 +316,10 @@ export const FlashcardList = ({
           placeholder="Search flashcards..."
           className="pl-9"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(0);
+          }}
         />
       </div>
 
@@ -300,14 +328,17 @@ export const FlashcardList = ({
           <div className="flex justify-between items-center text-sm text-muted-foreground">
             <p>
               {searchTerm
-                ? `${filteredFlashcards?.length || 0} results`
+                ? `${totalFilteredCards} results`
                 : `${deck.flashcards.length} total flashcards`}
             </p>
             {searchTerm && (
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setSearchTerm("")}
+                onClick={() => {
+                  setSearchTerm("");
+                  setCurrentPage(0);
+                }}
                 className="p-0 m-0 h-4 hover:bg-transparent"
               >
                 Clear search
@@ -316,7 +347,7 @@ export const FlashcardList = ({
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            {filteredFlashcards?.map((flashcard) => (
+            {currentCards?.map((flashcard) => (
               <Flashcard
                 key={flashcard.id.toString()}
                 id={flashcard.id.toString()}
@@ -328,6 +359,35 @@ export const FlashcardList = ({
               />
             ))}
           </div>
+          {totalFilteredCards > cardsPerPage && (
+            <div className="flex justify-between items-center pt-4 border-t mt-6">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                className="flex items-center gap-1"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              
+              <p className="text-sm text-muted-foreground">
+                Page {currentPage + 1} of {totalPages}
+              </p>
+              
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleNextPage}
+                disabled={currentPage >= totalPages - 1}
+                className="flex items-center gap-1"
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </>
       ) : (
         <Card className="border-dashed">

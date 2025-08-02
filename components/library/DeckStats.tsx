@@ -17,12 +17,12 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
     : null;
 
   return (
-    <div className="space-y-8">
-      <div className="bg-white dark:bg-slate-900 border shadow-sm p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+    <div className="space-y-6">
+      <div className="bg-white dark:bg-slate-900 border shadow-sm p-4 rounded-lg">
+        <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
           <BarChart2 className="h-5 w-5 text-primary" />
           Performance Overview
-        </h2>
+        </h3>
         
         <div className="mt-4 flex flex-col md:flex-row gap-6">
           <div className="flex-1">
@@ -55,17 +55,17 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="overflow-hidden">
-          <div className="bg-gray-100 px-4 py-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Card className="overflow-hidden border-muted-foreground/20">
+          <div className="bg-muted/40 px-3 py-1.5">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-primary" />
               Flashcards
             </CardTitle>
           </div>
-          <CardContent className="pt-4">
+          <CardContent className="pt-3 pb-3">
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold">{deck.flashcards?.length || 0}</span>
+              <span className="text-2xl font-bold">{deck.flashcards?.length || 0}</span>
               <span className="text-sm text-muted-foreground">cards</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -74,16 +74,16 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden">
-          <div className="bg-gray-100 px-4 py-2">
+        <Card className="overflow-hidden border-muted-foreground/20">
+          <div className="bg-muted/40 px-3 py-1.5">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Calendar className="h-4 w-4 text-primary" />
               Created
             </CardTitle>
           </div>
-          <CardContent className="pt-4">
+          <CardContent className="pt-3 pb-3">
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold">{formatDate(deck.createdAt)}</span>
+              <span className="text-2xl font-bold">{formatDate(deck.createdAt)}</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {daysSinceCreation} {daysSinceCreation === 1 ? 'day' : 'days'} ago
@@ -91,16 +91,16 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden">
-          <div className="bg-gray-100 px-4 py-2">
+        <Card className="overflow-hidden border-muted-foreground/20">
+          <div className="bg-muted/40 px-3 py-1.5">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
               Last Studied
             </CardTitle>
           </div>
-          <CardContent className="pt-4">
+          <CardContent className="pt-3 pb-3">
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold">{formatDate(deck.progress?.lastStudied)}</span>
+              <span className="text-2xl font-bold">{formatDate(deck.progress?.lastStudied)}</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {daysSinceLastStudy !== null 
@@ -111,18 +111,18 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base font-medium flex items-center gap-2">
+      <Card className="border-muted-foreground/20">
+        <CardHeader className="pb-2 pt-3 px-4">
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Activity className="h-4 w-4 text-primary" />
             Activity Timeline
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="bg-gray-100 dark:bg-gray-800 p-1.5 rounded-full mt-0.5">
-                <Calendar className="h-3.5 w-3.5 text-primary" />
+        <CardContent className="px-4 py-2">
+          <div className="space-y-3">
+            <div className="flex items-start gap-2">
+              <div className="bg-muted/50 p-1.5 rounded-full mt-0.5">
+                <Calendar className="h-3 w-3 text-primary" />
               </div>
               <div>
                 <p className="text-sm font-medium">Deck Created</p>
@@ -131,9 +131,9 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
             </div>
             
             {deck.progress?.lastStudied && (
-              <div className="flex items-start gap-3">
-                <div className="bg-gray-100 dark:bg-gray-800 p-1.5 rounded-full mt-0.5">
-                  <Brain className="h-3.5 w-3.5 text-primary" />
+              <div className="flex items-start gap-2">
+                <div className="bg-muted/50 p-1.5 rounded-full mt-0.5">
+                  <Brain className="h-3 w-3 text-primary" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Last Study Session</p>
@@ -143,9 +143,9 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
             )}
             
             {deck.updatedAt && deck.updatedAt !== deck.createdAt && (
-              <div className="flex items-start gap-3">
-                <div className="bg-gray-100 dark:bg-gray-800 p-1.5 rounded-full mt-0.5">
-                  <Dices className="h-3.5 w-3.5 text-primary" />
+              <div className="flex items-start gap-2">
+                <div className="bg-muted/50 p-1.5 rounded-full mt-0.5">
+                  <Dices className="h-3 w-3 text-primary" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Last Updated</p>
@@ -155,9 +155,9 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
             )}
             
             {!deck.progress?.lastStudied && (
-              <div className="flex items-start gap-3">
-                <div className="bg-gray-100 dark:bg-gray-800 p-1.5 rounded-full mt-0.5">
-                  <Trophy className="h-3.5 w-3.5 text-gray-400" />
+              <div className="flex items-start gap-2">
+                <div className="bg-muted/50 p-1.5 rounded-full mt-0.5">
+                  <Trophy className="h-3 w-3 text-gray-400" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">First Study Session</p>

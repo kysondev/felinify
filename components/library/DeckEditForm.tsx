@@ -203,16 +203,16 @@ export const DeckEditForm = ({
               )}
             />
           </CardContent>
-          <CardFooter className="border-t pt-4 flex justify-between">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.push("/workspace/library")}
-              disabled={isLoading}
-            >
-              Cancel
-            </Button>
-            <div className="flex items-center gap-2">
+          <CardFooter className="border-t pt-4 flex justify-between items-center">
+          <Button
+                type="submit"
+                onClick={form.handleSubmit(onSubmit)}
+                disabled={isLoading || !isDirty}
+                className={`${!isDirty ? "opacity-50" : ""}`}
+              >
+                <Save className="h-4 w-4" />
+                {isLoading ? "Saving..." : "Save Changes"}
+              </Button>
               <Button
                 type="button"
                 variant="destructive"
@@ -225,16 +225,6 @@ export const DeckEditForm = ({
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
-              <Button
-                type="submit"
-                onClick={form.handleSubmit(onSubmit)}
-                disabled={isLoading || !isDirty}
-                className={`${!isDirty ? "opacity-50" : ""}`}
-              >
-                <Save className="h-4 w-4" />
-                {isLoading ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
           </CardFooter>
         </Form>
       </Card>

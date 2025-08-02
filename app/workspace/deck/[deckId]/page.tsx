@@ -4,11 +4,11 @@ import { DeckEditForm } from "components/library/DeckEditForm";
 import { FlashcardList } from "components/library/FlashcardList";
 import { DeckStats } from "components/library/DeckStats";
 import { DeckVisibilityToggle } from "components/library/DeckVisibilityToggle";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { Deck } from "db/types/models.types";
+import { Deck, User } from "db/types/models.types";
 import Link from "next/link";
 import { ChevronRight, Home, Library } from "lucide-react";
 import { Button } from "components/ui/Button";
+import { DeckStudy } from "components/library/DeckStudy";
 
 export default async function DeckEditPage({
   params,
@@ -31,8 +31,8 @@ export default async function DeckEditPage({
   }
 
   return (
-    <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
-      <nav className="flex items-center text-sm text-muted-foreground mt-16">
+    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-10">
+      <nav className="flex items-center text-sm text-muted-foreground mb-4">
         <Link
           href="/workspace"
           className="flex items-center hover:text-foreground transition-colors"
@@ -54,40 +54,25 @@ export default async function DeckEditPage({
         </span>
       </nav>
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b pb-6">
-        <div>
-          <h1 className="text-3xl font-bold">{deck.name}</h1>
-          <p className="text-muted-foreground mt-1">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+        <div className="md:max-w-[70%] w-full">
+          <h1 className="text-3xl font-bold text-ellipsis overflow-hidden">{deck.name}</h1>
+          <p className="text-muted-foreground mt-1 line-clamp-2 break-words">
             {deck.description || "No description provided"}
           </p>
         </div>
-        <div className="flex items-center gap-2 text-sm">
-          <div className="bg-primary/10 text-primary px-3 py-1 rounded-full">
+        <div className="flex flex-wrap items-center gap-2 text-sm mt-2 md:mt-0 shrink-0">
+          <div className="bg-primary/10 text-primary px-3 py-1 rounded-full whitespace-nowrap">
             {deck.flashcards?.length || 0} cards
           </div>
-          <div className="bg-secondary/50 px-3 py-1 rounded-full">
+          <div className="bg-secondary/50 px-3 py-1 rounded-full whitespace-nowrap">
             {deck.progress?.mastery?.toFixed(1) || 0}% mastery
           </div>
         </div>
       </div>
 
-      <Tabs defaultValue="details" className="w-full">
-        <TabsList className="w-full grid grid-cols-3 mb-8">
-          <TabsTrigger value="details" className="text-sm">
-            Deck Details
-          </TabsTrigger>
-          <TabsTrigger value="flashcards" className="text-sm">
-            Flashcards ({deck.flashcards?.length || 0})
-          </TabsTrigger>
-          <TabsTrigger value="stats" className="text-sm">
-            Statistics
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent
-          value="details"
-          className="mt-0 animate-in fade-in-50 duration-300 space-y-6"
-        >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-4 space-y-4">
           <DeckEditForm
             deck={deck as unknown as Deck}
             userId={user?.id as string}
@@ -96,25 +81,28 @@ export default async function DeckEditPage({
             deck={deck as unknown as Deck}
             userId={user?.id as string}
           />
-        </TabsContent>
+          <DeckStudy deck={deck as unknown as Deck} user={user as unknown as User} />
+        </div>
 
-        <TabsContent
-          value="flashcards"
-          className="mt-0 animate-in fade-in-50 duration-300"
-        >
-          <FlashcardList
-            deck={deck as unknown as Deck}
-            userId={user?.id as string}
-          />
-        </TabsContent>
+        <div className="lg:col-span-8">
+          <div className="bg-white dark:bg-slate-900 border rounded-lg shadow-sm mb-4">
+            <div className="p-4 lg:p-6">
+              <h2 className="text-xl font-semibold mb-4">Deck Statistics</h2>
+              <DeckStats deck={deck as unknown as Deck} />
+            </div>
+          </div>
+          
 
-        <TabsContent
-          value="stats"
-          className="mt-0 animate-in fade-in-50 duration-300"
-        >
-          <DeckStats deck={deck as unknown as Deck} />
-        </TabsContent>
-      </Tabs>
+          <div className="bg-white dark:bg-slate-900 border rounded-lg shadow-sm">
+            <div className="p-4 lg:p-6">
+              <FlashcardList
+                deck={deck as unknown as Deck}
+                userId={user?.id as string}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
