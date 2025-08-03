@@ -51,10 +51,12 @@ export function CreateDeckForm({
   user,
   subscription,
   decks,
+  onSuccess,
 }: {
   user: User;
   subscription: Subscription;
   decks: Deck[];
+  onSuccess?: () => void;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -99,6 +101,7 @@ export function CreateDeckForm({
         router.refresh();
         toast.success("Deck created successfully");
         form.reset();
+        if (onSuccess) onSuccess();
       } else {
         toast.error(result.message || "Something went wrong");
       }
@@ -176,6 +179,7 @@ export function CreateDeckForm({
         aiForm.reset();
         router.push(`/workspace/deck/${deckId}`);
         router.refresh();
+        if (onSuccess) onSuccess();
       }, 500);
     } catch (error) {
       console.error("Error in AI flashcard generation:", error);
