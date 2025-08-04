@@ -53,11 +53,11 @@ const Hero = ({
               <picture>
                 <source
                   media="(max-width: 640px)"
-                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754074170/Screenshot_2025-08-01_144750_tlsedx.png"
+                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754350965/Screenshot_2025-08-04_194116_e8ajwh.png"
                 />
                 <img
                   className="w-full h-auto"
-                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754074170/Screenshot_2025-08-01_144634_ozanrj.png"
+                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754350965/Screenshot_2025-08-04_194044_jrmfjr.png"
                   alt="Clami AI flashcard application interface showing study dashboard"
                   loading="eager"
                   width="1200"
