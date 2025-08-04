@@ -54,12 +54,10 @@ interface Navbar1Props {
 }
 const SignOutButton = ({ className }: { className?: string }) => {
   return (
-    <Form action={signOut}>
-      <button type="submit" className={className}>
-        <LogOut className="w-4 h-4 mr-2" />
-        Sign out
-      </button>
-    </Form>
+    <button type="submit" className={className}>
+      <LogOut className="w-4 h-4 mr-2" />
+      Sign out
+    </button>
   );
 };
 
@@ -206,9 +204,11 @@ const WorkspaceNavbar = async ({
                   </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-red-600 p-0">
-                  <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
-                </DropdownMenuItem>
+                <Form action={signOut}>
+                  <DropdownMenuItem className="cursor-pointer text-red-600 p-0 w-full">
+                    <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
+                  </DropdownMenuItem>
+                </Form>
               </DropdownMenuContent>
             </DropdownMenu>
             <Sheet>
