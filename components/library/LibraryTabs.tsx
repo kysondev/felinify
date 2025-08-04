@@ -35,7 +35,7 @@ export const LibraryTabs = ({
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      const filteredDecks = decks.filter((deck) => 
+      const filteredDecks = decks.filter((deck) =>
         deck.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setDisplayedDecks(filteredDecks);
@@ -64,7 +64,7 @@ export const LibraryTabs = ({
         <TabsList className="w-full max-w-full lg:max-w-[300px] grid grid-cols-2">
           <TabsTrigger value="decks" className="flex-1">
             <BookOpen className="h-4 w-4 mr-2" />
-            My Decks
+            Decks
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex-1">
             <BarChart3 className="h-4 w-4 mr-2" />
@@ -128,7 +128,7 @@ export const LibraryTabs = ({
                   <div className="relative">
                     <Progress value={averageMastery} className="h-4" />
                     <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                      <span>Learner</span>
+                      <span>Beginner</span>
                       <span>Intermediate</span>
                       <span>Master</span>
                     </div>

@@ -42,7 +42,8 @@ export const DeckList = ({
   const filteredDecks = decks || [];
   const totalDecks = filteredDecks.length;
   const hasFullLastPage = totalDecks % decksPerPage === 0 && totalDecks > 0;
-  const totalPages = Math.ceil(totalDecks / decksPerPage) + (hasFullLastPage ? 1 : 0);
+  const totalPages =
+    Math.ceil(totalDecks / decksPerPage) + (hasFullLastPage ? 1 : 0);
 
   const currentDecks = filteredDecks.slice(
     currentPage * decksPerPage,
@@ -80,12 +81,12 @@ export const DeckList = ({
       {decks && decks.length > 0 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {!(hasFullLastPage && currentPage === totalPages - 1) && 
+            {!(hasFullLastPage && currentPage === totalPages - 1) &&
               currentDecks.map((deck) => (
                 <DeckCard deck={deck} key={deck.id} user={user as User} />
-              ))
-            }
-            {(currentDecks.length < decksPerPage || (hasFullLastPage && currentPage === totalPages - 1)) && (
+              ))}
+            {(currentDecks.length < decksPerPage ||
+              (hasFullLastPage && currentPage === totalPages - 1)) && (
               <Dialog>
                 <DialogTrigger asChild>
                   <Card className="border-2 border-dashed border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group">

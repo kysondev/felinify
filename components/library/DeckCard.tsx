@@ -12,8 +12,6 @@ import {
 } from "components/ui/Dialog";
 import { Deck, User } from "db/types/models.types";
 import {
-  BookOpen,
-  Calendar,
   FlipHorizontal,
   Brain,
   Award,
@@ -68,81 +66,81 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
       `/workspace/study/${selectedMode}?deckId=${deck.id}&numOfRounds=${numOfRounds}&timed=${isTimed}`
     );
   };
-
   return (
-    <Card className="group border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card">
+    <Card className="group">
       <CardContent className="p-6">
-        <div className="flex justify-between items-start mb-1">
-          <h3 className="font-semibold text-xl text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-300">
-            {deck.name}
-          </h3>
-          <span className="text-xs text-muted-foreground">
-            <Badge variant="secondary" className="text-xs font-medium">
-              {deck.visibility === "public" ? "Public" : "Private"}
-            </Badge>
-          </span>
-        </div>
-
-        <p className="text-muted-foreground text-sm line-clamp-2 mb-2 min-h-[40px] leading-relaxed">
-          {deck.description || "No description available"}
-        </p>
-
-        <div className="grid grid-cols-3 gap-3 mb-5">
-          <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
-            <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-muted rounded-md">
-                <CreditCard className="h-4 w-4 text-primary rotate-180" />
-              </div>
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-semibold text-xl text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                {deck.name}
+              </h3>
+              <Badge
+                variant={deck.visibility === "public" ? "default" : "secondary"}
+                className="text-xs font-semibold px-2 py-1 rounded-full"
+              >
+                {deck.visibility === "public" ? "Public" : "Private"}
+              </Badge>
             </div>
-            <p className="text-xs font-bold text-foreground">
-              {deck.flashcards?.length || 0}
+            <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed min-h-[45.5px]">
+              {deck.description || "No description available"}
             </p>
-            <p className="text-xs text-muted-foreground">Cards</p>
-          </div>
-
-          <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
-            <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-muted rounded-md">
-                <Calendar className="h-4 w-4 text-purple-500" />
-              </div>
-            </div>
-            <p className="text-xs font-bold text-foreground">
-              {deck.progress?.lastStudied
-                ? formatDate(deck.progress.lastStudied)
-                : "Never"}
-            </p>
-            <p className="text-xs text-muted-foreground">Last Study</p>
-          </div>
-
-          <div className="text-center p-3 bg-muted/30 rounded-lg border border-border/40">
-            <div className="flex justify-center mb-2">
-              <div className="p-1.5 bg-muted rounded-md">
-                <TrendingUp className="h-4 w-4 text-green-500" />
-              </div>
-            </div>
-            <p className="text-xs font-bold text-foreground">
-              {deck.progress?.completedSessions || 0}
-            </p>
-            <p className="text-xs text-muted-foreground">Sessions</p>
           </div>
         </div>
 
-        <div className="p-4 rounded-lg border border-border/60 bg-muted/50 mb-5">
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-muted/50 to-muted/30 border border-border/30">
+            <div className="p-2 rounded-lg bg-muted">
+              <CreditCard className="h-4 w-4 text-primary rotate-180" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg font-bold text-foreground">
+                {deck.flashcards?.length || 0}
+              </p>
+              <p className="text-xs text-muted-foreground font-medium">Cards</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-muted/50 to-muted/30 border border-border/30">
+            <div className="p-2 rounded-lg bg-muted">
+              <TrendingUp className="h-4 w-4 text-green-500" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg font-bold text-foreground">
+                {deck.progress?.completedSessions || 0}
+              </p>
+              <p className="text-xs text-muted-foreground font-medium">
+                Sessions
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-gradient-to-r from-muted/40 via-muted/20 to-transparent border border-border/40 mb-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-semibold text-foreground">
+              <div className="p-1.5 rounded-lg bg-primary/10">
+                <Target className="h-4 w-4 text-primary" />
+              </div>
+              <span className="text-sm font-bold text-foreground">
                 Mastery Progress
               </span>
             </div>
-            <span className="text-lg font-bold text-foreground">
-              {deck.progress?.mastery || 0}%
-            </span>
+            <div className="text-right">
+              <span className={`text-xl font-bold text-primary`}>
+                {deck.progress?.mastery || 0}%
+              </span>
+              <p className="text-xs text-muted-foreground font-medium">
+                {deck.progress?.lastStudied
+                  ? formatDate(deck.progress.lastStudied)
+                  : "Never"}
+              </p>
+            </div>
           </div>
 
           <Progress
             value={deck.progress?.mastery || 0}
-            className="w-full h-2"
+            className="w-full h-2 rounded-full"
           />
         </div>
 
@@ -151,10 +149,10 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
             <Button
               variant="outline"
               size="sm"
-              className="w-full font-medium hover:bg-accent hover:text-accent-foreground"
+              className="w-full font-semibold rounded-xl border hover:bg-muted transition-all duration-300"
             >
               <Edit3 className="h-4 w-4 mr-2" />
-              Edit Deck
+              Edit
             </Button>
           </Link>
 
@@ -163,93 +161,108 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
             onOpenChange={setShowStudyModeDialog}
           >
             <DialogTrigger asChild>
-              <Button size="sm" className="flex-1 font-medium">
+              <Button
+                size="sm"
+                className="flex-1 font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 <Play className="h-4 w-4 mr-2" />
-                Study Now
+                Study
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              <DialogHeader className="space-y-3">
-                <DialogTitle className="text-xl font-semibold">
+            <DialogContent className="sm:max-w-[550px] rounded-2xl">
+              <DialogHeader className="space-y-4 pb-6">
+                <DialogTitle className="text-2xl font-bold">
                   Choose Study Mode
                 </DialogTitle>
-                <DialogDescription className="text-muted-foreground">
+                <DialogDescription className="text-muted-foreground text-base">
                   Select the perfect study method for your learning goals
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="space-y-3 py-4">
+              <div className="space-y-4 py-2">
                 <div
-                  className="group/mode flex items-center gap-4 p-4 border border-border rounded-lg cursor-pointer hover:border-primary/50 hover:bg-accent/50 transition-all duration-200"
+                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
                   onClick={() => handleStudyModeSelect("flip")}
                 >
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg group-hover/mode:scale-105 transition-transform">
-                    <FlipHorizontal className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <div className="p-4 bg-blue-100 dark:bg-blue-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
+                    <FlipHorizontal className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-foreground mb-1">
+                    <h3 className="font-bold text-lg text-foreground mb-2">
                       Classic Flip
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       Simple flashcard flipping for quick review and
                       memorization
                     </p>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
+                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
                 </div>
 
                 <div
-                  className="group/mode flex items-center gap-4 p-4 border border-border rounded-lg cursor-pointer hover:border-primary/50 hover:bg-accent/50 transition-all duration-200"
+                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
                   onClick={() => handleStudyModeSelect("challenge")}
                 >
-                  <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg group-hover/mode:scale-105 transition-transform">
-                    <Award className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                  <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
+                    <Award className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-foreground mb-1">
+                    <h3 className="font-bold text-lg text-foreground mb-2">
                       Challenge Mode
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       Test your knowledge with multiple choice challenges and
                       compete
                     </p>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
+                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
                 </div>
 
                 <div
-                  className="group/mode flex items-center gap-4 p-4 border border-border rounded-lg cursor-pointer hover:border-primary/50 hover:bg-accent/50 transition-all duration-200"
+                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
                   onClick={() => handleStudyModeSelect("quiz")}
                 >
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg group-hover/mode:scale-105 transition-transform">
-                    <Brain className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                  <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
+                    <Brain className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-foreground">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-bold text-lg text-foreground">
                         Adaptive Quiz
                       </h3>
-                      <Badge className="bg-primary text-primary-foreground text-xs px-2 py-0.5 font-semibold">
+                      <Badge className="bg-primary text-primary-foreground text-xs px-3 py-1 font-bold rounded-full">
                         <Zap className="h-3 w-3 mr-1" />
                         AI
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       Smart quizzes that adapt to your learning progress and
                       weak spots
                     </p>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover/mode:text-foreground group-hover/mode:translate-x-1 transition-all" />
+                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
                 </div>
-                <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border/50">
-                  <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                    <Info className="h-4 w-4 text-primary" />
+
+                <div className="mt-6 p-5 bg-muted/60 rounded-2xl border-2 border-border/30">
+                  <h4 className="text-sm font-bold flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <Info className="h-4 w-4 text-primary" />
+                    </div>
                     Adaptive Quiz Requirements
                   </h4>
-                  <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-5">
-                    <li>Complete Challenge Mode at least 3 times</li>
-                    <li>Achieve at least 10% mastery in this deck</li>
-                    <li>Have at least 1 energy available</li>
+                  <ul className="text-sm text-muted-foreground space-y-2 ml-12">
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                      Complete Challenge Mode at least 3 times
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                      Achieve at least 10% mastery in this deck
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                      Have at least 1 energy available
+                    </li>
                   </ul>
                 </div>
               </div>
