@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ChevronRight, Home, Library } from "lucide-react";
 import { Button } from "components/ui/Button";
 import { DeckStudy } from "components/library/DeckStudy";
+import { redirect } from "next/navigation";
 
 export default async function DeckEditPage({
   params,
@@ -20,6 +21,9 @@ export default async function DeckEditPage({
   const { data: deck } = await getDeckById(deckId, user?.id as string);
 
   if (!deck || deck.userId !== user?.id) {
+    if (deck?.visibility === "public") {
+      return redirect(`/workspace/explore/deck/${deckId}`);
+    }
     return (
       <div className="text-muted-foreground w-full h-screen flex flex-col items-center justify-center">
         Deck not found or you do not have permission to view it.
@@ -56,7 +60,9 @@ export default async function DeckEditPage({
 
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
         <div className="md:max-w-[70%] w-full">
-          <h1 className="text-3xl font-bold text-ellipsis overflow-hidden">{deck.name}</h1>
+          <h1 className="text-3xl font-bold text-ellipsis overflow-hidden">
+            {deck.name}
+          </h1>
           <p className="text-muted-foreground mt-1 line-clamp-2 break-words">
             {deck.description || "No description provided"}
           </p>
@@ -81,7 +87,10 @@ export default async function DeckEditPage({
             deck={deck as unknown as Deck}
             userId={user?.id as string}
           />
-          <DeckStudy deck={deck as unknown as Deck} user={user as unknown as User} />
+          <DeckStudy
+            deck={deck as unknown as Deck}
+            user={user as unknown as User}
+          />
         </div>
 
         <div className="lg:col-span-8">
@@ -91,7 +100,6 @@ export default async function DeckEditPage({
               <DeckStats deck={deck as unknown as Deck} />
             </div>
           </div>
-          
 
           <div className="bg-white dark:bg-slate-900 border rounded-lg shadow-sm">
             <div className="p-4 lg:p-6">
