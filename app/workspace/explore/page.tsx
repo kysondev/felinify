@@ -22,14 +22,21 @@ import JsonLd from "components/SEO/JsonLd";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",
-  description: "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
-  keywords: ["flashcards", "study decks", "educational resources", "learning materials"],
+  description:
+    "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+  keywords: [
+    "flashcards",
+    "study decks",
+    "educational resources",
+    "learning materials",
+  ],
   alternates: {
     canonical: "/workspace/explore",
   },
   openGraph: {
     title: "Explore Flashcard Decks | Clami",
-    description: "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+    description:
+      "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
     url: "https://clami.app/workspace/explore",
     type: "website",
   },
@@ -55,20 +62,22 @@ export default async function Explore() {
   const explorePageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Explore Flashcard Decks",
-    "description": "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
-    "url": "https://clami.app/workspace/explore",
-    "isPartOf": {
+    name: "Explore Flashcard Decks",
+    description:
+      "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
+    url: "https://clami.app/workspace/explore",
+    isPartOf: {
       "@type": "WebSite",
-      "name": "Clami",
-      "url": "https://clami.app"
+      name: "Clami",
+      url: "https://clami.app",
     },
-    "about": {
+    about: {
       "@type": "Thing",
-      "name": "Educational flashcards",
-      "description": "Digital flashcards for studying various subjects"
+      name: "Educational flashcards",
+      description: "Digital flashcards for studying various subjects",
     },
-    "keywords": "flashcards, study decks, educational resources, learning materials"
+    keywords:
+      "flashcards, study decks, educational resources, learning materials",
   };
 
   return (
@@ -94,7 +103,7 @@ export default async function Explore() {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
             <Input
               placeholder="Search for decks by topic, subject, or creator..."
-              className="pl-12 py-3 text-base border-2 focus:border-primary transition-colors"
+              className="pl-12 py-3 text-base focus:border-primary transition-colors"
             />
           </div>
 
