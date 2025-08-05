@@ -1,7 +1,7 @@
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { PlusCircle, BookOpen, BarChart3, Search, Filter } from "lucide-react";
+import { PlusCircle, Library, BookOpen, BarChart3, Search, Filter } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -17,60 +17,117 @@ export default function Loading() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
-        <div className="mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                My Library
-              </h1>
-              <p className="text-muted-foreground text-lg max-w-2xl">
-                Create, organize, and track your progress across all your
-                flashcard decks.
-              </p>
-            </div>
-            
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button size="lg" className="gap-2 px-6">
-                  <PlusCircle className="h-5 w-5" />
-                  Create Deck
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
-                <DialogHeader className="pb-3">
-                  <DialogTitle>Create New Flashcard Deck</DialogTitle>
-                  <DialogDescription>
-                    Create a new deck to organize your flashcards.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="max-h-[calc(90vh-140px)] overflow-y-auto">
-                  <div className="space-y-4">
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-20 w-full" />
-                    <Skeleton className="h-10 w-24" />
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/90 p-6 mb-8">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 -left-4 w-16 h-16 bg-white/5 rounded-full blur-2xl"></div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index} className="border border-border/50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Skeleton className="h-4 w-20 mb-2" />
-                    <Skeleton className="h-8 w-12" />
-                  </div>
-                  <div className="p-3 bg-muted rounded-lg">
-                    <Skeleton className="h-5 w-5" />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <Library className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-white/90 font-medium text-sm">
+                  Personal Library
+                </span>
+              </div>
+
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                <Skeleton className="h-8 w-48 bg-white/20" />
+              </h1>
+
+              <div className="text-white/80 text-sm md:text-base max-w-2xl leading-relaxed">
+                Ready to expand your knowledge? Your learning journey continues
+                here with{" "}
+                <span className="font-semibold text-white">
+                  <Skeleton className="inline-block h-4 w-8 bg-white/20" />
+                </span>{" "}
+                decks and{" "}
+                <span className="font-semibold text-white">
+                  <Skeleton className="inline-block h-4 w-12 bg-white/20" />
+                </span>{" "}
+                cards waiting for you.
+              </div>
+              <div className="mt-4">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      size="default"
+                      variant="secondary"
+                      className="gap-2 px-6 py-2 font-semibold rounded-xl bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      <PlusCircle className="h-4 w-4" />
+                      Create Deck
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6 rounded-2xl">
+                    <DialogHeader className="pb-3">
+                      <DialogTitle>Create New Flashcard Deck</DialogTitle>
+                      <DialogDescription>
+                        Create a new deck to organize your flashcards.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
+                      <div className="space-y-4">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-20 w-full" />
+                        <Skeleton className="h-10 w-24" />
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
+            <div className="hidden md:flex flex-col items-center justify-center bg-white/10 rounded-2xl p-6 backdrop-blur-sm w-[160px] h-[160px] shadow-inner">
+              <div className="flex flex-col items-center justify-center w-full h-full">
+                <div className="relative mb-3">
+                  <svg
+                    className="w-16 h-16 transform -rotate-90"
+                    viewBox="0 0 64 64"
+                  >
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="rgba(255, 255, 255, 0.2)"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="white"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 28}`}
+                      strokeDashoffset={`${2 * Math.PI * 28 * 0.3}`}
+                      className="transition-all duration-1000 ease-out"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Skeleton className="h-6 w-8 bg-white/20 rounded" />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                <div className="text-white font-medium text-xs text-center mb-2">
+                  Average Mastery
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+                  <div
+                    className="bg-white h-full rounded-full transition-all duration-700 ease-out"
+                    style={{ width: "45%" }}
+                  ></div>
+                </div>
+                <div className="mt-1.5 text-xs text-white/70 font-medium">
+                  Intermediate
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="decks" className="w-full">
