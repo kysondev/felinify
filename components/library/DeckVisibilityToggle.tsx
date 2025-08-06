@@ -46,7 +46,7 @@ export const DeckVisibilityToggle = ({
           );
           fetch(`/api/revalidate?path=/workspace/library`);
           fetch(`/api/revalidate?path=/workspace/explore`);
-          fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+          fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
           fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
         } else {
           toast.error(result.message || "Failed to update deck visibility");

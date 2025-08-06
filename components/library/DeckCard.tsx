@@ -145,7 +145,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
         </div>
 
         <div className="flex gap-3">
-          <Link href={`/workspace/deck/${deck.id}`} passHref className="flex-1">
+          <Link href={`/workspace/deck/edit/${deck.id}`} passHref className="flex-1">
             <Button
               variant="outline"
               size="sm"

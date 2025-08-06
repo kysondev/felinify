@@ -177,7 +177,7 @@ export function CreateDeckForm({
         setOpen(false);
         toast.success(`Deck created with ${addResult.addedCount} flashcards`);
         aiForm.reset();
-        router.push(`/workspace/deck/${deckId}`);
+        router.push(`/workspace/deck/edit/${deckId}`);
         router.refresh();
         if (onSuccess) onSuccess();
       }, 500);

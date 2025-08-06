@@ -111,6 +111,7 @@ export interface UserDeckProgressTable {
 export interface TagTable {
   id: Generated<string> | string;
   name: string;
+  deckId: string;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }

@@ -4,6 +4,7 @@ import { DeckEditForm } from "components/library/DeckEditForm";
 import { FlashcardList } from "components/library/FlashcardList";
 import { DeckStats } from "components/library/DeckStats";
 import { DeckVisibilityToggle } from "components/library/DeckVisibilityToggle";
+import { DeckTagManager } from "components/library/DeckTagManager";
 import { Deck, User } from "db/types/models.types";
 import Link from "next/link";
 import { ChevronRight, Home, Library } from "lucide-react";
@@ -82,6 +83,11 @@ export default async function DeckEditPage({
           <DeckEditForm
             deck={deck as unknown as Deck}
             userId={user?.id as string}
+          />
+          <DeckTagManager
+            deckId={deck.id}
+            userId={user?.id as string}
+            tags={(deck as any).tags || []}
           />
           <DeckVisibilityToggle
             deck={deck as unknown as Deck}

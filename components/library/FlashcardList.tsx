@@ -113,7 +113,7 @@ export const FlashcardList = ({
       );
       fetch(`/api/revalidate?path=/workspace/library`);
       fetch(`/api/revalidate?path=/workspace/explore`);
-      fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+      fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
       fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
 
       if (result.success) {
@@ -149,7 +149,7 @@ export const FlashcardList = ({
         setCurrentFlashcard(null);
         fetch(`/api/revalidate?path=/workspace/library`);
         fetch(`/api/revalidate?path=/workspace/explore`);
-        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
         fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
         router.refresh();
       } else {
@@ -179,7 +179,7 @@ export const FlashcardList = ({
         toast.success("Flashcard deleted successfully");
         fetch(`/api/revalidate?path=/workspace/library`);
         fetch(`/api/revalidate?path=/workspace/explore`);
-        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
         fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
         router.refresh();
         setDeleteDialogOpen(false);

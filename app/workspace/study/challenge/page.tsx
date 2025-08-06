@@ -388,7 +388,7 @@ export default function ChallengePageContent() {
         title="No flashcards found"
         message="This deck doesn't have any flashcards yet."
         buttonText="Add flashcards"
-        buttonAction={() => router.push(`/workspace/deck/${deckId}`)}
+        buttonAction={() => router.push(`/workspace/deck/edit/${deckId}`)}
       />
     );
   }
@@ -399,7 +399,7 @@ export default function ChallengePageContent() {
         title="Not enough flashcards"
         message="Challenge mode requires at least 4 flashcards. Please add more cards to your deck."
         buttonText="Add more flashcards"
-        buttonAction={() => router.push(`/workspace/deck/${deckId}`)}
+        buttonAction={() => router.push(`/workspace/deck/edit/${deckId}`)}
       />
     );
   }
