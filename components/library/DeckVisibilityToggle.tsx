@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { Deck } from "db/types/models.types";
-import { Button } from "components/ui/Button";
-import { Switch } from "components/ui/Switch";
+import { updateDeckAction } from "actions/deck.action";
+import { Badge } from "components/ui/Badge";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "components/ui/Card";
-import { updateDeckAction } from "actions/deck.action";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { Switch } from "components/ui/Switch";
+import { Deck } from "db/types/models.types";
 import { Eye, EyeOff, Globe, Lock } from "lucide-react";
-import { Badge } from "components/ui/Badge";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { toast } from "react-hot-toast";
 
 export const DeckVisibilityToggle = ({
   deck,

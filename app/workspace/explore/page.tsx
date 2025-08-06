@@ -1,25 +1,19 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import {
-  Search,
-  Grid3X3,
-  List,
-  Sparkles,
-  TrendingUp,
-  Clock,
-  Star,
-  BookOpen,
-} from "lucide-react";
-import { Button } from "components/ui/Button";
-import { Badge } from "components/ui/Badge";
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { SearchForm } from "components/explore/SearchForm";
-import { Deck } from "db/types/models.types";
-import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
-import { Card, CardContent } from "components/ui/Card";
-import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import Link from "next/link";
+import { Badge } from "components/ui/Badge";
+import { Button } from "components/ui/Button";
+import { Card, CardContent } from "components/ui/Card";
 import { PREDEFINED_TAGS } from "config/tags.config";
+import { Deck } from "db/types/models.types";
+import {
+  BookOpen,
+  Sparkles,
+  TrendingUp
+} from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
+import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",

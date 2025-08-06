@@ -1,5 +1,11 @@
 "use client";
-import { cn } from "lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  signInWithGithub,
+  signInWithGoogle,
+  signUp,
+} from "actions/auth.action";
+import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {
   Card,
@@ -8,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui/Card";
-import { Input } from "components/ui/Input";
+import { Checkbox } from "components/ui/Checkbox";
 import {
   Form,
   FormControl,
@@ -17,23 +23,16 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { useState, useTransition } from "react";
-import NextForm from "next/form";
-import {
-  signInWithGithub,
-  signInWithGoogle,
-  signUp,
-} from "actions/auth.action";
+import { Input } from "components/ui/Input";
 import { Loading } from "components/ui/Loading";
-import { Checkbox } from "components/ui/Checkbox";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, SignUpSchema } from "lib/validations/auth.schema";
-import { Alert, AlertDescription } from "components/ui/Alert";
 import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
+import { cn } from "lib/utils";
+import { signUpSchema, SignUpSchema } from "lib/validations/auth.schema";
+import NextForm from "next/form";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { checkEmailAvailability } from "services/user.service";
-import Link from "next/link";
 
 export function SignUpForm({
   className,

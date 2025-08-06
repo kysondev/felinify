@@ -1,21 +1,20 @@
+import { createQuizAccessTokenAction } from "actions/ai-study.actions";
+import { hasEnoughEnergy } from "actions/user.action";
+import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "components/ui/Dialog";
 import { Label } from "components/ui/Label";
 import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
-import { useState } from "react";
-import { createQuizAccessTokenAction } from "actions/ai-study.actions";
-import { useRouter } from "next/navigation";
-import { Loader2, AlertCircle } from "lucide-react";
-import { Alert, AlertDescription } from "components/ui/Alert";
 import { User } from "db/types/models.types";
-import { getUserEnergy } from "services/user.service";
-import { hasEnoughEnergy } from "actions/user.action";
+import { AlertCircle, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface AdaptiveQuizSettingsProps {
   showQuizSettings: boolean;

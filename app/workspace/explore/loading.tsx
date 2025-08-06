@@ -1,9 +1,7 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { Search, Filter, Sparkles } from "lucide-react";
-import { Input } from "components/ui/Input";
 import { Card, CardContent } from "components/ui/Card";
+import { Input } from "components/ui/Input";
 import { Skeleton } from "components/ui/Skeleton";
-import { Badge } from "components/ui/Badge";
+import { Search, Sparkles } from "lucide-react";
 
 export default function Loading() {
   return (

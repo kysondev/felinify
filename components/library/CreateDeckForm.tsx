@@ -1,27 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  addGeneratedFlashcardsToDeckAction,
+  generateFlashcardsAction,
+} from "actions/ai-study.actions";
+import { createDeckAction } from "actions/deck.action";
+import { hasEnoughEnergy } from "actions/user.action";
+import { Alert, AlertTitle } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import { DialogFooter, useDialog } from "components/ui/Dialog";
-import { Input } from "components/ui/Input";
-import { Textarea } from "components/ui/Textarea";
-import { Switch } from "components/ui/Switch";
-import {
-  Sparkles,
-  Brain,
-  Upload,
-  Globe,
-  Lock,
-  Eye,
-  EyeOff,
-} from "lucide-react";
-import { useTransition } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { useRouter } from "next/navigation";
-import { Loading } from "../ui/Loading";
-import { createDeckAction } from "actions/deck.action";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -30,6 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
+import { Input } from "components/ui/Input";
+import { Progress } from "components/ui/Progress";
+import { Switch } from "components/ui/Switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
+import { Textarea } from "components/ui/Textarea";
+import { Deck, Subscription, User } from "db/types/models.types";
+import { hasReachedMaxDeck } from "lib/subscription/limits";
 import {
   CreateDeckSchema,
   createDeckSchema,
@@ -37,15 +32,17 @@ import {
   CreateDeckWithAISchema,
 } from "lib/validations/deck.schema";
 import {
-  generateFlashcardsAction,
-  addGeneratedFlashcardsToDeckAction,
-} from "actions/ai-study.actions";
-import { useState } from "react";
-import { Progress } from "components/ui/Progress";
-import { Alert, AlertTitle } from "components/ui/Alert";
-import { Deck, Subscription, User } from "db/types/models.types";
-import { hasReachedMaxDeck } from "lib/subscription/limits";
-import { hasEnoughEnergy } from "actions/user.action";
+  Brain,
+  Eye,
+  EyeOff,
+  Sparkles,
+  Upload
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Loading } from "../ui/Loading";
 
 export function CreateDeckForm({
   user,

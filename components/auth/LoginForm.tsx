@@ -1,5 +1,11 @@
 "use client";
-import { cn } from "lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  signInWithEmail,
+  signInWithGithub,
+  signInWithGoogle,
+} from "actions/auth.action";
+import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {
   Card,
@@ -8,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui/Card";
-import { Input } from "components/ui/Input";
 import {
   Form,
   FormControl,
@@ -17,21 +22,16 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { useState, useTransition } from "react";
-import NextForm from "next/form";
-import {
-  signInWithEmail,
-  signInWithGithub,
-  signInWithGoogle,
-} from "actions/auth.action";
+import { Input } from "components/ui/Input";
 import { Loading } from "components/ui/Loading";
-import dynamic from "next/dynamic";
-import OTPSkeleton from "./skeletons/OTPSkeleton";
-import { useForm } from "react-hook-form";
-import { SignInSchema, signInSchema } from "lib/validations/auth.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
-import { Alert, AlertDescription } from "components/ui/Alert";
+import { cn } from "lib/utils";
+import { signInSchema } from "lib/validations/auth.schema";
+import dynamic from "next/dynamic";
+import NextForm from "next/form";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import OTPSkeleton from "./skeletons/OTPSkeleton";
 
 const OTPForm = dynamic(() => import("./OTPForm"), {
   loading: () => <OTPSkeleton />,

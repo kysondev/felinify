@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Lightbulb, LineChart } from "lucide-react";
+import { BookOpen, Lightbulb, LineChart } from "lucide-react";
 
 interface Step {
   title: string;
