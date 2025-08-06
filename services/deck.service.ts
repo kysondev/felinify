@@ -911,3 +911,51 @@ export const updateFlashcardPerformance = async (
     };
   }
 };
+
+export const getDecksBySearch = async (searchQuery: string) => {
+  try {
+    const decks = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+        "studyCount",
+        "studyHour",
+        "visibility",
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+      ])
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .where((eb) =>
+        eb.or([
+          eb("name", "ilike", `%${searchQuery}%`),
+          eb("description", "ilike", `%${searchQuery}%`),
+        ])
+      )
+      .orderBy("studyCount", "desc")
+      .orderBy("createdAt", "desc")
+      .execute();
+
+    return { success: true, data: decks as unknown as Deck[] };
+  } catch (error) {
+    console.error("Error searching decks:", error);
+    throw error;
+  }
+};

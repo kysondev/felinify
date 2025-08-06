@@ -1,7 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import {
   Search,
-  Filter,
   Grid3X3,
   List,
   Sparkles,
@@ -10,10 +9,10 @@ import {
   Star,
   BookOpen,
 } from "lucide-react";
-import { Input } from "components/ui/Input";
 import { Button } from "components/ui/Button";
 import { Badge } from "components/ui/Badge";
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
+import { SearchForm } from "components/explore/SearchForm";
 import { Deck } from "db/types/models.types";
 import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
@@ -99,20 +98,9 @@ export default async function Explore() {
 
       <div className="mb-8">
         <div className="flex flex-col lg:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search for decks by topic, subject, or creator..."
-              className="pl-12 py-3 text-base focus:border-primary transition-colors"
-            />
-          </div>
-
-          <Button variant="outline" className="lg:w-auto">
-            <Filter className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
+          <SearchForm className="flex-1" />
         </div>
-
+        
         <div className="mt-6 flex flex-wrap gap-2">
           {categories.map((category) => (
             <Badge
