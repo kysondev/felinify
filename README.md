@@ -22,7 +22,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674784/Screenshot_2025-07-27_235213_yeo5w8.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1753674784/Screenshot_2025-07-27_235213_yeo5w8.png)
+[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754449038/Screenshot_2025-08-05_225531_duzjj6.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754449038/Screenshot_2025-08-05_225531_duzjj6.png)
 
 > ⭐️ If you find this project helpful, consider leaving a star. Thanks!
 
