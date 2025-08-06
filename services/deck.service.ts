@@ -1080,3 +1080,60 @@ export const getTagsByDeckId = async (deckId: string, userId: string) => {
     return { success: false, message: "Error fetching tags for deck", error };
   }
 };
+
+export const getDecksByTag = async (tagName: string) => {
+  try {
+    const decks = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+        "studyCount",
+        "studyHour",
+        "visibility",
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+        jsonArrayFrom(
+          eb
+            .selectFrom("tag")
+            .selectAll()
+            .whereRef("tag.deckId", "=", "deck.id")
+        ).as("tags"),
+      ])
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("tag")
+            .select("id")
+            .whereRef("tag.deckId", "=", eb.ref("deck.id"))
+            .where("tag.name", "=", tagName)
+        )
+      )
+      .orderBy("studyCount", "desc")
+      .orderBy("createdAt", "desc")
+      .execute();
+
+    return { success: true, data: decks as unknown as Deck[] };
+  } catch (error) {
+    console.error("Error fetching decks by tag:", error);
+    throw error;
+  }
+};

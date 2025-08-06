@@ -18,6 +18,8 @@ import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
+import Link from "next/link";
+import { PREDEFINED_TAGS } from "config/tags.config";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",
@@ -46,17 +48,7 @@ export default async function Explore() {
   const { data: featuredDecks } = await getFeaturedDecks();
   const { data: popularDecks } = await getPopularDecks();
 
-  const categories = [
-    "All",
-    "Science",
-    "Mathematics",
-    "History",
-    "Language",
-    "Technology",
-    "Medicine",
-    "Business",
-    "Arts",
-  ];
+  const categories = ["All", ...PREDEFINED_TAGS];
 
   const explorePageSchema = {
     "@context": "https://schema.org",
@@ -103,13 +95,17 @@ export default async function Explore() {
         
         <div className="mt-6 flex flex-wrap gap-2">
           {categories.map((category) => (
-            <Badge
+            <Link
               key={category}
-              variant={category === "All" ? "default" : "secondary"}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors px-4 py-2"
+              href={category === "All" ? "/workspace/explore" : `/workspace/explore/tag/${encodeURIComponent(category)}`}
             >
-              {category}
-            </Badge>
+              <Badge
+                variant={category === "All" ? "default" : "secondary"}
+                className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors px-4 py-2"
+              >
+                {category}
+              </Badge>
+            </Link>
           ))}
         </div>
       </div>
