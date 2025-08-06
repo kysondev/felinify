@@ -11,32 +11,30 @@ import JsonLd from "components/SEO/JsonLd";
 import { PREDEFINED_TAGS } from "config/tags.config";
 
 interface TagPageProps {
-  params: {
-    tagName: string;
-  };
+  params: Promise<{ tagName: string }>;
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const tagName = decodeURIComponent(params.tagName);
-  
+  const { tagName } = await params;
+
   return {
     title: `${tagName} Flashcard Decks | Clami`,
     description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
     keywords: [`${tagName.toLowerCase()}`, "flashcards", "study decks", "educational resources", "learning materials"],
     alternates: {
-      canonical: `/workspace/explore/tag/${params.tagName}`,
+      canonical: `/workspace/explore/tag/${tagName}`,
     },
     openGraph: {
       title: `${tagName} Flashcard Decks | Clami`,
       description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
-      url: `https://clami.app/workspace/explore/tag/${params.tagName}`,
+      url: `https://clami.app/workspace/explore/tag/${tagName}`,
       type: "website",
     },
   };
 }
 
 export default async function TagPage({ params }: TagPageProps) {
-  const tagName = decodeURIComponent(params.tagName);
+  const { tagName } = await params;
 
   if (!PREDEFINED_TAGS.includes(tagName)) {
     notFound();
@@ -49,7 +47,7 @@ export default async function TagPage({ params }: TagPageProps) {
     "@type": "CollectionPage",
     name: `${tagName} Flashcard Decks`,
     description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
-    url: `https://clami.app/workspace/explore/tag/${params.tagName}`,
+    url: `https://clami.app/workspace/explore/tag/${tagName}`,
     isPartOf: {
       "@type": "WebSite",
       name: "Clami",
