@@ -132,6 +132,13 @@ export const getDecksByUserId = async (userId: string) => {
             .whereRef("flashcard.deckId", "=", "deck.id")
         ).as("flashcards"),
 
+        jsonArrayFrom(
+          eb
+            .selectFrom("tag")
+            .selectAll()
+            .whereRef("tag.deckId", "=", "deck.id")
+        ).as("tags"),
+
         jsonObjectFrom(
           eb
             .selectFrom("userDeckProgress")

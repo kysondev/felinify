@@ -11,12 +11,23 @@ import {
   Target,
   TrendingUp,
   Zap,
+  X,
 } from "lucide-react";
 import { DeckList } from "./DeckList";
 import { Deck, Subscription, User } from "db/types/models.types";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import { Progress } from "components/ui/Progress";
 import { useState, useEffect } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "components/ui/Dropdown-menu";
+import { Badge } from "components/ui/Badge";
+import { PREDEFINED_TAGS } from "config/tags.config";
 
 export const LibraryTabs = ({
   decks,
@@ -31,32 +42,51 @@ export const LibraryTabs = ({
 }) => {
   const [activeTab, setActiveTab] = useState("decks");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [displayedDecks, setDisplayedDecks] = useState<Deck[]>(decks);
 
   useEffect(() => {
+    let filteredDecks = decks;
+
     if (searchQuery.trim()) {
-      const filteredDecks = decks.filter((deck) =>
+      filteredDecks = filteredDecks.filter((deck) =>
         deck.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setDisplayedDecks(filteredDecks);
-    } else {
-      setDisplayedDecks(decks);
     }
-  }, [decks, searchQuery]);
+
+
+    if (selectedTags.length > 0) {
+      filteredDecks = filteredDecks.filter((deck) => {
+        if (!deck.tags || deck.tags.length === 0) return false;
+        return selectedTags.some((selectedTag) =>
+          deck.tags!.some((tag) => tag.name === selectedTag)
+        );
+      });
+    }
+
+    setDisplayedDecks(filteredDecks);
+  }, [decks, searchQuery, selectedTags]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-
-    if (!query.trim()) {
-      setDisplayedDecks(decks);
-    } else {
-      const filteredDecks = decks.filter((deck) => {
-        return deck.name.toLowerCase().includes(query.toLowerCase());
-      });
-      setDisplayedDecks(filteredDecks);
-      setActiveTab("decks");
-    }
+    setActiveTab("decks");
   };
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag)
+        ? prev.filter((t) => t !== tag)
+        : [...prev, tag]
+    );
+    setActiveTab("decks");
+  };
+
+  const clearFilters = () => {
+    setSelectedTags([]);
+    setSearchQuery("");
+  };
+
+  const hasActiveFilters = searchQuery.trim() || selectedTags.length > 0;
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -78,17 +108,102 @@ export const LibraryTabs = ({
             <Input
               placeholder="Search your decks..."
               className="pl-10 w-full lg:w-64 bg-white"
+              value={searchQuery}
               onChange={(e) => {
                 handleSearch(e.target.value);
               }}
             />
           </div>
-          <Button variant="outline" size="sm" className="bg-white">
-            <Filter className="h-4 w-4 mr-2" />
-            Filter
-          </Button>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="bg-white">
+                <Filter className="h-4 w-4 mr-2" />
+                Filter
+                {selectedTags.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 text-xs">
+                    {selectedTags.length}
+                  </Badge>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Filter by Tags</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {PREDEFINED_TAGS.length > 0 ? (
+                PREDEFINED_TAGS.map((tag) => (
+                  <DropdownMenuItem
+                    key={tag}
+                    onClick={() => handleTagToggle(tag)}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span>{tag}</span>
+                      {selectedTags.includes(tag) && (
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      )}
+                    </div>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <DropdownMenuItem disabled>
+                  No tags available
+                </DropdownMenuItem>
+              )}
+              {selectedTags.length > 0 && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={clearFilters}
+                    className="cursor-pointer text-destructive"
+                  >
+                    Clear all filters
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
+
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {selectedTags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="gap-1 px-2 py-1"
+            >
+              {tag}
+              <button
+                onClick={() => handleTagToggle(tag)}
+                className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </Badge>
+          ))}
+          {searchQuery.trim() && (
+            <Badge variant="secondary" className="gap-1 px-2 py-1">
+              Search: "{searchQuery}"
+              <button
+                onClick={() => setSearchQuery("")}
+                className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </Badge>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="h-6 px-2 text-xs"
+          >
+            Clear all
+          </Button>
+        </div>
+      )}
 
       <DeckList
         decks={displayedDecks}
