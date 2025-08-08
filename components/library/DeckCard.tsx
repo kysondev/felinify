@@ -67,12 +67,12 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
     );
   };
   return (
-    <Card className="group">
-      <CardContent className="p-6">
+    <Card>
+      <CardContent className="p-6 cursor-default">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="font-semibold text-xl text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-300">
+              <h3 className="font-semibold text-xl text-foreground line-clamp-1 hover:text-primary transition-colors duration-300 cursor-pointer" onClick={() => router.push(`/workspace/deck/edit/${deck.id}`)}>
                 {deck.name}
               </h3>
               <Badge

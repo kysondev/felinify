@@ -11,13 +11,15 @@ export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
   const { data: user } = await getUserWithId(deck.userId);
 
   return (
-    <Card className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col">
+    <Card className="border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col cursor-default">
       <CardContent className="p-0 flex flex-col h-full">
         <div className="p-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-lg line-clamp-1 text-foreground group-hover:text-primary transition-colors">
-              {deck.name}
-            </h3>
+            <Link href={`/workspace/explore/deck/${deck.id}`}>
+              <h3 className="font-semibold text-lg line-clamp-1 text-foreground hover:text-primary transition-colors">
+                {deck.name}
+              </h3>
+            </Link>
             <Badge variant="secondary" className="text-xs font-medium">
               {deck.tags?.[0]?.name || "General"}
             </Badge>

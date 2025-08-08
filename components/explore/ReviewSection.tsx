@@ -10,6 +10,7 @@ import { CreateReviewDialog } from "./CreateReviewDialog";
 import { deleteReviewAction } from "actions/review.action";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ReviewSectionProps {
   reviews: Review[] | undefined;
@@ -82,15 +83,6 @@ export const ReviewSection = ({ reviews, deckId, currentUserId }: ReviewSectionP
                 share your experience and help other learners discover
                 great content!
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="ghost"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Study First
-                </Button>
-              </div>
 
               <div className="mt-8 flex items-center gap-8 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
