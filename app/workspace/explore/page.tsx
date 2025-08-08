@@ -114,9 +114,11 @@ export default async function Explore() {
               Curated collections of the best flashcard decks
             </p>
           </div>
-          <Button variant="outline" size="sm">
-            View All Featured
-          </Button>
+          <Link href="/workspace/explore/featured">
+            <Button variant="outline" size="sm">
+              View All Featured
+            </Button>
+          </Link>
         </div>
 
         {featuredDecks.length > 0 ? (
@@ -148,9 +150,11 @@ export default async function Explore() {
               Most studied and highly rated flashcard decks
             </p>
           </div>
-          <Button variant="outline" size="sm">
-            View All Popular
-          </Button>
+          <Link href="/workspace/explore/popular">
+            <Button variant="outline" size="sm">
+              View All Popular
+            </Button>
+          </Link>
         </div>
 
         {popularDecks.length > 0 ? (
@@ -182,9 +186,11 @@ export default async function Explore() {
               Fresh flashcard decks added to the community
             </p>
           </div>
-          <Button variant="outline" size="sm">
-            View All Recent
-          </Button>
+          <Link href="/workspace/explore/recent">
+            <Button variant="outline" size="sm">
+              View All Recent
+            </Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
