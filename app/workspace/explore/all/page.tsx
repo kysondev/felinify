@@ -21,13 +21,14 @@ export const metadata: Metadata = {
 };
 
 interface AllDecksPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function AllDecksPage({ searchParams }: AllDecksPageProps) {
-  const page = parseInt(searchParams.page || "1");
+  const { page: pageParam } = await searchParams;
+  const page = Number.parseInt(pageParam ?? "1", 10);
   const { data: decks, pagination } = await getAllDecks(page, 12);
 
   const schema = {
