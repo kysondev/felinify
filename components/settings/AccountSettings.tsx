@@ -17,7 +17,7 @@ import {
   Lock,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { authClient } from "lib/auth-client";
+import { authClient } from "lib/authClient";
 import { Switch } from "components/ui/Switch";
 import {
   Dialog,

@@ -1,4 +1,4 @@
-import { authClient } from "lib/auth-client";
+import { authClient } from "lib/authClient";
 import toast from "react-hot-toast";
 
 export const upload = async (selectedFile: File) => {

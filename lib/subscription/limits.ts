@@ -7,7 +7,7 @@ export const hasReachedMaxDeck = (
 ) => {
   switch (subscription) {
     case "starter":
-      return decks.length === 15;
+      return decks.length === plans.find((plan) => plan.name === "starter")!.limits.decks;
     case "pro":
       return (
         decks.length === plans.find((plan) => plan.name === "pro")!.limits.decks
@@ -18,6 +18,6 @@ export const hasReachedMaxDeck = (
         plans.find((plan) => plan.name === "ultra")!.limits.decks
       );
     default:
-      return decks.length === 15;
+      return decks.length === plans.find((plan) => plan.name === "starter")!.limits.decks;
   }
 };

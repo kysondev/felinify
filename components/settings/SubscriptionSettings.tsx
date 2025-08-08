@@ -9,7 +9,7 @@ import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { User } from "db/types/models.types";
 import { plans } from "config/plans.config";
-import { authClient } from "lib/auth-client";
+import { authClient } from "lib/authClient";
 import { CalendarIcon } from "lucide-react";
 import { openCustomerPortalAction } from "actions/subscription.action";
 import { Loading } from "components/ui/Loading";
