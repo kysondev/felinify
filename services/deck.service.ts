@@ -1144,3 +1144,77 @@ export const getDecksByTag = async (tagName: string) => {
     throw error;
   }
 };
+
+export const getAllDecks = async (page: number = 1, limit: number = 12) => {
+  try {
+    const offset = (page - 1) * limit;
+    
+    const decks = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt",
+        "rating",
+        "studyCount",
+        "studyHour",
+        "visibility",
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+        jsonArrayFrom(
+          eb
+            .selectFrom("tag")
+            .selectAll()
+            .whereRef("tag.deckId", "=", "deck.id")
+        ).as("tags"),
+      ])
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .orderBy("createdAt", "desc")
+      .limit(limit)
+      .offset(offset)
+      .execute();
+
+    const totalCount = await db
+      .selectFrom("deck")
+      .select((eb) => eb.fn.count<number>("id").as("count"))
+      .where("visibility", "=", "public")
+      .where((eb) =>
+        eb.exists(
+          db
+            .selectFrom("flashcard")
+            .select("id")
+            .whereRef("flashcard.deckId", "=", eb.ref("deck.id"))
+        )
+      )
+      .executeTakeFirst();
+
+    return { 
+      success: true, 
+      data: decks as unknown as Deck[],
+      pagination: {
+        page,
+        limit,
+        total: totalCount?.count || 0,
+        totalPages: Math.ceil((totalCount?.count || 0) / limit)
+      }
+    };
+  } catch (error) {
+    console.error("Error fetching all decks:", error);
+    throw error;
+  }
+};

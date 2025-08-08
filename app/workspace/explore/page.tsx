@@ -199,8 +199,6 @@ export default async function Explore() {
           ))}
         </div>
       </div>
-
-      {/* Call to Action */}
       <div className="mt-16 text-center">
         <Card className="bg-primary text-primary-foreground border-primary">
           <CardContent className="p-8">
@@ -212,20 +210,24 @@ export default async function Explore() {
               Help others learn while building your own knowledge.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-primary hover:bg-gray-100"
-              >
-                Create Your Own Deck
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-white text-primary hover:bg-white hover:text-primary"
-              >
-                Browse All Categories
-              </Button>
+              <Link href="/workspace/library">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-primary hover:bg-gray-100"
+                >
+                  Create Your Own Deck
+                </Button>
+              </Link>
+              <Link href="/workspace/explore/all">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-primary hover:bg-white hover:text-primary"
+                >
+                  Browse All Decks
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
