@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getDecksByTag } from "services/deck.service";
+import { getDecksByTag } from "@deck/services/deck.service";
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
 import { Card, CardContent } from "components/ui/Card";
@@ -8,19 +8,27 @@ import { ArrowLeft, BookOpen, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { PREDEFINED_TAGS } from "config/tags.config";
+import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 
 interface TagPageProps {
   params: Promise<{ tagName: string }>;
 }
 
-export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: TagPageProps): Promise<Metadata> {
   const { tagName } = await params;
 
   return {
     title: `${tagName} Flashcard Decks | Clami`,
     description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
-    keywords: [`${tagName.toLowerCase()}`, "flashcards", "study decks", "educational resources", "learning materials"],
+    keywords: [
+      `${tagName.toLowerCase()}`,
+      "flashcards",
+      "study decks",
+      "educational resources",
+      "learning materials",
+    ],
     alternates: {
       canonical: `/workspace/explore/tag/${tagName}`,
     },
@@ -64,7 +72,7 @@ export default async function TagPage({ params }: TagPageProps) {
   return (
     <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
       <JsonLd data={tagPageSchema} />
-      
+
       <div className="mb-6">
         <Link href="/workspace/explore">
           <Button variant="ghost" className="group hover:bg-muted">
@@ -83,8 +91,8 @@ export default async function TagPage({ params }: TagPageProps) {
           {tagName} Flashcard Decks
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-          Discover high-quality {tagName.toLowerCase()} flashcard decks created by
-          students, educators, and professionals worldwide
+          Discover high-quality {tagName.toLowerCase()} flashcard decks created
+          by students, educators, and professionals worldwide
         </p>
       </div>
 
@@ -92,7 +100,7 @@ export default async function TagPage({ params }: TagPageProps) {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-semibold text-foreground">
-              {decks.length} {decks.length === 1 ? 'Deck' : 'Decks'} Found
+              {decks.length} {decks.length === 1 ? "Deck" : "Decks"} Found
             </h2>
             <p className="text-muted-foreground">
               {tagName} flashcard decks for your studies
@@ -111,10 +119,12 @@ export default async function TagPage({ params }: TagPageProps) {
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">No {tagName} Decks Found</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              No {tagName} Decks Found
+            </h3>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              No flashcard decks found for the {tagName.toLowerCase()} category yet.
-              Be the first to create one!
+              No flashcard decks found for the {tagName.toLowerCase()} category
+              yet. Be the first to create one!
             </p>
           </div>
         )}
@@ -129,8 +139,9 @@ export default async function TagPage({ params }: TagPageProps) {
                   Can't find what you're looking for?
                 </h3>
                 <p className="text-primary-foreground/90 mb-6">
-                  Create your own {tagName.toLowerCase()} flashcard deck and share it with the community.
-                  Help others learn while building your own knowledge.
+                  Create your own {tagName.toLowerCase()} flashcard deck and
+                  share it with the community. Help others learn while building
+                  your own knowledge.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
@@ -158,4 +169,4 @@ export default async function TagPage({ params }: TagPageProps) {
       )}
     </div>
   );
-} 
+}

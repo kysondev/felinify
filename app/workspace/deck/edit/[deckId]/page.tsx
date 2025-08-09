@@ -1,5 +1,5 @@
-import { getDeckById } from "services/deck.service";
-import { getUser } from "services/user.service";
+import { getDeckById } from "@deck/services/deck.service";
+import { getUser } from "@user/services/user.service";
 import { DeckEditForm } from "components/library/DeckEditForm";
 import { FlashcardList } from "components/library/FlashcardList";
 import { DeckStats } from "components/library/DeckStats";

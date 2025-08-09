@@ -1,13 +1,12 @@
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
-import { Card, CardContent } from "components/ui/Card";
 import { Deck } from "db/types/models.types";
 import { BookOpen, ArrowLeft, Clock } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { getFeaturedDecks } from "services/deck.service";
+import { getFeaturedDecks } from "@deck/services/deck.service";
 
 export const metadata: Metadata = {
   title: "Recently Added Decks | Clami",
@@ -38,7 +37,11 @@ export default async function RecentDecksPage() {
 
       <div className="mb-8">
         <Link href="/workspace/explore">
-          <Button variant="ghost" size="sm" className="flex items-center gap-2 mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 mb-6"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Explore
           </Button>
@@ -49,7 +52,9 @@ export default async function RecentDecksPage() {
             <Clock className="w-4 h-4" />
             Recently Added
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Recently Added</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Recently Added
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Fresh flashcard decks added by the community.
           </p>
@@ -59,7 +64,9 @@ export default async function RecentDecksPage() {
       {decks.length > 0 ? (
         <div className="space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold text-foreground">Decks ({decks.length})</h2>
+            <h2 className="text-2xl font-semibold text-foreground">
+              Decks ({decks.length})
+            </h2>
             <Badge variant="secondary" className="px-3 py-1">
               {decks.length} result{decks.length !== 1 ? "s" : ""}
             </Badge>
@@ -85,4 +92,3 @@ export default async function RecentDecksPage() {
     </div>
   );
 }
-

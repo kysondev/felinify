@@ -13,8 +13,8 @@ import {
   Star,
 } from "lucide-react";
 import Link from "next/link";
-import { getDeckById, getReviewsByDeckId } from "services/deck.service";
-import { getUser, getUserWithId } from "services/user.service";
+import { getDeckById, getReviewsByDeckId } from "@deck/services/deck.service";
+import { getUser, getUserWithId } from "@user/services/user.service";
 import { User as UserType } from "db/types/models.types";
 import { Progress } from "components/ui/Progress";
 import ExploreDeckStudyOptions from "components/explore/ExploreDeckStudyOptions";
@@ -36,27 +36,27 @@ export default async function DeckPage({ params }: DeckPageProps) {
   if (!deck || (deck.visibility === "private" && deck.userId !== user?.id)) {
     return (
       <div className="container max-w-5xl mx-auto py-8 px-4">
-              <nav className="flex items-center text-sm text-muted-foreground mt-16">
-        <Link
-          href="/workspace"
-          className="flex items-center hover:text-foreground transition-colors"
-        >
-          <Home className="h-4 w-4 mr-1" />
-          <span>Workspace</span>
-        </Link>
-        <ChevronRight className="h-4 w-4 mx-2" />
-        <Link
-          href="/workspace/explore"
-          className="flex items-center hover:text-foreground transition-colors"
-        >
-          <Compass className="h-4 w-4 mr-1" />
-          <span>Explore</span>
-        </Link>
-        <ChevronRight className="h-4 w-4 mx-2" />
-        <span className="text-foreground font-medium truncate max-w-[200px]">
-          Deck Details
-        </span>
-      </nav>
+        <nav className="flex items-center text-sm text-muted-foreground mt-16">
+          <Link
+            href="/workspace"
+            className="flex items-center hover:text-foreground transition-colors"
+          >
+            <Home className="h-4 w-4 mr-1" />
+            <span>Workspace</span>
+          </Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <Link
+            href="/workspace/explore"
+            className="flex items-center hover:text-foreground transition-colors"
+          >
+            <Compass className="h-4 w-4 mr-1" />
+            <span>Explore</span>
+          </Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <span className="text-foreground font-medium truncate max-w-[200px]">
+            Deck Details
+          </span>
+        </nav>
         <div className="flex flex-col items-center justify-center min-h-[400px] text-center mt-20">
           <div className="relative mb-8">
             <div className="p-6 bg-muted/50 rounded-full">
@@ -266,7 +266,11 @@ export default async function DeckPage({ params }: DeckPageProps) {
               </div>
             </div>
 
-            <ReviewSection reviews={reviews} deckId={deckId} currentUserId={user?.id} />
+            <ReviewSection
+              reviews={reviews}
+              deckId={deckId}
+              currentUserId={user?.id}
+            />
           </div>
         </TabsContent>
       </Tabs>

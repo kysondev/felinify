@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { Button } from "components/ui/Button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "components/ui/Dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "components/ui/Dialog";
 import { Textarea } from "components/ui/Textarea";
 import { Star } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -15,8 +20,11 @@ import {
   FormLabel,
   FormMessage,
 } from "components/ui/Form";
-import { createReviewAction } from "actions/review.action";
-import { CreateReviewSchema, createReviewSchema } from "lib/validations/review.schema";
+import { createReviewAction } from "@review/actions/review.action";
+import {
+  CreateReviewSchema,
+  createReviewSchema,
+} from "@review/validations/review.schema";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -113,7 +121,8 @@ export const CreateReviewDialog = ({
                   <FormControl>
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => {
-                        const isFilled = star <= (hoveredRating || watchedRating);
+                        const isFilled =
+                          star <= (hoveredRating || watchedRating);
                         return (
                           <button
                             key={star}
@@ -168,10 +177,7 @@ export const CreateReviewDialog = ({
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isLoading || watchedRating === 0}
-              >
+              <Button type="submit" disabled={isLoading || watchedRating === 0}>
                 {isLoading ? "Submitting..." : "Submit Review"}
               </Button>
             </div>
@@ -180,4 +186,4 @@ export const CreateReviewDialog = ({
       </DialogContent>
     </Dialog>
   );
-}; 
+};

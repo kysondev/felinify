@@ -6,15 +6,17 @@ import { BookOpen, ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { getAllDecks } from "services/deck.service";
+import { getAllDecks } from "@deck/services/deck.service";
 
 export const metadata: Metadata = {
   title: "All Decks | Clami",
-  description: "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
+  description:
+    "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
   alternates: { canonical: "/workspace/explore/all" },
   openGraph: {
     title: "All Decks | Clami",
-    description: "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
+    description:
+      "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
     url: "https://clami.app/workspace/explore/all",
     type: "website",
   },
@@ -26,7 +28,9 @@ interface AllDecksPageProps {
   }>;
 }
 
-export default async function AllDecksPage({ searchParams }: AllDecksPageProps) {
+export default async function AllDecksPage({
+  searchParams,
+}: AllDecksPageProps) {
   const { page: pageParam } = await searchParams;
   const page = Number.parseInt(pageParam ?? "1", 10);
   const { data: decks, pagination } = await getAllDecks(page, 12);
@@ -35,7 +39,8 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "All Decks",
-    description: "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
+    description:
+      "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
     url: "https://clami.app/workspace/explore/all",
   };
 
@@ -45,7 +50,11 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
 
       <div className="mb-8">
         <Link href="/workspace/explore">
-          <Button variant="ghost" size="sm" className="flex items-center gap-2 mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 mb-6"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Explore
           </Button>
@@ -56,9 +65,12 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
             <Sparkles className="w-4 h-4" />
             All Decks
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">All Decks</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            All Decks
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Browse all available flashcard decks created by students, educators, and professionals worldwide.
+            Browse all available flashcard decks created by students, educators,
+            and professionals worldwide.
           </p>
         </div>
       </div>
@@ -70,7 +82,8 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
               Decks ({pagination?.total || decks.length})
             </h2>
             <Badge variant="secondary" className="px-3 py-1">
-              {pagination?.total || decks.length} result{(pagination?.total || decks.length) !== 1 ? "s" : ""}
+              {pagination?.total || decks.length} result
+              {(pagination?.total || decks.length) !== 1 ? "s" : ""}
             </Badge>
           </div>
 
@@ -94,22 +107,25 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
               </Link>
 
               <div className="flex items-center gap-1">
-                {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
-                  const pageNum = i + 1;
-                  return (
-                    <Link
-                      key={pageNum}
-                      href={`/workspace/explore/all?page=${pageNum}`}
-                      className={`px-3 py-2 rounded-md border transition-colors ${
-                        page === pageNum
-                          ? "bg-primary text-primary-foreground"
-                          : "hover:bg-muted"
-                      }`}
-                    >
-                      {pageNum}
-                    </Link>
-                  );
-                })}
+                {Array.from(
+                  { length: Math.min(5, pagination.totalPages) },
+                  (_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <Link
+                        key={pageNum}
+                        href={`/workspace/explore/all?page=${pageNum}`}
+                        className={`px-3 py-2 rounded-md border transition-colors ${
+                          page === pageNum
+                            ? "bg-primary text-primary-foreground"
+                            : "hover:bg-muted"
+                        }`}
+                      >
+                        {pageNum}
+                      </Link>
+                    );
+                  }
+                )}
               </div>
 
               <Link
@@ -138,4 +154,4 @@ export default async function AllDecksPage({ searchParams }: AllDecksPageProps) 
       )}
     </div>
   );
-} 
+}

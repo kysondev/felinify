@@ -3,7 +3,7 @@
 import { Deck } from "db/types/models.types";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import { Calendar, Clock, Dices, BarChart2, Trophy, Brain, Activity, CreditCard } from "lucide-react";
-import { formatDate, formatDateTime } from "utils/date.utils";
+import { formatDate, formatDateTime } from "@common/utils/date.utils";
 import { Progress } from "components/ui/Progress";
 
 export const DeckStats = ({ deck }: { deck: Deck }) => {

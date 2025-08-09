@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Button } from "components/ui/Button";
 import { CheckCircle, XCircle } from "lucide-react";
-import { formatTime } from "utils/date.utils";
+import { formatTime } from "@common/utils/date.utils";
 import { redirect } from "next/navigation";
 
 interface FinalResultsProps {
@@ -16,6 +16,9 @@ interface FinalResultsProps {
   explanationText?: ReactNode;
 }
 
+/**  The FinalResults component displays the final results of a study session (challenge mode or adaptive quiz mode).
+ * It shows the user's performance, including correct and incorrect answers, total questions, study time, and mastery gained.
+ */
 export const FinalResults = ({
   correctAnswers,
   incorrectAnswers,

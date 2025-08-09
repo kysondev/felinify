@@ -1,7 +1,7 @@
 "use client";
-import { resetPassword } from "actions/auth.action";
+import { resetPassword } from "@auth/actions/auth.action";
 import { Loading } from "components/ui/Loading";
-import { cn } from "lib/utils";
+import { cn } from "lib/cn";
 import Form from "next/form";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useTransition } from "react";
@@ -31,15 +31,13 @@ const ResetPasswordForm = ({
       redirect("/auth/forgot-password");
     }
   }, [token]);
-  
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Reset Password</CardTitle>
-          <CardDescription>
-            Enter your new password
-          </CardDescription>
+          <CardDescription>Enter your new password</CardDescription>
         </CardHeader>
         <CardContent>
           <Form
@@ -60,7 +58,7 @@ const ResetPasswordForm = ({
                   placeholder="••••••••"
                 />
               </div>
-              
+
               <div className="grid gap-2">
                 <Label htmlFor="confirm">Confirm Password</Label>
                 <Input
@@ -70,12 +68,8 @@ const ResetPasswordForm = ({
                   placeholder="••••••••"
                 />
               </div>
-              
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="w-full"
-              >
+
+              <Button type="submit" disabled={isPending} className="w-full">
                 {isPending ? <Loading isWhite /> : "Reset Password"}
               </Button>
             </div>

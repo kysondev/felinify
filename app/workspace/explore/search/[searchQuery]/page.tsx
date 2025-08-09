@@ -1,6 +1,6 @@
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
-import { getDecksBySearch } from "services/deck.service";
+import { getDecksBySearch } from "@deck/services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
@@ -12,12 +12,10 @@ interface SearchPageProps {
   params: Promise<{ searchQuery: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: SearchPageProps) {
+export async function generateMetadata({ params }: SearchPageProps) {
   const { searchQuery } = await params;
   const decodedQuery = decodeURIComponent(searchQuery);
-  
+
   return {
     title: `"${decodedQuery}" | Clami`,
     description: `Search results for "${decodedQuery}" - Discover flashcard decks on Clami`,
@@ -64,7 +62,11 @@ export default async function SearchPage({ params }: SearchPageProps) {
 
       <div className="mb-8">
         <Link href="/workspace/explore">
-          <Button variant="ghost" size="sm" className="flex items-center gap-2 mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 mb-6"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Explore
           </Button>
@@ -79,10 +81,9 @@ export default async function SearchPage({ params }: SearchPageProps) {
             Search Results for "{decodedQuery}"
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {searchResults.length > 0 
-              ? `Found ${searchResults.length} deck${searchResults.length !== 1 ? 's' : ''}`
-              : `No decks found for "${decodedQuery}"`
-            }
+            {searchResults.length > 0
+              ? `Found ${searchResults.length} deck${searchResults.length !== 1 ? "s" : ""}`
+              : `No decks found for "${decodedQuery}"`}
           </p>
         </div>
       </div>
@@ -94,7 +95,8 @@ export default async function SearchPage({ params }: SearchPageProps) {
               Decks ({searchResults.length})
             </h2>
             <Badge variant="secondary" className="px-3 py-1">
-              {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+              {searchResults.length} result
+              {searchResults.length !== 1 ? "s" : ""}
             </Badge>
           </div>
 
@@ -123,7 +125,8 @@ export default async function SearchPage({ params }: SearchPageProps) {
           </div>
           <h3 className="text-xl font-semibold mb-3">No Results Found</h3>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            We couldn't find any decks matching "{decodedQuery}". Try different keywords or browse our categories.
+            We couldn't find any decks matching "{decodedQuery}". Try different
+            keywords or browse our categories.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/workspace/explore">

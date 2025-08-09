@@ -9,11 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui/Card";
-import { addTagToDeckAction, removeTagFromDeckAction } from "actions/deck.action";
+import { addTagToDeckAction, removeTagFromDeckAction } from "@deck/actions/deck.action";
 import { toast } from "react-hot-toast";
 import { Tag as TagIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { PREDEFINED_TAGS } from "config/tags.config";
+import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 
 interface DeckTagManagerProps {
   deckId: string;

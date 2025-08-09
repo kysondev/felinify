@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { refillEnergy } from "services/energy-refill.service";
+import { refillEnergy } from "@subscription/services/energy-refill.service";
 
 export const POST = async (req: Request) => {
   const key = req.headers.get("x-refill-api-key");

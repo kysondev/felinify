@@ -1,7 +1,7 @@
 import { Button } from "components/ui/Button";
 import { PlusCircle, Library } from "lucide-react";
-import { getDecksByUserId } from "services/deck.service";
-import { getUser, getUserSubscription } from "services/user.service";
+import { getDecksByUserId } from "@deck/services/deck.service";
+import { getUser, getUserSubscription } from "@user/services/user.service";
 import {
   Dialog,
   DialogContent,

@@ -4,7 +4,7 @@ import {
   signInWithEmail,
   signInWithGithub,
   signInWithGoogle,
-} from "actions/auth.action";
+} from "@auth/actions/auth.action";
 import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {
@@ -24,9 +24,9 @@ import {
 } from "components/ui/Form";
 import { Input } from "components/ui/Input";
 import { Loading } from "components/ui/Loading";
-import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
-import { cn } from "lib/utils";
-import { signInSchema } from "lib/validations/auth.schema";
+import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "@auth/config/auth.config";
+import { cn } from "lib/cn";
+import { signInSchema } from "@auth/validations/auth.schema";
 import dynamic from "next/dynamic";
 import NextForm from "next/form";
 import { useState, useTransition } from "react";

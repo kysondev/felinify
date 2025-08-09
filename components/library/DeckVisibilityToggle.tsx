@@ -1,13 +1,8 @@
 "use client";
 
-import { updateDeckAction } from "actions/deck.action";
+import { updateDeckAction } from "@deck/actions/deck.action";
 import { Badge } from "components/ui/Badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import { Switch } from "components/ui/Switch";
 import { Deck } from "db/types/models.types";
 import { Eye, EyeOff, Globe, Lock } from "lucide-react";
@@ -28,7 +23,7 @@ export const DeckVisibilityToggle = ({
 
   const handleVisibilityToggle = async (checked: boolean) => {
     const newVisibility = checked ? "public" : "private";
-    
+
     startTransition(async () => {
       try {
         const result = await updateDeckAction({
@@ -40,9 +35,7 @@ export const DeckVisibilityToggle = ({
         if (result.success) {
           setIsPublic(checked);
           router.refresh();
-          toast.success(
-            `Deck is now ${checked ? "public" : "private"}`
-          );
+          toast.success(`Deck is now ${checked ? "public" : "private"}`);
           fetch(`/api/revalidate?path=/workspace/library`);
           fetch(`/api/revalidate?path=/workspace/explore`);
           fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
@@ -95,22 +88,18 @@ export const DeckVisibilityToggle = ({
             disabled={isLoading}
           />
         </div>
-        
+
         <div className="text-xs text-muted-foreground space-y-1">
           {isPublic ? (
             <p>
               • Your deck will appear in the explore section for other users
             </p>
           ) : (
-            <p>
-              • Your deck is only visible to you in your library
-            </p>
+            <p>• Your deck is only visible to you in your library</p>
           )}
-          <p>
-            • You can change this setting at any time
-          </p>
+          <p>• You can change this setting at any time</p>
         </div>
       </CardContent>
     </Card>
   );
-}; 
+};

@@ -1,4 +1,4 @@
-import { subscribeEmail } from "services/email.service";
+import { subscribeEmail } from "@email/services/email.service";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -12,7 +12,9 @@ export async function POST(req: Request) {
     }
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
-  
 }

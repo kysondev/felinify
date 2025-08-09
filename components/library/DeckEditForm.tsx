@@ -12,13 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "components/ui/Card";
-import { deleteDeckAction, updateDeckAction } from "actions/deck.action";
+import { deleteDeckAction, updateDeckAction } from "@deck/actions/deck.action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   UpdateDeckSchema,
   updateDeckSchema,
-} from "lib/validations/deck.schema";
+} from "@deck/validations/deck.schema";
 import { toast } from "react-hot-toast";
 import { Pencil, Save, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";

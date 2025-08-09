@@ -4,16 +4,12 @@ import JsonLd from "components/SEO/JsonLd";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
-import { PREDEFINED_TAGS } from "config/tags.config";
+import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 import { Deck } from "db/types/models.types";
-import {
-  BookOpen,
-  Sparkles,
-  TrendingUp
-} from "lucide-react";
+import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import { getFeaturedDecks, getPopularDecks } from "services/deck.service";
+import { getFeaturedDecks, getPopularDecks } from "@deck/services/deck.service";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",
@@ -86,12 +82,16 @@ export default async function Explore() {
         <div className="flex flex-col lg:flex-row gap-4">
           <SearchForm className="flex-1" />
         </div>
-        
+
         <div className="mt-6 flex flex-wrap gap-2">
           {categories.map((category) => (
             <Link
               key={category}
-              href={category === "All" ? "/workspace/explore" : `/workspace/explore/tag/${encodeURIComponent(category)}`}
+              href={
+                category === "All"
+                  ? "/workspace/explore"
+                  : `/workspace/explore/tag/${encodeURIComponent(category)}`
+              }
             >
               <Badge
                 variant={category === "All" ? "default" : "secondary"}

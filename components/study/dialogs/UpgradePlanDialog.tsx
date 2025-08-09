@@ -15,8 +15,8 @@ import { Label } from "components/ui/Label";
 import { RadioGroup, RadioGroupItem } from "components/ui/Radio-group";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
-import { createSubscriptionAction } from "actions/subscription.action";
-import { plans } from "config/plans.config";
+import { createSubscriptionAction } from "@subscription/actions/subscription.action";
+import { plans } from "@subscription/config/plans.config";
 
 interface UpgradePlanDialogProps {
   children?: React.ReactNode;

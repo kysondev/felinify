@@ -1,0 +1,178 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Deck } from "db/types/models.types";
+import { useStudySession } from "@study/hooks/useStudySession";
+import {
+  generateAdaptiveQuizAction,
+  validateQuizAccessTokenAction,
+} from "@ai/actions/ai-study.actions";
+import {
+  updateChallengeCompletionAction,
+  updateFlashcardPerformanceAction,
+} from "@deck/actions/deck.action";
+
+export interface QuizQuestion {
+  question: string;
+  answer: string;
+  options: string[];
+  id: string;
+}
+
+interface QuizEngineConfig {
+  deck: Deck | null;
+  userId: string | null;
+  initialMastery: number;
+  deckId: string | null;
+  token: string | null;
+}
+
+export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: QuizEngineConfig) {
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [savingResults, setSavingResults] = useState(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Record<string, boolean>>({});
+  const [numOfQuestions, setNumOfQuestions] = useState(10);
+
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  const {
+    studyTime,
+    startStudySession,
+    stopStudySession,
+    handleEndSession,
+    getNewMastery,
+    isSaving,
+    saveSessionWithoutRedirect,
+  } = useStudySession({
+    deck,
+    userId,
+    initialMastery,
+    correctAnswers,
+    incorrectAnswers,
+    totalQuestions: numOfQuestions,
+    studyMode: "quiz",
+  });
+
+  useEffect(() => {
+    const run = async () => {
+      if (!deckId || !token || !userId) {
+        // Wait until prerequisites are provided by the caller
+        return;
+      }
+
+      try {
+        const validationResult = await validateQuizAccessTokenAction(token, deckId);
+        if (!validationResult.success) {
+          setError(validationResult.message || "Invalid access token");
+          setIsLoading(false);
+          return;
+        }
+        setNumOfQuestions(validationResult.numQuestions || 10);
+
+        const quizResult = await generateAdaptiveQuizAction(deckId, validationResult.numQuestions || 10);
+        if (!quizResult.success) {
+          setError(quizResult.message || "Failed to generate quiz");
+          setIsLoading(false);
+          return;
+        }
+
+        setQuizQuestions(quizResult.questions || []);
+        setIsLoading(false);
+        startStudySession();
+      } catch (e) {
+        console.error(e);
+        setError("An error occurred while loading the quiz");
+        setIsLoading(false);
+      }
+    };
+    run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deckId, token, userId]);
+
+  const handleAnswer = useCallback((optionIndex: number) => {
+    if (showAnswer || !currentQuestion) return;
+    const isCorrect = currentQuestion.options[optionIndex] === currentQuestion.answer;
+    setCorrectAnswers((c) => c + (isCorrect ? 1 : 0));
+    setIncorrectAnswers((i) => i + (isCorrect ? 0 : 1));
+    setAnsweredQuestions((prev) => ({ ...prev, [currentQuestion.id]: isCorrect }));
+    setShowAnswer(true);
+    setSelectedOption(optionIndex);
+  }, [currentQuestion, showAnswer]);
+
+  const handleNext = useCallback(() => {
+    setShowAnswer(false);
+    setSelectedOption(null);
+
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+      setCurrentQuestionIndex((i) => i + 1);
+      return;
+    }
+
+    // End quiz
+    stopStudySession();
+    setSavingResults(true);
+    (async () => {
+      if (userId && deckId) {
+        try {
+          await updateChallengeCompletionAction(userId, deckId);
+          const flashcardResults = Object.entries(answeredQuestions).map(([flashcardId, isCorrect]) => ({ flashcardId, isCorrect }));
+          if (flashcardResults.length) {
+            await updateFlashcardPerformanceAction(userId, flashcardResults);
+          }
+          await saveSessionWithoutRedirect();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      setSavingResults(false);
+      setQuizCompleted(true);
+    })();
+  }, [answeredQuestions, currentQuestionIndex, deckId, quizQuestions.length, saveSessionWithoutRedirect, stopStudySession, userId]);
+
+  const totalProgress = useMemo(() => {
+    if (quizQuestions.length === 0) return 0;
+    return ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+  }, [currentQuestionIndex, quizQuestions.length]);
+
+  const masteryGained = useMemo(() => getNewMastery() - initialMastery, [getNewMastery, initialMastery]);
+
+  return {
+    state: {
+      isLoading,
+      error,
+      quizQuestions,
+      currentQuestion,
+      currentQuestionIndex,
+      showAnswer,
+      selectedOption,
+      correctAnswers,
+      incorrectAnswers,
+      quizCompleted,
+      savingResults,
+      totalProgress,
+      studyTime,
+      isSaving,
+      newMastery: getNewMastery(),
+      masteryGained,
+      initialMastery,
+    },
+    actions: {
+      handleAnswer,
+      handleNext,
+      handleEndSession,
+      goToLibrary: () => router.push("/workspace/library"),
+    },
+  } as const;
+}
+

@@ -4,7 +4,7 @@ import { Card, CardContent } from "components/ui/Card";
 import { Deck } from "db/types/models.types";
 import { Star, ChevronRight, TrendingUp, User, CreditCard } from "lucide-react";
 import Link from "next/link";
-import { getUserWithId } from "services/user.service";
+import { getUserWithId } from "@user/services/user.service";
 import Image from "next/image";
 
 export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {

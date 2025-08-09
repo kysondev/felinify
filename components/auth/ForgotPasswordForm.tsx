@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "lib/utils";
+import { cn } from "lib/cn";
 import { Button } from "components/ui/Button";
 import {
   Card,
@@ -13,7 +13,7 @@ import { Label } from "components/ui/Label";
 import { useTransition } from "react";
 import Form from "next/form";
 import { Loading } from "components/ui/Loading";
-import { forgotPassword } from "actions/auth.action";
+import { forgotPassword } from "@auth/actions/auth.action";
 
 export function ForgotPasswordForm({
   className,

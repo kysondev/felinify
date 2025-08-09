@@ -8,10 +8,10 @@ import {
   addFlashcardAction,
   deleteFlashcardAction,
   updateFlashcardAction,
-} from "actions/deck.action";
+} from "@deck/actions/deck.action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FlashcardSchema, flashcardSchema } from "lib/validations/deck.schema";
+import { FlashcardSchema, flashcardSchema } from "@deck/validations/deck.schema";
 import { toast } from "sonner";
 import {
   Dialog,

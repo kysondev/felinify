@@ -18,6 +18,19 @@
       }
     ],
     "baseUrl": ".",
+    "paths": {
+      "@auth/*": ["features/core/auth/*"],
+      "@deck/*": ["features/core/deck/*"],
+      "@study/*": ["features/core/study/*"],
+      "@explore/*": ["features/core/explore/*"],
+      "@review/*": ["features/core/review/*"],
+      "@subscription/*": ["features/core/subscription/*"],
+      "@user/*": ["features/core/user/*"],
+      "@email/*": ["features/core/email/*"],
+      "@ai/*": ["features/core/ai/*"],
+      "@common/*": ["features/common/*"],
+      "@styles/*": ["styles/*"]
+    },
     "target": "ES2023"
   },
   "include": [

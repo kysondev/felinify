@@ -5,3 +5,7 @@ export { QuestionTimer } from "./QuestionTimer";
 export { QuestionCard } from "./QuestionCard";
 export { MultipleChoiceOptions } from "./MultipleChoiceOptions";
 export { SessionHeader } from "./SessionHeader";
+export { StudyEndDialog } from "./StudyEndDialog";
+export { FlipCard } from "./FlipCard";
+export { FlipControls } from "./FlipControls";
+export { RoundResultsCard } from "./RoundResultsCard";

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { getUser } from "services/user.service";
+import { getUser } from "@user/services/user.service";
 
 export async function GET() {
   try {

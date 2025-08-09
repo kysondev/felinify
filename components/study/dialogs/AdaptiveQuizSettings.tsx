@@ -1,5 +1,5 @@
-import { createQuizAccessTokenAction } from "actions/ai-study.actions";
-import { hasEnoughEnergy } from "actions/user.action";
+import { createQuizAccessTokenAction } from "@ai/actions/ai-study.actions";
+import { hasEnoughEnergy } from "@user/actions/user.action";
 import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {

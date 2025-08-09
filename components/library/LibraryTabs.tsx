@@ -27,7 +27,7 @@ import {
   DropdownMenuLabel,
 } from "components/ui/Dropdown-menu";
 import { Badge } from "components/ui/Badge";
-import { PREDEFINED_TAGS } from "config/tags.config";
+import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 
 export const LibraryTabs = ({
   decks,

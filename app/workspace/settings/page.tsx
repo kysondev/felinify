@@ -1,4 +1,4 @@
-import { getUser } from "services/user.service";
+import { getUser } from "@user/services/user.service";
 import { Alert } from "components/ui/Alert";
 import { User } from "db/types/models.types";
 import { SettingsTabs } from "components/settings/SettingsTabs";

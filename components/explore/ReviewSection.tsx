@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
 import { PenTool, MessageSquare, Star, Trash2 } from "lucide-react";
 import { Review } from "db/types/models.types";
 import { CreateReviewDialog } from "./CreateReviewDialog";
-import { deleteReviewAction } from "actions/review.action";
+import { deleteReviewAction } from "@review/actions/review.action";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -18,13 +18,19 @@ interface ReviewSectionProps {
   currentUserId?: string;
 }
 
-export const ReviewSection = ({ reviews, deckId, currentUserId }: ReviewSectionProps) => {
+export const ReviewSection = ({
+  reviews,
+  deckId,
+  currentUserId,
+}: ReviewSectionProps) => {
   const [showReviewDialog, setShowReviewDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const router = useRouter();
 
   // Check if current user has already left a review
-  const userHasReviewed = reviews?.some(review => review.userId === currentUserId);
+  const userHasReviewed = reviews?.some(
+    (review) => review.userId === currentUserId
+  );
 
   const handleDeleteReview = async (reviewId: string) => {
     setIsDeleting(reviewId);
@@ -79,9 +85,8 @@ export const ReviewSection = ({ reviews, deckId, currentUserId }: ReviewSectionP
               </h3>
 
               <p className="text-muted-foreground text-sm max-w-md leading-relaxed mb-6">
-                This deck hasn't received any reviews yet. Be the first to
-                share your experience and help other learners discover
-                great content!
+                This deck hasn't received any reviews yet. Be the first to share
+                your experience and help other learners discover great content!
               </p>
 
               <div className="mt-8 flex items-center gap-8 text-xs text-muted-foreground">
@@ -116,9 +121,7 @@ export const ReviewSection = ({ reviews, deckId, currentUserId }: ReviewSectionP
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium">
-                        {review?.user?.name}
-                      </div>
+                      <div className="font-medium">{review?.user?.name}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -168,4 +171,4 @@ export const ReviewSection = ({ reviews, deckId, currentUserId }: ReviewSectionP
       />
     </>
   );
-}; 
+};

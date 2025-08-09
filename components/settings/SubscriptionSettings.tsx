@@ -8,10 +8,10 @@ import { UpgradePlanDialog } from "components/study/dialogs/UpgradePlanDialog";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { User } from "db/types/models.types";
-import { plans } from "config/plans.config";
-import { authClient } from "lib/authClient";
+import { plans } from "@subscription/config/plans.config";
+import { authClient } from "@auth/authClient";
 import { CalendarIcon } from "lucide-react";
-import { openCustomerPortalAction } from "actions/subscription.action";
+import { openCustomerPortalAction } from "@subscription/actions/subscription.action";
 import { Loading } from "components/ui/Loading";
 
 export function SubscriptionSettings({ user }: { user: User }) {

@@ -6,7 +6,7 @@ import { TrendingUp, BookOpen, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { getPopularDecks } from "services/deck.service";
+import { getPopularDecks } from "@deck/services/deck.service";
 
 export const metadata: Metadata = {
   title: "Popular Decks | Clami",
@@ -37,7 +37,11 @@ export default async function PopularDecksPage() {
 
       <div className="mb-8">
         <Link href="/workspace/explore">
-          <Button variant="ghost" size="sm" className="flex items-center gap-2 mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 mb-6"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Explore
           </Button>
@@ -48,7 +52,9 @@ export default async function PopularDecksPage() {
             <TrendingUp className="w-4 h-4" />
             Popular Decks
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Popular Decks</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Popular Decks
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explore the most studied and highly rated decks from the community.
           </p>
@@ -58,7 +64,9 @@ export default async function PopularDecksPage() {
       {decks.length > 0 ? (
         <div className="space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold text-foreground">Decks ({decks.length})</h2>
+            <h2 className="text-2xl font-semibold text-foreground">
+              Decks ({decks.length})
+            </h2>
             <Badge variant="secondary" className="px-3 py-1">
               {decks.length} result{decks.length !== 1 ? "s" : ""}
             </Badge>
@@ -84,4 +92,3 @@ export default async function PopularDecksPage() {
     </div>
   );
 }
-

@@ -31,7 +31,7 @@ import { Progress } from "components/ui/Progress";
 import { Badge } from "components/ui/Badge";
 import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
 import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
-import { formatDate } from "utils/date.utils";
+import { formatDate } from "@common/utils/date.utils";
 
 export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);

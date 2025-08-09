@@ -29,10 +29,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
-import { getUserEnergy, getUserWithoutCache } from "services/user.service";
+import {
+  getUserEnergy,
+  getUserWithoutCache,
+} from "@user/services/user.service";
 import Link from "next/link";
 import Form from "next/form";
-import { signOut } from "actions/auth.action";
+import { signOut } from "@auth/actions/auth.action";
 import Image from "next/image";
 import { Input } from "./ui/Input";
 

@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   addGeneratedFlashcardsToDeckAction,
   generateFlashcardsAction,
-} from "actions/ai-study.actions";
-import { createDeckAction } from "actions/deck.action";
-import { hasEnoughEnergy } from "actions/user.action";
+} from "@ai/actions/ai-study.actions";
+import { createDeckAction } from "@deck/actions/deck.action";
+import { hasEnoughEnergy } from "@user/actions/user.action";
 import { Alert, AlertTitle } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import { DialogFooter, useDialog } from "components/ui/Dialog";
@@ -24,13 +24,13 @@ import { Switch } from "components/ui/Switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import { Textarea } from "components/ui/Textarea";
 import { Deck, Subscription, User } from "db/types/models.types";
-import { hasReachedMaxDeck } from "lib/subscription/limits";
+import { hasReachedMaxDeck } from "@subscription/utils/limits";
 import {
   CreateDeckSchema,
   createDeckSchema,
   createDeckWithAISchema,
   CreateDeckWithAISchema,
-} from "lib/validations/deck.schema";
+} from "@deck/validations/deck.schema";
 import {
   Brain,
   Eye,

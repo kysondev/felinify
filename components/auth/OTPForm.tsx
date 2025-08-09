@@ -1,5 +1,5 @@
 "use client";
-import { verifyOTP } from "actions/auth.action";
+import { verifyOTP } from "@auth/actions/auth.action";
 import { Button } from "components/ui/Button";
 import {
   Card,
@@ -15,7 +15,7 @@ import {
   InputOTPSlot,
 } from "components/ui/Input-otp";
 import { Loading } from "components/ui/Loading";
-import { cn } from "lib/utils";
+import { cn } from "lib/cn";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import toast from "react-hot-toast";

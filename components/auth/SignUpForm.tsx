@@ -4,7 +4,7 @@ import {
   signInWithGithub,
   signInWithGoogle,
   signUp,
-} from "actions/auth.action";
+} from "@auth/actions/auth.action";
 import { Alert, AlertDescription } from "components/ui/Alert";
 import { Button } from "components/ui/Button";
 import {
@@ -25,14 +25,14 @@ import {
 } from "components/ui/Form";
 import { Input } from "components/ui/Input";
 import { Loading } from "components/ui/Loading";
-import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "config/auth.config";
-import { cn } from "lib/utils";
-import { signUpSchema, SignUpSchema } from "lib/validations/auth.schema";
+import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "@auth/config/auth.config";
+import { cn } from "lib/cn";
+import { signUpSchema, SignUpSchema } from "@auth/validations/auth.schema";
 import NextForm from "next/form";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { checkEmailAvailability } from "services/user.service";
+import { checkEmailAvailability } from "@user/services/user.service";
 
 export function SignUpForm({
   className,

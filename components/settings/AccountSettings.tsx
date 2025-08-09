@@ -17,7 +17,7 @@ import {
   Lock,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { authClient } from "lib/authClient";
+import { authClient } from "@auth/authClient";
 import { Switch } from "components/ui/Switch";
 import {
   Dialog,
@@ -31,7 +31,7 @@ import {
   PasswordChangeSchema,
   passwordChangeSchema,
   usernameSchema,
-} from "lib/validations/user.schema";
+} from "@user/validations/user.schema";
 import { User } from "db/types/models.types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,8 +45,8 @@ import {
   FormMessage,
 } from "components/ui/Form";
 import { useRouter } from "next/navigation";
-import { upload } from "actions/upload.action";
-import { checkUserNameAvailability } from "services/user.service";
+import { upload } from "@common/actions/upload.action";
+import { checkUserNameAvailability } from "@user/services/user.service";
 
 export function AccountSettings({ user }: { user: User }) {
   const router = useRouter();
@@ -105,14 +105,13 @@ export function AccountSettings({ user }: { user: User }) {
     setIsSaving(true);
 
     try {
-
       const isUsernameTaken = await checkUserNameAvailability(username);
 
       if (!isUsernameTaken.success && username !== user?.name) {
         toast.error("Username is taken");
         return;
       }
-      
+
       if (username !== user?.name) {
         await authClient.updateUser({ name: username });
       }

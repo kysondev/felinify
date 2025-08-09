@@ -7,6 +7,10 @@ interface MultipleChoiceOptionsProps {
   showAnswer: boolean;
 }
 
+/** * The MultipleChoiceOptions component renders a list of options for the user to select.
+ * Each option is displayed as a button, and clicking an option triggers the handleAnswer function.
+ * The options are styled based on their text length to ensure readability.
+ */
 export const MultipleChoiceOptions = ({
   options,
   handleAnswer,
@@ -16,7 +20,7 @@ export const MultipleChoiceOptions = ({
     {options.map((option, index) => {
       const textLength = option.text.length;
       let heightClass = "min-h-[60px]";
-      
+
       if (textLength > 100) {
         heightClass = "min-h-[120px]";
       } else if (textLength > 50) {

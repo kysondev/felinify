@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkUserNameAvailability, getUser } from "services/user.service";
+import {
+  checkUserNameAvailability,
+  getUser,
+} from "@user/services/user.service";
 import { customAlphabet } from "nanoid";
-import { auth } from "lib/auth";
+import { auth } from "@auth/auth";
 
 export const GET = async (request: NextRequest) => {
   const { data: user } = await getUser();

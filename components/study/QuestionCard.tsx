@@ -16,6 +16,9 @@ interface QuestionCardProps {
   isTimed: boolean;
 }
 
+/** * The QuestionCard component displays the current question and answer.
+ * It shows whether the answer was correct or incorrect based on user interaction.
+ */
 export const QuestionCard = ({
   currentCard,
   currentCardIndex,
