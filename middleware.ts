@@ -3,14 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 
 async function getSession(request: NextRequest) {
   try {
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/get-session`,
-      {
-        headers: {
-          cookie: request.headers.get("cookie") ?? "",
-        },
-      }
-    );
+    const sessionUrl = new URL("/api/auth/get-session", request.url);
+    const req = await fetch(sessionUrl, {
+      cache: "no-store",
+      headers: {
+        cookie: request.headers.get("cookie") ?? "",
+      },
+    });
 
     if (!req.ok) return null;
 
