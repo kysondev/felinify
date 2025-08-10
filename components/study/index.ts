@@ -9,3 +9,4 @@ export { StudyEndDialog } from "./StudyEndDialog";
 export { FlipCard } from "./FlipCard";
 export { FlipControls } from "./FlipControls";
 export { RoundResultsCard } from "./RoundResultsCard";
+export { StudyModeDialog } from "./StudyModeDialog";

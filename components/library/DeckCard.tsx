@@ -2,26 +2,13 @@
 
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "components/ui/Dialog";
+
 import { Deck, User } from "db/types/models.types";
 import {
-  FlipHorizontal,
-  Brain,
-  Award,
   TrendingUp,
   Edit3,
   Play,
-  ChevronRight,
   Target,
-  Zap,
-  Info,
   CreditCard,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,6 +19,7 @@ import { Badge } from "components/ui/Badge";
 import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
 import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
 import { formatDate } from "@common/utils/date.utils";
+import { StudyModeDialog } from "components/study";
 
 export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
   const [numOfRounds, setNumOfRounds] = useState<number>(3);
@@ -156,118 +144,14 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
             </Button>
           </Link>
 
-          <Dialog
+          <StudyModeDialog
             open={showStudyModeDialog}
             onOpenChange={setShowStudyModeDialog}
-          >
-            <DialogTrigger asChild>
-              <Button
-                size="sm"
-                className="flex-1 font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Study
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[550px] rounded-2xl">
-              <DialogHeader className="space-y-4 pb-6">
-                <DialogTitle className="text-2xl font-bold">
-                  Choose Study Mode
-                </DialogTitle>
-                <DialogDescription className="text-muted-foreground text-base">
-                  Select the perfect study method for your learning goals
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-4 py-2">
-                <div
-                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
-                  onClick={() => handleStudyModeSelect("flip")}
-                >
-                  <div className="p-4 bg-blue-100 dark:bg-blue-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
-                    <FlipHorizontal className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-lg text-foreground mb-2">
-                      Classic Flip
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Simple flashcard flipping for quick review and
-                      memorization
-                    </p>
-                  </div>
-                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
-                </div>
-
-                <div
-                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
-                  onClick={() => handleStudyModeSelect("challenge")}
-                >
-                  <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
-                    <Award className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-lg text-foreground mb-2">
-                      Challenge Mode
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Test your knowledge with multiple choice challenges and
-                      compete
-                    </p>
-                  </div>
-                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
-                </div>
-
-                <div
-                  className="group/mode flex items-center gap-5 p-5 border-2 border-border/40 rounded-2xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-lg"
-                  onClick={() => handleStudyModeSelect("quiz")}
-                >
-                  <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl group-hover/mode:scale-110 transition-transform duration-300">
-                    <Brain className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-bold text-lg text-foreground">
-                        Adaptive Quiz
-                      </h3>
-                      <Badge className="bg-primary text-primary-foreground text-xs px-3 py-1 font-bold rounded-full">
-                        <Zap className="h-3 w-3 mr-1" />
-                        AI
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Smart quizzes that adapt to your learning progress and
-                      weak spots
-                    </p>
-                  </div>
-                  <ChevronRight className="h-6 w-6 text-muted-foreground group-hover/mode:text-primary group-hover/mode:translate-x-1 transition-all duration-300" />
-                </div>
-
-                <div className="mt-6 p-5 bg-muted/60 rounded-2xl border-2 border-border/30">
-                  <h4 className="text-sm font-bold flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Info className="h-4 w-4 text-primary" />
-                    </div>
-                    Adaptive Quiz Requirements
-                  </h4>
-                  <ul className="text-sm text-muted-foreground space-y-2 ml-12">
-                    <li className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
-                      Complete Challenge Mode at least 3 times
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
-                      Achieve at least 10% mastery in this deck
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
-                      Have at least 1 energy available
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+            onStudyModeSelect={handleStudyModeSelect}
+            triggerText="Study"
+            triggerIcon={<Play className="h-4 w-4 mr-2" />}
+            className="flex-1 font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-300"
+          />
         </div>
       </CardContent>
 
