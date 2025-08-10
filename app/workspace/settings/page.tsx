@@ -1,6 +1,6 @@
-import { getUser } from "@user/services/user.service";
+import { getUser, getUserSubscription } from "@user/services/user.service";
 import { Alert } from "components/ui/Alert";
-import { User } from "db/types/models.types";
+import { Subscription, User } from "db/types/models.types";
 import { SettingsTabs } from "components/settings/SettingsTabs";
 import { Metadata } from "next";
 
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 export default async function SettingsPage() {
   const { data: user } = await getUser();
+  const { data: subscription } = await getUserSubscription(user?.id || "");
 
   return (
     <div className="container max-w-[900px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
@@ -39,7 +40,7 @@ export default async function SettingsPage() {
             Manage your account settings and preferences.
           </p>
         </div>
-        <SettingsTabs user={user as User} />
+        <SettingsTabs user={user as User} subscription={(subscription as Subscription) || null} />
       </div>
     </div>
   );

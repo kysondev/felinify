@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { User } from "db/types/models.types";
+import { Subscription, User } from "db/types/models.types";
 import dynamic from "next/dynamic";
 import AccountTabSkeleton from "./skeletons/AccountTabSkeleton";
+import SubscriptionTabSkeleton from "./skeletons/SubscriptionTabSkeleton";
 
 const AccountSettings = dynamic(
   () =>
@@ -24,18 +25,17 @@ const SubscriptionSettings = dynamic(
       default: mod.SubscriptionSettings,
     })),
   {
-    loading: () => (
-      <div className="animate-pulse bg-gray-200 h-32 rounded-md"></div>
-    ),
+    loading: () => <SubscriptionTabSkeleton />,
     ssr: false,
   }
 );
 
 interface SettingsTabsProps {
   user: User;
+  subscription?: Subscription | null;
 }
 
-export function SettingsTabs({ user }: SettingsTabsProps) {
+export function SettingsTabs({ user, subscription }: SettingsTabsProps) {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("account");
 
@@ -60,7 +60,7 @@ export function SettingsTabs({ user }: SettingsTabsProps) {
         <AccountSettings user={user} />
       </TabsContent>
       <TabsContent value="subscription" className="mt-6">
-        <SubscriptionSettings user={user} />
+        <SubscriptionSettings user={user} subscription={subscription || undefined} />
       </TabsContent>
     </Tabs>
   );

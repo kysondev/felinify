@@ -96,6 +96,9 @@ export const auth = betterAuth({
               fetch(
                 `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
               );
+              fetch(
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
+              );
             }
           } catch (error) {
             console.error(
@@ -111,6 +114,9 @@ export const auth = betterAuth({
               fetch(
                 `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
               );
+              fetch(
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
+              );
             }
           } catch (error) {
             console.error(
@@ -122,6 +128,9 @@ export const auth = betterAuth({
         onSubscriptionCancel: async () => {
           fetch(
             `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+          );
+          fetch(
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
           );
         },
       },

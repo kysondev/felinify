@@ -7,30 +7,28 @@ import { Card } from "components/ui/Card";
 import { UpgradePlanDialog } from "components/study/dialogs/UpgradePlanDialog";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
-import { User } from "db/types/models.types";
+import { Subscription, User } from "db/types/models.types";
 import { plans } from "@subscription/config/plans.config";
-import { authClient } from "@auth/authClient";
 import { CalendarIcon } from "lucide-react";
 import { openCustomerPortalAction } from "@subscription/actions/subscription.action";
 import { Loading } from "components/ui/Loading";
 
-export function SubscriptionSettings({ user }: { user: User }) {
+export function SubscriptionSettings({
+  user,
+  subscription,
+}: {
+  user: User;
+  subscription?: Subscription | null;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [planName, setPlanName] = useState<string>("Starter");
-  const [loading, setLoading] = useState(true);
-  const [stripeSubscriptionId, setStripeSubscriptionId] = useState<
-    string | undefined
-  >(undefined);
-  const [nextBillingDate, setNextBillingDate] = useState<string | null>(null);
-  const [isCanceled, setIsCanceled] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
 
   const getPlanDetails = () => {
-    if (planName === "Starter") {
+    if (!subscription || !subscription.plan) {
       return {
-        name: "Starter",
+        name: "starter",
         limits: {
           decks: 15,
           energy: 10,
@@ -38,10 +36,10 @@ export function SubscriptionSettings({ user }: { user: User }) {
       };
     }
 
-    const planInfo = plans.find((plan) => plan.name === planName);
+    const planInfo = plans.find((plan) => plan.name === subscription.plan);
     return (
       planInfo || {
-        name: "Starter",
+        name: "starter",
         limits: {
           decks: 15,
           energy: 10,
@@ -51,37 +49,8 @@ export function SubscriptionSettings({ user }: { user: User }) {
   };
 
   const planDetails = getPlanDetails();
-  const isPaidPlan = planName !== "Starter";
-
-  useEffect(() => {
-    const fetchSubscription = async () => {
-      try {
-        const { data: subscriptions } = await authClient.subscription.list({
-          query: { referenceId: user.id },
-        });
-        if (subscriptions) {
-          setPlanName(subscriptions[0] ? subscriptions[0].plan : "Starter");
-          setStripeSubscriptionId(
-            subscriptions[0] ? subscriptions[0].stripeSubscriptionId : undefined
-          );
-          setIsCanceled(subscriptions[0]?.cancelAtPeriodEnd ? true : false);
-
-          if (subscriptions[0] && subscriptions[0].periodEnd) {
-            setNextBillingDate(
-              new Date(subscriptions[0].periodEnd).toLocaleDateString()
-            );
-          }
-
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error("Failed to fetch subscription:", err);
-        setLoading(false);
-      }
-    };
-
-    fetchSubscription();
-  }, []);
+  const isPaidPlan = Boolean(subscription?.plan && subscription.plan !== "starter");
+  const isCanceled = Boolean(subscription?.cancelAtPeriodEnd);
 
   useEffect(() => {
     const shouldOpenDialog = searchParams.has("openUpgradeDialog");
@@ -106,13 +75,15 @@ export function SubscriptionSettings({ user }: { user: User }) {
     }
   };
 
+  const planLabel = `${planDetails.name.split("-")[0].charAt(0).toUpperCase() + planDetails.name.split("-")[0].slice(1)} Plan`;
+
   return (
     <>
       <UpgradePlanDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        currentPlan={planName}
-        stripeSubscriptionId={stripeSubscriptionId || undefined}
+        currentPlan={subscription?.plan || "starter"}
+        stripeSubscriptionId={subscription?.stripeSubscriptionId || undefined}
       />
 
       <div className="space-y-6">
@@ -120,20 +91,13 @@ export function SubscriptionSettings({ user }: { user: User }) {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h2 className="text-lg md:text-xl font-semibold">
-                  Current Subscription
-                </h2>
+                <h2 className="text-lg md:text-xl font-semibold">Current Subscription</h2>
                 <p className="text-sm md:text-base text-muted-foreground">
                   Your current plan and subscription details
                 </p>
               </div>
-              <Badge
-                variant={isPaidPlan ? "default" : "outline"}
-                className="w-fit capitalize"
-              >
-                {loading
-                  ? "Loading..."
-                  : `${planDetails.name.split("-")[0].charAt(0).toUpperCase() + planDetails.name.split("-")[0].slice(1)} Plan`}
+              <Badge variant={isPaidPlan ? "default" : "outline"} className="w-fit capitalize">
+                {planLabel}
               </Badge>
             </div>
 
@@ -142,39 +106,33 @@ export function SubscriptionSettings({ user }: { user: User }) {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Plan</span>
-                <span className="font-medium capitalize">
-                  {loading ? "..." : planDetails.name}
-                </span>
+                <span className="font-medium capitalize">{planDetails.name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Flashcard Decks</span>
-                <span className="font-medium">
-                  {loading ? "..." : `${planDetails.limits.decks} Max`}
-                </span>
+                <span className="font-medium">{`${planDetails.limits.decks} Max`}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">AI Generation</span>
-                <span className="font-medium">
-                  {loading ? "..." : `${planDetails.limits.energy} Energy/Day`}
-                </span>
+                <span className="font-medium">{`${planDetails.limits.energy} Energy/Day`}</span>
               </div>
-              {isPaidPlan && nextBillingDate && (
+              {isPaidPlan && subscription?.periodEnd && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    Next Billing Date
-                  </span>
+                  <span className="text-muted-foreground">Next Billing Date</span>
                   <span className="font-medium flex items-center">
                     <CalendarIcon className="h-4 w-4 mr-1" />
-                    {nextBillingDate}
+                    {new Date(subscription.periodEnd).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
               )}
               {isPaidPlan && isCanceled && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Status</span>
-                  <span className="font-medium text-destructive">
-                    Cancels at end of billing period
-                  </span>
+                  <span className="font-medium text-destructive">Cancels at end of billing period</span>
                 </div>
               )}
             </div>
@@ -184,17 +142,13 @@ export function SubscriptionSettings({ user }: { user: User }) {
                 <Button
                   variant="outline"
                   onClick={handleOpenCustomerPortal}
-                  disabled={loading || portalLoading}
+                  disabled={portalLoading}
                   className="w-full sm:w-auto"
                 >
                   {portalLoading ? <Loading /> : "Manage Subscription"}
                 </Button>
               )}
-              <Button
-                className="w-full sm:w-auto"
-                onClick={() => setIsDialogOpen(true)}
-                disabled={loading}
-              >
+              <Button className="w-full sm:w-auto" onClick={() => setIsDialogOpen(true)}>
                 {isPaidPlan && !isCanceled ? "Change Plan" : "Upgrade Plan"}
               </Button>
             </div>
