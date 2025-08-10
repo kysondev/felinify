@@ -45,10 +45,15 @@ export const DeckList = ({
   const totalPages =
     Math.ceil(totalDecks / decksPerPage) + (hasFullLastPage ? 1 : 0);
 
-  const currentDecks = filteredDecks.slice(
-    currentPage * decksPerPage,
-    (currentPage + 1) * decksPerPage
-  );
+  const isLastPage = currentPage === totalPages - 1;
+  const isExtraCreatePage = hasFullLastPage && isLastPage;
+
+  const currentDecks = isExtraCreatePage
+    ? []
+    : filteredDecks.slice(
+        currentPage * decksPerPage,
+        (currentPage + 1) * decksPerPage
+      );
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -81,12 +86,11 @@ export const DeckList = ({
       {decks && decks.length > 0 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {!(hasFullLastPage && currentPage === totalPages - 1) &&
-              currentDecks.map((deck) => (
-                <DeckCard deck={deck} key={deck.id} user={user as User} />
-              ))}
-            {(currentDecks.length < decksPerPage ||
-              (hasFullLastPage && currentPage === totalPages - 1)) && (
+            {currentDecks.map((deck) => (
+              <DeckCard deck={deck} key={deck.id} user={user as User} />
+            ))}
+
+            {isLastPage && (
               <Dialog>
                 <DialogTrigger asChild>
                   <Card className="border-2 border-dashed border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group">
@@ -123,7 +127,7 @@ export const DeckList = ({
             )}
           </div>
 
-          {totalDecks > decksPerPage && (
+          {totalPages > 1 && (
             <div className="flex justify-between items-center pt-4 border-t mt-6">
               <Button
                 variant="outline"
