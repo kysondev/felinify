@@ -70,16 +70,15 @@ const Footer = (props: FooterProps) => {
     {
       title: "Connect",
       links: [
-        { text: "Email", url: "mailto:contact@clami.ai" },
+        { text: "Email", url: "mailto:contact@clami.app" },
         { text: "GitHub", url: "https://github.com/kysondev/clami" },
       ],
     },
   ],
-  copyright = "© 2025 Shi Jun(Kyson) W. All rights reserved.",
+  copyright = "© 2025 Clami.app. All rights reserved.",
   bottomLinks = [
-    { text: "Terms of Service", url: "#" },
-    { text: "Privacy Policy", url: "#" },
-    { text: "Subscribe", url: "#", action: handleNewsletterClick },
+    { text: "Terms of Service", url: "/terms" },
+    { text: "Privacy Policy", url: "/privacy" },
   ],
 } = props;
   return (

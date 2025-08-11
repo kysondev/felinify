@@ -4,11 +4,19 @@ import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Clami | AI Flashcards For Focused, Fast Learning",
-  description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-  keywords: ["flashcards", "AI learning", "study app", "smart quizzes", "education", "student tools"],
+  description:
+    "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+  keywords: [
+    "flashcards",
+    "AI learning",
+    "study app",
+    "smart quizzes",
+    "education",
+    "student tools",
+  ],
   authors: [{ name: "Shi Jun(Kyson) W." }],
-  creator: "Shi Jun(Kyson) W.",
-  publisher: "Shi Jun(Kyson) W.",
+  creator: "Clami",
+  publisher: "Clami",
   formatDetection: {
     email: false,
     address: false,
@@ -20,7 +28,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Clami | AI Flashcards For Focused, Fast Learning",
-    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    description:
+      "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     url: "https://clami.app",
     siteName: "Clami",
     images: [
@@ -37,8 +46,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Clami | AI Flashcards For Focused, Fast Learning",
-    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    images: ["https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png"],
+    description:
+      "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    images: [
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
+    ],
   },
   robots: {
     index: true,
