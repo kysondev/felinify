@@ -22,7 +22,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754449038/Screenshot_2025-08-05_225531_duzjj6.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754449038/Screenshot_2025-08-05_225531_duzjj6.png)
+[![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754963617/Screenshot_2025-08-11_215233_gq5pj0.png)](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754963617/Screenshot_2025-08-11_215233_gq5pj0.png)
 
 > ⭐️ If you find this project helpful, consider leaving a star. Thanks!
 
@@ -67,7 +67,7 @@ To get a local copy up and running follow these simple example steps.
 - [x] Challenge Mode
 - [x] AI Adaptive Quiz Mode
 - [x] Stripe Payment & Paid Plans
-- [ ] Explore Page & Flashcard Sharing
+- [x] Explore Page & Flashcard Sharing
 - [ ] Clami AI Assistant
 - [ ] Keyword Based AI Flashcard Generation
 - [ ] Leveling System
