@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "components/ui/Accordion";
+import { HelpCircle } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -53,25 +54,39 @@ export function FAQ({
   ],
 }: FAQProps) {
   return (
-    <section className="py-24 bg-muted/30" id="faq">
+    <section className="py-16 sm:py-20 lg:py-24 bg-muted/30" id="faq" aria-labelledby="faq-heading">
       <div className="px-4 max-w-[1200px] mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-semibold lg:text-4xl mb-4">{title}</h2>
-          <p className="text-muted-foreground">{subtitle}</p>
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 
+            id="faq-heading"
+            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+          >
+            {title}
+          </h2>
+          <p className="text-muted-foreground max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
+            {subtitle}
+          </p>
         </div>
 
-        <div className="bg-background rounded-xl p-8 border border-border shadow-sm">
+        <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <HelpCircle className="w-5 h-5 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">Common Questions</h3>
+          </div>
+          
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem
-                key={index}
+                key={`faq-${index}`}
                 value={`item-${index}`}
-                className="border-b border-border last:border-0"
+                className="border-b border-border/50 last:border-0 group"
               >
-                <AccordionTrigger className="text-left hover:text-primary text-lg py-5">
+                <AccordionTrigger className="text-left hover:text-primary text-base sm:text-lg py-4 sm:py-5 font-medium transition-colors duration-200 group-hover:text-primary">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5">
+                <AccordionContent className="text-muted-foreground pb-4 sm:pb-5 leading-relaxed text-sm sm:text-base">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

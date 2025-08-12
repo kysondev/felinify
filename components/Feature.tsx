@@ -5,83 +5,139 @@ import {
   Timer,
   Zap,
   ZoomIn,
+  Users,
+  TrendingUp,
+  Clock,
+  BookOpen,
+  Award,
+  Target,
 } from "lucide-react";
+import { memo } from "react";
 
 interface Feature {
   title: string;
   description: string;
   icon: React.ReactNode;
+  highlight?: string;
 }
 
 interface FeatureProps {
   heading?: string;
-  subheading?: string;
+  subtitle?: string;
   features?: Feature[];
 }
 
+const FeatureItem = memo(({ feature, index }: { feature: Feature; index: number }) => (
+  <div
+    className="group relative bg-card border cursor-default border-border rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+    role="article"
+    aria-labelledby={`feature-title-${index}`}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    
+    <div className="relative z-10">
+      {feature.highlight && (
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-4">
+          {feature.highlight}
+        </div>
+      )}
+      
+      <div className="bg-primary/10 p-4 rounded-xl mb-6 text-primary w-fit group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+        {feature.icon}
+      </div>
+      
+      <h3 
+        id={`feature-title-${index}`}
+        className="text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors duration-300"
+      >
+        {feature.title}
+      </h3>
+      
+      <p className="text-muted-foreground text-sm leading-relaxed">
+        {feature.description}
+      </p>
+    </div>
+    
+    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/20 to-transparent rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-500" />
+  </div>
+));
+
+FeatureItem.displayName = "FeatureItem";
+
 const Feature = ({
-  heading = "Designed for Better Learning",
-  subheading = "Core Features",
+  heading = "Powerful Study Features",
+  subtitle = "Experience the complete set of tools designed to make your learning journey effective and engaging",
   features = [
     {
-      title: "Instant Flashcard Generation",
+      title: "Three Study Modes",
       description:
-        "Paste your notes and let AI instantly create clear, effective flashcards — no formatting or setup required.",
-      icon: <Zap className="size-5 md:size-6 text-primary" />,
+        "Choose from Classic Flip for quick review, Challenge Mode for testing knowledge, or AI Adaptive Quiz that learns from your performance.",
+      icon: <Timer className="w-6 h-6" />,
+      highlight: "Versatile",
     },
     {
-      title: "Minimal, Distraction-Free UI",
+      title: "AI Flashcard Generation",
       description:
-        "Study in a clean interface that keeps you focused on what matters — the content, not the clutter.",
-      icon: <ZoomIn className="size-5 md:size-6 text-primary" />,
+        "Transform your notes into perfectly formatted flashcards in seconds using advanced AI technology - no manual formatting needed.",
+      icon: <Zap className="w-6 h-6" />,
+      highlight: "AI-Powered",
     },
     {
-      title: "Three Study Modes, One Goal",
+      title: "Smart Progress Tracking",
       description:
-        "Review, Quiz, and Practice modes let you study your way — fast, focused, and flexible",
-      icon: <Timer className="size-5 md:size-6 text-primary" />,
+        "Monitor your study sessions, track mastery levels, and see detailed insights into your learning progress over time.",
+      icon: <TrendingUp className="w-6 h-6" />,
+      highlight: "Data-Driven",
     },
     {
-      title: "Organized by Default",
+      title: "Personal Library Management",
       description:
-        "Create decks, tag content, and manage subjects easily without losing track of what you're learning.",
-      icon: <PersonStanding className="size-5 md:size-6 text-primary" />,
+        "Organize your study materials with custom decks, tags, and categories. Edit, delete, and manage your flashcards effortlessly.",
+      icon: <BookOpen className="w-6 h-6" />,
+      highlight: "Organized",
     },
     {
-      title: "Fair & Transparent Pricing",
+      title: "Flexible Study Sessions",
       description:
-        "Pay once or subscribe — no hidden fees or upsells. Built to be affordable for students and educators alike.",
-      icon: <DollarSign className="size-5 md:size-6 text-primary" />,
+        "Customize your study experience with timed sessions, multiple rounds, and adaptive difficulty that matches your learning pace.",
+      icon: <Target className="w-6 h-6" />,
+      highlight: "Adaptive",
     },
     {
-      title: "AI-Powered Help When You Need It",
+      title: "Premium Study Experience",
       description:
-        "Struggling to understand a concept? Ask for a hint, definition, or breakdown — all within your flashcards.",
-      icon: <MessagesSquare className="size-5 md:size-6 text-primary" />,
+        "Unlock advanced features, unlimited decks, and priority support with our flexible subscription plans designed for students.",
+      icon: <Award className="w-6 h-6" />,
+      highlight: "Premium",
     },
   ],
 }: FeatureProps) => {
   return (
-    <section className="py-24" id="features">
-      <div className="container mx-auto max-w-7xl">
-        <div className="mb-16">
-          <p className="mb-3 text-sm font-medium text-primary">{subheading}</p>
-          <h2 className="text-3xl font-semibold lg:text-4xl">{heading}</h2>
+    <section 
+      className="pb-20" 
+      id="features"
+      aria-labelledby="features-heading"
+    >
+      <div className="px-4 max-w-7xl mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 
+            id="features-heading"
+            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+          >
+            {heading}
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">
+            {subtitle}
+          </p>
         </div>
-        <div className="mx-auto grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, idx) => (
-            <div
-              className="flex gap-6 rounded-lg p-4 transition-all hover:bg-muted/50"
-              key={idx}
-            >
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                {feature.icon}
-              </span>
-              <div>
-                <h3 className="font-medium mb-2 text-xl">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureItem 
+              key={`feature-${index}`}
+              feature={feature} 
+              index={index}
+            />
           ))}
         </div>
       </div>
