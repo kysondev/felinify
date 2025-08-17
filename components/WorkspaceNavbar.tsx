@@ -37,7 +37,7 @@ import Link from "next/link";
 import Form from "next/form";
 import { signOut } from "@auth/actions/auth.action";
 import Image from "next/image";
-import { Input } from "./ui/Input";
+import { CommandSearch } from "./CommandSearch";
 
 interface MenuItem {
   title: string;
@@ -89,7 +89,7 @@ const WorkspaceNavbar = async ({
   ],
 }: Navbar1Props) => {
   const { data: user } = await getUserWithoutCache();
-  const userEnergy = getUserEnergy(user?.id as string);
+  const userEnergy = await getUserEnergy(user?.id as string);
 
   return (
     <header className="sticky top-4 z-50 w-full px-4 sm:px-6 lg:px-8">
@@ -121,11 +121,7 @@ const WorkspaceNavbar = async ({
           </div>
           <div className="flex items-center space-x-3 px-6">
             <div className="hidden lg:flex relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                placeholder="Search..."
-                className="pl-10 w-64 bg-gray-50 border-0 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg"
-              />
+              <CommandSearch triggerClassName="flex items-center w-64 pl-10 pr-4 py-2 bg-gray-50 border-0 hover:bg-white focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg text-sm text-gray-500 relative" />
             </div>
             <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full">
               <Zap className="w-4 h-4 text-primary" />
@@ -241,11 +237,7 @@ const WorkspaceNavbar = async ({
                   </SheetTitle>
                 </SheetHeader>
                 <div className="relative mb-6">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    placeholder="Search..."
-                    className="pl-10 bg-gray-50 border-0 rounded-lg"
-                  />
+                  <CommandSearch triggerClassName="flex items-center w-full pl-10 pr-4 py-2 bg-gray-50 border-0 hover:bg-white focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg text-sm text-gray-500 relative" />
                 </div>
                 <div className="space-y-2">
                   {menu.map((item) => (
