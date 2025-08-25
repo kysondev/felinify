@@ -18,7 +18,7 @@ export default function TagPageLoading() {
 
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-medium text-sm mb-4">
-          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-24 bg-primary" />
         </div>
         <Skeleton className="h-12 w-96 mx-auto mb-4" />
         <Skeleton className="h-6 w-2xl mx-auto" />
@@ -52,4 +52,4 @@ export default function TagPageLoading() {
       </div>
     </div>
   );
-} 
+}
