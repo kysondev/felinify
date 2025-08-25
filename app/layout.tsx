@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import "@styles/globals.css";
 import { Toaster } from "react-hot-toast";
+import { DM_Sans } from "next/font/google";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "Clami | AI Flashcards For Focused, Fast Learning",
@@ -71,8 +79,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.variable}`}>
+      <body className={`antialiased font-sans`} suppressHydrationWarning>
         <div>
           <Toaster
             toastOptions={{

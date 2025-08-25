@@ -9,6 +9,9 @@ module.exports = {
 
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['var(--font-dm-sans)'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

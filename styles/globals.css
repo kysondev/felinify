@@ -37,7 +37,7 @@
     --sidebar-border: 223.8136 0.0001% 89.8161%;
     --sidebar-ring: 223.8136 0% 63.0163%;
     --font-sans:
-      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
       "Noto Color Emoji";

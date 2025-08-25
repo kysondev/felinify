@@ -96,7 +96,7 @@ const WorkspaceNavbar = async ({
       <div className="mx-auto max-w-7xl">
         <nav className="flex h-16 items-center justify-between rounded-2xl bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg shadow-gray-200/50">
           <div className="flex items-center space-x-3 px-6">
-            <Link href={logo.url} className="flex items-center space-x-3 group">
+            <Link href={logo.url} className="flex items-center space-x-2 group">
               <Image
                 src="/clami.png"
                 alt={logo.alt}
