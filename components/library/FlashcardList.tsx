@@ -4,14 +4,12 @@ import { useState } from "react";
 import { Deck } from "db/types/models.types";
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
-import {
-  addFlashcardAction,
-  deleteFlashcardAction,
-  updateFlashcardAction,
-} from "@deck/actions/deck.action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FlashcardSchema, flashcardSchema } from "@deck/validations/deck.schema";
+import {
+  FlashcardSchema,
+  flashcardSchema,
+} from "@deck/validations/deck.schema";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -53,6 +51,11 @@ import {
   AlertDialogTitle,
 } from "components/ui/Alert-dialog";
 import { Flashcard } from "./Flashcard";
+import {
+  addFlashcardAction,
+  deleteFlashcardAction,
+  updateFlashcardAction,
+} from "@deck/actions/flashcards.action";
 
 export const FlashcardList = ({
   deck,

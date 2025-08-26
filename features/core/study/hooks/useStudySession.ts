@@ -4,7 +4,7 @@ import { Deck } from "db/types/models.types";
 import {
   saveStudyProgressAction,
   saveStudySessionAction,
-} from "@deck/actions/deck.action";
+} from "@study/actions/study.action";
 
 interface UseStudySessionProps {
   deck: Deck | null;
@@ -32,7 +32,6 @@ export const useStudySession = ({
 
   const studyStartTime = useRef<number>(0);
   const studyInterval = useRef<NodeJS.Timeout | null>(null);
-  // Guard to prevent concurrent or repeated save submissions from rapid clicks
   const isSavingRef = useRef<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
   const totalElapsedTime = useRef<number>(0);

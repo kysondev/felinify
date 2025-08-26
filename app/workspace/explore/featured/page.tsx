@@ -6,7 +6,7 @@ import { Sparkles, BookOpen, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { getFeaturedDecks } from "@deck/services/deck.service";
+import { getFeaturedDecks } from "@deck/services/deck-query.service";
 
 export const metadata: Metadata = {
   title: "Featured Decks | Clami",

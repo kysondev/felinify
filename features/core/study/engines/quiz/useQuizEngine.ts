@@ -4,14 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Deck } from "db/types/models.types";
 import { useStudySession } from "@study/hooks/useStudySession";
-import {
-  generateAdaptiveQuizAction,
-  validateQuizAccessTokenAction,
-} from "@ai/actions/ai-study.actions";
-import {
-  updateChallengeCompletionAction,
-  updateFlashcardPerformanceAction,
-} from "@deck/actions/deck.action";
+import { validateQuizAccessTokenAction } from "@ai/actions/quiz-access-token.action";
+import { generateAdaptiveQuizAction } from "@ai/actions/generate-quiz.actions";
+import { updateChallengeCompletionAction } from "@study/actions/study.action";
+import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.action";
 
 export interface QuizQuestion {
   question: string;
@@ -28,7 +24,13 @@ interface QuizEngineConfig {
   token: string | null;
 }
 
-export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: QuizEngineConfig) {
+export function useQuizEngine({
+  deck,
+  userId,
+  initialMastery,
+  deckId,
+  token,
+}: QuizEngineConfig) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +43,9 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
   const [incorrectAnswers, setIncorrectAnswers] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [savingResults, setSavingResults] = useState(false);
-  const [answeredQuestions, setAnsweredQuestions] = useState<Record<string, boolean>>({});
+  const [answeredQuestions, setAnsweredQuestions] = useState<
+    Record<string, boolean>
+  >({});
   const [numOfQuestions, setNumOfQuestions] = useState(10);
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -67,12 +71,14 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
   useEffect(() => {
     const run = async () => {
       if (!deckId || !token || !userId) {
-        // Wait until prerequisites are provided by the caller
         return;
       }
 
       try {
-        const validationResult = await validateQuizAccessTokenAction(token, deckId);
+        const validationResult = await validateQuizAccessTokenAction(
+          token,
+          deckId
+        );
         if (!validationResult.success) {
           setError(validationResult.message || "Invalid access token");
           setIsLoading(false);
@@ -80,7 +86,10 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
         }
         setNumOfQuestions(validationResult.numQuestions || 10);
 
-        const quizResult = await generateAdaptiveQuizAction(deckId, validationResult.numQuestions || 10);
+        const quizResult = await generateAdaptiveQuizAction(
+          deckId,
+          validationResult.numQuestions || 10
+        );
         if (!quizResult.success) {
           setError(quizResult.message || "Failed to generate quiz");
           setIsLoading(false);
@@ -97,18 +106,24 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
       }
     };
     run();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deckId, token, userId]);
 
-  const handleAnswer = useCallback((optionIndex: number) => {
-    if (showAnswer || !currentQuestion) return;
-    const isCorrect = currentQuestion.options[optionIndex] === currentQuestion.answer;
-    setCorrectAnswers((c) => c + (isCorrect ? 1 : 0));
-    setIncorrectAnswers((i) => i + (isCorrect ? 0 : 1));
-    setAnsweredQuestions((prev) => ({ ...prev, [currentQuestion.id]: isCorrect }));
-    setShowAnswer(true);
-    setSelectedOption(optionIndex);
-  }, [currentQuestion, showAnswer]);
+  const handleAnswer = useCallback(
+    (optionIndex: number) => {
+      if (showAnswer || !currentQuestion) return;
+      const isCorrect =
+        currentQuestion.options[optionIndex] === currentQuestion.answer;
+      setCorrectAnswers((c) => c + (isCorrect ? 1 : 0));
+      setIncorrectAnswers((i) => i + (isCorrect ? 0 : 1));
+      setAnsweredQuestions((prev) => ({
+        ...prev,
+        [currentQuestion.id]: isCorrect,
+      }));
+      setShowAnswer(true);
+      setSelectedOption(optionIndex);
+    },
+    [currentQuestion, showAnswer]
+  );
 
   const handleNext = useCallback(() => {
     setShowAnswer(false);
@@ -126,7 +141,9 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
       if (userId && deckId) {
         try {
           await updateChallengeCompletionAction(userId, deckId);
-          const flashcardResults = Object.entries(answeredQuestions).map(([flashcardId, isCorrect]) => ({ flashcardId, isCorrect }));
+          const flashcardResults = Object.entries(answeredQuestions).map(
+            ([flashcardId, isCorrect]) => ({ flashcardId, isCorrect })
+          );
           if (flashcardResults.length) {
             await updateFlashcardPerformanceAction(userId, flashcardResults);
           }
@@ -138,14 +155,25 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
       setSavingResults(false);
       setQuizCompleted(true);
     })();
-  }, [answeredQuestions, currentQuestionIndex, deckId, quizQuestions.length, saveSessionWithoutRedirect, stopStudySession, userId]);
+  }, [
+    answeredQuestions,
+    currentQuestionIndex,
+    deckId,
+    quizQuestions.length,
+    saveSessionWithoutRedirect,
+    stopStudySession,
+    userId,
+  ]);
 
   const totalProgress = useMemo(() => {
     if (quizQuestions.length === 0) return 0;
     return ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
   }, [currentQuestionIndex, quizQuestions.length]);
 
-  const masteryGained = useMemo(() => getNewMastery() - initialMastery, [getNewMastery, initialMastery]);
+  const masteryGained = useMemo(
+    () => getNewMastery() - initialMastery,
+    [getNewMastery, initialMastery]
+  );
 
   return {
     state: {
@@ -175,4 +203,3 @@ export function useQuizEngine({ deck, userId, initialMastery, deckId, token }: Q
     },
   } as const;
 }
-

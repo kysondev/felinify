@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { getDecksByTag } from "@deck/services/deck.service";
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
 import { Card, CardContent } from "components/ui/Card";
@@ -9,6 +8,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
+import { getDecksByTag } from "@deck/services/deck-query.service";
 
 interface TagPageProps {
   params: Promise<{ tagName: string }>;

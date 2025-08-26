@@ -9,7 +9,10 @@ import { Deck } from "db/types/models.types";
 import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import { getFeaturedDecks, getPopularDecks } from "@deck/services/deck.service";
+import {
+  getFeaturedDecks,
+  getPopularDecks,
+} from "@deck/services/deck-query.service";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Clami",

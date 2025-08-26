@@ -1,12 +1,12 @@
 import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
-import { getDecksBySearch } from "@deck/services/deck.service";
 import { Card, CardContent } from "components/ui/Card";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
 import { Search, BookOpen, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import JsonLd from "components/SEO/JsonLd";
+import { getDecksBySearch } from "@deck/services/deck-query.service";
 
 interface SearchPageProps {
   params: Promise<{ searchQuery: string }>;

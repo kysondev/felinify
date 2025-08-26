@@ -3,17 +3,15 @@
 import { useState, useTransition } from "react";
 import { Tag } from "db/types/models.types";
 import { Button } from "components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "components/ui/Card";
-import { addTagToDeckAction, removeTagFromDeckAction } from "@deck/actions/deck.action";
+import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
 import { toast } from "react-hot-toast";
 import { Tag as TagIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
+import {
+  addTagToDeckAction,
+  removeTagFromDeckAction,
+} from "@deck/actions/tags.action";
 
 interface DeckTagManagerProps {
   deckId: string;
@@ -31,12 +29,18 @@ export const DeckTagManager = ({
   const router = useRouter();
 
   const handleTagToggle = async (tagName: string) => {
-    const existingTag = currentTags.find(tag => tag.name.toLowerCase() === tagName.toLowerCase());
-    
+    const existingTag = currentTags.find(
+      (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
+    );
+
     startTransition(async () => {
       try {
         if (existingTag) {
-          const result = await removeTagFromDeckAction(existingTag.id, deckId, userId);
+          const result = await removeTagFromDeckAction(
+            existingTag.id,
+            deckId,
+            userId
+          );
           if (result.success) {
             setCurrentTags([]);
             router.refresh();
@@ -48,7 +52,11 @@ export const DeckTagManager = ({
           }
         } else {
           if (currentTags.length > 0) {
-            const removeResult = await removeTagFromDeckAction(currentTags[0].id, deckId, userId);
+            const removeResult = await removeTagFromDeckAction(
+              currentTags[0].id,
+              deckId,
+              userId
+            );
             if (!removeResult.success) {
               toast.error("Failed to remove existing tag");
               return;
@@ -74,7 +82,9 @@ export const DeckTagManager = ({
   };
 
   const isTagSelected = (tagName: string) => {
-    return currentTags.some(tag => tag.name.toLowerCase() === tagName.toLowerCase());
+    return currentTags.some(
+      (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
+    );
   };
 
   return (
@@ -90,7 +100,9 @@ export const DeckTagManager = ({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground font-medium">Available tags:</p>
+          <p className="text-sm text-muted-foreground font-medium">
+            Available tags:
+          </p>
           <div className="flex flex-wrap gap-2">
             {PREDEFINED_TAGS.map((tag) => {
               const selected = isTagSelected(tag);
@@ -102,8 +114,8 @@ export const DeckTagManager = ({
                   onClick={() => handleTagToggle(tag)}
                   disabled={isLoading}
                   className={`text-xs h-8 px-3 ${
-                    selected 
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                    selected
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
                       : "hover:bg-muted"
                   }`}
                 >
@@ -122,4 +134,4 @@ export const DeckTagManager = ({
       </CardContent>
     </Card>
   );
-}; 
+};

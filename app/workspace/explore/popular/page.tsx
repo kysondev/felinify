@@ -6,7 +6,7 @@ import { TrendingUp, BookOpen, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
-import { getPopularDecks } from "@deck/services/deck.service";
+import { getPopularDecks } from "@deck/services/deck-query.service";
 
 export const metadata: Metadata = {
   title: "Popular Decks | Clami",

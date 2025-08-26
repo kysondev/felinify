@@ -1,5 +1,5 @@
 "use server";
-import { createUserDeckProgress } from "@deck/services/deck.service";
+import { createUserDeckProgress } from "@deck/services/deck-progress.service";
 import cuid from "cuid";
 import { NewStudySession, UpdateProgress } from "db/types/models.types";
 import { db } from "lib/db";

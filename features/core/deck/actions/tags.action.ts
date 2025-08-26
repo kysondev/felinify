@@ -1,16 +1,14 @@
-import { UpdateDeck } from "db/types/models.types";
 import {
-  createDeck,
-  updateDeck,
-  deleteDeck,
-} from "@deck/services/deck.service";
+  addTagToDeck,
+  getTagsByDeckId,
+  removeTagFromDeck,
+} from "@deck/services/tags.service";
 import { getUser } from "@user/services/user.service";
 
-export const createDeckAction = async (
-  userId: string,
-  name: string,
-  description?: string,
-  visibility?: "public" | "private"
+export const addTagToDeckAction = async (
+  deckId: string,
+  tag: string,
+  userId: string
 ) => {
   try {
     const { data: user } = await getUser();
@@ -20,31 +18,27 @@ export const createDeckAction = async (
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
-    const result = await createDeck({
-      name: name as string,
-      userId: userId,
-      description: description as string,
-      visibility: visibility || "public",
-      rating: 0,
-      studyCount: 0,
-      studyHour: 0,
-    });
+    const result = await addTagToDeck(deckId, tag, userId);
     if (result.success) {
       return {
         success: true,
-        message: "Deck created successfully",
+        message: "Tag added successfully",
         data: result.data,
       };
     } else {
       return { success: false, message: result.message };
     }
   } catch (error) {
-    console.error("Error creating deck:", error);
-    return { success: false, message: "Error creating deck", error };
+    console.error("Error adding tag to deck:", error);
+    return { success: false, message: "Error adding tag to deck", error };
   }
 };
 
-export const updateDeckAction = async (deckData: UpdateDeck) => {
+export const removeTagFromDeckAction = async (
+  tagId: string,
+  deckId: string,
+  userId: string
+) => {
   try {
     const { data: user } = await getUser();
     if (!user) {
@@ -53,23 +47,23 @@ export const updateDeckAction = async (deckData: UpdateDeck) => {
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
-    const result = await updateDeck(deckData);
+    const result = await removeTagFromDeck(tagId, deckId, userId);
     if (result.success) {
       return {
         success: true,
-        message: "Deck updated successfully",
+        message: "Tag removed successfully",
         data: result.data,
       };
     } else {
       return { success: false, message: result.message };
     }
   } catch (error) {
-    console.error("Error updating deck:", error);
-    return { success: false, message: "Error updating deck", error };
+    console.error("Error removing tag from deck:", error);
+    return { success: false, message: "Error removing tag from deck", error };
   }
 };
 
-export const deleteDeckAction = async (deckId: string, userId: string) => {
+export const getTagsByDeckIdAction = async (deckId: string, userId: string) => {
   try {
     const { data: user } = await getUser();
     if (!user) {
@@ -78,18 +72,18 @@ export const deleteDeckAction = async (deckId: string, userId: string) => {
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
-    const result = await deleteDeck(deckId, userId);
+    const result = await getTagsByDeckId(deckId, userId);
     if (result.success) {
       return {
         success: true,
-        message: "Deck deleted successfully",
+        message: "Tags fetched successfully",
         data: result.data,
       };
     } else {
       return { success: false, message: result.message };
     }
   } catch (error) {
-    console.error("Error deleting deck:", error);
-    return { success: false, message: "Error deleting deck", error };
+    console.error("Error fetching tags for deck:", error);
+    return { success: false, message: "Error fetching tags for deck", error };
   }
 };

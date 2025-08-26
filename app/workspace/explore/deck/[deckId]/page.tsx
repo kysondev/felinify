@@ -13,7 +13,7 @@ import {
   Star,
 } from "lucide-react";
 import Link from "next/link";
-import { getDeckById, getReviewsByDeckId } from "@deck/services/deck.service";
+import { getDeckById } from "@deck/services/deck.service";
 import { getUser, getUserWithId } from "@user/services/user.service";
 import { User as UserType } from "db/types/models.types";
 import { Progress } from "components/ui/Progress";
@@ -21,6 +21,7 @@ import ExploreDeckStudyOptions from "components/explore/ExploreDeckStudyOptions"
 import ExploreFlashcardGrid from "components/explore/ExploreFlashcardList";
 import { ReviewSection } from "components/explore/ReviewSection";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
+import { getReviewsByDeckId } from "@review/services/review.service";
 
 interface DeckPageProps {
   params: Promise<{ deckId: string }>;

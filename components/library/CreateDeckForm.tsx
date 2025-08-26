@@ -1,10 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  addGeneratedFlashcardsToDeckAction,
-  generateFlashcardsAction,
-} from "@ai/actions/ai-study.actions";
 import { createDeckAction } from "@deck/actions/deck.action";
 import { hasEnoughEnergy } from "@user/actions/user.action";
 import { Alert, AlertTitle } from "components/ui/Alert";
@@ -31,18 +27,16 @@ import {
   createDeckWithAISchema,
   CreateDeckWithAISchema,
 } from "@deck/validations/deck.schema";
-import {
-  Brain,
-  Eye,
-  EyeOff,
-  Sparkles,
-  Upload
-} from "lucide-react";
+import { Brain, Eye, EyeOff, Sparkles, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Loading } from "../ui/Loading";
+import {
+  addGeneratedFlashcardsToDeckAction,
+  generateFlashcardsAction,
+} from "@ai/actions/generate-cards.action";
 
 export function CreateDeckForm({
   user,

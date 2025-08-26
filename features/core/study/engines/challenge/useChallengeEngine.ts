@@ -11,10 +11,8 @@ import {
   getMasteryChangeText,
   isRoundComplete,
 } from "@study/utils/challenge.utils";
-import {
-  updateChallengeCompletionAction,
-  updateFlashcardPerformanceAction,
-} from "@deck/actions/deck.action";
+import { updateChallengeCompletionAction } from "@study/actions/study.action";
+import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.action";
 
 export function useChallengeEngine(config: ChallengeConfig) {
   const { deck, numOfRounds, isTimed, deckId, userId, initialMastery } = config;
