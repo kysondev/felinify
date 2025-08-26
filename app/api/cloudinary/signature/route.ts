@@ -15,7 +15,7 @@ export async function GET() {
 
     const signature = crypto
       .createHash("sha1")
-      .update(paramsToSign + process.env.NEXT_PUBLIC_CLOUDINARY_SECRET)
+      .update(paramsToSign + process.env.CLOUDINARY_SECRET)
       .digest("hex");
 
     return NextResponse.json({ signature, timestamp });
