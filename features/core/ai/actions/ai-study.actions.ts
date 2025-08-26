@@ -7,13 +7,12 @@ import {
   getUserEnergy,
   updateUserEnergy,
 } from "@user/services/user.service";
+import { addFlashcard, getDeckById } from "@deck/services/deck.service";
+import { createDeckWithAISchema } from "@deck/validations/deck.schema";
 import {
-  addFlashcard,
-  getDeckById,
   createQuizAccessToken,
   validateQuizAccessToken,
-} from "@deck/services/deck.service";
-import { createDeckWithAISchema } from "@deck/validations/deck.schema";
+} from "@study/services/access-token.service";
 
 export const generateFlashcardsAction = async (
   name: string,

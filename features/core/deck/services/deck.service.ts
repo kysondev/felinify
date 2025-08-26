@@ -4,10 +4,8 @@ import {
   Deck,
   NewDeck,
   NewFlashcard,
-  NewStudySession,
   UpdateDeck,
   UpdateFlashcard,
-  UpdateProgress,
 } from "db/types/models.types";
 import { db } from "lib/db";
 import cuid from "cuid";
@@ -539,62 +537,6 @@ export const deleteFlashcard = async (flashcardId: string, userId: string) => {
   }
 };
 
-export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
-  try {
-    const deckExists = await db
-      .selectFrom("deck")
-      .select("id")
-      .where("id", "=", data.deckId as string)
-      .executeTakeFirst();
-
-    if (!deckExists) {
-      return {
-        success: false,
-        message: "Deck not found",
-      };
-    }
-
-    const progressExists = await db
-      .selectFrom("userDeckProgress")
-      .select("id")
-      .where("deckId", "=", data.deckId as string)
-      .where("userId", "=", data.userId as string)
-      .executeTakeFirst();
-
-    if (!progressExists) {
-      const newProgress = await createUserDeckProgress(
-        data.userId as string,
-        data.deckId as string
-      );
-      if (!newProgress.success) {
-        return newProgress;
-      }
-    }
-
-    const updatedProgress = await db
-      .updateTable("userDeckProgress")
-      .set({
-        mastery: data.mastery,
-        completedSessions: data.completedSessions,
-        lastStudied: data.lastStudied,
-        updatedAt: new Date(),
-      })
-      .where("deckId", "=", data.deckId as string)
-      .where("userId", "=", data.userId as string)
-      .returningAll()
-      .executeTakeFirst();
-
-    if (!updatedProgress) {
-      return { success: false, message: "Error updating study progress" };
-    }
-
-    return { success: true, data: updatedProgress };
-  } catch (error) {
-    console.error("Error saving study progress to deck:", error);
-    return { success: false, message: "Error saving study progress", error };
-  }
-};
-
 export const createUserDeckProgress = async (
   userId: string,
   deckId: string
@@ -624,251 +566,6 @@ export const createUserDeckProgress = async (
   } catch (error) {
     console.error("Error creating user deck progress:", error);
     return { success: false, message: "Error creating deck progress", error };
-  }
-};
-
-export const saveStudySession = async (data: NewStudySession) => {
-  try {
-    const newSession = await db
-      .insertInto("studySession")
-      .values({
-        id: cuid(),
-        userId: data.userId,
-        deckId: data.deckId,
-        lengthInSeconds: data.lengthInSeconds || null,
-        CreatedAt: new Date().toLocaleString(),
-        updatedAt: new Date().toLocaleString(),
-      })
-      .returningAll()
-      .executeTakeFirst();
-
-    if (!newSession) {
-      return { success: false, message: "Error saving study session" };
-    }
-
-    const existingDeck = await db
-      .selectFrom("deck")
-      .selectAll()
-      .where("id", "=", data.deckId as string)
-      .executeTakeFirst();
-
-    if (!existingDeck) {
-      return { success: false, message: "Deck not found" };
-    }
-
-    const updateDeckStudyCount = await db
-      .updateTable("deck")
-      .set({
-        studyCount: existingDeck.studyCount + 1,
-      })
-      .where("id", "=", data.deckId as string)
-      .execute();
-
-    if (!updateDeckStudyCount) {
-      return { success: false, message: "Error updating deck study count" };
-    }
-
-    const studyTime = data.lengthInSeconds as number;
-
-    const newStudyHour = Math.floor(existingDeck.studyHour + studyTime / 3600);
-
-    const updateDeckStudyHours = await db
-      .updateTable("deck")
-      .set({
-        studyHour: newStudyHour,
-      })
-      .where("id", "=", data.deckId as string)
-      .execute();
-
-    if (!updateDeckStudyHours) {
-      return { success: false, message: "Error updating deck study hours" };
-    }
-
-    const sumTotalStudyTime = await db
-      .selectFrom("studySession")
-      .where("userId", "=", data.userId)
-      .select((eb) => eb.fn.sum("lengthInSeconds").as("total"))
-      .executeTakeFirst();
-
-    const total = Number(sumTotalStudyTime?.total ?? 0);
-
-    const updatedUser = await db
-      .updateTable("user")
-      .set({
-        totalStudyTime: total,
-      })
-      .where("id", "=", data.userId)
-      .execute();
-
-    if (!updatedUser) {
-      return { success: false, message: "Error updating user study time" };
-    }
-
-    return {
-      success: true,
-      message: "Study session saved successfully",
-      data: newSession,
-    };
-  } catch (error) {
-    console.error("Error saving study session:", error);
-    return { success: false, message: "Error saving study session", error };
-  }
-};
-
-export const updateChallengeCompletionCount = async (
-  userId: string,
-  deckId: string
-) => {
-  try {
-    const progressExists = await db
-      .selectFrom("userDeckProgress")
-      .select(["id", "challengeCompleted"])
-      .where("deckId", "=", deckId)
-      .where("userId", "=", userId)
-      .executeTakeFirst();
-
-    if (!progressExists) {
-      return {
-        success: false,
-        message: "Deck progress not found",
-      };
-    }
-
-    const updatedProgress = await db
-      .updateTable("userDeckProgress")
-      .set({
-        challengeCompleted: (progressExists.challengeCompleted || 0) + 1,
-        updatedAt: new Date(),
-      })
-      .where("deckId", "=", deckId)
-      .where("userId", "=", userId)
-      .returningAll()
-      .executeTakeFirst();
-
-    if (!updatedProgress) {
-      return {
-        success: false,
-        message: "Error updating challenge completion count",
-      };
-    }
-
-    return { success: true, data: updatedProgress };
-  } catch (error) {
-    console.error("Error updating challenge completion count:", error);
-    return {
-      success: false,
-      message: "Error updating challenge completion count",
-      error,
-    };
-  }
-};
-
-export const createQuizAccessToken = async (
-  userId: string,
-  deckId: string,
-  numQuestions: number
-) => {
-  try {
-    const deck = await db
-      .selectFrom("deck")
-      .select(["id", "userId", "visibility"])
-      .where("id", "=", deckId)
-      .executeTakeFirst();
-
-    if (!deck) {
-      return {
-        success: false,
-        message: "Deck not found",
-      };
-    }
-
-    if (deck.visibility !== "public" && deck.userId !== userId) {
-      return {
-        success: false,
-        message: "You don't have permission to access this deck",
-      };
-    }
-
-    await db
-      .deleteFrom("quizAccessToken")
-      .where("userId", "=", userId)
-      .where("deckId", "=", deckId)
-      .where("used", "=", false)
-      .execute();
-
-    const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-
-    const tokenString = cuid();
-
-    const newToken = await db
-      .insertInto("quizAccessToken")
-      .values({
-        id: cuid(),
-        token: tokenString,
-        userId,
-        deckId,
-        numQuestions,
-        used: false,
-        expiresAt,
-        createdAt: new Date().toLocaleString(),
-        updatedAt: new Date().toLocaleString(),
-      })
-      .returningAll()
-      .executeTakeFirst();
-
-    if (!newToken) {
-      return { success: false, message: "Error creating access token" };
-    }
-
-    return {
-      success: true,
-      data: {
-        token: tokenString,
-        numQuestions,
-      },
-    };
-  } catch (error) {
-    console.error("Error creating quiz access token:", error);
-    return { success: false, message: "Error creating access token", error };
-  }
-};
-
-export const validateQuizAccessToken = async (
-  token: string,
-  userId: string,
-  deckId: string
-) => {
-  try {
-    const accessToken = await db
-      .selectFrom("quizAccessToken")
-      .selectAll()
-      .where("token", "=", token)
-      .where("userId", "=", userId)
-      .where("deckId", "=", deckId)
-      .where("used", "=", false)
-      .where("expiresAt", ">", new Date())
-      .executeTakeFirst();
-
-    if (!accessToken) {
-      return { success: false, message: "Invalid or expired access token" };
-    }
-
-    await db
-      .updateTable("quizAccessToken")
-      .set({ used: true, updatedAt: new Date() })
-      .where("id", "=", accessToken.id)
-      .execute();
-
-    return {
-      success: true,
-      data: {
-        numQuestions: accessToken.numQuestions,
-      },
-    };
-  } catch (error) {
-    console.error("Error validating quiz access token:", error);
-    return { success: false, message: "Error validating access token", error };
   }
 };
 
@@ -1000,7 +697,10 @@ export const addTagToDeck = async (
       .executeTakeFirst();
 
     if (!deckExists) {
-      return { success: false, message: "Deck not found or you don't have permission to add tags" };
+      return {
+        success: false,
+        message: "Deck not found or you don't have permission to add tags",
+      };
     }
 
     const newTag = await db
@@ -1040,7 +740,10 @@ export const removeTagFromDeck = async (
       .executeTakeFirst();
 
     if (!deckExists) {
-      return { success: false, message: "Deck not found or you don't have permission to remove tags" };
+      return {
+        success: false,
+        message: "Deck not found or you don't have permission to remove tags",
+      };
     }
 
     const deletedTag = await db
@@ -1051,7 +754,10 @@ export const removeTagFromDeck = async (
       .executeTakeFirst();
 
     if (!deletedTag) {
-      return { success: false, message: "Tag not found or could not be removed" };
+      return {
+        success: false,
+        message: "Tag not found or could not be removed",
+      };
     }
 
     return { success: true, data: deletedTag };
@@ -1071,7 +777,10 @@ export const getTagsByDeckId = async (deckId: string, userId: string) => {
       .executeTakeFirst();
 
     if (!deckExists) {
-      return { success: false, message: "Deck not found or you don't have permission to view tags" };
+      return {
+        success: false,
+        message: "Deck not found or you don't have permission to view tags",
+      };
     }
 
     const tags = await db
@@ -1148,7 +857,7 @@ export const getDecksByTag = async (tagName: string) => {
 export const getAllDecks = async (page: number = 1, limit: number = 12) => {
   try {
     const offset = (page - 1) * limit;
-    
+
     const decks = await db
       .selectFrom("deck")
       .select((eb) => [
@@ -1203,15 +912,15 @@ export const getAllDecks = async (page: number = 1, limit: number = 12) => {
       )
       .executeTakeFirst();
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: decks as unknown as Deck[],
       pagination: {
         page,
         limit,
         total: totalCount?.count || 0,
-        totalPages: Math.ceil((totalCount?.count || 0) / limit)
-      }
+        totalPages: Math.ceil((totalCount?.count || 0) / limit),
+      },
     };
   } catch (error) {
     console.error("Error fetching all decks:", error);

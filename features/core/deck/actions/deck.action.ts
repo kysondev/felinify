@@ -10,15 +10,17 @@ import {
   deleteFlashcard,
   updateFlashcard,
   deleteDeck,
-  saveStudyProgressToDeck,
-  saveStudySession,
-  updateChallengeCompletionCount,
   updateFlashcardPerformance,
   addTagToDeck,
   removeTagFromDeck,
   getTagsByDeckId,
 } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
+import {
+  saveStudyProgressToDeck,
+  saveStudySession,
+  updateChallengeCompletionCount,
+} from "@study/services/study.service";
 
 export const createDeckAction = async (
   userId: string,
@@ -208,7 +210,9 @@ export const saveStudyProgressAction = async (data: UpdateProgress) => {
     if (!user.emailVerified) {
       return { success: false, message: "Email not verified" };
     }
-    const { success, message } = await saveStudyProgressToDeck(data as UpdateProgress);
+    const { success, message } = await saveStudyProgressToDeck(
+      data as UpdateProgress
+    );
     if (success) {
       return {
         success: true,
