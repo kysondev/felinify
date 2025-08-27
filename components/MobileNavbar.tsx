@@ -16,6 +16,7 @@ import {
   getUser,
   getUserEnergy
 } from "@user/services/user.service";
+import { signOut } from "@auth/actions/auth.action";
 
 export const MobileNavbar = async () => {
   const { data: user } = await getUser();
@@ -105,12 +106,10 @@ export const MobileNavbar = async () => {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Link href="/auth/login">
-              <DropdownMenuItem className="cursor-pointer text-red-600">
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign out
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem className="cursor-pointer text-red-600" onClick={signOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

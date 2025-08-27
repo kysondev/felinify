@@ -27,19 +27,18 @@ import { Subscription, User } from "db/types/models.types";
 import { getPlanDetails } from "@subscription/utils/get-plan-details";
 import { Badge } from "components/ui/Badge";
 import { SidebarUpgrade } from "./sidebar-upgrade";
+import { signOut } from "@auth/actions/auth.action";
 
 interface SidebarClientProps {
   user?: User;
   subscription?: Subscription;
   userEnergy?: number;
-  signOut?: any;
 }
 
 export const SidebarClient = ({
   subscription,
   user,
   userEnergy,
-  signOut,
 }: SidebarClientProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const planDetails = getPlanDetails(subscription as Subscription);
@@ -137,20 +136,11 @@ export const SidebarClient = ({
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            {signOut ? (
               <Form action={signOut}>
                 <DropdownMenuItem className="cursor-pointer text-red-600 p-0 w-full">
                   <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
                 </DropdownMenuItem>
               </Form>
-            ) : (
-              <Link href="/auth/login">
-                <DropdownMenuItem className="cursor-pointer text-red-600">
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign out
-                </DropdownMenuItem>
-              </Link>
-            )}
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
