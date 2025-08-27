@@ -59,7 +59,6 @@ export const SidebarClient = ({
     <div
       className={`${collapsed ? "w-[40px]" : "w-64"} transition-all duration-300 flex flex-col flex-grow relative`}
     >
-
       {!collapsed ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -136,11 +135,11 @@ export const SidebarClient = ({
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-              <Form action={signOut}>
-                <DropdownMenuItem className="cursor-pointer text-red-600 p-0 w-full">
-                  <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
-                </DropdownMenuItem>
-              </Form>
+            <Form action={signOut}>
+              <DropdownMenuItem className="cursor-pointer text-red-600 p-0 w-full">
+                <SignOutButton className="w-full text-left px-2 py-1.5 flex items-center h-full" />
+              </DropdownMenuItem>
+            </Form>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
@@ -157,9 +156,7 @@ export const SidebarClient = ({
 
       <SidebarNavigation collapsed={collapsed} />
 
-      {!collapsed && planDetails.name == "free" && (
-        <SidebarUpgrade />
-      )}
+      {!collapsed && planDetails.name == "starter" && <SidebarUpgrade />}
 
       <div
         className={`mt-auto flex items-center ${collapsed ? "justify-center" : "justify-between"}`}
