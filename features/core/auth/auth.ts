@@ -16,7 +16,7 @@ import {
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const auth = betterAuth({
-  appName: process.env.APP_NAME,
+  appName: "Felinify",
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
   database: {
     db: db,
@@ -62,7 +62,7 @@ export const auth = betterAuth({
     },
   },
   advanced: {
-    cookiePrefix: process.env.APP_NAME,
+    cookiePrefix: "Felinify",
   },
   plugins: [
     twoFactor({

@@ -13,7 +13,7 @@ interface SendEmailProps {
 
 export const sendEmail = async ({
   to,
-  senderName = process.env.DEFAULT_EMAIL_SENDER_NAME as string,
+  senderName = "Felinify",
   senderEmail = process.env.DEFAULT_EMAIL_SENDER_EMAIL as string,
   subject,
   html,

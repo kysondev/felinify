@@ -50,7 +50,7 @@ export const TwoFactorVerificationEmail = ({
             <hr className="border-gray-200 mb-8" />
 
             <Text className="text-gray-500 text-xs text-center">
-              ©2025 {process.env.APP_NAME || "App Name"}
+              ©2025 Felinify
               <br />
               <br />
               All rights reserved.

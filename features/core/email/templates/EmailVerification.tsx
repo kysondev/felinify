@@ -20,9 +20,7 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
   return (
     <Html>
       <Head />
-      <Preview>
-        Verify your email address for {process.env.APP_NAME || "App Name"}
-      </Preview>
+      <Preview>Verify your email address for Felinify</Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto py-8 px-4 max-w-[600px]">
@@ -32,8 +30,8 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
               </Heading>
 
               <Text className="text-gray-700 text-lg mb-8 text-center">
-                Thanks for signing up for {process.env.APP_NAME || "App Name"}!
-                Please verify your email address by clicking the button below.
+                Thanks for signing up for Felinify! Please verify your email
+                address by clicking the button below.
               </Text>
 
               <Section className="text-center mb-8">
@@ -61,7 +59,7 @@ const EmailVerification = ({ url }: EmailVerificationProps) => {
               <hr className="border-gray-200 mb-8" />
 
               <Text className="text-gray-500 text-xs text-center">
-                ©2025 {process.env.APP_NAME || "App Name"}
+                ©2025 Felinify
                 <br />
                 <br />
                 All rights reserved.
