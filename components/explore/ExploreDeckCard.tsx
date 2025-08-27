@@ -2,7 +2,8 @@ import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
 import { Deck } from "db/types/models.types";
-import { Star, ChevronRight, TrendingUp, User, CreditCard } from "lucide-react";
+import { Star, ChevronRight, TrendingUp, User } from "lucide-react";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { getUserWithId } from "@user/services/user.service";
 import Image from "next/image";
@@ -32,7 +33,7 @@ export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
         <div className="p-4 flex-1 flex flex-col">
           <div className="grid grid-cols-3 gap-3 mb-4">
             <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
-              <CreditCard className="h-4 w-4 text-primary mx-auto mb-1 rotate-180" />
+              <CardsIcon size={16} className="text-primary mx-auto mb-1" />
               <p className="text-sm font-semibold text-foreground">
                 {deck.flashcards?.length || 0}
               </p>

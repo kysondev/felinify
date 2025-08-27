@@ -3,12 +3,13 @@ import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Deck } from "db/types/models.types";
 import { Card, CardContent } from "components/ui/Card";
 import { Button } from "components/ui/Button";
-import { ArrowLeft, BookOpen, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 import { getDecksByTag } from "@deck/services/deck-query.service";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface TagPageProps {
   params: Promise<{ tagName: string }>;
@@ -117,7 +118,7 @@ export default async function TagPage({ params }: TagPageProps) {
         ) : (
           <div className="text-center py-16">
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="w-8 h-8 text-muted-foreground" />
+              <CardsIcon size={32} className="text-muted-foreground" />
             </div>
             <h3 className="text-xl font-semibold mb-2">
               No {tagName} Decks Found

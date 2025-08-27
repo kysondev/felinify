@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "components/ui/Button";
-import { Award, Clock, Save, BookOpen } from "lucide-react";
+import { Award, Clock, Save } from "lucide-react";
 import { formatTime } from "@common/utils/date.utils";
 import {
   AlertDialog,
@@ -14,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from "components/ui/Alert-dialog";
 import { Progress } from "components/ui/Progress";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface SessionHeaderProps {
   deck: {
@@ -123,7 +124,7 @@ export const SessionHeader = ({
       {!currentRound && !numOfRounds && (
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 md:gap-2 bg-secondary/30 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
-            <BookOpen className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <CardsIcon size={12} className="text-primary" />
             <span>
               {currentCardIndex + 1}/{totalCards}
             </span>

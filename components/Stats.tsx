@@ -1,4 +1,4 @@
-import { Clock, Users, BookOpen, Award, Brain, Zap, Target, TrendingUp } from "lucide-react";
+import { Users, Brain, Zap, Target, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/Button";
 

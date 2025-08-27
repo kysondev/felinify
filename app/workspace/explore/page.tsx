@@ -6,7 +6,8 @@ import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 import { Deck } from "db/types/models.types";
-import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
+import { Sparkles, TrendingUp } from "lucide-react";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -133,7 +134,7 @@ export default async function Explore() {
         ) : (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="w-8 h-8 text-muted-foreground" />
+              <CardsIcon size={16} className="text-muted-foreground" />
             </div>
             <h3 className="text-lg font-semibold mb-2">No Featured Decks</h3>
             <p className="text-muted-foreground">

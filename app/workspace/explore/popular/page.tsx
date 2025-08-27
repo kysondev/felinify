@@ -2,11 +2,12 @@ import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
 import { Deck } from "db/types/models.types";
-import { TrendingUp, BookOpen, ArrowLeft } from "lucide-react";
+import { TrendingUp, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
 import { getPopularDecks } from "@deck/services/deck-query.service";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {
   title: "Popular Decks | Clami",
@@ -81,7 +82,7 @@ export default async function PopularDecksPage() {
       ) : (
         <div className="text-center py-16">
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-            <BookOpen className="w-8 h-8 text-muted-foreground" />
+            <CardsIcon size={16} className="text-muted-foreground" />
           </div>
           <h3 className="text-xl font-semibold mb-3">No Popular Decks</h3>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">

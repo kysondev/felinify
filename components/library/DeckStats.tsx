@@ -2,9 +2,10 @@
 
 import { Deck } from "db/types/models.types";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/Card";
-import { Calendar, Clock, Dices, BarChart2, Trophy, Brain, Activity, CreditCard } from "lucide-react";
+import { Calendar, Clock, Dices, BarChart2, Trophy, Brain, Activity } from "lucide-react";
 import { formatDate, formatDateTime } from "@common/utils/date.utils";
 import { Progress } from "components/ui/Progress";
+import { CardsIcon } from "@phosphor-icons/react";
 
 export const DeckStats = ({ deck }: { deck: Deck }) => {
 
@@ -59,7 +60,7 @@ export const DeckStats = ({ deck }: { deck: Deck }) => {
         <Card className="overflow-hidden border-muted-foreground/20">
           <div className="bg-muted/40 px-3 py-1.5">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-primary rotate-180" />
+              <CardsIcon size={20} className="text-primary" />
               Flashcards
             </CardTitle>
           </div>

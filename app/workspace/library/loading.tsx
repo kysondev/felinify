@@ -1,7 +1,7 @@
 import { Button } from "components/ui/Button";
 import { Card, CardContent } from "components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { PlusCircle, Library, BookOpen, BarChart3, Search, Filter } from "lucide-react";
+import { PlusCircle, Library, BarChart3, Search, Filter, Home, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +12,24 @@ import {
 } from "components/ui/Dialog";
 import { Skeleton } from "components/ui/Skeleton";
 import { Input } from "components/ui/Input";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+    <div className="min-h-screen bg-background mt-2">
+      <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6">
+        <nav className="flex items-center text-sm text-muted-foreground mb-4">
+          <div className="flex items-center">
+            <Home className="h-4 w-4 mr-1" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <div className="flex items-center">
+            <Library className="h-4 w-4 mr-1" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </nav>
+
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/90 p-6 mb-8">
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
@@ -134,8 +147,8 @@ export default function Loading() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
             <TabsList className="w-full max-w-full lg:max-w-[300px] grid grid-cols-2">
               <TabsTrigger value="decks" className="flex-1">
-                <BookOpen className="h-4 w-4 mr-2" />
-                My Decks
+                <CardsIcon size={16} />
+                Decks
               </TabsTrigger>
               <TabsTrigger value="analytics" className="flex-1">
                 <BarChart3 className="h-4 w-4 mr-2" />
@@ -148,11 +161,11 @@ export default function Loading() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="Search your decks..."
-                  className="pl-10 w-full lg:w-64"
+                  className="pl-10 w-full lg:w-64 bg-white"
                   disabled
                 />
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="bg-white" disabled>
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
@@ -161,16 +174,17 @@ export default function Loading() {
 
           <TabsContent value="decks" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {Array.from({ length: 3 }).map((_, index) => (
+              {Array.from({ length: 6 }).map((_, index) => (
                 <Card key={index} className="group border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card">
                   <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-1">
+                    <div className="flex justify-between items-start mb-4">
                       <Skeleton className="h-6 w-3/4" />
                       <Skeleton className="h-5 w-16" />
                     </div>
-                    <div className="mb-2">
-                      <Skeleton className="h-4 w-full mt-2" />
-                      <Skeleton className="h-4 w-4/5 mt-2" />
+                    
+                    <div className="mb-4">
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-4/5" />
                     </div>
 
                     <div className="grid grid-cols-3 gap-3 mb-5">
@@ -254,64 +268,97 @@ export default function Loading() {
             </div>
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardContent className="p-6">
+          <TabsContent value="analytics" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Card className="lg:col-span-2 border border-border/50">
+                <div className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <BarChart3 className="h-5 w-5" />
-                    <Skeleton className="h-6 w-32" />
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <BarChart3 className="h-5 w-5 text-primary" />
+                    </div>
+                    <Skeleton className="h-6 w-48" />
                   </div>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
+                  <div className="space-y-8">
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center">
+                        <Skeleton className="h-6 w-32" />
+                        <div className="text-right">
+                          <Skeleton className="h-8 w-16 mb-1" />
+                          <Skeleton className="h-4 w-24" />
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <Skeleton className="h-4 w-full" />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <Skeleton className="h-3 w-16" />
+                          <Skeleton className="h-3 w-20" />
+                          <Skeleton className="h-3 w-12" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Skeleton className="h-6 w-32" />
                         <Skeleton className="h-4 w-24" />
-                        <Skeleton className="h-4 w-8" />
                       </div>
-                      <Skeleton className="h-2 w-full" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <Skeleton className="h-8 w-12 mx-auto mb-2" />
-                        <Skeleton className="h-3 w-20 mx-auto" />
-                      </div>
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <Skeleton className="h-8 w-12 mx-auto mb-2" />
-                        <Skeleton className="h-3 w-20 mx-auto" />
+                      <div className="space-y-3">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <div key={index} className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50">
+                            <Skeleton className="h-8 w-8 rounded-full" />
+                            <div className="flex-1 min-w-0">
+                              <Skeleton className="h-4 w-32 mb-1" />
+                              <Skeleton className="h-3 w-24" />
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Skeleton className="w-20 h-2 rounded-full" />
+                              <Skeleton className="h-4 w-12" />
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
-                </CardContent>
+                </div>
               </Card>
 
-              <Card>
-                <CardContent className="p-6">
+              <Card className="border border-border/50 h-fit">
+                <div className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Skeleton className="h-5 w-5" />
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <BarChart3 className="h-5 w-5 text-primary" />
+                    </div>
                     <Skeleton className="h-6 w-28" />
                   </div>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="h-8 w-8 rounded-lg" />
-                        <div>
-                          <Skeleton className="h-4 w-20 mb-1" />
-                          <Skeleton className="h-3 w-16" />
+                    <div className="space-y-3">
+                      {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                          <div className="flex items-center gap-3 mb-2">
+                            <Skeleton className="h-6 w-6 rounded-lg" />
+                            <div>
+                              <Skeleton className="h-4 w-20 mb-1" />
+                              <Skeleton className="h-3 w-16" />
+                            </div>
+                          </div>
+                          <Skeleton className="h-3 w-24" />
                         </div>
-                      </div>
+                      ))}
                     </div>
-                    
-                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="h-8 w-8 rounded-lg" />
-                        <div>
-                          <Skeleton className="h-4 w-24 mb-1" />
-                          <Skeleton className="h-3 w-16" />
+                    <div className="pt-3 border-t border-border/50">
+                      <Skeleton className="h-4 w-20 mb-3" />
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="text-center p-3 bg-muted/30 rounded-lg">
+                          <Skeleton className="h-6 w-8 mx-auto mb-1" />
+                          <Skeleton className="h-3 w-16 mx-auto" />
+                        </div>
+                        <div className="text-center p-3 bg-muted/30 rounded-lg">
+                          <Skeleton className="h-6 w-8 mx-auto mb-1" />
+                          <Skeleton className="h-3 w-20 mx-auto" />
                         </div>
                       </div>
                     </div>
                   </div>
-                </CardContent>
+                </div>
               </Card>
             </div>
           </TabsContent>

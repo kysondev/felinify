@@ -9,8 +9,8 @@ import {
   Edit3,
   Play,
   Target,
-  CreditCard,
 } from "lucide-react";
+import { CardsIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -79,7 +79,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-muted/50 to-muted/30 border border-border/30">
             <div className="p-2 rounded-lg bg-muted">
-              <CreditCard className="h-4 w-4 text-primary rotate-180" />
+            <CardsIcon size={16} className="text-primary" />
             </div>
             <div className="min-w-0">
               <p className="text-lg font-bold text-foreground">

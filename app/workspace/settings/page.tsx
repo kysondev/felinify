@@ -22,7 +22,7 @@ export default async function SettingsPage() {
   const { data: subscription } = await getUserSubscription(user?.id || "");
 
   return (
-    <div className="container max-w-[900px] mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+    <div className="container max-w-[900px] mx-auto px-4 md:px-6 py-8">
       <div className="flex flex-col gap-6 md:gap-8">
         <div>
           <Alert

@@ -1,14 +1,11 @@
 import {
-  BookOpen,
   Lightbulb,
-  LineChart,
-  Upload,
-  Brain,
-  BarChart3,
+  LineChart
 } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
 import { Button } from "./ui/Button";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface Step {
   title: string;
@@ -90,7 +87,7 @@ export const HowItWorks = ({
       description:
         "Upload your notes, PDFs, or paste text directly. Our AI analyzes your content and instantly creates effective flashcards that focus on key concepts and relationships.",
       icon: (
-        <BookOpen className="w-8 h-8 text-primary group-hover:text-primary-foreground" />
+        <CardsIcon size={32} className="text-primary group-hover:text-primary-foreground" />
       ),
       details: [
         "Supports any file type or direct text input",

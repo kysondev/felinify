@@ -1,10 +1,10 @@
-import { Button } from "components/ui/Button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { BookOpen, ChevronRight, Clock, Home, Star, User, Compass } from "lucide-react";
+import { ChevronRight, Clock, Home, Star, User, Compass } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "components/ui/Card";
 import { Avatar, AvatarFallback } from "components/ui/Avatar";
 import { Skeleton } from "components/ui/Skeleton";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function Loading() {
   return (
@@ -66,7 +66,7 @@ export default function Loading() {
           </div>
           
           <div className="flex items-center gap-1 text-sm">
-            <BookOpen className="h-4 w-4" />
+            <CardsIcon size={16} />
             <Skeleton className="h-4 w-24" />
           </div>
           

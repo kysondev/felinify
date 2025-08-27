@@ -9,12 +9,13 @@ import {
   DialogTrigger,
 } from "components/ui/Dialog";
 import { Card, CardContent } from "components/ui/Card";
-import { BookOpen, ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
 import { CreateDeckForm } from "./CreateDeckForm";
 import { TabsContent } from "components/ui/Tabs";
 import { Button } from "components/ui/Button";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const DeckList = ({
   decks,
@@ -71,7 +72,7 @@ export const DeckList = ({
       <Card className="text-center py-16">
         <CardContent>
           <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-            <BookOpen className="h-10 w-10 text-muted-foreground" />
+            <CardsIcon size={40} className="text-muted-foreground" />
           </div>
           <h3 className="text-xl font-semibold mb-2">No decks Found</h3>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">
@@ -161,7 +162,7 @@ export const DeckList = ({
         <Card className="text-center py-16">
           <CardContent>
             <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-              <BookOpen className="h-10 w-10 text-muted-foreground" />
+              <CardsIcon size={40} className="text-muted-foreground" />
             </div>
             <h3 className="text-xl font-semibold mb-2">No decks yet</h3>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">

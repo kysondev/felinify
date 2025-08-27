@@ -8,10 +8,10 @@ import { UpgradePlanDialog } from "components/study/dialogs/UpgradePlanDialog";
 import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { Subscription, User } from "db/types/models.types";
-import { plans } from "@subscription/config/plans.config";
 import { CalendarIcon } from "lucide-react";
 import { openCustomerPortalAction } from "@subscription/actions/subscription.action";
 import { Loading } from "components/ui/Loading";
+import { getPlanDetails } from "@subscription/utils/get-plan-details";
 
 export function SubscriptionSettings({
   user,
@@ -25,30 +25,7 @@ export function SubscriptionSettings({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
 
-  const getPlanDetails = () => {
-    if (!subscription || !subscription.plan) {
-      return {
-        name: "starter",
-        limits: {
-          decks: 15,
-          energy: 10,
-        },
-      };
-    }
-
-    const planInfo = plans.find((plan) => plan.name === subscription.plan);
-    return (
-      planInfo || {
-        name: "starter",
-        limits: {
-          decks: 15,
-          energy: 10,
-        },
-      }
-    );
-  };
-
-  const planDetails = getPlanDetails();
+  const planDetails = getPlanDetails(subscription as Subscription);
   const isPaidPlan = Boolean(subscription?.plan && subscription.plan !== "starter");
   const isCanceled = Boolean(subscription?.cancelAtPeriodEnd);
 

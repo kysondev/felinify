@@ -1,7 +1,6 @@
 import { Button } from "components/ui/Button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import {
-  BookOpen,
   ChevronRight,
   Clock,
   Home,
@@ -22,6 +21,7 @@ import ExploreFlashcardGrid from "components/explore/ExploreFlashcardList";
 import { ReviewSection } from "components/explore/ReviewSection";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
 import { getReviewsByDeckId } from "@review/services/review.service";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface DeckPageProps {
   params: Promise<{ deckId: string }>;
@@ -64,7 +64,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
               <AlertCircle className="h-16 w-16 text-muted-foreground/60" />
             </div>
             <div className="absolute -top-2 -right-2 p-2 bg-destructive/10 rounded-full">
-              <BookOpen className="h-6 w-6 text-destructive" />
+              <CardsIcon size={16} className="text-destructive" />
             </div>
           </div>
 
@@ -87,7 +87,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
             </Button>
             <Button variant="outline" asChild>
               <Link href="/workspace/library">
-                <BookOpen className="h-4 w-4 mr-2" />
+                <CardsIcon size={16} className="text-primary" />
                 Go to Library
               </Link>
             </Button>
@@ -202,7 +202,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
 
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <BookOpen className="h-4 w-4" />
+                  <CardsIcon size={16} />
                   Flashcards
                 </span>
                 <span className="text-sm font-medium">

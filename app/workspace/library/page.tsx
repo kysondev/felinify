@@ -1,5 +1,5 @@
 import { Button } from "components/ui/Button";
-import { PlusCircle, Library } from "lucide-react";
+import { PlusCircle, Library, Home, ChevronRight } from "lucide-react";
 import { getDecksByUserId } from "@deck/services/deck.service";
 import { getUser, getUserSubscription } from "@user/services/user.service";
 import {
@@ -15,6 +15,7 @@ import { Subscription, User } from "db/types/models.types";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
 import { LibraryTabs } from "components/library/LibraryTabs";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "My Library | Clami",
@@ -64,11 +65,7 @@ export default async function LibraryPage() {
 
   const totalCards =
     decks?.reduce((sum, deck) => sum + (deck.flashcards?.length || 0), 0) || 0;
-  const totalSessions =
-    decks?.reduce(
-      (sum, deck) => sum + (deck.progress?.completedSessions || 0),
-      0
-    ) || 0;
+    
   const averageMastery =
     decks?.length > 0
       ? Math.round(
@@ -89,9 +86,26 @@ export default async function LibraryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background mt-2">
       <JsonLd data={librarySchema} />
-      <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+      <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6">
+      <nav className="flex items-center text-sm text-muted-foreground mb-4">
+        <Link
+          href="/workspace"
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <Home className="h-4 w-4 mr-1" />
+          <span>Workspace</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <Link
+          href="/workspace/library"
+          className="flex items-center hover:text-foreground transition-colors font-medium text-foreground"
+        >
+          <Library className="h-4 w-4 mr-1" />
+          <span>Library</span>
+        </Link>
+      </nav>
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/90 p-6 mb-8">
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>

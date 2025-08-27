@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import ChallengeSettings from "components/study/dialogs/ChallengeSettings";
 import AdaptiveQuizSettings from "components/study/dialogs/AdaptiveQuizSettings";
 import { StudyModeDialog } from "components/study";
-import { Button } from "components/ui/Button";
 import { Play } from "lucide-react";
 import { User } from "db/types/models.types";
 

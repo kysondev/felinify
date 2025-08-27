@@ -4,7 +4,6 @@ import { Input } from "components/ui/Input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
 import {
   BarChart3,
-  BookOpen,
   Filter,
   Package,
   Search,
@@ -28,6 +27,7 @@ import {
 } from "components/ui/Dropdown-menu";
 import { Badge } from "components/ui/Badge";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const LibraryTabs = ({
   decks,
@@ -93,7 +93,7 @@ export const LibraryTabs = ({
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
         <TabsList className="w-full max-w-full lg:max-w-[300px] grid grid-cols-2">
           <TabsTrigger value="decks" className="flex-1">
-            <BookOpen className="h-4 w-4 mr-2" />
+            <CardsIcon size={16} className="mr-2" />
             Decks
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex-1">

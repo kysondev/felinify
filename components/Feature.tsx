@@ -1,18 +1,12 @@
 import {
-  DollarSign,
-  MessagesSquare,
-  PersonStanding,
   Timer,
   Zap,
-  ZoomIn,
-  Users,
   TrendingUp,
-  Clock,
-  BookOpen,
   Award,
   Target,
 } from "lucide-react";
 import { memo } from "react";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface Feature {
   title: string;
@@ -93,7 +87,7 @@ const Feature = ({
       title: "Personal Library Management",
       description:
         "Organize your study materials with custom decks, tags, and categories. Edit, delete, and manage your flashcards effortlessly.",
-      icon: <BookOpen className="w-6 h-6" />,
+      icon: <CardsIcon size={24} className="text-primary" />,
       highlight: "Organized",
     },
     {

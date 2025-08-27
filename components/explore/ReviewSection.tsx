@@ -10,7 +10,6 @@ import { CreateReviewDialog } from "./CreateReviewDialog";
 import { deleteReviewAction } from "@review/actions/review.action";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface ReviewSectionProps {
   reviews: Review[] | undefined;

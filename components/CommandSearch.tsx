@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Search, Compass, Library} from "lucide-react";
+import { Search, Compass, Library, Home, BotMessageSquare, Trophy} from "lucide-react";
 import {
   CommandDialog,
   CommandInput,
@@ -69,6 +69,18 @@ export function CommandSearch({ triggerClassName }: CommandSearchProps) {
             >
               <Library className="mr-2" />
               <span>My library</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => navigateTo("/workspace/assistant")}
+            >
+              <BotMessageSquare className="mr-2" />
+              <span>AI Assistant</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => navigateTo("/workspace/leaderboard")}
+            >
+              <Trophy className="mr-2" />
+              <span>Leaderboard</span>
             </CommandItem>
           </CommandGroup>
 
