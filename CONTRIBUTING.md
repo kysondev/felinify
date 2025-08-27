@@ -1,6 +1,6 @@
-# Contributing to Clami
+# Contributing to Felinify
 
-Thank you for your interest in contributing to **Clami**! We welcome contributions of all kinds — whether it’s bug reports, feature requests, documentation improvements, or code.
+Thank you for your interest in contributing to **Felinify**! We welcome contributions of all kinds — whether it’s bug reports, feature requests, documentation improvements, or code.
 
 ## How to Contribute
 
@@ -29,7 +29,7 @@ We’re excited to help you get started! Here’s how you can contribute code:
 1. Fork the repository
 2. Clone your fork locally
    ```bash
-   git clone https://github.com/your-username/clami.git
+   git clone https://github.com/kysondev/felinify.git
    ```
 3. Create a new branch for your changes
    ```bash
@@ -65,4 +65,4 @@ By contributing, you agree to follow our [Code of Conduct](./CODE_OF_CONDUCT.md)
 
 ---
 
-Thanks again for helping improve **Clami**! We’re excited to collaborate with you.
+Thanks again for helping improve **Felinify**! We’re excited to collaborate with you.

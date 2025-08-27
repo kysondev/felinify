@@ -12,10 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
 import { Badge } from "./ui/Badge";
-import {
-  getUser,
-  getUserEnergy
-} from "@user/services/user.service";
+import { getUser, getUserEnergy } from "@user/services/user.service";
 import { signOut } from "@auth/actions/auth.action";
 
 export const MobileNavbar = async () => {
@@ -26,13 +23,13 @@ export const MobileNavbar = async () => {
     <div className="flex w-full justify-between items-center">
       <Link href="/workspace/home" className="flex items-center space-x-2">
         <Image
-          src="/clami.png"
-          alt="Clami Logo"
+          src="/felinify.png"
+          alt="Felinify Logo"
           width={24}
           height={24}
           className="w-6 h-6"
         />
-        <span className="font-semibold text-primary">Clami</span>
+        <span className="font-semibold text-primary">Felinify</span>
       </Link>
 
       <div className="flex items-center space-x-3">
@@ -106,7 +103,10 @@ export const MobileNavbar = async () => {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer text-red-600" onClick={signOut}>
+            <DropdownMenuItem
+              className="cursor-pointer text-red-600"
+              onClick={signOut}
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Sign out
             </DropdownMenuItem>

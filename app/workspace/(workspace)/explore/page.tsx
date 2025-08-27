@@ -16,7 +16,7 @@ import {
 } from "@deck/services/deck-query.service";
 
 export const metadata: Metadata = {
-  title: "Explore Flashcard Decks | Clami",
+  title: "Explore Flashcard Decks | Felinify",
   description:
     "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
   keywords: [
@@ -29,10 +29,10 @@ export const metadata: Metadata = {
     canonical: "/workspace/explore",
   },
   openGraph: {
-    title: "Explore Flashcard Decks | Clami",
+    title: "Explore Flashcard Decks | Felinify",
     description:
       "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
-    url: "https://clami.app/workspace/explore",
+    url: "https://felinify.com/workspace/explore",
     type: "website",
   },
 };
@@ -50,11 +50,11 @@ export default async function Explore() {
     name: "Explore Flashcard Decks",
     description:
       "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
-    url: "https://clami.app/workspace/explore",
+    url: "https://felinify.com/workspace/explore",
     isPartOf: {
       "@type": "WebSite",
-      name: "Clami",
-      url: "https://clami.app",
+      name: "Felinify",
+      url: "https://felinify.com",
     },
     about: {
       "@type": "Thing",

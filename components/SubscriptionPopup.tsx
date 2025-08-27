@@ -119,7 +119,8 @@ export function SubscriptionPopup({
                 Stay Updated
               </DialogTitle>
               <DialogDescription className="text-gray-600">
-                Subscribe to our newsletter to be notified when Clami launches!
+                Subscribe to our newsletter to be notified when Felinify
+                launches!
               </DialogDescription>
             </DialogHeader>
 

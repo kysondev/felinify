@@ -65,15 +65,15 @@ export const SidebarClient = ({
             <div className="p-2 bg-white rounded-lg border border-[#E7E6E6] flex items-center gap-2 cursor-pointer">
               <div className="flex items-center space-x-2 bg-primary p-1 rounded-lg w-fit">
                 <Image
-                  src="/clami-white.png"
-                  alt="Clami"
+                  src="/felinify-white.png"
+                  alt="Felinify"
                   width={26}
                   height={26}
                 />
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-primary text-sm">
-                  Clami
+                  Felinify
                 </span>
                 <span className="text-xs text-muted-foreground">
                   {planDetails.name.charAt(0).toUpperCase() +
@@ -145,7 +145,12 @@ export const SidebarClient = ({
         </DropdownMenu>
       ) : (
         <div className="p-2 bg-primary rounded-lg flex items-center justify-center gap-2">
-          <Image src="/clami-white.png" alt="Clami" width={26} height={26} />
+          <Image
+            src="/felinify-white.png"
+            alt="Felinify"
+            width={26}
+            height={26}
+          />
         </div>
       )}
 

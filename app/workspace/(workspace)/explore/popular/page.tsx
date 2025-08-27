@@ -10,13 +10,13 @@ import { getPopularDecks } from "@deck/services/deck-query.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {
-  title: "Popular Decks | Clami",
-  description: "Most studied and highly rated flashcard decks on Clami.",
+  title: "Popular Decks | Felinify",
+  description: "Most studied and highly rated flashcard decks on Felinify.",
   alternates: { canonical: "/workspace/explore/popular" },
   openGraph: {
-    title: "Popular Decks | Clami",
-    description: "Most studied and highly rated flashcard decks on Clami.",
-    url: "https://clami.app/workspace/explore/popular",
+    title: "Popular Decks | Felinify",
+    description: "Most studied and highly rated flashcard decks on Felinify.",
+    url: "https://felinify.com/workspace/explore/popular",
     type: "website",
   },
 };
@@ -28,8 +28,8 @@ export default async function PopularDecksPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Popular Decks",
-    description: "Most studied and highly rated flashcard decks on Clami.",
-    url: "https://clami.app/workspace/explore/popular",
+    description: "Most studied and highly rated flashcard decks on Felinify.",
+    url: "https://felinify.com/workspace/explore/popular",
   };
 
   return (

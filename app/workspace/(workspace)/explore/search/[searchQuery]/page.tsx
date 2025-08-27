@@ -18,16 +18,16 @@ export async function generateMetadata({ params }: SearchPageProps) {
   const decodedQuery = decodeURIComponent(searchQuery);
 
   return {
-    title: `"${decodedQuery}" | Clami`,
-    description: `Search results for "${decodedQuery}" - Discover flashcard decks on Clami`,
+    title: `"${decodedQuery}" | Felinify`,
+    description: `Search results for "${decodedQuery}" - Discover flashcard decks on Felinify`,
     keywords: [decodedQuery, "flashcards", "study decks", "search results"],
     alternates: {
       canonical: `/workspace/explore/search/${searchQuery}`,
     },
     openGraph: {
-      title: `"${decodedQuery}" | Clami`,
-      description: `Search results for "${decodedQuery}" - Discover flashcard decks on Clami`,
-      url: `https://clami.app/workspace/explore/search/${searchQuery}`,
+      title: `"${decodedQuery}" | Felinify`,
+      description: `Search results for "${decodedQuery}" - Discover flashcard decks on Felinify`,
+      url: `https://felinify.com/workspace/explore/search/${searchQuery}`,
       type: "website",
     },
   };
@@ -42,12 +42,12 @@ export default async function SearchPage({ params }: SearchPageProps) {
     "@context": "https://schema.org",
     "@type": "SearchResultsPage",
     name: `Search Results for "${decodedQuery}"`,
-    description: `Search results for "${decodedQuery}" - Discover flashcard decks on Clami`,
-    url: `https://clami.app/workspace/explore/search/${searchQuery}`,
+    description: `Search results for "${decodedQuery}" - Discover flashcard decks on Felinify`,
+    url: `https://felinify.com/workspace/explore/search/${searchQuery}`,
     isPartOf: {
       "@type": "WebSite",
-      name: "Clami",
-      url: "https://clami.app",
+      name: "Felinify",
+      url: "https://felinify.com",
     },
     about: {
       "@type": "Thing",

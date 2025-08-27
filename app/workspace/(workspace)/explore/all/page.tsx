@@ -10,15 +10,15 @@ import { getAllDecks } from "@deck/services/deck.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {
-  title: "All Decks | Clami",
+  title: "All Decks | Felinify",
   description:
     "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
   alternates: { canonical: "/workspace/explore/all" },
   openGraph: {
-    title: "All Decks | Clami",
+    title: "All Decks | Felinify",
     description:
       "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
-    url: "https://clami.app/workspace/explore/all",
+    url: "https://felinify.com/workspace/explore/all",
     type: "website",
   },
 };
@@ -42,7 +42,7 @@ export default async function AllDecksPage({
     name: "All Decks",
     description:
       "Browse all available flashcard decks created by students, educators, and professionals worldwide.",
-    url: "https://clami.app/workspace/explore/all",
+    url: "https://felinify.com/workspace/explore/all",
   };
 
   return (

@@ -1,7 +1,4 @@
-import {
-  Lightbulb,
-  LineChart
-} from "lucide-react";
+import { Lightbulb, LineChart } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
 import { Button } from "./ui/Button";
@@ -79,7 +76,7 @@ const StepCard = memo(
 StepCard.displayName = "StepCard";
 
 export const HowItWorks = ({
-  title = "How Clami Works",
+  title = "How Felinify Works",
   subtitle = "Transform your study routine in three simple steps — from notes to mastery in minutes",
   steps = [
     {
@@ -87,7 +84,10 @@ export const HowItWorks = ({
       description:
         "Upload your notes, PDFs, or paste text directly. Our AI analyzes your content and instantly creates effective flashcards that focus on key concepts and relationships.",
       icon: (
-        <CardsIcon size={32} className="text-primary group-hover:text-primary-foreground" />
+        <CardsIcon
+          size={32}
+          className="text-primary group-hover:text-primary-foreground"
+        />
       ),
       details: [
         "Supports any file type or direct text input",

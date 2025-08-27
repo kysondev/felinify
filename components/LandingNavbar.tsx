@@ -55,7 +55,7 @@ const LandingNavbar = ({
   logo = {
     url: "#",
     alt: "logo",
-    title: "Clami",
+    title: "Felinify",
   },
   menu = [
     { title: "Home", url: "/" },
@@ -81,7 +81,12 @@ const LandingNavbar = ({
           <div className="flex items-center gap-4">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <Image src="/clami.png" alt="Clami" width={25} height={25} />
+              <Image
+                src="/felinify.png"
+                alt="Felinify"
+                width={25}
+                height={25}
+              />
               <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
@@ -109,7 +114,12 @@ const LandingNavbar = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <Image src="/clami.png" alt="Clami" width={25} height={25} />
+              <Image
+                src="/felinify.png"
+                alt="Felinify"
+                width={25}
+                height={25}
+              />
               <span className="text-lg font-semibold tracking-tighter text-primary">
                 {logo.title}
               </span>
@@ -125,8 +135,8 @@ const LandingNavbar = ({
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2">
                       <Image
-                        src="/clami.png"
-                        alt="Clami"
+                        src="/felinify.png"
+                        alt="Felinify"
                         width={25}
                         height={25}
                       />

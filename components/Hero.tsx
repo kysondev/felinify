@@ -120,12 +120,12 @@ const Hero = ({
               <picture>
                 <source
                   media="(max-width: 640px)"
-                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754963337/Screenshot_2025-08-11_214649_nelkmu.png"
+                  srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756331513/Screenshot_2025-08-27_175059_tjhsxt.png"
                 />
                 <img
                   className="w-full h-auto"
-                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754963336/Screenshot_2025-08-11_214610_m8albr.png"
-                  alt="Clami AI flashcard application interface showing study dashboard"
+                  src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756331516/Screenshot_2025-08-27_175047_apmekq.png"
+                  alt="Felinify AI flashcard application interface showing study dashboard"
                   loading="eager"
                   width="1200"
                   height="675"

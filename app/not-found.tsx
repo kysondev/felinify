@@ -1,14 +1,14 @@
-import NotFoundPage from './not-found-page';
- 
+import NotFoundPage from "./not-found-page";
+
 export const metadata = {
-  title: "Page Not Found | Clami",
+  title: "Page Not Found | Felinify",
   description: "The page you're looking for doesn't exist or has been moved.",
   robots: {
     index: false,
     follow: true,
   },
 };
- 
+
 export default function NotFound() {
   return <NotFoundPage />;
 }

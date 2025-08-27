@@ -10,13 +10,13 @@ import { getFeaturedDecks } from "@deck/services/deck-query.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {
-  title: "Recently Added Decks | Clami",
+  title: "Recently Added Decks | Felinify",
   description: "Fresh flashcard decks recently added by the community.",
   alternates: { canonical: "/workspace/explore/recent" },
   openGraph: {
-    title: "Recently Added Decks | Clami",
+    title: "Recently Added Decks | Felinify",
     description: "Fresh flashcard decks recently added by the community.",
-    url: "https://clami.app/workspace/explore/recent",
+    url: "https://felinify.com/workspace/explore/recent",
     type: "website",
   },
 };
@@ -29,7 +29,7 @@ export default async function RecentDecksPage() {
     "@type": "CollectionPage",
     name: "Recently Added Decks",
     description: "Fresh flashcard decks recently added by the community.",
-    url: "https://clami.app/workspace/explore/recent",
+    url: "https://felinify.com/workspace/explore/recent",
   };
 
   return (

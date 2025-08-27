@@ -85,7 +85,7 @@ export function LoginForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="space-y-1 text-center pb-4">
           <div className="mx-auto mb-2">
-            <img src="/clami.png" alt="Clami" className="h-10 w-auto" />
+            <img src="/felinify.png" alt="Felinify" className="h-10 w-auto" />
           </div>
           <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">

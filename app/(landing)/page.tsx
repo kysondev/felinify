@@ -13,8 +13,9 @@ import { Metadata } from "next";
 import JsonLd from "components/SEO/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Clami | AI Flashcards For Focused, Fast Learning",
-  description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+  title: "Felinify | AI Flashcards For Focused, Fast Learning",
+  description:
+    "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
   alternates: {
     canonical: "/",
   },
@@ -24,57 +25,60 @@ export default function Home() {
   const softwareAppSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Clami",
-    "applicationCategory": "EducationalApplication",
-    "operatingSystem": "Web",
-    "offers": {
+    name: "Felinify",
+    applicationCategory: "EducationalApplication",
+    operatingSystem: "Web",
+    offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+      price: "0",
+      priceCurrency: "USD",
     },
-    "description": "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    "aggregateRating": {
+    description:
+      "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    aggregateRating: {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "120"
+      ratingValue: "4.8",
+      ratingCount: "120",
     },
-    "screenshot": "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
-    "featureList": "AI-powered flashcard creation, Smart quizzes, Mastery tracking, Study analytics",
-    "applicationSubCategory": "Learning Tools",
-    "author": {
+    screenshot:
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+    featureList:
+      "AI-powered flashcard creation, Smart quizzes, Mastery tracking, Study analytics",
+    applicationSubCategory: "Learning Tools",
+    author: {
       "@type": "Person",
-      "name": "Shi Jun(Kyson) W."
+      name: "Shi Jun(Kyson) W.",
     },
-    "publisher": {
+    publisher: {
       "@type": "Person",
-      "name": "Shi Jun(Kyson) W."
-    }
+      name: "Shi Jun(Kyson) W.",
+    },
   };
 
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "url": "https://clami.app/",
-    "name": "Clami",
-    "description": "AI Flashcards For Focused, Fast Learning",
-    "potentialAction": {
+    url: "https://felinify.com/",
+    name: "Felinify",
+    description: "AI Flashcards For Focused, Fast Learning",
+    potentialAction: {
       "@type": "SearchAction",
-      "target": "https://clami.app/workspace/explore?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+      target: "https://felinify.com/workspace/explore?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Clami",
-    "url": "https://clami.app",
-    "logo": "https://clami.app/clami.png",
-    "sameAs": [],
-    "founder": {
+    name: "Felinify",
+    url: "https://felinify.com",
+    logo: "https://felinify.com/felinify.png",
+    sameAs: [],
+    founder: {
       "@type": "Person",
-      "name": "Shi Jun(Kyson) W."
-    }
+      name: "Shi Jun(Kyson) W.",
+    },
   };
 
   return (

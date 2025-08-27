@@ -1,7 +1,7 @@
 version: "3.9"
 services:
-  clami:
-    image: clami
+  felinify:
+    image: felinify
     build:
       context: .
       dockerfile: ./Dockerfile

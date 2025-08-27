@@ -20,17 +20,22 @@ const Pricing = () => {
   const ultraAnnualDiscount = 67.19;
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24" id="pricing" aria-labelledby="pricing-heading">
+    <section
+      className="py-16 sm:py-20 lg:py-24"
+      id="pricing"
+      aria-labelledby="pricing-heading"
+    >
       <div className="px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 
+          <h2
             id="pricing-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
             Simple, Transparent Pricing
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
-            Choose a plan that fits your study style and unlock AI-powered flashcards designed to help you learn smarter and faster.
+            Choose a plan that fits your study style and unlock AI-powered
+            flashcards designed to help you learn smarter and faster.
           </p>
         </div>
 
@@ -80,15 +85,17 @@ const Pricing = () => {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                 <Star className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
               </div>
-              <Badge variant="secondary" className="mb-4">Starter</Badge>
+              <Badge variant="secondary" className="mb-4">
+                Starter
+              </Badge>
               <div className="mb-2">
                 <span className="text-4xl font-bold text-foreground">$0</span>
               </div>
               <p className="text-muted-foreground text-sm">Forever free</p>
             </div>
-            
+
             <Separator className="my-6" />
-            
+
             <div className="space-y-6">
               <ul className="text-muted-foreground space-y-3 text-sm">
                 <li className="flex items-center gap-3">
@@ -105,10 +112,10 @@ const Pricing = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span>Limited Clami AI use</span>
+                  <span>Limited Felinify AI use</span>
                 </li>
               </ul>
-              
+
               <Button className="w-full" variant="outline" asChild>
                 <Link href="/workspace">Get Started Free</Link>
               </Button>
@@ -121,12 +128,14 @@ const Pricing = () => {
                 Most Popular
               </Badge>
             </div>
-            
+
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                 <Zap className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
               </div>
-              <Badge variant="default" className="mb-4">Pro</Badge>
+              <Badge variant="default" className="mb-4">
+                Pro
+              </Badge>
               <div className="mb-2">
                 {isAnnually ? (
                   <div className="flex items-baseline justify-center gap-2">
@@ -138,16 +147,18 @@ const Pricing = () => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-4xl font-bold text-foreground">${proMonthly}</span>
+                  <span className="text-4xl font-bold text-foreground">
+                    ${proMonthly}
+                  </span>
                 )}
               </div>
               <p className="text-muted-foreground text-sm">
                 {isAnnually ? "Per year" : "Per month"}
               </p>
             </div>
-            
+
             <Separator className="my-6" />
-            
+
             <div className="space-y-6">
               <ul className="text-muted-foreground space-y-3 text-sm">
                 <li className="flex items-center gap-3">
@@ -164,10 +175,10 @@ const Pricing = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span>Extended Access to Clami AI</span>
+                  <span>Extended Access to Felinify AI</span>
                 </li>
               </ul>
-              
+
               <Button className="w-full" asChild>
                 <Link href="/workspace">Get Pro Plan</Link>
               </Button>
@@ -179,7 +190,9 @@ const Pricing = () => {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                 <Crown className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
               </div>
-              <Badge variant="secondary" className="mb-4">Ultra</Badge>
+              <Badge variant="secondary" className="mb-4">
+                Ultra
+              </Badge>
               <div className="mb-2">
                 {isAnnually ? (
                   <div className="flex items-baseline justify-center gap-2">
@@ -191,16 +204,18 @@ const Pricing = () => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-4xl font-bold text-foreground">${ultraMonthly}</span>
+                  <span className="text-4xl font-bold text-foreground">
+                    ${ultraMonthly}
+                  </span>
                 )}
               </div>
               <p className="text-muted-foreground text-sm">
                 {isAnnually ? "Per year" : "Per month"}
               </p>
             </div>
-            
+
             <Separator className="my-6" />
-            
+
             <div className="space-y-6">
               <ul className="text-muted-foreground space-y-3 text-sm">
                 <li className="flex items-center gap-3">
@@ -217,10 +232,10 @@ const Pricing = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span>Full Access to Clami AI</span>
+                  <span>Full Access to Felinify AI</span>
                 </li>
               </ul>
-              
+
               <Button className="w-full" variant="outline" asChild>
                 <Link href="/workspace">Get Ultra Plan</Link>
               </Button>

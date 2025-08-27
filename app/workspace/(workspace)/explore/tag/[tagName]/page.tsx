@@ -21,7 +21,7 @@ export async function generateMetadata({
   const { tagName } = await params;
 
   return {
-    title: `${tagName} Flashcard Decks | Clami`,
+    title: `${tagName} Flashcard Decks | Felinify`,
     description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
     keywords: [
       `${tagName.toLowerCase()}`,
@@ -34,9 +34,9 @@ export async function generateMetadata({
       canonical: `/workspace/explore/tag/${tagName}`,
     },
     openGraph: {
-      title: `${tagName} Flashcard Decks | Clami`,
+      title: `${tagName} Flashcard Decks | Felinify`,
       description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
-      url: `https://clami.app/workspace/explore/tag/${tagName}`,
+      url: `https://felinify.com/workspace/explore/tag/${tagName}`,
       type: "website",
     },
   };
@@ -56,11 +56,11 @@ export default async function TagPage({ params }: TagPageProps) {
     "@type": "CollectionPage",
     name: `${tagName} Flashcard Decks`,
     description: `Discover high-quality ${tagName.toLowerCase()} flashcard decks created by students, educators, and professionals worldwide.`,
-    url: `https://clami.app/workspace/explore/tag/${tagName}`,
+    url: `https://felinify.com/workspace/explore/tag/${tagName}`,
     isPartOf: {
       "@type": "WebSite",
-      name: "Clami",
-      url: "https://clami.app",
+      name: "Felinify",
+      url: "https://felinify.com",
     },
     about: {
       "@type": "Thing",

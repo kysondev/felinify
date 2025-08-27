@@ -1,25 +1,25 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://clami.app';
-  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://felinify.com";
+
   const landingPages = [
     {
       url: `${baseUrl}`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: "weekly" as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/terms`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.7,
     },
   ];
@@ -28,13 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/auth/login`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/auth/signup`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     },
   ];
@@ -43,28 +43,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/workspace/library`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: "daily" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/workspace/explore`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: "daily" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/workspace/settings`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     },
   ];
 
-  const routes = [
-    ...landingPages,
-    ...authPages,
-    ...workspacePages,
-  ];
+  const routes = [...landingPages, ...authPages, ...workspacePages];
 
   return routes;
 }

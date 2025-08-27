@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const title = searchParams.get("title") || "Clami";
+  const title = searchParams.get("title") || "Felinify";
   const description =
     searchParams.get("description") ||
     "AI Flashcards For Focused, Fast Learning";
@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
         }}
       >
         <img
-          src="https://clami.app/clami.png"
-          alt="Clami Logo"
+          src="https://felinify.com/felinify.png"
+          alt="Felinify Logo"
           width={120}
           height={120}
           style={{ marginBottom: "30px" }}

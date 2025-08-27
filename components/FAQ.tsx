@@ -19,17 +19,17 @@ interface FAQProps {
 
 export function FAQ({
   title = "Frequently Asked Questions",
-  subtitle = "Everything you need to know about Clami",
+  subtitle = "Everything you need to know about Felinify",
   faqs = [
     {
-      question: "How does Clami's AI flashcard generation work?",
+      question: "How does Felinify's AI flashcard generation work?",
       answer:
-        "Clami uses advanced AI to analyze your notes or documents and extract key concepts. It then creates flashcards with questions on one side and answers on the other. The AI is trained to identify important information and create effective study materials tailored to your content.",
+        "Felinify uses advanced AI to analyze your notes or documents and extract key concepts. It then creates flashcards with questions on one side and answers on the other. The AI is trained to identify important information and create effective study materials tailored to your content.",
     },
     {
-      question: "Can I use Clami on multiple devices?",
+      question: "Can I use Felinify on multiple devices?",
       answer:
-        "Yes! Clami is accessible on any device with a web browser. Your flashcards and progress sync automatically across all your devices, so you can study seamlessly whether you're on your laptop, tablet, or smartphone.",
+        "Yes! Felinify is accessible on any device with a web browser. Your flashcards and progress sync automatically across all your devices, so you can study seamlessly whether you're on your laptop, tablet, or smartphone.",
     },
     {
       question: "Is there a limit to how many flashcards I can create?",
@@ -54,10 +54,14 @@ export function FAQ({
   ],
 }: FAQProps) {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-muted/30" id="faq" aria-labelledby="faq-heading">
+    <section
+      className="py-16 sm:py-20 lg:py-24 bg-muted/30"
+      id="faq"
+      aria-labelledby="faq-heading"
+    >
       <div className="px-4 max-w-[1200px] mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 
+          <h2
             id="faq-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
@@ -73,9 +77,11 @@ export function FAQ({
             <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
               <HelpCircle className="w-5 h-5 text-primary" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground">Common Questions</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              Common Questions
+            </h3>
           </div>
-          
+
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem

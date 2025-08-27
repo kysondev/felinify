@@ -5,8 +5,8 @@ import { SettingsTabs } from "components/settings/SettingsTabs";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Account Settings | Clami",
-  description: "Manage your account settings and preferences for Clami.",
+  title: "Account Settings | Felinify",
+  description: "Manage your account settings and preferences for Felinify.",
   keywords: ["account settings", "user preferences", "profile management"],
   alternates: {
     canonical: "/workspace/settings",
@@ -40,7 +40,10 @@ export default async function SettingsPage() {
             Manage your account settings and preferences.
           </p>
         </div>
-        <SettingsTabs user={user as User} subscription={(subscription as Subscription) || null} />
+        <SettingsTabs
+          user={user as User}
+          subscription={(subscription as Subscription) || null}
+        />
       </div>
     </div>
   );

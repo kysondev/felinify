@@ -11,7 +11,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Clami | AI Flashcards For Focused, Fast Learning",
+  title: "Felinify | AI Flashcards For Focused, Fast Learning",
   description:
     "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
   keywords: [
@@ -23,29 +23,29 @@ export const metadata: Metadata = {
     "student tools",
   ],
   authors: [{ name: "Shi Jun(Kyson) W." }],
-  creator: "Clami",
-  publisher: "Clami",
+  creator: "Felinify",
+  publisher: "Felinify",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://clami.app"),
+  metadataBase: new URL("https://felinify.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Clami | AI Flashcards For Focused, Fast Learning",
+    title: "Felinify | AI Flashcards For Focused, Fast Learning",
     description:
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    url: "https://clami.app",
-    siteName: "Clami",
+    url: "https://felinify.com",
+    siteName: "Felinify",
     images: [
       {
-        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
         width: 1200,
         height: 630,
-        alt: "Clami - AI Flashcards For Focused, Fast Learning",
+        alt: "Felinify - AI Flashcards For Focused, Fast Learning",
       },
     ],
     locale: "en_US",
@@ -53,11 +53,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Clami | AI Flashcards For Focused, Fast Learning",
+    title: "Felinify | AI Flashcards For Focused, Fast Learning",
     description:
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     images: [
-      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754105180/Screenshot_2025-08-01_232455_n6m6gj.png",
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
     ],
   },
   robots: {

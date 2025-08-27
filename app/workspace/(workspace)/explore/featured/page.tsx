@@ -10,13 +10,13 @@ import { getFeaturedDecks } from "@deck/services/deck-query.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {
-  title: "Featured Decks | Clami",
-  description: "Curated collections of the best flashcard decks on Clami.",
+  title: "Featured Decks | Felinify",
+  description: "Curated collections of the best flashcard decks on Felinify.",
   alternates: { canonical: "/workspace/explore/featured" },
   openGraph: {
-    title: "Featured Decks | Clami",
-    description: "Curated collections of the best flashcard decks on Clami.",
-    url: "https://clami.app/workspace/explore/featured",
+    title: "Featured Decks | Felinify",
+    description: "Curated collections of the best flashcard decks on Felinify.",
+    url: "https://felinify.com/workspace/explore/featured",
     type: "website",
   },
 };
@@ -28,8 +28,8 @@ export default async function FeaturedDecksPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Featured Decks",
-    description: "Curated collections of the best flashcard decks on Clami.",
-    url: "https://clami.app/workspace/explore/featured",
+    description: "Curated collections of the best flashcard decks on Felinify.",
+    url: "https://felinify.com/workspace/explore/featured",
   };
 
   return (

@@ -177,7 +177,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>Extended Access to Clami AI</span>
+                  <span>Extended Access to Felinify AI</span>
                 </li>
               </ul>
             </div>
@@ -235,7 +235,7 @@ export function UpgradePlanDialog({
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="size-4" />
-                  <span>Full Access to Clami AI</span>
+                  <span>Full Access to Felinify AI</span>
                 </li>
               </ul>
             </div>
