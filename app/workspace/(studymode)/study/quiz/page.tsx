@@ -14,13 +14,6 @@ import { Progress } from "components/ui/Progress";
 import { Loader2 } from "lucide-react";
 import { useQuizEngine } from "@study/engines/quiz/useQuizEngine";
 
-interface QuizQuestion {
-  question: string;
-  answer: string;
-  options: string[];
-  id: string;
-}
-
 export default function QuizPage() {
   const searchParams = useSearchParams();
   const deckId = searchParams.get("deckId");
