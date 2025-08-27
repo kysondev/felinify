@@ -87,7 +87,7 @@ const Feature = ({
       title: "Personal Library Management",
       description:
         "Organize your study materials with custom decks, tags, and categories. Edit, delete, and manage your flashcards effortlessly.",
-      icon: <CardsIcon size={24} className="text-primary" />,
+      icon: <CardsIcon size={24} />,
       highlight: "Organized",
     },
     {
