@@ -75,7 +75,7 @@ const Footer = (props: FooterProps) => {
         ],
       },
     ],
-    copyright = "© 2025 Felinify.app. All rights reserved.",
+    copyright = "© 2025 Felinify.com. All rights reserved.",
     bottomLinks = [
       { text: "Terms of Service", url: "/terms" },
       { text: "Privacy Policy", url: "/privacy" },
