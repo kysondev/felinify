@@ -15,13 +15,18 @@ import { Badge } from "./ui/Badge";
 import { CommandSearch } from "./CommandSearch";
 import {
   getUser,
-  getUserEnergy
+  getUserEnergy,
+  getUserSubscription
 } from "@user/services/user.service";
 import { signOut } from "@auth/actions/auth.action";
+import { getPlanDetails } from "@subscription/utils/get-plan-details";
+import { Subscription } from "db/types/models.types";
 
 export const DesktopNavbar = async () => {
   const { data: user } = await getUser();
+  const { data: subscription } = await getUserSubscription(user?.id as string);
   const energy = await getUserEnergy(user?.id as string);
+  const planDetails = getPlanDetails(subscription as Subscription);
 
   return (
     <header className="w-full bg-white border-b border-[#E7E6E6] px-6 py-3">
@@ -97,7 +102,7 @@ export const DesktopNavbar = async () => {
                     <div className="flex items-center justify-between w-full">
                       <span>Upgrade Plan</span>
                       <Badge className="bg-primary/10 text-primary text-xs">
-                        PRO
+                        {planDetails.name.charAt(0).toUpperCase() + planDetails.name.slice(1)}
                       </Badge>
                     </div>
                   </DropdownMenuItem>

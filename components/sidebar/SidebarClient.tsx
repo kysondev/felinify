@@ -128,7 +128,8 @@ export const SidebarClient = ({
                   <div className="flex items-center justify-between w-full">
                     <span>Upgrade Plan</span>
                     <Badge className="bg-primary/10 text-primary text-xs">
-                      PRO
+                      {planDetails.name.charAt(0).toUpperCase() +
+                        planDetails.name.slice(1)}
                     </Badge>
                   </div>
                 </DropdownMenuItem>
