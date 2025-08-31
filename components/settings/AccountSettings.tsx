@@ -247,7 +247,10 @@ export function AccountSettings({ user }: { user: User }) {
     }
   };
 
-  const displayImage = imagePreview || user?.image || "/default-avatar.png";
+  const displayImage =
+    imagePreview ||
+    user?.image ||
+    "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg";
 
   return (
     <div className="space-y-6">

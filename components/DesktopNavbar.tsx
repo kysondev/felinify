@@ -16,7 +16,7 @@ import { CommandSearch } from "./CommandSearch";
 import {
   getUser,
   getUserEnergy,
-  getUserSubscription
+  getUserSubscription,
 } from "@user/services/user.service";
 import { signOut } from "@auth/actions/auth.action";
 import { getPlanDetails } from "@subscription/utils/get-plan-details";
@@ -31,11 +31,8 @@ export const DesktopNavbar = async () => {
   return (
     <header className="w-full bg-white border-b border-[#E7E6E6] px-6 py-3">
       <div className="flex items-center justify-between">
-
         <div className="flex-1 max-w-md">
-          <CommandSearch 
-            triggerClassName="flex items-center w-full pl-10 pr-4 py-2.5 bg-gray-50 border-0 hover:bg-white focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg text-sm text-gray-500 relative"
-          />
+          <CommandSearch triggerClassName="flex items-center w-full pl-10 pr-4 py-2.5 bg-gray-50 border-0 hover:bg-white focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg text-sm text-gray-500 relative" />
         </div>
 
         <div className="flex items-center space-x-4">
@@ -48,9 +45,15 @@ export const DesktopNavbar = async () => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-lg p-0 hover:bg-gray-100">
+              <Button
+                variant="ghost"
+                className="relative h-10 w-10 rounded-lg p-0 hover:bg-gray-100"
+              >
                 <Image
-                  src={user?.image || "/default-avatar.png"}
+                  src={
+                    user?.image ||
+                    "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg"
+                  }
                   alt="User Avatar"
                   width={40}
                   height={40}
@@ -64,7 +67,10 @@ export const DesktopNavbar = async () => {
             >
               <div className="flex items-center space-x-3 p-4">
                 <Image
-                  src={user?.image || "/default-avatar.png"}
+                  src={
+                    user?.image ||
+                    "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg"
+                  }
                   alt="User Avatar"
                   width={48}
                   height={48}
@@ -102,14 +108,18 @@ export const DesktopNavbar = async () => {
                     <div className="flex items-center justify-between w-full">
                       <span>Upgrade Plan</span>
                       <Badge className="bg-primary/10 text-primary text-xs">
-                        {planDetails.name.charAt(0).toUpperCase() + planDetails.name.slice(1)}
+                        {planDetails.name.charAt(0).toUpperCase() +
+                          planDetails.name.slice(1)}
                       </Badge>
                     </div>
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-600" onClick={signOut}>
+              <DropdownMenuItem
+                className="cursor-pointer text-red-600"
+                onClick={signOut}
+              >
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign out
               </DropdownMenuItem>

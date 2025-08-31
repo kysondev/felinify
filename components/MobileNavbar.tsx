@@ -44,7 +44,10 @@ export const MobileNavbar = async () => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-lg p-0">
               <Image
-                src={user?.image || "/default-avatar.png"}
+                src={
+                  user?.image ||
+                  "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg"
+                }
                 alt="User Avatar"
                 width={36}
                 height={36}
@@ -58,7 +61,10 @@ export const MobileNavbar = async () => {
           >
             <div className="flex items-center space-x-3 p-4">
               <Image
-                src={user?.image || "/default-avatar.png"}
+                src={
+                  user?.image ||
+                  "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg"
+                }
                 alt="User Avatar"
                 width={40}
                 height={40}

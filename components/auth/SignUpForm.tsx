@@ -122,7 +122,7 @@ export function SignUpForm({
                       }
                     >
                       <img
-                        src="/github_light.svg"
+                        src="/github.svg"
                         alt="github"
                         className="absolute left-4 h-5 w-5"
                       />
