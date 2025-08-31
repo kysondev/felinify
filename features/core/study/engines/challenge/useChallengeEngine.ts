@@ -14,6 +14,10 @@ import {
 import { updateChallengeCompletionAction } from "@study/actions/study.action";
 import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.action";
 
+/**
+ * Challenge mode engine that manages the multiple choice quiz experience.
+ * Handles rounds of questions, timer, scoring, and mastery calculations.
+ */
 export function useChallengeEngine(config: ChallengeConfig) {
   const { deck, numOfRounds, isTimed, deckId, userId, initialMastery } = config;
 
@@ -67,6 +71,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     studyMode: "challenge",
   });
 
+  // Process user's answer selection and update the score
   const handleAnswer = useCallback(
     (optionIndex: number) => {
       if (!currentCard || state.showAnswer) return;
@@ -78,11 +83,13 @@ export function useChallengeEngine(config: ChallengeConfig) {
     [currentCard, state.showAnswer, options, recordAnswer, stopQuestionTimer]
   );
 
+  // Handle when the timer runs out - mark answer as incorrect
   const handleTimeUp = useCallback(() => {
     if (!currentCard || state.showAnswer) return;
     recordAnswer(false, String(currentCard.id));
   }, [currentCard, state.showAnswer, recordAnswer]);
 
+  // Move to next question or round, handle completion logic
   const navigateNext = useCallback(async () => {
     if (!deck?.flashcards) return;
 
@@ -139,6 +146,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     saveSessionWithoutRedirect,
   ]);
 
+  // Start the next round of questions
   const handleStartNextRound = useCallback(() => {
     resumeStudySession();
     startNextRound();
@@ -146,6 +154,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     resetOptionsGeneration();
   }, [resumeStudySession, startNextRound, selectCards, resetOptionsGeneration]);
 
+  // Initialize study session when deck is loaded
   useEffect(() => {
     if (
       deck &&
@@ -156,14 +165,16 @@ export function useChallengeEngine(config: ChallengeConfig) {
       startStudySession();
       selectCards();
     }
-  }, [deck, isStudying, isSavingLoading, state.view]);
+  }, [deck, isStudying, isSavingLoading, state.view, startStudySession, selectCards]);
 
+  // Generate multiple choice options when a new card is shown
   useEffect(() => {
     if (currentCard && !state.showAnswer && selectedCards.length > 0) {
       generateOptions(currentCard);
     }
   }, [currentCard, state.showAnswer, selectedCards.length, generateOptions]);
 
+  // Start the question timer for each new question
   useEffect(() => {
     if (currentCard && !state.showAnswer) {
       startQuestionTimer();
@@ -184,6 +195,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
   );
   const isLastCard = roundComplete && state.currentRound === numOfRounds;
 
+  // Return consolidated state and actions for the UI components
   return {
     state: {
       ...state,

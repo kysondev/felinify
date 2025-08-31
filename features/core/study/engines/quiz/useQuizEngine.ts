@@ -24,6 +24,10 @@ interface QuizEngineConfig {
   token: string | null;
 }
 
+/**
+ * Quiz mode engine that manages the AI generated adaptive quiz experience.
+ * Handles token validation, quiz generation, answer tracking, and scoring.
+ */
 export function useQuizEngine({
   deck,
   userId,
@@ -68,6 +72,7 @@ export function useQuizEngine({
     studyMode: "quiz",
   });
 
+  // Initialize quiz: validate token, generate questions, and start session
   useEffect(() => {
     const run = async () => {
       if (!deckId || !token || !userId) {
@@ -108,6 +113,7 @@ export function useQuizEngine({
     run();
   }, [deckId, token, userId]);
 
+  // Process user's answer selection and update the score
   const handleAnswer = useCallback(
     (optionIndex: number) => {
       if (showAnswer || !currentQuestion) return;
@@ -125,6 +131,7 @@ export function useQuizEngine({
     [currentQuestion, showAnswer]
   );
 
+  // Move to next question or complete the quiz
   const handleNext = useCallback(() => {
     setShowAnswer(false);
     setSelectedOption(null);
@@ -165,16 +172,19 @@ export function useQuizEngine({
     userId,
   ]);
 
+  // Calculate progress percentage through the quiz
   const totalProgress = useMemo(() => {
     if (quizQuestions.length === 0) return 0;
     return ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
   }, [currentQuestionIndex, quizQuestions.length]);
 
+  // Calculate how much mastery was gained during this session
   const masteryGained = useMemo(
     () => getNewMastery() - initialMastery,
     [getNewMastery, initialMastery]
   );
 
+  // Return consolidated state and actions for the UI components
   return {
     state: {
       isLoading,

@@ -10,6 +10,10 @@ interface FlipEngineConfig {
   initialMastery: number;
 }
 
+/**
+ * Flip mode engine that manages the classic flashcard experience.
+ * Handles card navigation, flipping, and mastery calculations.
+ */
 export function useFlipEngine({ deck, userId, initialMastery }: FlipEngineConfig) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -33,6 +37,7 @@ export function useFlipEngine({ deck, userId, initialMastery }: FlipEngineConfig
     studyMode: "flip",
   });
 
+  // Navigate to previous card
   const onPrev = useCallback(() => {
     if (!deck?.flashcards?.length) return;
     const newIndex = currentCardIndex === 0 ? totalCards - 1 : currentCardIndex - 1;
@@ -40,6 +45,7 @@ export function useFlipEngine({ deck, userId, initialMastery }: FlipEngineConfig
     setCurrentCardIndex(newIndex);
   }, [deck, currentCardIndex, totalCards]);
 
+  // Navigate to next card
   const onNext = useCallback(() => {
     if (!deck?.flashcards?.length) return;
     const newIndex = currentCardIndex === totalCards - 1 ? 0 : currentCardIndex + 1;
@@ -47,10 +53,12 @@ export function useFlipEngine({ deck, userId, initialMastery }: FlipEngineConfig
     setCurrentCardIndex(newIndex);
   }, [deck, currentCardIndex, totalCards]);
 
+  // Toggle card flip state
   const onFlip = useCallback(() => {
     setIsFlipped((prev) => !prev);
   }, []);
 
+  // Start study session when deck is loaded
   useEffect(() => {
     if (deck && totalCards > 0) {
       startStudySession();
@@ -58,11 +66,13 @@ export function useFlipEngine({ deck, userId, initialMastery }: FlipEngineConfig
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deck, totalCards]);
 
+  // Calculate progress percentage through the deck
   const totalProgress = useMemo(() => {
     if (totalCards === 0) return 0;
     return ((currentCardIndex + 1) / totalCards) * 100;
   }, [currentCardIndex, totalCards]);
 
+  // Return consolidated state and actions for the UI components
   return {
     state: {
       currentCard,

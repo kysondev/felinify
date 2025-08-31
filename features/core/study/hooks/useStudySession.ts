@@ -16,6 +16,10 @@ interface UseStudySessionProps {
   studyMode?: "challenge" | "flip" | "quiz";
 }
 
+/**
+ * Core hook for managing study sessions across all study modes.
+ * Handles timing, progress tracking, mastery calculations, and saving results.
+ */
 export const useStudySession = ({
   deck,
   userId,
@@ -36,6 +40,7 @@ export const useStudySession = ({
   const [isPaused, setIsPaused] = useState(false);
   const totalElapsedTime = useRef<number>(0);
 
+  // Start tracking study time with a timer
   const startStudySession = useCallback(() => {
     if (isStudying || isPaused) return;
 
@@ -50,6 +55,7 @@ export const useStudySession = ({
     }, 1000);
   }, [isStudying, isPaused]);
 
+  // Pause the study timer and save elapsed time
   const pauseStudySession = useCallback(() => {
     if (!isStudying || isPaused) return;
 
@@ -97,19 +103,23 @@ export const useStudySession = ({
     }
   }, [isStudying]);
 
+  // Calculate new mastery level based on study mode and performance
   const getNewMastery = useCallback(() => {
     if (studyMode === "challenge" || studyMode === "quiz") {
       if (!deck?.flashcards?.length) return initialMastery;
 
+      // For challenge/quiz: +1% for each correct, -1% for each incorrect
       const masteryChange = correctAnswers - incorrectAnswers;
       const newMastery = initialMastery + masteryChange;
 
       return Math.min(Math.max(newMastery, 0), 100);
     } else if (studyMode === "flip") {
       if (initialMastery > 50) {
+        // Flip mode can't increase mastery beyond 50%
         return initialMastery;
       }
 
+      // For flip: gain based on study duration, capped at 50% total
       const studyDurationMinutes = studyTime / 60;
       const maxGain = Math.min(Math.floor(studyDurationMinutes), 30);
       const cappedGain =
