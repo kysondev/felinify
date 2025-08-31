@@ -1,13 +1,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useDeckLoader } from "@study/hooks/useDeckLoader";
+import { useDeckLoader } from "@study/hooks/use-deck-loader";
 import { ErrorState, LoadingState, SessionHeader } from "components/study";
-import NoAccessState from "components/study/states/NoAccessState";
-import { FlipCard } from "components/study/FlipCard";
-import { FlipControls } from "components/study/FlipControls";
-import { StudyEndDialog } from "components/study/StudyEndDialog";
-import { useFlipEngine } from "@study/engines/flip/useFlipEngine";
+import NoAccessState from "components/study/states/no-access-state";
+import { FlipCard } from "components/study/flip-card";
+import { FlipControls } from "components/study/flip-controls";
+import { StudyEndDialog } from "components/study/study-end-dialog";
+import { useFlipEngine } from "@study/engines/flip/use-flip-engine";
 
 export default function FlipStudyPage() {
   const searchParams = useSearchParams();

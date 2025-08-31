@@ -1,4 +1,4 @@
-import { Skeleton } from "components/ui/Skeleton";
+import { Skeleton } from "components/ui/skeleton";
 import { ChevronRight, Home, Library } from "lucide-react";
 import Link from "next/link";
 

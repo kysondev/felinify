@@ -1,5 +1,5 @@
 "use client";
-import { authClient } from "@auth/authClient";
+import { authClient } from "@auth/auth-client";
 import { signInSchema, signUpSchema } from "@auth/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";

@@ -1,11 +1,11 @@
-import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
-import { Badge } from "components/ui/Badge";
-import { Button } from "components/ui/Button";
+import { ExploreDeckCard } from "components/explore/explore-deck-card";
+import { Badge } from "components/ui/badge";
+import { Button } from "components/ui/button";
 import { Deck } from "db/types/models.types";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
+import JsonLd from "components/SEO/json-ld";
 import { getAllDecks } from "@deck/services/deck.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 

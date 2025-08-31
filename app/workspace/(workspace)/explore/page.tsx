@@ -1,9 +1,9 @@
-import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
-import { SearchForm } from "components/explore/SearchForm";
-import JsonLd from "components/SEO/JsonLd";
-import { Badge } from "components/ui/Badge";
-import { Button } from "components/ui/Button";
-import { Card, CardContent } from "components/ui/Card";
+import { ExploreDeckCard } from "components/explore/explore-deck-card";
+import { SearchForm } from "components/explore/search-form";
+import JsonLd from "components/SEO/json-ld";
+import { Badge } from "components/ui/badge";
+import { Button } from "components/ui/button";
+import { Card, CardContent } from "components/ui/card";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 import { Deck } from "db/types/models.types";
 import { Sparkles, TrendingUp } from "lucide-react";

@@ -1,7 +1,15 @@
-import { Button } from "components/ui/Button";
-import { Card, CardContent } from "components/ui/Card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
-import { PlusCircle, Library, BarChart3, Search, Filter, Home, ChevronRight } from "lucide-react";
+import { Button } from "components/ui/button";
+import { Card, CardContent } from "components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
+import {
+  PlusCircle,
+  Library,
+  BarChart3,
+  Search,
+  Filter,
+  Home,
+  ChevronRight,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +17,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "components/ui/Dialog";
-import { Skeleton } from "components/ui/Skeleton";
+} from "components/ui/dialog";
+import { Skeleton } from "components/ui/skeleton";
 import { Input } from "components/ui/Input";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
@@ -175,13 +183,16 @@ export default function Loading() {
           <TabsContent value="decks" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, index) => (
-                <Card key={index} className="group border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card">
+                <Card
+                  key={index}
+                  className="group border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card"
+                >
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <Skeleton className="h-6 w-3/4" />
                       <Skeleton className="h-5 w-16" />
                     </div>
-                    
+
                     <div className="mb-4">
                       <Skeleton className="h-4 w-full mb-2" />
                       <Skeleton className="h-4 w-4/5" />
@@ -243,8 +254,7 @@ export default function Loading() {
                         Create New Deck
                       </h3>
                       <p className="text-muted-foreground text-sm">
-                        Start building your knowledge with a new flashcard
-                        deck
+                        Start building your knowledge with a new flashcard deck
                       </p>
                     </CardContent>
                   </Card>
@@ -303,7 +313,10 @@ export default function Loading() {
                       </div>
                       <div className="space-y-3">
                         {Array.from({ length: 5 }).map((_, index) => (
-                          <div key={index} className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50">
+                          <div
+                            key={index}
+                            className="flex items-center gap-4 p-4 bg-muted/20 rounded-lg border border-border/50"
+                          >
                             <Skeleton className="h-8 w-8 rounded-full" />
                             <div className="flex-1 min-w-0">
                               <Skeleton className="h-4 w-32 mb-1" />
@@ -332,7 +345,10 @@ export default function Loading() {
                   <div className="space-y-4">
                     <div className="space-y-3">
                       {Array.from({ length: 3 }).map((_, index) => (
-                        <div key={index} className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                        <div
+                          key={index}
+                          className="p-3 bg-muted/30 rounded-lg border border-border/50"
+                        >
                           <div className="flex items-center gap-3 mb-2">
                             <Skeleton className="h-6 w-6 rounded-lg" />
                             <div>

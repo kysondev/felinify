@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getDeckById } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
-import { Button } from "components/ui/Button";
-import { MultipleChoiceOptions } from "components/study/MultipleChoiceOptions";
-import { QuestionCard } from "components/study/QuestionCard";
-import { SessionHeader } from "components/study/SessionHeader";
-import { FinalResults } from "components/study/FinalResults";
-import { ErrorState } from "components/study/states/ErrorState";
-import { Progress } from "components/ui/Progress";
+import { Button } from "components/ui/button";
+import { MultipleChoiceOptions } from "components/study/multiple-choice-options";
+import { QuestionCard } from "components/study/question-card";
+import { SessionHeader } from "components/study/session-header";
+import { FinalResults } from "components/study/final-results";
+import { ErrorState } from "components/study/states/error-state";
+import { Progress } from "components/ui/progress";
 import { Loader2 } from "lucide-react";
-import { useQuizEngine } from "@study/engines/quiz/useQuizEngine";
+import { useQuizEngine } from "@study/engines/quiz/use-quiz-engine";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();

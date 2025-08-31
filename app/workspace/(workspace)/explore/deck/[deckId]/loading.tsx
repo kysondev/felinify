@@ -1,9 +1,9 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
 import { ChevronRight, Clock, Home, Star, User, Compass } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent } from "components/ui/Card";
-import { Avatar, AvatarFallback } from "components/ui/Avatar";
-import { Skeleton } from "components/ui/Skeleton";
+import { Card, CardContent } from "components/ui/card";
+import { Avatar, AvatarFallback } from "components/ui/avatar";
+import { Skeleton } from "components/ui/skeleton";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function Loading() {
@@ -34,25 +34,27 @@ export default function Loading() {
           <Skeleton className="h-9 w-3/4" />
           <Skeleton className="h-4 w-full mt-3" />
           <Skeleton className="h-4 w-5/6 mt-2" />
-          
+
           <div className="flex items-center mt-4 gap-4">
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
-                <AvatarFallback><Skeleton className="h-full w-full" /></AvatarFallback>
+                <AvatarFallback>
+                  <Skeleton className="h-full w-full" />
+                </AvatarFallback>
               </Avatar>
               <div className="text-sm">
                 <Skeleton className="h-3 w-16" />
                 <Skeleton className="h-4 w-24 mt-1" />
               </div>
             </div>
-            
+
             <div className="text-sm">
               <Skeleton className="h-3 w-20" />
               <Skeleton className="h-4 w-24 mt-1" />
             </div>
           </div>
         </div>
-        
+
         <div className="flex flex-col gap-3 min-w-[200px]">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1 text-sm">
@@ -64,17 +66,17 @@ export default function Loading() {
               <Skeleton className="h-4 w-16" />
             </span>
           </div>
-          
+
           <div className="flex items-center gap-1 text-sm">
             <CardsIcon size={16} />
             <Skeleton className="h-4 w-24" />
           </div>
-          
+
           <div className="flex items-center gap-1 text-sm">
             <Clock className="h-4 w-4" />
             <Skeleton className="h-4 w-16" />
           </div>
-          
+
           <div className="flex gap-2 mt-2">
             <Skeleton className="h-9 w-full" />
           </div>
@@ -102,7 +104,7 @@ export default function Loading() {
                 <Skeleton className="h-4 w-40 inline-block" />
               </span>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {Array.from({ length: 4 }).map((_, index) => (
                 <Card key={index} className="overflow-hidden">
@@ -134,18 +136,18 @@ export default function Loading() {
                 <Skeleton className="h-5 w-16" />
               </div>
             </div>
-            
+
             <Card className="border-dashed border-2 border-border/50">
               <CardContent className="flex flex-col items-center justify-center py-16 px-6 text-center">
                 <div className="relative mb-6">
                   <Skeleton className="h-20 w-20 rounded-full" />
                 </div>
-                
+
                 <Skeleton className="h-6 w-40 mb-2" />
                 <Skeleton className="h-4 w-full max-w-md" />
                 <Skeleton className="h-4 w-5/6 max-w-md mt-1" />
                 <Skeleton className="h-4 w-2/3 max-w-md mt-1 mb-6" />
-                
+
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Skeleton className="h-9 w-32" />
                   <Skeleton className="h-9 w-24" />

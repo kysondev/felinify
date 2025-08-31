@@ -1,6 +1,6 @@
-import { Card, CardContent } from "components/ui/Card";
+import { Card, CardContent } from "components/ui/card";
 import { Input } from "components/ui/Input";
-import { Skeleton } from "components/ui/Skeleton";
+import { Skeleton } from "components/ui/skeleton";
 import { Search, Sparkles } from "lucide-react";
 
 export default function Loading() {
@@ -56,7 +56,10 @@ export default function Loading() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index} className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col">
+            <Card
+              key={index}
+              className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col"
+            >
               <CardContent className="p-0 flex flex-col h-full">
                 <div className="p-4 flex-shrink-0">
                   <div className="flex items-center justify-between mb-2">
@@ -76,20 +79,20 @@ export default function Loading() {
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <div className="flex items-center gap-2">
                       <Skeleton className="w-6 h-6 rounded-full" />
@@ -119,7 +122,10 @@ export default function Loading() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index} className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col">
+            <Card
+              key={index}
+              className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col"
+            >
               <CardContent className="p-0 flex flex-col h-full">
                 <div className="p-4 flex-shrink-0">
                   <div className="flex items-center justify-between mb-2">
@@ -139,20 +145,20 @@ export default function Loading() {
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <div className="flex items-center gap-2">
                       <Skeleton className="w-6 h-6 rounded-full" />
@@ -182,7 +188,10 @@ export default function Loading() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index} className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col">
+            <Card
+              key={index}
+              className="group border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col"
+            >
               <CardContent className="p-0 flex flex-col h-full">
                 <div className="p-4 flex-shrink-0">
                   <div className="flex items-center justify-between mb-2">
@@ -202,20 +211,20 @@ export default function Loading() {
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
-                    
+
                     <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
                       <Skeleton className="h-4 w-4 mx-auto mb-1" />
                       <Skeleton className="h-3 w-8 mx-auto" />
                       <Skeleton className="h-3 w-10 mx-auto mt-1" />
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
                     <div className="flex items-center gap-2">
                       <Skeleton className="w-6 h-6 rounded-full" />

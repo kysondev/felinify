@@ -1,15 +1,15 @@
 import { getDeckById } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
-import { DeckEditForm } from "components/library/DeckEditForm";
-import { FlashcardList } from "components/library/FlashcardList";
-import { DeckStats } from "components/library/DeckStats";
-import { DeckVisibilityToggle } from "components/library/DeckVisibilityToggle";
-import { DeckTagManager } from "components/library/DeckTagManager";
+import { DeckEditForm } from "components/library/deck-edit-form";
+import { FlashcardList } from "components/library/flashcard-list";
+import { DeckStats } from "components/library/deck-stats";
+import { DeckVisibilityToggle } from "components/library/deck-visibility-toggle";
+import { DeckTagManager } from "components/library/deck-tag-manager";
 import { Deck, User } from "db/types/models.types";
 import Link from "next/link";
 import { ChevronRight, Home, Library } from "lucide-react";
-import { Button } from "components/ui/Button";
-import { DeckStudy } from "components/library/DeckStudy";
+import { Button } from "components/ui/button";
+import { DeckStudy } from "components/library/deck-study";
 import { redirect } from "next/navigation";
 
 export default async function DeckEditPage({

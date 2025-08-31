@@ -1,5 +1,5 @@
-import ResetPasswordForm from "components/auth/ResetPasswordForm";
-import { Loading } from "components/ui/Loading";
+import ResetPasswordForm from "components/auth/reset-password-form";
+import { Loading } from "components/ui/loading";
 import { Suspense } from "react";
 
 export default function Page() {

@@ -1,11 +1,11 @@
-import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
+import { ExploreDeckCard } from "components/explore/explore-deck-card";
 import { Deck } from "db/types/models.types";
-import { Card, CardContent } from "components/ui/Card";
-import { Badge } from "components/ui/Badge";
-import { Button } from "components/ui/Button";
+import { Card, CardContent } from "components/ui/card";
+import { Badge } from "components/ui/badge";
+import { Button } from "components/ui/button";
 import { Search, ArrowLeft, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
-import JsonLd from "components/SEO/JsonLd";
+import JsonLd from "components/SEO/json-ld";
 import { getDecksBySearch } from "@deck/services/deck-query.service";
 
 interface SearchPageProps {

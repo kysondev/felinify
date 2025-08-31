@@ -1,5 +1,5 @@
-import { LandingNavbar } from "components/LandingNavbar";
-import { Footer } from "components/Footer";
+import { LandingNavbar } from "components/landing-navbar";
+import { Footer } from "components/landing/footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

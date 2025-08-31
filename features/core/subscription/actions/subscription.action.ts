@@ -1,5 +1,5 @@
 import { Plan } from "@subscription/config/plans.config";
-import { authClient } from "@auth/authClient";
+import { authClient } from "@auth/auth-client";
 import { createCustomerPortalSession } from "@subscription/services/subscription.service";
 import { getUser } from "@user/services/user.service";
 

@@ -1,7 +1,7 @@
 import { getUser, getUserSubscription } from "@user/services/user.service";
-import { Alert } from "components/ui/Alert";
+import { Alert } from "components/ui/alert";
 import { Subscription, User } from "db/types/models.types";
-import { SettingsTabs } from "components/settings/SettingsTabs";
+import { SettingsTabs } from "components/settings/settings-tabs";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

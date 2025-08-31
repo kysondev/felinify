@@ -1,6 +1,6 @@
-import { SignUpForm } from "components/auth/SignUpForm";
+import { SignUpForm } from "components/auth/signup-form";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
+import JsonLd from "components/SEO/json-ld";
 
 export const metadata: Metadata = {
   title: "Sign Up | Felinify",

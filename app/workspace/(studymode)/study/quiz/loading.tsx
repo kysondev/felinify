@@ -1,5 +1,5 @@
-import { Card } from "components/ui/Card";
-import { Progress } from "components/ui/Progress";
+import { Card } from "components/ui/card";
+import { Progress } from "components/ui/progress";
 import { Loader2 } from "lucide-react";
 
 export default function QuizLoading() {
@@ -10,7 +10,7 @@ export default function QuizLoading() {
           <h2 className="text-2xl font-semibold mb-6">
             Preparing Your Adaptive Quiz
           </h2>
-          
+
           <div className="w-full max-w-md mb-8">
             <Progress value={0} className="h-2" />
             <div className="flex justify-between mt-2 text-sm text-muted-foreground">
@@ -19,11 +19,11 @@ export default function QuizLoading() {
               <span>Displaying questions</span>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-center gap-2 mb-6">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-          
+
           <p className="text-center text-muted-foreground">
             Loading quiz session...
           </p>
@@ -31,4 +31,4 @@ export default function QuizLoading() {
       </Card>
     </div>
   );
-} 
+}

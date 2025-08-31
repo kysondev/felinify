@@ -8,9 +8,9 @@ import {
   SessionHeader,
   RoundResultsCard,
 } from "components/study";
-import { useDeckLoader } from "@study/hooks/useDeckLoader";
-import { useChallengeEngine } from "@study/engines/challenge/useChallengeEngine";
-import { QuestionView } from "components/study/QuestionView";
+import { useDeckLoader } from "@study/hooks/use-deck-loader";
+import { useChallengeEngine } from "@study/engines/challenge/use-challenge-engine";
+import { QuestionView } from "components/study/question-view";
 
 export default function ChallengePage() {
   const searchParams = useSearchParams();

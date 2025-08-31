@@ -1,9 +1,9 @@
 import { getDecksByUserId } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
-import { Card, CardContent } from "components/ui/Card";
-import { Button } from "components/ui/Button";
+import JsonLd from "components/SEO/json-ld";
+import { Card, CardContent } from "components/ui/card";
+import { Button } from "components/ui/button";
 import { Clock, Library, Sparkles } from "lucide-react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";

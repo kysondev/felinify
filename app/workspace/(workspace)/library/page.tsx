@@ -1,4 +1,4 @@
-import { Button } from "components/ui/Button";
+import { Button } from "components/ui/button";
 import { PlusCircle, Library, Home, ChevronRight } from "lucide-react";
 import { getDecksByUserId } from "@deck/services/deck.service";
 import { getUser, getUserSubscription } from "@user/services/user.service";
@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "components/ui/Dialog";
-import { CreateDeckForm } from "components/library/CreateDeckForm";
+} from "components/ui/dialog";
+import { CreateDeckForm } from "components/library/create-deck-form";
 import { Subscription, User } from "db/types/models.types";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
-import { LibraryTabs } from "components/library/LibraryTabs";
+import JsonLd from "components/SEO/json-ld";
+import { LibraryTabs } from "components/library/library-tabs";
 import Link from "next/link";
 
 export const metadata: Metadata = {

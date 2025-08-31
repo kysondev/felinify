@@ -1,6 +1,6 @@
-import { Card, CardContent } from "components/ui/Card";
-import { Button } from "components/ui/Button";
-import { Skeleton } from "components/ui/Skeleton";
+import { Card, CardContent } from "components/ui/card";
+import { Button } from "components/ui/button";
+import { Skeleton } from "components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

@@ -1,16 +1,16 @@
-import { Cta } from "components/Cta";
-import { FAQ } from "components/FAQ";
-import { Feature } from "components/Feature";
-import { Footer } from "components/Footer";
-import { Hero } from "components/Hero";
-import { HowItWorks } from "components/HowItWorks";
-import { LandingNavbar } from "components/LandingNavbar";
-import { Pricing } from "components/Pricing";
-import { Stats } from "components/Stats";
-import { Testimonials } from "components/Testimonials";
-import { SubscriptionPopup } from "components/SubscriptionPopup";
+import { Cta } from "components/landing/call-to-action";
+import { FAQ } from "components/landing/faq";
+import { Feature } from "components/landing/feature";
+import { Footer } from "components/landing/footer";
+import { Hero } from "components/landing/hero";
+import { HowItWorks } from "components/landing/how-it-works";
+import { LandingNavbar } from "components/landing-navbar";
+import { Pricing } from "components/landing/pricing";
+import { Stats } from "components/landing/stats";
+import { Testimonials } from "components/landing/testimonials";
+import { SubscriptionPopup } from "components/landing/subscription-popup";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
+import JsonLd from "components/SEO/json-ld";
 
 export const metadata: Metadata = {
   title: "Felinify | AI Flashcards For Focused, Fast Learning",

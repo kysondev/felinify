@@ -1,5 +1,5 @@
-import { Button } from "components/ui/Button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/Tabs";
+import { Button } from "components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
 import {
   ChevronRight,
   Clock,
@@ -15,11 +15,11 @@ import Link from "next/link";
 import { getDeckById } from "@deck/services/deck.service";
 import { getUser, getUserWithId } from "@user/services/user.service";
 import { User as UserType } from "db/types/models.types";
-import { Progress } from "components/ui/Progress";
-import ExploreDeckStudyOptions from "components/explore/ExploreDeckStudyOptions";
-import ExploreFlashcardGrid from "components/explore/ExploreFlashcardList";
-import { ReviewSection } from "components/explore/ReviewSection";
-import { Avatar, AvatarFallback, AvatarImage } from "components/ui/Avatar";
+import { Progress } from "components/ui/progress";
+import ExploreDeckStudyOptions from "components/explore/explore-deck-study-options";
+import ExploreFlashcardGrid from "components/explore/explore-flashcard-list";
+import { ReviewSection } from "components/explore/review-section";
+import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
 import { getReviewsByDeckId } from "@review/services/review.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 

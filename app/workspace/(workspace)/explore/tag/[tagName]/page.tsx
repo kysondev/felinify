@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
-import { ExploreDeckCard } from "components/explore/ExploreDeckCard";
+import { ExploreDeckCard } from "components/explore/explore-deck-card";
 import { Deck } from "db/types/models.types";
-import { Card, CardContent } from "components/ui/Card";
-import { Button } from "components/ui/Button";
+import { Card, CardContent } from "components/ui/card";
+import { Button } from "components/ui/button";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
-import JsonLd from "components/SEO/JsonLd";
+import JsonLd from "components/SEO/json-ld";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
 import { getDecksByTag } from "@deck/services/deck-query.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
