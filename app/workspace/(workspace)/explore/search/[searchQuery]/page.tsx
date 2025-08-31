@@ -3,11 +3,10 @@ import { Deck } from "db/types/models.types";
 import { Card, CardContent } from "components/ui/Card";
 import { Badge } from "components/ui/Badge";
 import { Button } from "components/ui/Button";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search, ArrowLeft, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import JsonLd from "components/SEO/JsonLd";
 import { getDecksBySearch } from "@deck/services/deck-query.service";
-import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface SearchPageProps {
   params: Promise<{ searchQuery: string }>;
@@ -138,7 +137,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
             </Link>
             <Link href="/workspace/library">
               <Button>
-                <CardsIcon size={16} className="text-primary" />
+                <PlusCircleIcon size={16} className="text-white" />
                 Create Your Own Deck
               </Button>
             </Link>
