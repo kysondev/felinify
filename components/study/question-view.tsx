@@ -11,13 +11,13 @@ interface QuestionViewProps {
   timeLimit: number;
   currentCard: any | null;
   currentCardIndex: number;
-  questionsPerRound: number;
+  totalCards: number;
   answeredCards: Record<string, boolean>;
   options: { text: string; isCorrect: boolean }[];
   handleAnswer: (optionIndex: number) => void;
   navigateNext: () => void;
   isLastCard: boolean;
-  isRoundComplete: boolean;
+  isSessionComplete: boolean;
 }
 
 /**
@@ -30,7 +30,7 @@ export const QuestionView = ({
   timeLimit,
   currentCard,
   currentCardIndex,
-  questionsPerRound,
+  totalCards,
   showAnswer,
   answeredCards,
   questionTimeLeft,
@@ -38,7 +38,7 @@ export const QuestionView = ({
   handleAnswer,
   navigateNext,
   isLastCard,
-  isRoundComplete,
+  isSessionComplete,
 }: QuestionViewProps) => {
   return (
     <>
@@ -56,7 +56,7 @@ export const QuestionView = ({
             answer: currentCard!.question,
           }}
           currentCardIndex={currentCardIndex + 1}
-          totalCards={questionsPerRound}
+          totalCards={totalCards}
           showAnswer={showAnswer}
           answeredCards={answeredCards}
           questionTimeLeft={questionTimeLeft}
@@ -72,11 +72,7 @@ export const QuestionView = ({
       ) : (
         <div className="flex justify-center">
           <Button onClick={navigateNext} className="min-w-[200px]">
-            {isLastCard
-              ? "View Results"
-              : isRoundComplete
-                ? "View Round Results"
-                : "Next Card"}
+            {isLastCard ? "View Results" : "Next Card"}
           </Button>
         </div>
       )}

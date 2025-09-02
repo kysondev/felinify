@@ -23,8 +23,6 @@ export default function ExploreDeckStudyOptions({
   const [showChallengeSettings, setShowChallengeSettings] =
     useState<boolean>(false);
   const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
-  const [numOfRounds, setNumOfRounds] = useState<number>(3);
-  const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
   const [isTimed, setIsTimed] = useState<boolean>(false);
   const [selectedMode, setSelectedMode] = useState<string>("");
 
@@ -46,7 +44,7 @@ export default function ExploreDeckStudyOptions({
 
   const handleStartStudy = () => {
     router.push(
-      `/workspace/study/${selectedMode}?deckId=${deckId}&numOfRounds=${numOfRounds}&timed=${isTimed}`
+      `/workspace/study/${selectedMode}?deckId=${deckId}&timed=${isTimed}`
     );
   };
 
@@ -65,8 +63,6 @@ export default function ExploreDeckStudyOptions({
         showChallengeSettings={showChallengeSettings}
         setShowChallengeSettings={setShowChallengeSettings}
         handleStartStudy={handleStartStudy}
-        numOfRounds={numOfRounds}
-        setNumOfRounds={setNumOfRounds}
         isTimed={isTimed}
         setIsTimed={setIsTimed}
       />
@@ -74,8 +70,8 @@ export default function ExploreDeckStudyOptions({
         <AdaptiveQuizSettings
           showQuizSettings={showQuizSettings}
           setShowQuizSettings={setShowQuizSettings}
-          numOfQuestions={numOfQuestions}
-          setNumOfQuestions={setNumOfQuestions}
+          numOfQuestions={10}
+          setNumOfQuestions={() => {}}
           deckId={deckId}
           user={user}
         />

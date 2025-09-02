@@ -9,6 +9,7 @@ import { Option } from "@study/types/challenge.types";
 export function useQuestionOptions(deck: Deck | null) {
   const [options, setOptions] = useState<Option[]>([]);
   const optionsGenerated = useRef(false);
+  const currentCardId = useRef<string | null>(null);
 
   // Generate multiple choice options for the current card
   const generateOptions = useCallback(
@@ -16,7 +17,13 @@ export function useQuestionOptions(deck: Deck | null) {
       if (!deck?.flashcards || deck.flashcards.length < 4 || !currentCard)
         return;
 
+      // Only generate options once per card
+      if (optionsGenerated.current && currentCardId.current === currentCard.id) {
+        return;
+      }
+
       optionsGenerated.current = true;
+      currentCardId.current = currentCard.id;
 
       // Get other cards to use as wrong answers
       const otherCards = deck.flashcards.filter(
@@ -43,6 +50,7 @@ export function useQuestionOptions(deck: Deck | null) {
 
   const resetOptionsGeneration = useCallback(() => {
     optionsGenerated.current = false;
+    currentCardId.current = null;
   }, []);
 
   return {

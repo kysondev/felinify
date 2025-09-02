@@ -54,7 +54,7 @@ export const SessionHeader = ({
   isSaving,
 }: SessionHeaderProps) => (
   <>
-    {currentRound && numOfRounds && (
+    {currentRound && numOfRounds ? (
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -68,7 +68,7 @@ export const SessionHeader = ({
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>End Challenge Session?</AlertDialogTitle>
+              <AlertDialogTitle>End Quiz Session?</AlertDialogTitle>
               <AlertDialogDescription className="flex flex-col gap-1">
                 Your progress will be saved.
                 <span>You&apos;ve studied for {formatTime(studyTime)}.</span>
@@ -104,24 +104,52 @@ export const SessionHeader = ({
               Round {currentRound}/{numOfRounds}
             </span>
           </div>
-          {currentRound && numOfRounds && (
-            <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
-              <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-              <span>{formatTime(studyTime)}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
+            <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <span>{formatTime(studyTime)}</span>
+          </div>
         </div>
       </div>
-    )}
+    ) : (
+      <div className="flex items-center justify-between mb-4 md:mb-6">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex items-center gap-1 px-2 md:px-3 py-1 md:py-2 h-8 md:h-10 text-primary border-primary/30 hover:bg-primary/10"
+            >
+              <Save className="h-4 w-4" />
+              <span className="hidden sm:inline">End Session</span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>End Study Session?</AlertDialogTitle>
+              <AlertDialogDescription className="flex flex-col gap-1">
+                Your progress will be saved.
+                <span>You&apos;ve studied for {formatTime(studyTime)}.</span>
+                <span className="text-primary font-medium">
+                  Current score: {correctAnswers} / {currentCardIndex + 1}
+                </span>
+                <span className="text-primary font-medium">
+                  You&apos;ll gain {masteryGain - initialMastery}% mastery from
+                  this session.
+                </span>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Continue Studying</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleEndSession}
+                disabled={isSaving}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {isSaving ? "Saving..." : "Save & End Session"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
-    <div className="flex items-center justify-between mb-4">
-      <div>
-        <h1 className="text-xl md:text-2xl font-bold truncate">{deck.name}</h1>
-        <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
-          {deck.description || "No description"}
-        </p>
-      </div>
-      {!currentRound && !numOfRounds && (
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 md:gap-2 bg-secondary/30 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
             <CardsIcon size={12} className="text-primary" />
@@ -134,7 +162,16 @@ export const SessionHeader = ({
             <span>{formatTime(studyTime)}</span>
           </div>
         </div>
-      )}
+      </div>
+    )}
+
+    <div className="flex items-center justify-between mb-4">
+      <div>
+        <h1 className="text-xl md:text-2xl font-bold truncate">{deck.name}</h1>
+        <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
+          {deck.description || "No description"}
+        </p>
+      </div>
     </div>
 
     <Progress

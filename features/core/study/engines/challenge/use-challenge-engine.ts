@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { ChallengeConfig } from "@study/types/challenge.types";
 import { useChallengeState } from "@study/hooks/use-challenge-state";
 import { useCardSelection } from "@study/hooks/use-card-selection";
@@ -6,32 +6,25 @@ import { useQuestionOptions } from "@study/hooks/use-question-options";
 import { useQuestionTimer } from "@study/hooks/use-question-timer";
 import { useStudySession } from "@study/hooks/use-study-session";
 import {
-  getQuestionsPerRound,
   calculateProgress,
   getMasteryChangeText,
-  isRoundComplete,
 } from "@study/utils/challenge.utils";
 import { updateChallengeCompletionAction } from "@study/actions/study.action";
 import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.action";
 
 /**
  * Challenge mode engine that manages the multiple choice quiz experience.
- * Handles rounds of questions, timer, scoring, and mastery calculations.
+ * Handles questions through all flashcards, timer, scoring, and mastery calculations.
  */
 export function useChallengeEngine(config: ChallengeConfig) {
-  const { deck, numOfRounds, isTimed, deckId, userId, initialMastery } = config;
+  const { deck, isTimed, deckId, userId, initialMastery } = config;
 
-  const questionsPerRound = useMemo(
-    () => getQuestionsPerRound(numOfRounds),
-    [numOfRounds]
-  );
-  const totalQuestions = questionsPerRound * numOfRounds;
+  const totalCards = deck?.flashcards?.length ?? 0;
 
-  const { state, updateState, recordAnswer, nextCard, startNextRound } =
-    useChallengeState();
+  const { state, updateState, recordAnswer, nextCard } = useChallengeState();
   const { selectedCards, selectCards, getCurrentCard } = useCardSelection(
     deck,
-    questionsPerRound
+    totalCards
   );
   const { options, generateOptions, resetOptionsGeneration } =
     useQuestionOptions(deck);
@@ -59,15 +52,13 @@ export function useChallengeEngine(config: ChallengeConfig) {
     saveSessionWithoutRedirect,
     getNewMastery,
     stopStudySession,
-    pauseStudySession,
-    resumeStudySession,
   } = useStudySession({
     deck,
     userId,
     initialMastery,
     correctAnswers: state.correctAnswers,
     incorrectAnswers: state.incorrectAnswers,
-    totalQuestions,
+    totalQuestions: totalCards,
     studyMode: "challenge",
   });
 
@@ -89,25 +80,23 @@ export function useChallengeEngine(config: ChallengeConfig) {
     recordAnswer(false, String(currentCard.id));
   }, [currentCard, state.showAnswer, recordAnswer]);
 
-  // Move to next question or round, handle completion logic
-  const navigateNext = useCallback(async () => {
+  // Move to next question or handle completion logic
+  const navigateNext = useCallback(() => {
     if (!deck?.flashcards) return;
+    
+    // Check if we've completed all cards
+    const isSessionComplete = state.currentCardIndex >= totalCards - 1;
 
-    const roundComplete = isRoundComplete(
-      state.currentCardIndex,
-      questionsPerRound,
-      selectedCards.length
-    );
+    if (isSessionComplete) {
+      updateState({ view: "saving" });
+      
 
-    if (roundComplete) {
-      if (state.currentRound < numOfRounds) {
-        pauseStudySession();
-        updateState({ view: "roundResults" });
-      } else {
-        stopQuestionTimer();
-        stopStudySession();
-        // Save final results
-        if (userId && deckId) {
+      stopQuestionTimer();
+      stopStudySession();
+      
+      // Handle saving and then show final results
+      if (userId && deckId) {
+        const saveProgress = async () => {
           try {
             await updateChallengeCompletionAction(userId, deckId);
             const flashcardResults = Object.entries(state.answeredCards).map(
@@ -117,42 +106,39 @@ export function useChallengeEngine(config: ChallengeConfig) {
               await updateFlashcardPerformanceAction(userId, flashcardResults);
             }
             await saveSessionWithoutRedirect();
+            
+            updateState({ view: "finalResults" });
           } catch (e) {
-            console.error(e);
+            console.error('Error saving challenge progress:', e);
+            updateState({ view: "finalResults" });
           }
-        }
+        };
+
+        saveProgress();
+      } else {
         updateState({ view: "finalResults" });
       }
       return;
     }
 
+    // Move to next card
     nextCard();
     resetOptionsGeneration();
   }, [
     deck,
     state.currentCardIndex,
-    state.currentRound,
     state.answeredCards,
-    questionsPerRound,
+    totalCards,
     selectedCards.length,
-    numOfRounds,
     userId,
     deckId,
-    pauseStudySession,
     stopQuestionTimer,
+    stopStudySession,
     updateState,
     nextCard,
     resetOptionsGeneration,
     saveSessionWithoutRedirect,
   ]);
-
-  // Start the next round of questions
-  const handleStartNextRound = useCallback(() => {
-    resumeStudySession();
-    startNextRound();
-    selectCards();
-    resetOptionsGeneration();
-  }, [resumeStudySession, startNextRound, selectCards, resetOptionsGeneration]);
 
   // Initialize study session when deck is loaded
   useEffect(() => {
@@ -160,7 +146,8 @@ export function useChallengeEngine(config: ChallengeConfig) {
       deck &&
       !isStudying &&
       !isSavingLoading &&
-      state.view !== "finalResults"
+      state.view !== "finalResults" &&
+      state.view !== "saving"
     ) {
       startStudySession();
       selectCards();
@@ -179,28 +166,25 @@ export function useChallengeEngine(config: ChallengeConfig) {
     if (currentCard && !state.showAnswer && selectedCards.length > 0) {
       generateOptions(currentCard);
     }
-  }, [currentCard, state.showAnswer, selectedCards.length, generateOptions]);
+  }, [currentCard?.id, state.showAnswer, selectedCards.length, generateOptions]);
 
   // Start the question timer for each new question
   useEffect(() => {
     if (currentCard && !state.showAnswer) {
       startQuestionTimer();
     }
-  }, [currentCard, state.showAnswer, startQuestionTimer]);
+  }, [currentCard?.id, state.showAnswer, startQuestionTimer]);
 
   const totalProgress = calculateProgress(
-    state.currentRound,
     state.currentCardIndex,
-    questionsPerRound,
-    totalQuestions
+    totalCards
   );
 
-  const roundComplete = isRoundComplete(
-    state.currentCardIndex,
-    questionsPerRound,
-    selectedCards.length
-  );
-  const isLastCard = roundComplete && state.currentRound === numOfRounds;
+  // Check if we've completed all cards
+  const isSessionComplete = state.currentCardIndex >= totalCards - 1;
+  const isLastCard = isSessionComplete;
+
+
 
   // Return consolidated state and actions for the UI components
   return {
@@ -209,19 +193,14 @@ export function useChallengeEngine(config: ChallengeConfig) {
       currentCard,
       options,
       selectedCards,
-      questionsPerRound,
-      totalQuestions,
-      numOfRounds,
+      totalCards,
+      totalQuestions: totalCards,
       totalProgress,
-      isRoundComplete: roundComplete,
+      isSessionComplete,
       isLastCard,
       masteryChangeText: getMasteryChangeText(
         state.correctAnswers,
         state.incorrectAnswers
-      ),
-      roundMasteryChangeText: getMasteryChangeText(
-        state.roundCorrectAnswers,
-        state.roundIncorrectAnswers
       ),
       questionTimeLeft,
       isQuestionActive,
@@ -234,7 +213,6 @@ export function useChallengeEngine(config: ChallengeConfig) {
     actions: {
       handleAnswer,
       navigateNext,
-      startNextRound: handleStartNextRound,
       handleEndSession,
     },
   };

@@ -7,7 +7,6 @@ import {
   DialogDescription,
 } from "components/ui/dialog";
 import { Label } from "components/ui/label";
-import { RadioGroup, RadioGroupItem } from "components/ui/radio-group";
 import { Switch } from "components/ui/switch";
 import { Timer } from "lucide-react";
 
@@ -15,8 +14,6 @@ interface ChallengeSettingsProps {
   showChallengeSettings: boolean;
   setShowChallengeSettings: (open: boolean) => void;
   handleStartStudy: () => void;
-  numOfRounds: number;
-  setNumOfRounds: (rounds: number) => void;
   isTimed: boolean;
   setIsTimed: (checked: boolean) => void;
 }
@@ -25,8 +22,6 @@ const ChallengeSettings = ({
   showChallengeSettings,
   setShowChallengeSettings,
   handleStartStudy,
-  numOfRounds,
-  setNumOfRounds,
   isTimed,
   setIsTimed,
 }: ChallengeSettingsProps) => {
@@ -37,50 +32,12 @@ const ChallengeSettings = ({
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Study Settings</DialogTitle>
+          <DialogTitle>Challenge Mode Settings</DialogTitle>
           <DialogDescription>
             Configure your Challenge Mode session
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-6 py-4">
-          <div className="space-y-4">
-            <h3 className="font-medium">Number of Rounds</h3>
-            <RadioGroup
-              defaultValue="3"
-              value={numOfRounds.toString()}
-              onValueChange={(value) => setNumOfRounds(parseInt(value))}
-              className="grid grid-cols-3 gap-2"
-            >
-              <div>
-                <RadioGroupItem value="1" id="r1" className="peer sr-only" />
-                <Label
-                  htmlFor="r1"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span>1</span>
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem value="3" id="r2" className="peer sr-only" />
-                <Label
-                  htmlFor="r2"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span>3</span>
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem value="5" id="r3" className="peer sr-only" />
-                <Label
-                  htmlFor="r3"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span>5</span>
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="timed-mode">Timed Mode</Label>
@@ -101,7 +58,7 @@ const ChallengeSettings = ({
           </div>
 
           <Button onClick={handleStartStudy} className="w-full">
-            Start Study Session
+            Start Challenge Session
           </Button>
         </div>
       </DialogContent>

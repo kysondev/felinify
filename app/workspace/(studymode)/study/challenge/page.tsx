@@ -6,27 +6,15 @@ import {
   ErrorState,
   FinalResults,
   SessionHeader,
-  RoundResultsCard,
 } from "components/study";
 import { useDeckLoader } from "@study/hooks/use-deck-loader";
-import { useChallengeEngine } from "@study/engines/challenge/use-challenge-engine";
+import { useChallengeEngine } from "features/core/study/engines/challenge/use-challenge-engine";
 import { QuestionView } from "components/study/question-view";
 
 export default function ChallengePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const deckId = searchParams.get("deckId");
-  const numOfRounds = parseInt(searchParams.get("numOfRounds") || "3");
-  if (numOfRounds !== 1 && numOfRounds !== 3 && numOfRounds !== 5) {
-    return (
-      <ErrorState
-        title="Invalid number of rounds"
-        message="Please select a valid number of rounds."
-        buttonText="Return to Library"
-        buttonAction={() => router.push("/workspace/library")}
-      />
-    );
-  }
   const isTimed = searchParams.get("timed") === "true";
 
   // Data loading is handled by useDeckLoader and engine
@@ -35,7 +23,6 @@ export default function ChallengePage() {
 
   const engine = useChallengeEngine({
     deck,
-    numOfRounds,
     isTimed,
     deckId,
     userId: userIdRef.current,
@@ -43,8 +30,8 @@ export default function ChallengePage() {
   });
   const { state, actions } = engine;
 
-  if (isLoading || state.isSaving) {
-    return <LoadingState isSaving={state.isSaving} />;
+  if (isLoading) {
+    return <LoadingState isSaving={false} />;
   }
 
   if (noPermission) {
@@ -86,18 +73,16 @@ export default function ChallengePage() {
 
   return (
     <div className="container max-w-3xl mx-auto py-6 md:py-8 px-3 md:px-4 mt-14 md:mt-16">
-      {/* The SessionHeader component displays the current round, total rounds, study time, and progress. */}
-      {state.view !== "finalResults" && (
+      {/* The SessionHeader component displays study time and progress through all flashcards */}
+      {state.view !== "finalResults" && state.view !== "saving" && (
         <SessionHeader
           deck={deck}
-          currentRound={state.currentRound}
-          numOfRounds={state.numOfRounds}
           studyTime={state.studyTime}
           totalProgress={state.totalProgress}
           handleEndSession={actions.handleEndSession}
           correctAnswers={state.correctAnswers}
           currentCardIndex={state.currentCardIndex}
-          totalCards={state.questionsPerRound}
+          totalCards={state.totalCards}
           masteryGain={state.newMastery}
           initialMastery={state.initialMastery}
           isSaving={state.isSaving}
@@ -109,17 +94,12 @@ export default function ChallengePage() {
           case "question":
             // The QuestionView component displays the current question card, timer, and options for answering.
             return <QuestionView isTimed={isTimed} {...state} {...actions} />;
-          case "roundResults":
-            return (
-              // The RoundResultsCard component displays the results of the current round.
-              <RoundResultsCard
-                {...state}
-                onStartNextRound={actions.startNextRound}
-              />
-            );
+          case "saving":
+            // Show saving loading state while saving the progress
+            return <LoadingState isSaving={true} />;
           case "finalResults":
             return (
-              // The FinalResults component displays the final results after all rounds are complete.
+              // The FinalResults component displays the final results after all questions are complete.
               <FinalResults
                 {...state}
                 masteryGained={state.newMastery - state.initialMastery}

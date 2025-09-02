@@ -17,7 +17,6 @@ import { formatDate } from "@common/utils/date.utils";
 import { StudyModeDialog } from "components/study";
 
 export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
-  const [numOfRounds, setNumOfRounds] = useState<number>(3);
   const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
   const [showChallengeSettings, setShowChallengeSettings] =
     useState<boolean>(false);
@@ -46,7 +45,7 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
 
   const handleStartStudy = () => {
     router.push(
-      `/workspace/study/${selectedMode}?deckId=${deck.id}&numOfRounds=${numOfRounds}&timed=${isTimed}`
+      `/workspace/study/${selectedMode}?deckId=${deck.id}&timed=${isTimed}`
     );
   };
   return (
@@ -161,8 +160,6 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
         showChallengeSettings={showChallengeSettings}
         setShowChallengeSettings={setShowChallengeSettings}
         handleStartStudy={handleStartStudy}
-        numOfRounds={numOfRounds}
-        setNumOfRounds={setNumOfRounds}
         isTimed={isTimed}
         setIsTimed={setIsTimed}
       />
