@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   LoadingState,
   ErrorState,
   FinalResults,
   SessionHeader,
+  StudyLoadingScreen,
 } from "components/study";
 import { useDeckLoader } from "@study/hooks/use-deck-loader";
+import { useStudyLoadingState } from "@study/hooks/use-study-loading-state";
 import { useChallengeEngine } from "features/core/study/engines/challenge/use-challenge-engine";
 import { QuestionView } from "components/study/question-view";
 import { ChallengeSettingsPage } from "components/study/challenge-settings-page";
-import { Progress } from "components/ui/progress";
-import { Loader2 } from "lucide-react";
 
 export default function ChallengePage() {
   const searchParams = useSearchParams();
@@ -24,11 +24,6 @@ export default function ChallengePage() {
   const [showSettings, setShowSettings] = useState(true);
   const [challengeIsTimed, setChallengeIsTimed] = useState(isTimed);
   const [challengeStarted, setChallengeStarted] = useState(false);
-
-  const [loadingStage, setLoadingStage] = useState<
-    "loading-deck" | "preparing-challenge" | "complete"
-  >("loading-deck");
-  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const { deck, userIdRef, initialMasteryRef, isLoading, noPermission } =
     useDeckLoader(deckId);
@@ -44,48 +39,29 @@ export default function ChallengePage() {
   
   const { state, actions } = engine;
 
+  const loadingState = useStudyLoadingState({
+    mode: 'challenge',
+    isLoading,
+    deck,
+    isStarted: challengeStarted,
+    isReady: !!(state && state.currentCard),
+    isSaving: state?.view === "saving",
+  });
+
   const handleStartChallenge = (isTimed: boolean) => {
     setChallengeIsTimed(isTimed);
     setShowSettings(false);
     setChallengeStarted(true);
   };
 
-  // Manage loading progress
-  useEffect(() => {
-    if (isLoading) {
-      setLoadingStage("loading-deck");
-      setLoadingProgress(30);
-    } else if (deck && !challengeStarted) {
-      setLoadingStage("preparing-challenge");
-      setLoadingProgress(70);
-    } else if (challengeStarted && state && state.currentCard) {
-      setLoadingStage("complete");
-      setLoadingProgress(100);
-    }
-  }, [isLoading, deck, challengeStarted, state]);
-
-  if (isLoading || (challengeStarted && (!state || !state.currentCard))) {
+  if (loadingState.shouldShowLoading) {
     return (
-      <div className="h-[calc(100vh-80px)] flex items-center justify-center">
-        <div className="flex flex-col items-center max-w-md text-center px-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary mb-6" />
-
-          <h2 className="text-xl font-medium mb-2">Preparing Your Challenge</h2>
-
-          <div className="w-full mb-3">
-            <Progress value={loadingProgress} className="h-1.5" />
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            {loadingStage === "loading-deck" && "Loading your flashcards..."}
-            {loadingStage === "preparing-challenge" && "Setting up challenge questions..."}
-            {loadingStage === "complete" && "Starting challenge..."}
-          </p>
-          <span className="text-xs text-muted-foreground mt-1">
-            This may take a moment, please don't refresh the page.
-          </span>
-        </div>
-      </div>
+      <StudyLoadingScreen
+        title={loadingState.loadingTitle}
+        message={loadingState.loadingMessage}
+        progress={loadingState.loadingProgress}
+        isSaving={loadingState.isSaving}
+      />
     );
   }
 
@@ -136,9 +112,9 @@ export default function ChallengePage() {
           totalProgress={state.totalProgress}
           handleEndSession={actions.handleEndSession}
           correctAnswers={state.correctAnswers}
-          currentCardIndex={state.currentCardIndex}
+          currentIndex={state.currentIndex}
           totalCards={state.totalCards}
-          masteryGain={state.newMastery}
+          newMastery={state.newMastery}
           initialMastery={state.initialMastery}
           isSaving={state.isSaving}
         />
@@ -151,7 +127,14 @@ export default function ChallengePage() {
             return <QuestionView isTimed={challengeIsTimed} {...state} {...actions} />;
           case "saving":
             // Show saving loading state while saving the progress
-            return <LoadingState isSaving={true} />;
+            return (
+              <StudyLoadingScreen
+                title="Saving Your Progress"
+                message="Updating your progress and calculating mastery..."
+                progress={100}
+                isSaving={true}
+              />
+            );
           case "finalResults":
             return (
               // The FinalResults component displays the final results after all questions are complete.

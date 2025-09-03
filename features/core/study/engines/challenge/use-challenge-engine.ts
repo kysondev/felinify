@@ -29,7 +29,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
   const { options, generateOptions, resetOptionsGeneration } =
     useQuestionOptions(deck);
 
-  const currentCard = getCurrentCard(state.currentCardIndex);
+  const currentCard = getCurrentCard(state.currentIndex);
 
   const {
     questionTimeLeft,
@@ -58,7 +58,6 @@ export function useChallengeEngine(config: ChallengeConfig) {
     initialMastery,
     correctAnswers: state.correctAnswers,
     incorrectAnswers: state.incorrectAnswers,
-    totalQuestions: totalCards,
     studyMode: "challenge",
   });
 
@@ -85,7 +84,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     if (!deck?.flashcards) return;
     
     // Check if we've completed all cards
-    const isSessionComplete = state.currentCardIndex >= totalCards - 1;
+    const isSessionComplete = state.currentIndex >= totalCards - 1;
 
     if (isSessionComplete) {
       updateState({ view: "saving" });
@@ -126,7 +125,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     resetOptionsGeneration();
   }, [
     deck,
-    state.currentCardIndex,
+    state.currentIndex,
     state.answeredCards,
     totalCards,
     selectedCards.length,
@@ -178,12 +177,12 @@ export function useChallengeEngine(config: ChallengeConfig) {
   }, [currentCard?.id, state.showAnswer, startQuestionTimer]);
 
   const totalProgress = calculateProgress(
-    state.currentCardIndex,
+    state.currentIndex,
     totalCards
   );
 
   // Check if we've completed all cards
-  const isSessionComplete = state.currentCardIndex >= totalCards - 1;
+  const isSessionComplete = state.currentIndex >= totalCards - 1;
   const isLastCard = isSessionComplete;
 
 
@@ -196,7 +195,6 @@ export function useChallengeEngine(config: ChallengeConfig) {
       options,
       selectedCards,
       totalCards,
-      totalQuestions: totalCards,
       totalProgress,
       isSessionComplete,
       isLastCard,

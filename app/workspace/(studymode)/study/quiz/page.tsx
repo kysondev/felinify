@@ -1,209 +1,75 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getDeckById } from "@deck/services/deck.service";
-import { getUser } from "@user/services/user.service";
 import { Button } from "components/ui/button";
+import { ErrorState, StudyLoadingScreen } from "components/study";
+import { useStudyLoadingState } from "@study/hooks/use-study-loading-state";
+import { useDeckLoader } from "@study/hooks/use-deck-loader";
+import { useQuizEngine } from "@study/engines/quiz/use-quiz-engine";
+import { AdaptiveQuizSettingsPage } from "components/study/adaptive-quiz-settings-page";
 import { MultipleChoiceOptions } from "components/study/multiple-choice-options";
 import { QuestionCard } from "components/study/question-card";
 import { SessionHeader } from "components/study/session-header";
 import { FinalResults } from "components/study/final-results";
-import { ErrorState } from "components/study/states/error-state";
-import { Progress } from "components/ui/progress";
-import { Loader2 } from "lucide-react";
-import { useQuizEngine } from "@study/engines/quiz/use-quiz-engine";
-import { AdaptiveQuizSettingsPage } from "components/study/adaptive-quiz-settings-page";
-import { generateAdaptiveQuizAction } from "@ai/actions/generate-quiz.actions";
-import { getUserEnergy, updateUserEnergy } from "@user/services/user.service";
-import { hasEnoughEnergy } from "@user/actions/user.action";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
   const deckId = searchParams.get("deckId");
-
-
-  const [deck, setDeck] = useState<any>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
-  const [loadingStage, setLoadingStage] = useState<
-    "loading-deck" | "generating-quiz" | "complete"
-  >("loading-deck");
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  const [prepError, setPrepError] = useState<string | null>(null);
-  
   // State for quiz settings
   const [showSettings, setShowSettings] = useState(true);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizReady, setQuizReady] = useState(false);
-  const [generatedQuestions, setGeneratedQuestions] = useState<any[]>([]);
 
-  useEffect(() => {
-    const run = async () => {
-      try {
-        const userResult = await getUser();
-        if (!userResult.success || !userResult.data) {
-          setPrepError("User not authenticated");
-          return;
-        }
-        setUserId(userResult.data.id);
-        setUser(userResult.data);
-        setLoadingProgress(10);
-        setLoadingStage("loading-deck");
-
-        if (!deckId) {
-          setPrepError("Invalid quiz session");
-          return;
-        }
-        const deckResult = await getDeckById(deckId, userResult.data.id);
-        if (!deckResult.success || !deckResult.data) {
-          setPrepError("Deck not found");
-          return;
-        }
-        if (
-          deckResult.data.visibility !== "public" &&
-          deckResult.data.userId !== userResult.data.id
-        ) {
-          setPrepError("You don't have permission to access this deck");
-          return;
-        }
-        setDeck(deckResult.data);
-        setLoadingStage("generating-quiz");
-        setLoadingProgress(60);
-      } catch (e) {
-        setPrepError("An error occurred while preparing the quiz");
-      }
-    };
-    run();
-  }, [deckId]);
-
-  const handleStartQuiz = async (numQuestions: number) => {
-    setShowSettings(false);
-    setQuizStarted(true);
-    setLoadingStage("generating-quiz");
-    setLoadingProgress(60);
-    
-    // Generate quiz directly here
-    try {
-      setLoadingProgress(70);
-      // First check and deduct energy
-      const userHasEnoughEnergy = await hasEnoughEnergy(user!.id, 1);
-      if (!userHasEnoughEnergy.success) {
-        setPrepError("You don't have enough energy to generate flashcards");
-        setShowSettings(true);
-        setQuizStarted(false);
-        return;
-      }
-      
-      const updatedEnergy = await updateUserEnergy(user!.id, userHasEnoughEnergy.energy - 1);
-      if (!updatedEnergy.success) {
-        setPrepError(updatedEnergy.message || "Failed to update user energy");
-        setShowSettings(true);
-        setQuizStarted(false);
-        return;
-      }
-      
-      setLoadingProgress(85);
-      // Now generate the quiz
-      const quizResult = await generateAdaptiveQuizAction(deckId!, numQuestions);
-      if (!quizResult.success) {
-        setPrepError(quizResult.message || "Failed to generate quiz");
-        setShowSettings(true);
-        setQuizStarted(false);
-        return;
-      }
-      
-      setLoadingProgress(95);
-      // Store the generated questions and complete
-      setGeneratedQuestions(quizResult.questions || []);
-      setLoadingProgress(100);
-      setLoadingStage("complete");
-      await new Promise(resolve => setTimeout(resolve, 300));
-      setQuizReady(true);
-    } catch (error) {
-      setPrepError("An error occurred while generating the quiz");
-      setShowSettings(true);
-      setQuizStarted(false);
-    }
-  };
+  const { deck, userIdRef, initialMasteryRef, isLoading, noPermission } =
+    useDeckLoader(deckId);
 
   const { state, actions } = useQuizEngine({
     deck,
-    userId,
-    initialMastery: deck?.progress?.mastery || 0,
+    userId: userIdRef.current,
+    initialMastery: initialMasteryRef.current,
     deckId,
-    preGeneratedQuestions: generatedQuestions,
+    setShowSettings,
+    setQuizStarted,
+    setQuizReady,
     shouldStart: quizReady,
   });
 
-  useEffect(() => {
-    if (!state.isLoading && loadingStage === "generating-quiz" && generatedQuestions.length > 0) {
-      setLoadingStage("complete");
-      setLoadingProgress(100);
-    }
-  }, [state.isLoading, loadingStage, generatedQuestions.length]);
+  // Use the shared loading state hook
+  const loadingState = useStudyLoadingState({
+    mode: 'quiz',
+    isLoading,
+    deck,
+    isStarted: quizStarted,
+    isReady: quizReady && !state.isLoading,
+    error: state.error,
+    isSaving: state.savingResults,
+  });
 
-  if (showSettings && deck && user) {
-    return <AdaptiveQuizSettingsPage deck={deck} user={user} onStartQuiz={handleStartQuiz} />;
+  if (showSettings && deck && userIdRef.current) {
+    return <AdaptiveQuizSettingsPage deck={deck} onStartQuiz={actions.handleStartQuiz} error={state.error} />;
   }
 
-  if (!quizStarted || (quizStarted && (!generatedQuestions.length || state.isLoading))) {
+  // Show loading screen
+  if (loadingState.shouldShowLoading) {
     return (
-      <div className="h-[calc(100vh-80px)] flex items-center justify-center">
-        <div className="flex flex-col items-center max-w-md text-center px-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary mb-6" />
-
-          <h2 className="text-xl font-medium mb-2">Preparing Your Quiz</h2>
-
-          <div className="w-full mb-3">
-            <Progress value={loadingProgress} className="h-1.5" />
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            {loadingStage === "loading-deck" && "Loading your flashcards..."}
-            {loadingStage === "generating-quiz" &&
-              "Creating personalized questions..."}
-            {loadingStage === "complete" && "Quiz ready! Starting..."}
-          </p>
-          <span className="text-xs text-muted-foreground mt-1">
-            This may take a moment, please don't refresh the page.
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  if (prepError) {
-    return (
-      <ErrorState
-        title={
-          prepError.includes("permission")
-            ? "Access Denied"
-            : "Cannot Start Adaptive Quiz"
-        }
-        message={prepError}
-        buttonText="Return to Library"
-        buttonAction={actions.goToLibrary}
+      <StudyLoadingScreen
+        title={loadingState.loadingTitle}
+        message={loadingState.loadingMessage}
+        progress={loadingState.loadingProgress}
+        isSaving={loadingState.isSaving}
       />
     );
   }
 
-  if (state.savingResults) {
+  if (noPermission) {
     return (
-      <div className="h-[calc(100vh-80px)] flex items-center justify-center">
-        <div className="flex flex-col items-center max-w-md text-center px-4">
-          <div className="relative">
-            <Loader2 className="h-16 w-16 animate-spin text-primary mb-6" />
-          </div>
-
-          <h2 className="text-xl font-medium mb-2">Saving Your Results</h2>
-
-          <p className="text-sm text-muted-foreground">
-            Updating your progress and calculating mastery...
-          </p>
-        </div>
-      </div>
+      <ErrorState
+        title="Access Denied"
+        message="You do not have permission to view this deck."
+        buttonText="Return to Library"
+        buttonAction={actions.goToLibrary}
+      />
     );
   }
 
@@ -221,11 +87,8 @@ export default function QuizPage() {
   if (state.quizCompleted) {
     return (
       <FinalResults
-        correctAnswers={state.correctAnswers}
-        incorrectAnswers={state.incorrectAnswers}
-        totalQuestions={state.quizQuestions.length}
-        studyTime={state.studyTime}
-        masteryGained={state.masteryGained}
+        {...state}
+        totalCards={state.quizQuestions.length}
         masteryChangeText={`${state.masteryGained}%`}
         isSaving={false}
         onFinish={async () => {
@@ -248,15 +111,9 @@ export default function QuizPage() {
           name: deck?.name || "",
           description: deck?.description,
         }}
-        studyTime={state.studyTime}
-        totalProgress={state.totalProgress}
-        handleEndSession={actions.handleEndSession}
-        correctAnswers={state.correctAnswers}
-        currentCardIndex={state.currentQuestionIndex}
         totalCards={state.quizQuestions.length}
-        masteryGain={state.newMastery}
-        initialMastery={state.initialMastery}
-        isSaving={state.isSaving}
+        {...state}
+        {...actions}
       />
 
       <div className="mt-4 md:mt-8 grid grid-cols-1 gap-6">
@@ -267,7 +124,7 @@ export default function QuizPage() {
               question: state.currentQuestion?.question || "",
               answer: state.currentQuestion?.answer || "",
             }}
-            currentCardIndex={state.currentQuestionIndex}
+            currentCardIndex={state.currentIndex}
             totalCards={state.quizQuestions.length}
             showAnswer={state.showAnswer}
             answeredCards={{
@@ -300,7 +157,7 @@ export default function QuizPage() {
                 size="lg"
                 className="w-full sm:w-auto px-8"
               >
-                {state.currentQuestionIndex < state.quizQuestions.length - 1
+                {state.currentIndex < state.quizQuestions.length - 1
                   ? "Next Question"
                   : "View Results"}
               </Button>

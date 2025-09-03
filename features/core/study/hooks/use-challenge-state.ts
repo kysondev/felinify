@@ -3,7 +3,7 @@ import { ChallengeState } from "@study/types/challenge.types";
 
 export function useChallengeState() {
   const [state, setState] = useState<ChallengeState>({
-    currentCardIndex: 0,
+    currentIndex: 0,
     selectedCards: [],
     correctAnswers: 0,
     incorrectAnswers: 0,
@@ -30,7 +30,7 @@ export function useChallengeState() {
   const nextCard = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      currentCardIndex: prev.currentCardIndex + 1,
+      currentIndex: prev.currentIndex + 1,
       showAnswer: false,
     }));
   }, []);

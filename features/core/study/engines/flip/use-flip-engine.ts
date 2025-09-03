@@ -82,7 +82,7 @@ export function useFlipEngine({
   return {
     state: {
       currentCard,
-      currentCardIndex,
+      currentIndex: currentCardIndex,
       totalCards,
       isFlipped,
       studyTime,

@@ -13,7 +13,7 @@ export interface ChallengeConfig {
 }
 
 export interface ChallengeState {
-  currentCardIndex: number;
+  currentIndex: number;
   selectedCards: number[];
   correctAnswers: number;
   incorrectAnswers: number;

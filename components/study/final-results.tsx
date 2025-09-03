@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 interface FinalResultsProps {
   correctAnswers: number;
   incorrectAnswers: number;
-  totalQuestions: number;
+  totalCards: number;
   studyTime: number;
   masteryGained: number;
   masteryChangeText?: string;
@@ -22,7 +22,7 @@ interface FinalResultsProps {
 export const FinalResults = ({
   correctAnswers,
   incorrectAnswers,
-  totalQuestions,
+  totalCards,
   studyTime,
   masteryGained,
   masteryChangeText,
@@ -30,7 +30,7 @@ export const FinalResults = ({
   onFinish,
   explanationText,
 }: FinalResultsProps) => {
-  const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
+  const accuracy = Math.round((correctAnswers / totalCards) * 100);
 
   const handleReturn = async () => {
     if (onFinish) {
@@ -77,9 +77,9 @@ export const FinalResults = ({
               <div className="border-t pt-4">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">Total Questions</span>
-                  <span className="font-semibold">{totalQuestions}</span>
+                  <span className="font-semibold">{totalCards}</span>
                 </div>
-              </div>
+              </div>  
 
               <div className="flex items-center justify-between">
                 <span className="font-medium">Study Time</span>

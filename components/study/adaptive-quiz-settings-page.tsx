@@ -8,18 +8,18 @@ import { RadioGroup, RadioGroupItem } from "components/ui/radio-group";
 import { Alert, AlertDescription } from "components/ui/alert";
 import { Brain, Zap, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Deck, User } from "db/types/models.types";
+import { Deck } from "db/types/models.types";
 
 interface AdaptiveQuizSettingsPageProps {
   deck: Deck;
-  user: User;
-  onStartQuiz: (numQuestions: number) => void;
+  onStartQuiz: (numQuestions: number) => Promise<{ success: boolean; error?: string }>;
+  error?: string | null;
 }
 
 export const AdaptiveQuizSettingsPage = ({
   deck,
-  user,
   onStartQuiz,
+  error: externalError,
 }: AdaptiveQuizSettingsPageProps) => {
   const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -31,8 +31,10 @@ export const AdaptiveQuizSettingsPage = ({
       setIsGenerating(true);
       setError(null);
       
-      // Energy validation and deduction happens in the quiz page
-      onStartQuiz(numOfQuestions);
+      const result = await onStartQuiz(numOfQuestions);
+
+      if (!result.success) setIsGenerating(false);
+      
     } catch (error) {
       console.error("Error starting quiz:", error);
       setError("An error occurred while starting the quiz");
@@ -125,10 +127,10 @@ export const AdaptiveQuizSettingsPage = ({
           </div>
           <span className="text-xs text-muted-foreground">Quiz generation will cost <Zap className="h-3 w-3 text-primary inline-block"/> 1 Energy</span>
 
-          {error && (
+          {(externalError || error) && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription>{externalError || error}</AlertDescription>
             </Alert>
           )}
 

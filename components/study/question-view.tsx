@@ -10,14 +10,13 @@ interface QuestionViewProps {
   questionTimeLeft: number;
   timeLimit: number;
   currentCard: any | null;
-  currentCardIndex: number;
+  currentIndex: number;
   totalCards: number;
   answeredCards: Record<string, boolean>;
   options: { text: string; isCorrect: boolean }[];
   handleAnswer: (optionIndex: number) => void;
   navigateNext: () => void;
   isLastCard: boolean;
-  isSessionComplete: boolean;
 }
 
 /**
@@ -29,7 +28,7 @@ export const QuestionView = ({
   isQuestionActive,
   timeLimit,
   currentCard,
-  currentCardIndex,
+  currentIndex,
   totalCards,
   showAnswer,
   answeredCards,
@@ -38,7 +37,6 @@ export const QuestionView = ({
   handleAnswer,
   navigateNext,
   isLastCard,
-  isSessionComplete,
 }: QuestionViewProps) => {
   return (
     <>
@@ -55,7 +53,7 @@ export const QuestionView = ({
             question: currentCard!.answer,
             answer: currentCard!.question,
           }}
-          currentCardIndex={currentCardIndex + 1}
+          currentCardIndex={currentIndex + 1}
           totalCards={totalCards}
           showAnswer={showAnswer}
           answeredCards={answeredCards}

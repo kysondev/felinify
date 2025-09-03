@@ -1,5 +1,12 @@
-import { LoadingState } from "components/study";
+import { StudyLoadingScreen } from "components/study";
 
 export default function Loading() {
-  return <LoadingState isSaving={false} />;
+  return (
+    <StudyLoadingScreen
+      title="Preparing Your Challenge"
+      message="Loading your flashcards..."
+      progress={0}
+      isSaving={false}
+    />
+  );
 }

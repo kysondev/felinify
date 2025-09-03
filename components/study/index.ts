@@ -6,6 +6,7 @@ export { QuestionCard } from "./question-card";
 export { MultipleChoiceOptions } from "./multiple-choice-options";
 export { SessionHeader } from "./session-header";
 export { StudyEndDialog } from "./study-end-dialog";
+export { StudyLoadingScreen } from "./study-loading-screen";
 export { FlipCard } from "./flip-card";
 export { FlipControls } from "./flip-controls";
 export { RoundResultsCard } from "./round-results-card";

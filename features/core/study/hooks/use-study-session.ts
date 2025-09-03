@@ -12,7 +12,6 @@ interface UseStudySessionProps {
   initialMastery: number;
   correctAnswers?: number;
   incorrectAnswers?: number;
-  totalQuestions?: number;
   studyMode?: "challenge" | "flip" | "quiz";
 }
 

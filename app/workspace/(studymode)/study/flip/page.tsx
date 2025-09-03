@@ -2,11 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 import { useDeckLoader } from "@study/hooks/use-deck-loader";
-import { ErrorState, LoadingState, SessionHeader } from "components/study";
+import { useStudyLoadingState } from "@study/hooks/use-study-loading-state";
+import { ErrorState, SessionHeader, StudyLoadingScreen } from "components/study";
 import NoAccessState from "components/study/states/no-access-state";
 import { FlipCard } from "components/study/flip-card";
 import { FlipControls } from "components/study/flip-controls";
-import { StudyEndDialog } from "components/study/study-end-dialog";
 import { useFlipEngine } from "@study/engines/flip/use-flip-engine";
 
 export default function FlipStudyPage() {
@@ -21,8 +21,25 @@ export default function FlipStudyPage() {
     initialMastery: initialMasteryRef.current,
   });
 
-  if (isLoading || state.isSaving) {
-    return <LoadingState isSaving={state.isSaving} />;
+  // Use the shared loading state hook
+  const loadingState = useStudyLoadingState({
+    mode: 'flip',
+    isLoading,
+    deck,
+    isStarted: !!(deck && state && state.currentCard),
+    isReady: !!(state && state.currentCard),
+  });
+
+  // Show loading screen
+  if (loadingState.shouldShowLoading) {
+    return (
+      <StudyLoadingScreen
+        title={loadingState.loadingTitle}
+        message={loadingState.loadingMessage}
+        progress={loadingState.loadingProgress}
+        isSaving={loadingState.isSaving}
+      />
+    );
   }
 
   if (noPermission) {
@@ -40,41 +57,17 @@ export default function FlipStudyPage() {
     );
   }
 
-  const masteryGain = state.newMastery - state.initialMastery;
-
   return (
     <div className="container max-w-3xl mx-auto py-6 md:py-8 px-3 md:px-4 mt-14 md:mt-16">
-      <div className="flex items-center justify-end mb-4 md:mb-6">
-        <StudyEndDialog
-          studyTime={state.studyTime}
-          onConfirm={actions.handleEndSession}
-          isSaving={state.isSaving}
-          masteryGainText={
-            state.studyTime >= 60 && state.initialMastery <= 50
-              ? `You'll gain ${masteryGain}% mastery from this session.`
-              : null
-          }
-          extraDescription={
-            state.initialMastery > 50 ||
-            (state.newMastery === 50 && state.initialMastery < 50) ? (
-              <span className="text-red-500">
-                You've reached the maximum 50% mastery allowed in this study
-                mode. Study in another mode to progress further.
-              </span>
-            ) : null
-          }
-        />
-      </div>
-
       <SessionHeader
         deck={{ name: state.deck!.name, description: state.deck!.description }}
         studyTime={state.studyTime}
         totalProgress={state.totalProgress}
         handleEndSession={actions.handleEndSession}
         correctAnswers={0}
-        currentCardIndex={state.currentCardIndex}
+        currentIndex={state.currentIndex}
         totalCards={state.totalCards}
-        masteryGain={state.newMastery}
+        newMastery={state.newMastery}
         initialMastery={state.initialMastery}
         isSaving={state.isSaving}
       />

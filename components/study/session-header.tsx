@@ -27,9 +27,9 @@ interface SessionHeaderProps {
   totalProgress: number;
   handleEndSession: () => void;
   correctAnswers: number;
-  currentCardIndex: number;
+  currentIndex: number;
   totalCards: number;
-  masteryGain: number;
+  newMastery: number;
   initialMastery: number;
   isSaving: boolean;
 }
@@ -47,9 +47,9 @@ export const SessionHeader = ({
   totalProgress,
   handleEndSession,
   correctAnswers,
-  currentCardIndex,
+  currentIndex,
   totalCards,
-  masteryGain,
+  newMastery,
   initialMastery,
   isSaving,
 }: SessionHeaderProps) => (
@@ -75,11 +75,11 @@ export const SessionHeader = ({
                 <span className="text-primary font-medium">
                   Current score: {correctAnswers} /{" "}
                   {(currentRound ? currentRound - 1 : 0) * totalCards +
-                    currentCardIndex +
+                    currentIndex +
                     1}
                 </span>
                 <span className="text-primary font-medium">
-                  You&apos;ll gain {masteryGain - initialMastery}% mastery from
+                  You&apos;ll gain {newMastery - initialMastery}% mastery from
                   this session.
                 </span>
               </AlertDialogDescription>
@@ -129,10 +129,10 @@ export const SessionHeader = ({
                 Your progress will be saved.
                 <span>You&apos;ve studied for {formatTime(studyTime)}.</span>
                 <span className="text-primary font-medium">
-                  Current score: {correctAnswers} / {currentCardIndex + 1}
+                  Current score: {correctAnswers} / {currentIndex + 1}
                 </span>
                 <span className="text-primary font-medium">
-                  You&apos;ll gain {masteryGain - initialMastery}% mastery from
+                  You&apos;ll gain {newMastery - initialMastery}% mastery from
                   this session.
                 </span>
               </AlertDialogDescription>
@@ -154,7 +154,7 @@ export const SessionHeader = ({
           <div className="flex items-center gap-1 md:gap-2 bg-secondary/30 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
             <CardsIcon size={12} className="text-primary" />
             <span>
-              {currentCardIndex + 1}/{totalCards}
+              {currentIndex + 1}/{totalCards}
             </span>
           </div>
           <div className="flex items-center gap-1 md:gap-2 bg-primary/10 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">

@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Deck } from "db/types/models.types";
 import { useStudySession } from "@study/hooks/use-study-session";
-import { validateQuizAccessTokenAction } from "@ai/actions/quiz-access-token.action";
-import { generateAdaptiveQuizAction } from "@ai/actions/generate-quiz.actions";
 import { updateChallengeCompletionAction } from "@study/actions/study.action";
 import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.action";
+import { hasEnoughEnergy } from "@user/actions/user.action";
+import { updateUserEnergy } from "@user/services/user.service";
+import { generateAdaptiveQuizAction } from "@ai/actions/generate-quiz.actions";
 
 export interface QuizQuestion {
   question: string;
@@ -21,8 +22,10 @@ interface QuizEngineConfig {
   userId: string | null;
   initialMastery: number;
   deckId: string | null;
-  preGeneratedQuestions?: any[]; // Allow pre-generated questions
-  shouldStart?: boolean; // Control when study session starts
+  shouldStart?: boolean;
+  setShowSettings: (show: boolean) => void;
+  setQuizStarted: (started: boolean) => void;
+  setQuizReady: (ready: boolean) => void;
 }
 
 /**
@@ -34,13 +37,14 @@ export function useQuizEngine({
   userId,
   initialMastery,
   deckId,
-  preGeneratedQuestions,
   shouldStart = true,
+  setShowSettings,
+  setQuizStarted,
+  setQuizReady,
 }: QuizEngineConfig) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -52,13 +56,12 @@ export function useQuizEngine({
   const [answeredQuestions, setAnsweredQuestions] = useState<
     Record<string, boolean>
   >({});
-  const [numOfQuestions, setNumOfQuestions] = useState(10);
+  const [error, setError] = useState<string | null>(null);
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
 
   const {
     studyTime,
-    isStudying,
     startStudySession,
     stopStudySession,
     handleEndSession,
@@ -71,52 +74,8 @@ export function useQuizEngine({
     initialMastery,
     correctAnswers,
     incorrectAnswers,
-    totalQuestions: numOfQuestions,
     studyMode: "quiz",
   });
-
-  // Initialize quiz: generate questions and start session
-  useEffect(() => {
-    const run = async () => {
-      if (!deckId || !userId) {
-        return;
-      }
-
-      // Use pre-generated questions if available, otherwise generate new ones
-      if (preGeneratedQuestions && preGeneratedQuestions.length > 0) {
-        setQuizQuestions(preGeneratedQuestions);
-        setIsLoading(false);
-        // Start study session when quiz is ready and should start
-        if (shouldStart) {
-          startStudySession();
-        }
-      } else {
-        try {
-          const quizResult = await generateAdaptiveQuizAction(
-            deckId,
-            numOfQuestions
-          );
-          if (!quizResult.success) {
-            setError(quizResult.message || "Failed to generate quiz");
-            setIsLoading(false);
-            return;
-          }
-
-          setQuizQuestions(quizResult.questions || []);
-          setIsLoading(false);
-          // Start study session when quiz is ready and should start
-          if (shouldStart) {
-            startStudySession();
-          }
-        } catch (e) {
-          console.error(e);
-          setError("An error occurred while generating quiz");
-          setIsLoading(false);
-        }
-      }
-    };
-    run();
-  }, [deckId, userId, numOfQuestions, preGeneratedQuestions]);
 
   // Start study session when quiz is ready and should start
   useEffect(() => {
@@ -124,6 +83,67 @@ export function useQuizEngine({
       startStudySession();
     }
   }, [shouldStart, quizQuestions.length, isLoading, startStudySession]);
+
+  const handleStartQuiz = async (numQuestions: number): Promise<{ success: boolean; error?: string }> => {
+    setError(null);
+    try {
+
+      if (!deck?.flashcards || deck.flashcards.length < 10) {
+        const errorMsg = "This deck must have at least 10 flashcards to generate a quiz.";
+        setError(errorMsg);
+        return { success: false, error: errorMsg };
+      }
+      
+      if (!deck.progress || deck.progress.mastery < 10) {
+        const errorMsg = "You need at least 10% mastery in this deck. Complete Challenge Mode to increase your mastery first.";
+        setError(errorMsg);
+        return { success: false, error: errorMsg };
+      }
+      
+      if (!deck.progress || (deck.progress.challengeCompleted || 0) < 3) {
+        const errorMsg = "Complete Challenge Mode at least 3 times first to unlock Adaptive Quiz.";
+        setError(errorMsg);
+        return { success: false, error: errorMsg };
+      }
+
+      const userHasEnoughEnergy = await hasEnoughEnergy(userId!, 1);
+      if (!userHasEnoughEnergy.success) {
+        const errorMsg = "You don't have enough energy to generate a quiz. Please refill your energy or upgrade your plan.";
+        setError(errorMsg);
+        return { success: false, error: errorMsg };
+      }
+
+      const updatedEnergy = await updateUserEnergy(userId!, userHasEnoughEnergy.energy - 1);
+      if (!updatedEnergy.success) {
+        const errorMsg = updatedEnergy.message || "Failed to update user energy";
+        setError(errorMsg);
+        return { success: false, error: errorMsg };
+      }
+
+      setShowSettings(false);
+      setQuizStarted(true);
+
+      const quizResult = await generateAdaptiveQuizAction(deckId!, numQuestions);
+      if (!quizResult.success) {
+        const errorMsg = quizResult.message || "Failed to generate quiz. Please try again.";
+        setError(errorMsg);
+        setShowSettings(true);
+        setQuizStarted(false);
+        return { success: false, error: errorMsg };
+      }
+
+      setQuizQuestions(quizResult.questions || []);
+      setQuizReady(true);
+      setIsLoading(false);
+      return { success: true };
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "An error occurred while generating the quiz";
+      setError(errorMsg);
+      setShowSettings(true);
+      setQuizStarted(false);
+      return { success: false, error: errorMsg };
+    }
+  };
 
   // Process user's answer selection and update the score
   const handleAnswer = useCallback(
@@ -168,6 +188,7 @@ export function useQuizEngine({
           }
           await saveSessionWithoutRedirect();
         } catch (e) {
+          setError("Error saving quiz progress");
           console.error(e);
         }
       }
@@ -182,6 +203,7 @@ export function useQuizEngine({
     saveSessionWithoutRedirect,
     stopStudySession,
     userId,
+    setError,
   ]);
 
   // Calculate progress percentage through the quiz
@@ -200,10 +222,10 @@ export function useQuizEngine({
   return {
     state: {
       isLoading,
-      error,
       quizQuestions,
+      error,
       currentQuestion,
-      currentQuestionIndex,
+      currentIndex: currentQuestionIndex,
       showAnswer,
       selectedOption,
       correctAnswers,
@@ -218,6 +240,7 @@ export function useQuizEngine({
       initialMastery,
     },
     actions: {
+      handleStartQuiz,
       handleAnswer,
       handleNext,
       handleEndSession,
