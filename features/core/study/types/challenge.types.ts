@@ -9,6 +9,7 @@ export interface ChallengeConfig {
   deckId: string | null;
   userId: string | null;
   initialMastery: number;
+  shouldStart?: boolean;
 }
 
 export interface ChallengeState {

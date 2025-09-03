@@ -21,7 +21,8 @@ interface QuizEngineConfig {
   userId: string | null;
   initialMastery: number;
   deckId: string | null;
-  token: string | null;
+  preGeneratedQuestions?: any[]; // Allow pre-generated questions
+  shouldStart?: boolean; // Control when study session starts
 }
 
 /**
@@ -33,7 +34,8 @@ export function useQuizEngine({
   userId,
   initialMastery,
   deckId,
-  token,
+  preGeneratedQuestions,
+  shouldStart = true,
 }: QuizEngineConfig) {
   const router = useRouter();
 
@@ -56,6 +58,7 @@ export function useQuizEngine({
 
   const {
     studyTime,
+    isStudying,
     startStudySession,
     stopStudySession,
     handleEndSession,
@@ -72,46 +75,55 @@ export function useQuizEngine({
     studyMode: "quiz",
   });
 
-  // Initialize quiz: validate token, generate questions, and start session
+  // Initialize quiz: generate questions and start session
   useEffect(() => {
     const run = async () => {
-      if (!deckId || !token || !userId) {
+      if (!deckId || !userId) {
         return;
       }
 
-      try {
-        const validationResult = await validateQuizAccessTokenAction(
-          token,
-          deckId
-        );
-        if (!validationResult.success) {
-          setError(validationResult.message || "Invalid access token");
-          setIsLoading(false);
-          return;
-        }
-        setNumOfQuestions(validationResult.numQuestions || 10);
-
-        const quizResult = await generateAdaptiveQuizAction(
-          deckId,
-          validationResult.numQuestions || 10
-        );
-        if (!quizResult.success) {
-          setError(quizResult.message || "Failed to generate quiz");
-          setIsLoading(false);
-          return;
-        }
-
-        setQuizQuestions(quizResult.questions || []);
+      // Use pre-generated questions if available, otherwise generate new ones
+      if (preGeneratedQuestions && preGeneratedQuestions.length > 0) {
+        setQuizQuestions(preGeneratedQuestions);
         setIsLoading(false);
-        startStudySession();
-      } catch (e) {
-        console.error(e);
-        setError("An error occurred while loading the quiz");
-        setIsLoading(false);
+        // Start study session when quiz is ready and should start
+        if (shouldStart) {
+          startStudySession();
+        }
+      } else {
+        try {
+          const quizResult = await generateAdaptiveQuizAction(
+            deckId,
+            numOfQuestions
+          );
+          if (!quizResult.success) {
+            setError(quizResult.message || "Failed to generate quiz");
+            setIsLoading(false);
+            return;
+          }
+
+          setQuizQuestions(quizResult.questions || []);
+          setIsLoading(false);
+          // Start study session when quiz is ready and should start
+          if (shouldStart) {
+            startStudySession();
+          }
+        } catch (e) {
+          console.error(e);
+          setError("An error occurred while generating quiz");
+          setIsLoading(false);
+        }
       }
     };
     run();
-  }, [deckId, token, userId]);
+  }, [deckId, userId, numOfQuestions, preGeneratedQuestions]);
+
+  // Start study session when quiz is ready and should start
+  useEffect(() => {
+    if (shouldStart && quizQuestions.length > 0 && !isLoading) {
+      startStudySession();
+    }
+  }, [shouldStart, quizQuestions.length, isLoading, startStudySession]);
 
   // Process user's answer selection and update the score
   const handleAnswer = useCallback(

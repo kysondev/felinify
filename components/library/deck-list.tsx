@@ -88,7 +88,7 @@ export const DeckList = ({
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {currentDecks.map((deck) => (
-              <DeckCard deck={deck} key={deck.id} user={user as User} />
+              <DeckCard deck={deck} key={deck.id} />
             ))}
 
             {isLastPage && (

@@ -6,18 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
 import { StudyModeDialog } from "components/study";
 import { useRouter } from "next/navigation";
 import { Target, Play } from "lucide-react";
-import ChallengeSettings from "components/study/dialogs/challenge-settings";
-import AdaptiveQuizSettings from "components/study/dialogs/adaptive-quiz-settings";
+
+
 
 export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
-  const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
-  const [showChallengeSettings, setShowChallengeSettings] =
-    useState<boolean>(false);
   const [showStudyModeDialog, setShowStudyModeDialog] =
     useState<boolean>(false);
-  const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
-  const [selectedMode, setSelectedMode] = useState<string>("");
-  const [isTimed, setIsTimed] = useState<boolean>(false);
+
   const router = useRouter();
 
   const handleStudyModeSelect = (mode: string) => {
@@ -25,22 +20,14 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
       router.push(`/workspace/study/flip?deckId=${deck.id}`);
     }
     if (mode === "challenge") {
-      setSelectedMode(mode);
-      setShowStudyModeDialog(false);
-      setShowChallengeSettings(true);
+      router.push(`/workspace/study/challenge?deckId=${deck.id}`);
     }
     if (mode === "quiz") {
-      setSelectedMode(mode);
-      setShowStudyModeDialog(false);
-      setShowQuizSettings(true);
+      router.push(`/workspace/study/quiz?deckId=${deck.id}`);
     }
   };
 
-  const handleStartStudy = () => {
-    router.push(
-      `/workspace/study/${selectedMode}?deckId=${deck.id}&timed=${isTimed}`
-    );
-  };
+
 
   return (
     <Card className="border-muted-foreground/20">
@@ -66,21 +53,8 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
         </div>
       </CardContent>
 
-      <ChallengeSettings
-        showChallengeSettings={showChallengeSettings}
-        setShowChallengeSettings={setShowChallengeSettings}
-        handleStartStudy={handleStartStudy}
-        isTimed={isTimed}
-        setIsTimed={setIsTimed}
-      />
-      <AdaptiveQuizSettings
-        showQuizSettings={showQuizSettings}
-        setShowQuizSettings={setShowQuizSettings}
-        numOfQuestions={numOfQuestions}
-        setNumOfQuestions={setNumOfQuestions}
-        deckId={deck.id}
-        user={user}
-      />
+
+
     </Card>
   );
 };

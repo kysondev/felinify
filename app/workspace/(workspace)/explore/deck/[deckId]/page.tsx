@@ -220,7 +220,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
             </div>
           </div>
 
-          <ExploreDeckStudyOptions deckId={deck.id} user={user as UserType} />
+          <ExploreDeckStudyOptions deckId={deck.id} />
         </div>
       </div>
 

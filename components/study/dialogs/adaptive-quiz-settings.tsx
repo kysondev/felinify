@@ -42,7 +42,7 @@ const AdaptiveQuizSettings = ({
       setIsGenerating(true);
       setError(null);
       const userHasEnoughEnergy = await hasEnoughEnergy(user.id, 1);
-      if (!userHasEnoughEnergy) {
+      if (!userHasEnoughEnergy.success) {
         setError("You don't have enough energy to generate flashcards");
         setIsGenerating(false);
         return;

@@ -2,8 +2,7 @@
 
 import { Button } from "components/ui/button";
 import { Card, CardContent } from "components/ui/card";
-
-import { Deck, User } from "db/types/models.types";
+import { Deck } from "db/types/models.types";
 import { TrendingUp, Edit3, Play, Target } from "lucide-react";
 import { CardsIcon } from "@phosphor-icons/react";
 import Link from "next/link";
@@ -11,20 +10,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Progress } from "components/ui/progress";
 import { Badge } from "components/ui/badge";
-import ChallengeSettings from "components/study/dialogs/challenge-settings";
-import AdaptiveQuizSettings from "components/study/dialogs/adaptive-quiz-settings";
 import { formatDate } from "@common/utils/date.utils";
 import { StudyModeDialog } from "components/study";
 
-export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
-  const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
-  const [showChallengeSettings, setShowChallengeSettings] =
-    useState<boolean>(false);
+export const DeckCard = ({ deck }: { deck: Deck }) => {
   const [showStudyModeDialog, setShowStudyModeDialog] =
     useState<boolean>(false);
-  const [showQuizSettings, setShowQuizSettings] = useState<boolean>(false);
-  const [selectedMode, setSelectedMode] = useState<string>("");
-  const [isTimed, setIsTimed] = useState<boolean>(false);
+
   const router = useRouter();
 
   const handleStudyModeSelect = (mode: string) => {
@@ -32,22 +24,14 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
       router.push(`/workspace/study/flip?deckId=${deck.id}`);
     }
     if (mode === "challenge") {
-      setSelectedMode(mode);
-      setShowStudyModeDialog(false);
-      setShowChallengeSettings(true);
+      router.push(`/workspace/study/challenge?deckId=${deck.id}`);
     }
     if (mode === "quiz") {
-      setSelectedMode(mode);
-      setShowStudyModeDialog(false);
-      setShowQuizSettings(true);
+      router.push(`/workspace/study/quiz?deckId=${deck.id}`);
     }
   };
 
-  const handleStartStudy = () => {
-    router.push(
-      `/workspace/study/${selectedMode}?deckId=${deck.id}&timed=${isTimed}`
-    );
-  };
+
   return (
     <Card>
       <CardContent className="p-6 cursor-default">
@@ -156,21 +140,8 @@ export const DeckCard = ({ deck, user }: { deck: Deck; user: User }) => {
         </div>
       </CardContent>
 
-      <ChallengeSettings
-        showChallengeSettings={showChallengeSettings}
-        setShowChallengeSettings={setShowChallengeSettings}
-        handleStartStudy={handleStartStudy}
-        isTimed={isTimed}
-        setIsTimed={setIsTimed}
-      />
-      <AdaptiveQuizSettings
-        showQuizSettings={showQuizSettings}
-        setShowQuizSettings={setShowQuizSettings}
-        numOfQuestions={numOfQuestions}
-        setNumOfQuestions={setNumOfQuestions}
-        deckId={deck.id}
-        user={user}
-      />
+
+
     </Card>
   );
 };

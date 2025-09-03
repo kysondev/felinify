@@ -4,8 +4,8 @@ export const hasEnoughEnergy = async (userId: string, energy: number) => {
   const userEnergy = await getUserEnergy(userId);
 
   if (userEnergy >= energy) {
-    return true;
+    return { success: true, energy: userEnergy };
   } else {
-    return false;
+    return { success: false, energy: userEnergy };
   }
 };

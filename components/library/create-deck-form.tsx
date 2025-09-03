@@ -103,7 +103,7 @@ export function CreateDeckForm({
     setIsGenerating(true);
     setProgress(10);
     const result = await hasEnoughEnergy(user.id, 1);
-    if (!result) {
+    if (!result.success) {
       toast.error("You don't have enough energy to generate flashcards");
       setIsGenerating(false);
       return;

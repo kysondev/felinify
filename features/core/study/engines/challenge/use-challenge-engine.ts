@@ -17,7 +17,7 @@ import { updateFlashcardPerformanceAction } from "@deck/actions/flashcards.actio
  * Handles questions through all flashcards, timer, scoring, and mastery calculations.
  */
 export function useChallengeEngine(config: ChallengeConfig) {
-  const { deck, isTimed, deckId, userId, initialMastery } = config;
+  const { deck, isTimed, deckId, userId, initialMastery, shouldStart = true } = config;
 
   const totalCards = deck?.flashcards?.length ?? 0;
 
@@ -140,10 +140,11 @@ export function useChallengeEngine(config: ChallengeConfig) {
     saveSessionWithoutRedirect,
   ]);
 
-  // Initialize study session when deck is loaded
+  // Initialize study session when deck is loaded and shouldStart is true
   useEffect(() => {
     if (
       deck &&
+      shouldStart &&
       !isStudying &&
       !isSavingLoading &&
       state.view !== "finalResults" &&
@@ -154,6 +155,7 @@ export function useChallengeEngine(config: ChallengeConfig) {
     }
   }, [
     deck,
+    shouldStart,
     isStudying,
     isSavingLoading,
     state.view,
