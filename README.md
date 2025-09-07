@@ -68,7 +68,10 @@ To get a local copy up and running follow these simple example steps.
 - [x] AI Adaptive Quiz Mode
 - [x] Stripe Payment & Paid Plans
 - [x] Explore Page & Flashcard Sharing
-- [ ] Felinify AI Assistant
+- [ ] Flashcard Learning Progress Tracking
+- [ ] Learn Mode
+- [ ] Flashcard Question Hints
+- [ ] Felinify AI Agent
 - [ ] Keyword Based AI Flashcard Generation
 - [ ] Leveling System
 - [ ] Study Streak System
