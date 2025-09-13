@@ -1,10 +1,5 @@
 import { z } from "zod";
 
-export const usernameSchema = z.string()
-.min(3, { message: "Username must be at least 3 characters long" })
-.max(20, { message: "Username must be less than 20 characters long" })
-.regex(/^[a-zA-Z0-9]+$/, { message: "Username must contain only letters and numbers" })
-
 export const passwordSchema = z.string()
 .min(6, { message: "Password must be at least 6 characters long" })
 .max(20, { message: "Password must be less than 20 characters long" })
@@ -21,7 +16,6 @@ export const passwordChangeSchema = z.object({
     path: ["confirmPassword"],
   });
 
-export type UsernameSchema = z.infer<typeof usernameSchema>;
 export type PasswordSchema = z.infer<typeof passwordSchema>;
 export type EmailSchema = z.infer<typeof emailSchema>;
 export type PasswordChangeSchema = z.infer<typeof passwordChangeSchema>;

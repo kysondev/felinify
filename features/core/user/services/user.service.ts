@@ -41,13 +41,10 @@ export const checkUserNameAvailability = async (username: string) => {
     const user = await db
       .selectFrom("user")
       .selectAll()
-      .where("name", "=", username)
+      .where("name", "ilike", username)
       .executeTakeFirst();
 
-    if (
-      user &&
-      user.name?.toLocaleLowerCase() === username.toLocaleLowerCase()
-    ) {
+    if (user) {
       return {
         success: false,
         message: "Username already exists",
@@ -55,14 +52,13 @@ export const checkUserNameAvailability = async (username: string) => {
     }
     return {
       success: true,
-      message: "User fetched successfully",
-      data: user,
+      message: "Username is available",
     };
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error checking username availability:", error);
     return {
       success: false,
-      message: "Error fetching user",
+      message: "Error checking username availability",
     };
   }
 };

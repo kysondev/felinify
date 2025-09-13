@@ -30,8 +30,8 @@ import {
 import {
   PasswordChangeSchema,
   passwordChangeSchema,
-  usernameSchema,
 } from "@user/validations/user.schema";
+import { usernameSchema } from "@auth/validations/auth.schema";
 import { User } from "db/types/models.types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,7 +76,7 @@ export function AccountSettings({ user }: { user: User }) {
 
   const validateUsername = () => {
     try {
-      usernameSchema.parse(username);
+      usernameSchema.parse({ username });
       setUsernameError("");
       return true;
     } catch (error) {
@@ -105,11 +105,13 @@ export function AccountSettings({ user }: { user: User }) {
     setIsSaving(true);
 
     try {
-      const isUsernameTaken = await checkUserNameAvailability(username);
+      if (username !== user?.name) {
+        const isUsernameTaken = await checkUserNameAvailability(username);
 
-      if (!isUsernameTaken.success && username !== user?.name) {
-        toast.error("Username is taken");
-        return;
+        if (!isUsernameTaken.success) {
+          toast.error("Username is taken");
+          return;
+        }
       }
 
       if (username !== user?.name) {
