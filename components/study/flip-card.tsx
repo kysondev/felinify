@@ -2,11 +2,13 @@
 
 import React from "react";
 import { Card } from "components/ui/card";
+import { FlashcardImage } from "components/ui/flashcard-image";
 import { Lightbulb, RotateCw } from "lucide-react";
 
 interface FlipCardProps {
   question: string;
   answer: string;
+  questionImageUrl?: string | null;
   isFlipped: boolean;
   onToggle: () => void;
 }
@@ -15,6 +17,7 @@ interface FlipCardProps {
 export function FlipCard({
   question,
   answer,
+  questionImageUrl,
   isFlipped,
   onToggle,
 }: FlipCardProps) {
@@ -33,8 +36,19 @@ export function FlipCard({
               Question
             </div>
             <div className="w-full max-w-md text-center overflow-y-auto max-h-[70%] px-2 py-2 my-auto">
-              <div className="text-base sm:text-lg md:text-xl font-medium break-words">
-                {question}
+              <div className="flex flex-col items-center gap-4">
+                {questionImageUrl && (
+                  <div className="w-24 h-24">
+                    <FlashcardImage
+                      src={questionImageUrl}
+                      alt="Question image"
+                      className="w-full h-full"
+                    />
+                  </div>
+                )}
+                <div className="text-base sm:text-lg md:text-xl font-medium break-words">
+                  {question}
+                </div>
               </div>
             </div>
             <div className="absolute bottom-3 md:bottom-4 left-3 md:left-4 text-muted-foreground/50 text-xs md:text-sm italic">

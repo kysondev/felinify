@@ -29,6 +29,7 @@ export const addFlashcard = async (
         id: cuid(),
         question: flashcardData.question,
         answer: flashcardData.answer,
+        questionImageUrl: flashcardData.questionImageUrl || null,
         deckId: flashcardData.deckId,
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
@@ -93,6 +94,7 @@ export const updateFlashcard = async (
       .set({
         question: flashcardData.question,
         answer: flashcardData.answer,
+        questionImageUrl: flashcardData.questionImageUrl || null,
         updatedAt: new Date(),
       })
       .where("id", "=", flashcardId)

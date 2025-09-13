@@ -15,6 +15,7 @@ export interface QuizQuestion {
   answer: string;
   options: string[];
   id: string;
+  questionImageUrl?: string | null;
 }
 
 interface QuizEngineConfig {

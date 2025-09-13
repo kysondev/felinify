@@ -64,6 +64,12 @@ export const flashcardSchema = z
       .string()
       .min(1, { message: "Answer is required" })
       .max(500, { message: "Answer must be less than 500 characters" }),
+
+    questionImageUrl: z
+      .string()
+      .url({ message: "Invalid question image URL" })
+      .optional()
+      .or(z.literal("")),
   })
   .refine(
     ({ question, answer }) => {

@@ -4,16 +4,19 @@ import { useState } from "react";
 import { Card, CardContent } from "components/ui/card";
 import { Badge } from "components/ui/badge";
 import { Button } from "components/ui/button";
+import { FlashcardImage } from "components/ui/flashcard-image";
 import { ArrowRight, Edit2, Eye, FileUp } from "lucide-react";
 
 interface FlashcardProps {
   id: string;
   question: string;
   answer: string;
+  questionImageUrl?: string | null;
   onEdit?: (flashcard: {
     id: string;
     question: string;
     answer: string;
+    questionImageUrl?: string | null;
   }) => void;
   onShowFullContent?: (title: string, content: string) => void;
   isPreview?: boolean;
@@ -24,6 +27,7 @@ export const Flashcard = ({
   id,
   question,
   answer,
+  questionImageUrl,
   onEdit,
   onShowFullContent,
   isPreview = false,
@@ -75,6 +79,7 @@ export const Flashcard = ({
                   id,
                   question,
                   answer,
+                  questionImageUrl,
                 });
               }}
             >
@@ -84,13 +89,26 @@ export const Flashcard = ({
         </div>
 
         <div className="flex-grow flex flex-col justify-center min-h-[100px] my-2">
-          {isFlipped ? (
-            <p className="text-muted-foreground break-words">
-              {truncateText(answer)}
-            </p>
-          ) : (
-            <p className="break-words font-medium">{truncateText(question)}</p>
-          )}
+          <div className="flex gap-3 items-start">
+            {!isFlipped && questionImageUrl && (
+              <div className="flex-shrink-0 w-16 h-16">
+                <FlashcardImage
+                  src={questionImageUrl}
+                  alt="Question image"
+                  className="w-full h-full"
+                />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              {isFlipped ? (
+                <p className="text-muted-foreground break-words">
+                  {truncateText(answer)}
+                </p>
+              ) : (
+                <p className="break-words font-medium">{truncateText(question)}</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {((isFlipped && isTextOverflowing(answer)) ||

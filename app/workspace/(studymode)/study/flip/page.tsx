@@ -75,6 +75,7 @@ export default function FlipStudyPage() {
       <FlipCard
         question={state.currentCard.question}
         answer={state.currentCard.answer}
+        questionImageUrl={state.currentCard.questionImageUrl}
         isFlipped={state.isFlipped}
         onToggle={actions.onFlip}
       />

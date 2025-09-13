@@ -52,6 +52,7 @@ export const QuestionView = ({
             ...currentCard,
             question: currentCard!.answer,
             answer: currentCard!.question,
+            questionImageUrl: currentCard!.questionImageUrl,
           }}
           currentCardIndex={currentIndex + 1}
           totalCards={totalCards}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "components/ui/card";
+import { FlashcardImage } from "components/ui/flashcard-image";
 import { CheckCircle, XCircle } from "lucide-react";
 
 interface QuestionCardProps {
@@ -7,6 +8,7 @@ interface QuestionCardProps {
     id: string | any;
     question: string;
     answer: string;
+    questionImageUrl?: string | null;
   };
   currentCardIndex: number;
   totalCards: number;
@@ -34,8 +36,19 @@ export const QuestionCard = ({
     </div>
 
     <div className="flex flex-col min-h-[200px] md:min-h-[250px] justify-center">
-      <div className="text-base sm:text-lg md:text-xl font-medium break-words mb-6 text-center">
-        {currentCard.question}
+      <div className="flex flex-col items-center gap-4 mb-6">
+        {currentCard.questionImageUrl && (
+          <div className="w-32 h-32">
+            <FlashcardImage
+              src={currentCard.questionImageUrl}
+              alt="Question image"
+              className="w-full h-full"
+            />
+          </div>
+        )}
+        <div className="text-base sm:text-lg md:text-xl font-medium break-words text-center">
+          {currentCard.question}
+        </div>
       </div>
 
       {showAnswer && (

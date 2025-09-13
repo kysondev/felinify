@@ -56,6 +56,7 @@ export const generateAdaptiveQuizAction = async (
       id: card.id,
       question: card.question,
       answer: card.answer,
+      questionImageUrl: card.questionImageUrl,
       numCorrect: (card as any).numCorrect || 0,
       numIncorrect: (card as any).numIncorrect || 0,
     }));

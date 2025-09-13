@@ -8,6 +8,7 @@ export const generateAdaptiveQuiz = async (
     id: string;
     question: string;
     answer: string;
+    questionImageUrl?: string | null;
     numCorrect: number;
     numIncorrect: number;
   }[],
@@ -67,12 +68,16 @@ Rules:
 
     const questions = await Promise.all(questionPromises);
     const parsedQuestions = questions.map(
-      (question: { id: string; q: string; c: string; o: string[] }) => ({
-        id: question.id,
-        question: question.q,
-        answer: question.c,
-        options: question.o,
-      })
+      (question: { id: string; q: string; c: string; o: string[] }) => {
+        const originalFlashcard = targetFlashcards.find(card => card.id === question.id);
+        return {
+          id: question.id,
+          question: question.q,
+          answer: question.c,
+          options: question.o,
+          questionImageUrl: originalFlashcard?.questionImageUrl || null,
+        };
+      }
     );
 
     return { success: true, questions: parsedQuestions };

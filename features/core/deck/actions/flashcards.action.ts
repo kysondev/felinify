@@ -10,7 +10,8 @@ export const addFlashcardAction = async (
   deckId: string,
   userId: string,
   question: string,
-  answer: string
+  answer: string,
+  questionImageUrl?: string | null
 ) => {
   try {
     const { data: user } = await getUser();
@@ -23,6 +24,7 @@ export const addFlashcardAction = async (
     const result = await addFlashcard(userId, {
       question,
       answer,
+      questionImageUrl,
       deckId,
     });
 
@@ -43,7 +45,7 @@ export const addFlashcardAction = async (
 
 export const updateFlashcardAction = async (
   flashcardId: string,
-  flashcardData: { question: string; answer: string }
+  flashcardData: { question: string; answer: string; questionImageUrl?: string | null }
 ) => {
   try {
     const { data: user } = await getUser();

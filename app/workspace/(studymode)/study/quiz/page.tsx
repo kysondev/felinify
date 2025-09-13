@@ -123,6 +123,7 @@ export default function QuizPage() {
               id: state.currentQuestion?.id || "",
               question: state.currentQuestion?.question || "",
               answer: state.currentQuestion?.answer || "",
+              questionImageUrl: state.currentQuestion?.questionImageUrl || null,
             }}
             currentCardIndex={state.currentIndex}
             totalCards={state.quizQuestions.length}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Deck } from "db/types/models.types";
 import { Button } from "components/ui/button";
 import { Card, CardContent } from "components/ui/card";
@@ -51,6 +51,7 @@ import {
   AlertDialogTitle,
 } from "components/ui/alert-dialog";
 import { Flashcard } from "./flashcard";
+import { ImageUpload, ImageUploadRef } from "components/ui/image-upload";
 import {
   addFlashcardAction,
   deleteFlashcardAction,
@@ -78,6 +79,7 @@ export const FlashcardList = ({
     id: string;
     question: string;
     answer: string;
+    questionImageUrl?: string | null;
   } | null>(null);
   const [fullViewContent, setFullViewContent] = useState<{
     title: string;
@@ -88,12 +90,15 @@ export const FlashcardList = ({
   const cardsPerPage = 6;
 
   const router = useRouter();
+  const addImageUploadRef = useRef<ImageUploadRef>(null);
+  const editImageUploadRef = useRef<ImageUploadRef>(null);
 
   const addForm = useForm<FlashcardSchema>({
     resolver: zodResolver(flashcardSchema),
     defaultValues: {
       question: "",
       answer: "",
+      questionImageUrl: "",
     },
   });
 
@@ -102,17 +107,30 @@ export const FlashcardList = ({
     defaultValues: {
       question: "",
       answer: "",
+      questionImageUrl: "",
     },
   });
 
   const onSubmitAdd = async (data: FlashcardSchema) => {
     setIsLoading(true);
     try {
+      let imageUrl: string | null = null;
+      if (addImageUploadRef.current) {
+        try {
+          imageUrl = await addImageUploadRef.current.uploadImage();
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast.error("Failed to upload image");
+          return;
+        }
+      }
+
       const result = await addFlashcardAction(
         deck.id,
         userId,
         data.question,
-        data.answer
+        data.answer,
+        imageUrl
       );
       fetch(`/api/revalidate?path=/workspace/library`);
       fetch(`/api/revalidate?path=/workspace/explore`);
@@ -122,6 +140,7 @@ export const FlashcardList = ({
       if (result.success) {
         toast.success("Flashcard added successfully");
         addForm.reset();
+        addImageUploadRef.current?.reset();
         setIsAddDialogOpen(false);
         router.refresh();
       } else {
@@ -140,16 +159,32 @@ export const FlashcardList = ({
 
     setIsLoading(true);
     try {
+      let imageUrl: string | null = data.questionImageUrl || null;
+      if (editImageUploadRef.current) {
+        try {
+          const uploadedUrl = await editImageUploadRef.current.uploadImage();
+          imageUrl = uploadedUrl;
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast.error("Failed to upload image");
+          return;
+        }
+      }
+
       const updateResult = await updateFlashcardAction(
         currentFlashcard.id,
-        data
+        { 
+          question: data.question, 
+          answer: data.answer, 
+          questionImageUrl: imageUrl 
+        }
       );
 
       if (updateResult.success) {
         toast.success("Flashcard updated successfully");
         editForm.reset();
+        editImageUploadRef.current?.reset();
         setIsEditDialogOpen(false);
-        setCurrentFlashcard(null);
         fetch(`/api/revalidate?path=/workspace/library`);
         fetch(`/api/revalidate?path=/workspace/explore`);
         fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
@@ -202,11 +237,13 @@ export const FlashcardList = ({
     id: string;
     question: string;
     answer: string;
+    questionImageUrl?: string | null;
   }) => {
     setCurrentFlashcard(flashcard);
     editForm.reset({
       question: flashcard.question,
       answer: flashcard.answer,
+      questionImageUrl: flashcard.questionImageUrl || "",
     });
     setIsEditDialogOpen(true);
   };
@@ -214,6 +251,27 @@ export const FlashcardList = ({
   const showFullContent = (title: string, content: string) => {
     setFullViewContent({ title, content });
     setIsFullViewDialogOpen(true);
+  };
+
+  const handleAddDialogClose = (open: boolean) => {
+    setIsAddDialogOpen(open);
+    if (!open) {
+      addForm.reset();
+      if (addImageUploadRef.current) {
+        addImageUploadRef.current.reset();
+      }
+    }
+  };
+
+  const handleEditDialogClose = (open: boolean) => {
+    setIsEditDialogOpen(open);
+    if (!open) {
+      editForm.reset();
+      setCurrentFlashcard(null);
+      if (editImageUploadRef.current) {
+        editImageUploadRef.current.reset();
+      }
+    }
   };
 
   const filteredFlashcards = deck.flashcards?.filter(
@@ -246,7 +304,7 @@ export const FlashcardList = ({
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h2 className="text-xl font-semibold">Manage Flashcards</h2>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <Dialog open={isAddDialogOpen} onOpenChange={handleAddDialogClose}>
           <DialogTrigger asChild>
             <Button className="shrink-0">
               <Plus className="h-4 w-4 mr-1" />
@@ -298,12 +356,35 @@ export const FlashcardList = ({
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={addForm.control}
+                  name="questionImageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Question Image (Optional)</FormLabel>
+                      <FormControl>
+                        <ImageUpload
+                          ref={addImageUploadRef}
+                          value={field.value || undefined}
+                          onChange={(url) => field.onChange(url || "")}
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <DialogFooter className="mt-6">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsAddDialogOpen(false)}
+                  onClick={() => {
+                    addForm.reset();
+                    addImageUploadRef.current?.reset();
+                    setIsAddDialogOpen(false);
+                  }}
                   disabled={isLoading}
                 >
                   Cancel
@@ -364,6 +445,7 @@ export const FlashcardList = ({
                 id={flashcard.id.toString()}
                 question={flashcard.question}
                 answer={flashcard.answer}
+                questionImageUrl={flashcard.questionImageUrl}
                 onEdit={handleEdit}
                 onShowFullContent={showFullContent}
                 isPreview={true}
@@ -438,7 +520,7 @@ export const FlashcardList = ({
         </AlertDialogContent>
       </AlertDialog>
 
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+       <Dialog open={isEditDialogOpen} onOpenChange={handleEditDialogClose}>
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
@@ -491,6 +573,27 @@ export const FlashcardList = ({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={editForm.control}
+                name="questionImageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-base font-medium">
+                      Question Image (Optional)
+                    </FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        ref={editImageUploadRef}
+                        value={field.value || undefined}
+                        onChange={(url) => field.onChange(url || "")}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <DialogFooter className="mt-6 flex flex-row justify-between pt-4 border-t">
               <Button
@@ -512,7 +615,11 @@ export const FlashcardList = ({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsEditDialogOpen(false)}
+                  onClick={() => {
+                    editForm.reset();
+                    editImageUploadRef.current?.reset();
+                    setIsEditDialogOpen(false);
+                  }}
                   disabled={isLoading}
                   className="flex-1 sm:flex-none"
                 >
