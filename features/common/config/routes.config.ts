@@ -1,4 +1,4 @@
-export const PROTECTED_ROUTES = ["/workspace"];
+export const PROTECTED_ROUTES = ["/workspace","/auth/setup-username"];
 export const AUTH_ROUTES = [
   "/auth/login",
   "/auth/signup",

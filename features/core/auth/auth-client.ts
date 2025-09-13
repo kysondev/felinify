@@ -16,6 +16,9 @@ export const authClient = createAuthClient({
         energy: {
           type: "number",
         },
+        usernameSet: {
+          type: "boolean",
+        },
       },
     }),
   ],

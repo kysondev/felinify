@@ -39,7 +39,11 @@ export default async function middleware(request: NextRequest) {
     const session = await getSession(request);
 
     if (session) {
-      if (AUTH_ROUTES.includes(currentPath)) {
+      if (session.user && !session.user.usernameSet && currentPath !== "/auth/setup-username") {
+        return NextResponse.redirect(new URL("/auth/setup-username", request.url));
+      }
+      
+      if (AUTH_ROUTES.includes(currentPath) && currentPath !== "/auth/setup-username") {
         return NextResponse.redirect(new URL("/workspace", request.url));
       }
     } else {

@@ -1,6 +1,6 @@
 "use client";
 import { authClient } from "@auth/auth-client";
-import { signInSchema, signUpSchema } from "@auth/validations/auth.schema";
+import { signInSchema, signUpSchema, usernameSchema } from "@auth/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "@auth/config/auth.config";
@@ -43,6 +43,7 @@ export const signUp = async (
       password,
       name,
       energy: 10,
+      usernameSet: true,
     });
     if (error) {
       toast.error(error.message as string);
@@ -109,7 +110,7 @@ export const signInWithGoogle = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
       callbackURL: "/workspace",
-      newUserCallbackURL: "/api/user/signup/callback",
+      newUserCallbackURL: "/auth/setup-username",
     });
     if (error) {
       toast.error(error.message as string);
@@ -130,6 +131,7 @@ export const signInWithGithub = async () => {
     const { error } = await authClient.signIn.social({
       provider: "github",
       callbackURL: "/workspace",
+      newUserCallbackURL: "/auth/setup-username",
     });
     if (error) {
       toast.error(error.message as string);
@@ -220,4 +222,91 @@ export const signOut = async () => {
     toast.error("Something went wrong while signing out");
   }
   window.location.href = "/auth/login";
+};
+
+export const setupUsername = async (username: string) => {
+  try {
+    const validation = usernameSchema.safeParse({ username });
+    if (!validation.success) {
+      return { success: false, message: validation.error.issues[0].message };
+    }
+
+    const availabilityCheck = await checkUserNameAvailability(username);
+    if (!availabilityCheck.success) {
+      return { success: false, message: availabilityCheck.message };
+    }
+
+    const { error } = await authClient.updateUser({
+      name: username,
+      usernameSet: true,
+    });
+
+    if (error) {
+      return { success: false, message: "Failed to update username" };
+    }
+
+    return { success: true, message: "Username set successfully" };
+  } catch (error) {
+    console.error("Error setting up username:", error);
+    return { success: false, message: "Something went wrong. Please try again." };
+  }
+};
+
+export const initializeUsername = async () => {
+  try {
+    const { data: session } = await authClient.getSession();
+    
+    if (!session?.user) {
+      return { success: false, message: "User not authenticated" };
+    }
+
+    const user = session.user;
+
+    if (user.usernameSet) {
+      return { success: true, message: "Username already set", redirectTo: "/workspace" };
+    }
+
+    if (!user.name) {
+      return { success: false, message: "No name available from social provider", redirectTo: "/auth/setup-username" };
+    }
+
+    const validation = usernameSchema.safeParse({ username: user.name });
+    
+    if (validation.success) {
+      const availabilityCheck = await checkUserNameAvailability(user.name);
+      
+      if (availabilityCheck.success) {
+        const { error } = await authClient.updateUser({
+          name: user.name,
+          usernameSet: true,
+        });
+
+        if (error) {
+          return { success: false, message: "Failed to update username" };
+        }
+
+        return { success: true, message: "Username set automatically", redirectTo: "/workspace" };
+      } else {
+        const { customAlphabet } = await import("nanoid");
+        const nanoid = customAlphabet("0123456789", 4);
+        const newUsername = `${user.name}${nanoid()}`;
+        
+        const { error } = await authClient.updateUser({
+          name: newUsername,
+          usernameSet: true,
+        });
+
+        if (error) {
+          return { success: false, message: "Failed to update username" };
+        }
+
+        return { success: true, message: "Username set automatically with suffix", redirectTo: "/workspace" };
+      }
+    } else {
+      return { success: false, message: "Name is not a valid username", redirectTo: "/auth/setup-username" };
+    }
+  } catch (error) {
+    console.error("Error initializing username:", error);
+    return { success: false, message: "Internal server error" };
+  }
 };

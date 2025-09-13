@@ -26,6 +26,9 @@ export const auth = betterAuth({
       energy: {
         type: "number",
       },
+      usernameSet: {
+        type: "boolean",
+      },
     },
   },
   secondaryStorage: {
@@ -71,7 +74,7 @@ export const auth = betterAuth({
           await sendTwoFAEmail(user, otp);
         },
       },
-      skipVerificationOnEnable: true,
+      skipVerificationOnEnable: false,
     }),
     admin(),
     stripe({
