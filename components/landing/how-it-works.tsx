@@ -1,8 +1,12 @@
+"use client";
+
 import { Lightbulb, LineChart } from "lucide-react";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Button } from "../ui/button";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
+import { SubscriptionPopup } from "./subscription-popup";
+import { useRouter } from "next/navigation";
 
 interface Step {
   title: string;
@@ -129,11 +133,29 @@ export const HowItWorks = ({
     },
   ],
 }: HowItWorksProps) => {
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+  const router = useRouter();
+
+  const handleWorkspaceClick = () => {
+    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+    
+    if (isBetaMode) {
+      setShowSubscriptionPopup(true);
+    } else {
+      router.push("/workspace");
+    }
+  };
+
   return (
-    <section
-      className="py-16 sm:py-20 lg:py-24 bg-muted/30"
-      aria-labelledby="how-it-works-heading"
-    >
+    <>
+      <SubscriptionPopup 
+        open={showSubscriptionPopup} 
+        setOpen={setShowSubscriptionPopup} 
+      />
+      <section
+        className="py-16 sm:py-20 lg:py-24 bg-muted/30"
+        aria-labelledby="how-it-works-heading"
+      >
       <div className="px-4 max-w-[1200px] mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2
@@ -164,13 +186,14 @@ export const HowItWorks = ({
             minute.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/workspace">
-              <Button>Try It Now — Free</Button>
-            </Link>
+            <Button onClick={handleWorkspaceClick}>
+              Try It Now — Free
+            </Button>
             <Button variant="outline">Watch Demo</Button>
           </div>
         </div>
       </div>
     </section>
+    </>
   );
 };

@@ -1,6 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Button } from "components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { SubscriptionPopup } from "./subscription-popup";
+import { useRouter } from "next/navigation";
 
 interface HeroProps {
   heading?: string;
@@ -19,8 +23,25 @@ const Hero = ({
     url: "/workspace",
   },
 }: HeroProps) => {
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+  const router = useRouter();
+
+  const handleGetStartedClick = () => {
+    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+    
+    if (isBetaMode) {
+      setShowSubscriptionPopup(true);
+    } else {
+      router.push("/workspace");
+    }
+  };
   return (
-    <section className="pt-24 pb-20 flex justify-center">
+    <>
+      <SubscriptionPopup 
+        open={showSubscriptionPopup} 
+        setOpen={setShowSubscriptionPopup} 
+      />
+      <section className="pt-24 pb-20 flex justify-center">
       <div className="container text-center">
         <div className="mx-auto flex max-w-5xl flex-col gap-8">
           <div className="inline-flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2">
@@ -37,13 +58,13 @@ const Hero = ({
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10">
           <Button
-            asChild
             size="lg"
             className="px-8 py-5 text-base w-full sm:w-auto"
+            onClick={handleGetStartedClick}
           >
-            <a href={button.url} className="flex items-center gap-2">
+            <span className="flex items-center gap-2">
               {button.text} <ArrowRight className="w-4 h-4" />
-            </a>
+            </span>
           </Button>
           <Button
             variant="outline"
@@ -137,6 +158,7 @@ const Hero = ({
         </div>
       </div>
     </section>
+    </>
   );
 };
 

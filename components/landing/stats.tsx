@@ -1,6 +1,10 @@
+"use client";
+
 import { Users, Brain, Zap, Target, TrendingUp } from "lucide-react";
-import Link from "next/link";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import { SubscriptionPopup } from "./subscription-popup";
+import { useRouter } from "next/navigation";
 
 interface Stat {
   title: string;
@@ -49,8 +53,26 @@ export function Stats({
     },
   ],
 }: StatsProps) {
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+  const router = useRouter();
+
+  const handleWorkspaceClick = () => {
+    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+    
+    if (isBetaMode) {
+      setShowSubscriptionPopup(true);
+    } else {
+      router.push("/workspace");
+    }
+  };
+
   return (
-    <section className="pb-20">
+    <>
+      <SubscriptionPopup 
+        open={showSubscriptionPopup} 
+        setOpen={setShowSubscriptionPopup} 
+      />
+      <section className="pb-20">
       <div className="px-4 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold lg:text-4xl mb-6 text-primary">
@@ -109,26 +131,25 @@ export function Stats({
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto text-sm">
             Start your learning journey today with AI-powered flashcards
           </p>
-          <Link href="/workspace">
-            <Button variant="default">
-              Get Started Free
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </Button>
-          </Link>
+          <Button variant="default" onClick={handleWorkspaceClick}>
+            Get Started Free
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </Button>
         </div>
       </div>
     </section>
+    </>
   );
 }

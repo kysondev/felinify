@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -45,18 +45,6 @@ export function SubscriptionPopup({
     resolver: zodResolver(formSchema),
   });
 
-  useEffect(() => {
-    if (propOpen === undefined && propSetOpen === undefined) {
-      const timer = setTimeout(() => {
-        const hasSubscribed = localStorage.getItem("emailSubscribed");
-        if (!hasSubscribed) {
-          setInternalOpen(true);
-        }
-      }, 8000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [propOpen, propSetOpen]);
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -73,7 +61,6 @@ export function SubscriptionPopup({
 
       if (response.ok) {
         toast.success("Thank you for subscribing!");
-        localStorage.setItem("emailSubscribed", "true");
         setOpen(false);
         reset();
       } else {

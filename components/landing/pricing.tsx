@@ -8,10 +8,23 @@ import { Button } from "components/ui/button";
 import { Label } from "components/ui/label";
 import { RadioGroup, RadioGroupItem } from "components/ui/radio-group";
 import { Separator } from "components/ui/separator";
-import Link from "next/link";
+import { SubscriptionPopup } from "./subscription-popup";
+import { useRouter } from "next/navigation";
 
 const Pricing = () => {
   const [isAnnually, setIsAnnually] = useState(false);
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+  const router = useRouter();
+
+  const handleWorkspaceClick = () => {
+    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+    
+    if (isBetaMode) {
+      setShowSubscriptionPopup(true);
+    } else {
+      router.push("/workspace");
+    }
+  };
   const proOriginalYearly = 35.99;
   const ultraOriginalYearly = 95.99;
   const proMonthly = 2.99;
@@ -20,11 +33,16 @@ const Pricing = () => {
   const ultraAnnualDiscount = 67.19;
 
   return (
-    <section
-      className="py-16 sm:py-20 lg:py-24"
-      id="pricing"
-      aria-labelledby="pricing-heading"
-    >
+    <>
+      <SubscriptionPopup 
+        open={showSubscriptionPopup} 
+        setOpen={setShowSubscriptionPopup} 
+      />
+      <section
+        className="py-16 sm:py-20 lg:py-24"
+        id="pricing"
+        aria-labelledby="pricing-heading"
+      >
       <div className="px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2
@@ -116,8 +134,8 @@ const Pricing = () => {
                 </li>
               </ul>
 
-              <Button className="w-full" variant="outline" asChild>
-                <Link href="/workspace">Get Started Free</Link>
+              <Button className="w-full" variant="outline" onClick={handleWorkspaceClick}>
+                Get Started Free
               </Button>
             </div>
           </div>
@@ -179,8 +197,8 @@ const Pricing = () => {
                 </li>
               </ul>
 
-              <Button className="w-full" asChild>
-                <Link href="/workspace">Get Pro Plan</Link>
+              <Button className="w-full" onClick={handleWorkspaceClick}>
+                Get Pro Plan
               </Button>
             </div>
           </div>
@@ -236,14 +254,15 @@ const Pricing = () => {
                 </li>
               </ul>
 
-              <Button className="w-full" variant="outline" asChild>
-                <Link href="/workspace">Get Ultra Plan</Link>
+              <Button className="w-full" variant="outline" onClick={handleWorkspaceClick}>
+                Get Ultra Plan
               </Button>
             </div>
           </div>
         </div>
       </div>
     </section>
+    </>
   );
 };
 

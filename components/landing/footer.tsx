@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
+import { useRouter } from "next/navigation";
 
 interface FooterLink {
   text: string;
@@ -29,10 +30,21 @@ interface FooterProps {
 
 const Footer = (props: FooterProps) => {
   const [showSubscribe, setShowSubscribe] = useState(false);
+  const router = useRouter();
 
   function handleNewsletterClick() {
     setShowSubscribe(true);
   }
+
+  const handleWorkspaceClick = (url: string) => {
+    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
+
+    if (isBetaMode) {
+      setShowSubscribe(true);
+    } else {
+      router.push(url);
+    }
+  };
 
   const {
     logo = {
@@ -47,8 +59,11 @@ const Footer = (props: FooterProps) => {
         links: [
           { text: "Features", url: "#features" },
           { text: "Pricing", url: "#pricing" },
-          { text: "AI Study Tools", url: "/workspace/study/challenge" },
-          { text: "Explore Decks", url: "/workspace/explore" },
+          {
+            text: "Explore Decks",
+            url: "/workspace/explore",
+            action: () => handleWorkspaceClick("/workspace/explore"),
+          },
         ],
       },
       {
@@ -56,8 +71,16 @@ const Footer = (props: FooterProps) => {
         links: [
           { text: "Login", url: "/auth/login" },
           { text: "Sign Up", url: "/auth/signup" },
-          { text: "Library", url: "/workspace/library" },
-          { text: "Settings", url: "/workspace/settings" },
+          {
+            text: "Library",
+            url: "/workspace/library",
+            action: () => handleWorkspaceClick("/workspace/library"),
+          },
+          {
+            text: "Settings",
+            url: "/workspace/settings",
+            action: () => handleWorkspaceClick("/workspace/settings"),
+          },
         ],
       },
       {

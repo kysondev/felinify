@@ -8,7 +8,6 @@ import { LandingNavbar } from "components/landing-navbar";
 import { Pricing } from "components/landing/pricing";
 import { Stats } from "components/landing/stats";
 import { Testimonials } from "components/landing/testimonials";
-import { SubscriptionPopup } from "components/landing/subscription-popup";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
 
@@ -22,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+
   const softwareAppSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -86,7 +86,6 @@ export default function Home() {
       <JsonLd data={softwareAppSchema} />
       <JsonLd data={websiteSchema} />
       <JsonLd data={organizationSchema} />
-      <SubscriptionPopup />
       <div className="px-4 max-w-[1200px] mx-auto">
         <LandingNavbar />
         <Hero />
