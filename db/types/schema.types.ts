@@ -10,6 +10,7 @@ export interface UserTable {
   role: "user" | "admin";
   totalStudyTime: number | null;
   energy: number | null;
+  usernameSet: boolean | null;
   stripeCustomerId: string | null;
   lastEnergyRefillAt: ColumnType<Date, string | undefined>;
   createdAt: ColumnType<Date, string | undefined, never>;
