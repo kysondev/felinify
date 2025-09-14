@@ -5,6 +5,7 @@ import { Button } from "components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
+import { GithubLogoIcon } from "@phosphor-icons/react";
 
 interface HeroProps {
   heading?: string;
@@ -73,6 +74,18 @@ const Hero = ({
           >
             Watch Demo
           </Button>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <a
+            href="https://github.com/kysondev/felinify"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-md hover:bg-muted/50"
+          >
+            <GithubLogoIcon className="w-3 h-3" />
+            <span>Star on GitHub</span>
+          </a>
         </div>
 
         <div className="flex items-center justify-center gap-4 sm:gap-8 mt-6 sm:mt-8 text-xs sm:text-sm text-muted-foreground">
