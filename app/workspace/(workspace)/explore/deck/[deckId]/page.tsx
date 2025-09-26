@@ -10,6 +10,7 @@ import {
   AlertCircle,
   ArrowLeft,
   Star,
+  Edit3,
 } from "lucide-react";
 import Link from "next/link";
 import { getDeckById } from "@deck/services/deck.service";
@@ -34,6 +35,8 @@ export default async function DeckPage({ params }: DeckPageProps) {
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
   const { data: reviews } = await getReviewsByDeckId(deckId);
 
+  const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+
   if (!deck || (deck.visibility === "private" && deck.userId !== user?.id)) {
     return (
       <div className="container max-w-5xl mx-auto py-8 px-4">
@@ -47,11 +50,10 @@ export default async function DeckPage({ params }: DeckPageProps) {
           </Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <Link
-            href="/workspace/explore"
+            href={primaryTag === "General" ? "/workspace/explore" : `/workspace/explore/tag/${encodeURIComponent(primaryTag)}`}
             className="flex items-center hover:text-foreground transition-colors"
           >
-            <Compass className="h-4 w-4 mr-1" />
-            <span>Explore</span>
+            <span>{primaryTag}</span>
           </Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <span className="text-foreground font-medium truncate max-w-[200px]">
@@ -113,19 +115,18 @@ export default async function DeckPage({ params }: DeckPageProps) {
     <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
       <nav className="flex items-center text-sm text-muted-foreground mt-12">
         <Link
-          href="/workspace"
-          className="flex items-center hover:text-foreground transition-colors"
-        >
-          <Home className="h-4 w-4 mr-1" />
-          <span>Workspace</span>
-        </Link>
-        <ChevronRight className="h-4 w-4 mx-2" />
-        <Link
           href="/workspace/explore"
           className="flex items-center hover:text-foreground transition-colors"
         >
           <Compass className="h-4 w-4 mr-1" />
           <span>Explore</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <Link
+          href={primaryTag === "General" ? "/workspace/explore" : `/workspace/explore/tag/${encodeURIComponent(primaryTag)}`}
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <span>{primaryTag}</span>
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
         <span className="text-foreground font-medium truncate max-w-[200px]">
@@ -135,8 +136,19 @@ export default async function DeckPage({ params }: DeckPageProps) {
       <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-6 border-b pb-6 mt-12">
         <div className="flex-1 flex flex-col">
           <div className="flex-1">
-            <h1 className="text-3xl font-bold">{deck.name}</h1>
-            <p className="text-muted-foreground mt-2">{deck.description}</p>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold">{deck.name}</h1>
+                <p className="text-muted-foreground mt-2">{deck.description}</p>
+              </div>
+              {user?.id === deck.userId && (
+                <Button asChild variant="outline" size="sm" className="shrink-0">
+                  <Link href={`/workspace/deck/edit/${deck.id}`}>
+                    <Edit3 className="h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+            </div>
 
             <div className="flex items-center mt-4 gap-4">
               <div className="flex items-center gap-2">

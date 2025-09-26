@@ -21,6 +21,8 @@ export default async function DeckEditPage({
   const { data: user } = await getUser();
   const { data: deck } = await getDeckById(deckId, user?.id as string);
 
+  const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+
   if (!deck || deck.userId !== user?.id) {
     if (deck?.visibility === "public") {
       return redirect(`/workspace/explore/deck/${deckId}`);
@@ -47,11 +49,10 @@ export default async function DeckEditPage({
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
         <Link
-          href="/workspace/library"
+          href={primaryTag === "General" ? "/workspace/explore" : `/workspace/explore/tag/${encodeURIComponent(primaryTag)}`}
           className="flex items-center hover:text-foreground transition-colors"
         >
-          <Library className="h-4 w-4 mr-1" />
-          <span>Library</span>
+          <span>{primaryTag}</span>
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
         <span className="text-foreground font-medium truncate max-w-[200px]">

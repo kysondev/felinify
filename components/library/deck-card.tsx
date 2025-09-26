@@ -40,7 +40,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
             <div className="flex items-center justify-between mb-1">
               <h3
                 className="font-semibold text-xl text-foreground line-clamp-1 hover:text-primary transition-colors duration-300 cursor-pointer"
-                onClick={() => router.push(`/workspace/deck/edit/${deck.id}`)}
+                onClick={() => router.push(`/workspace/explore/deck/${deck.id}`)}
               >
                 {deck.name}
               </h3>
@@ -115,7 +115,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
 
         <div className="flex gap-3">
           <Link
-            href={`/workspace/deck/edit/${deck.id}`}
+            href={`/workspace/explore/deck/${deck.id}`}
             passHref
             className="flex-1"
           >
@@ -125,7 +125,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
               className="w-full font-semibold rounded-xl border hover:bg-muted transition-all duration-300"
             >
               <Edit3 className="h-4 w-4 mr-2" />
-              Edit
+              View
             </Button>
           </Link>
 
