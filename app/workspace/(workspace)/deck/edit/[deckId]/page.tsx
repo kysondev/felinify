@@ -1,15 +1,12 @@
 import { getDeckById } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
 import { DeckEditForm } from "components/library/deck-edit-form";
-import { FlashcardList } from "components/library/flashcard-list";
-import { DeckStats } from "components/library/deck-stats";
 import { DeckVisibilityToggle } from "components/library/deck-visibility-toggle";
 import { DeckTagManager } from "components/library/deck-tag-manager";
-import { Deck, User } from "db/types/models.types";
+import { Deck } from "db/types/models.types";
 import Link from "next/link";
-import { ChevronRight, Home, Library } from "lucide-react";
+import { ChevronRight, ArrowLeft, Compass, Edit3 } from "lucide-react";
 import { Button } from "components/ui/button";
-import { DeckStudy } from "components/library/deck-study";
 import { redirect } from "next/navigation";
 
 export default async function DeckEditPage({
@@ -38,14 +35,14 @@ export default async function DeckEditPage({
   }
 
   return (
-    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-8">
-      <nav className="flex items-center text-sm text-muted-foreground mb-4">
+    <div className="container max-w-6xl mx-auto px-4 py-8">
+      <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2">
         <Link
-          href="/workspace"
+          href="/workspace/explore"
           className="flex items-center hover:text-foreground transition-colors"
         >
-          <Home className="h-4 w-4 mr-1" />
-          <span>Workspace</span>
+          <Compass className="h-4 w-4 mr-1" />
+          <span>Explore</span>
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
         <Link
@@ -55,62 +52,82 @@ export default async function DeckEditPage({
           <span>{primaryTag}</span>
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
-        <span className="text-foreground font-medium truncate max-w-[200px]">
-          {deck.name}
-        </span>
+        <Link
+          href={`/workspace/explore/deck/${deckId}`}
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <span className="truncate max-w-[120px] sm:max-w-[200px]">{deck.name}</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <span className="text-foreground font-medium">Edit</span>
       </nav>
 
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-        <div className="md:max-w-[70%] w-full">
-          <h1 className="text-3xl font-bold text-ellipsis overflow-hidden">
-            {deck.name}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b pb-6">
+        <div>
+          <h1 className="text-3xl font-bold">
+            Edit Deck
           </h1>
-          <p className="text-muted-foreground mt-1 line-clamp-2 break-words">
-            {deck.description || "No description provided"}
+          <p className="text-muted-foreground mt-1">
+            {deck.name}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 text-sm mt-2 md:mt-0 shrink-0">
-          <div className="bg-primary/10 text-primary px-3 py-1 rounded-full whitespace-nowrap">
-            {deck.flashcards?.length || 0} cards
-          </div>
-          <div className="bg-secondary/50 px-3 py-1 rounded-full whitespace-nowrap">
-            {deck.progress?.mastery?.toFixed(1) || 0}% mastery
-          </div>
-        </div>
+        <Button asChild variant="outline" className="shrink-0">
+          <Link href={`/workspace/explore/deck/${deckId}`}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Deck
+          </Link>
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-4 space-y-4">
-          <DeckEditForm
-            deck={deck as unknown as Deck}
-            userId={user?.id as string}
-          />
-          <DeckTagManager
-            deckId={deck.id}
-            userId={user?.id as string}
-            tags={(deck as any).tags || []}
-          />
-          <DeckVisibilityToggle
-            deck={deck as unknown as Deck}
-            userId={user?.id as string}
-          />
-          <DeckStudy
-            deck={deck as unknown as Deck}
-            user={user as unknown as User}
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-900 border rounded-lg">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-6">Deck Information</h2>
+              <DeckEditForm
+                deck={deck as unknown as Deck}
+                userId={user?.id as string}
+              />
+            </div>
+          </div>
+          
+          <div className="bg-white dark:bg-slate-900 border rounded-lg">
+            <div className="p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Flashcards</h2>
+                  <p className="text-muted-foreground mt-1">
+                    This deck contains {deck.flashcards?.length || 0} flashcards
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href={`/workspace/deck/${deck.id}/flashcards`}>
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Manage Flashcards
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="lg:col-span-8">
-          <div className="bg-white dark:bg-slate-900 border rounded-lg shadow-sm mb-4">
-            <div className="p-4 lg:p-6">
-              <h2 className="text-xl font-semibold mb-4">Deck Statistics</h2>
-              <DeckStats deck={deck as unknown as Deck} />
+        
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-900 border rounded-lg">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-6">Tags</h2>
+              <DeckTagManager
+                deckId={deck.id}
+                userId={user?.id as string}
+                tags={(deck as any).tags || []}
+              />
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border rounded-lg shadow-sm">
-            <div className="p-4 lg:p-6">
-              <FlashcardList
+
+          <div className="bg-white dark:bg-slate-900 border rounded-lg">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-6">Visibility</h2>
+              <DeckVisibilityToggle
                 deck={deck as unknown as Deck}
                 userId={user?.id as string}
               />

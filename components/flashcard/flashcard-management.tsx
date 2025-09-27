@@ -3,13 +3,11 @@
 import { useState, useRef } from "react";
 import { Deck } from "db/types/models.types";
 import { Button } from "components/ui/button";
+import { Input } from "components/ui/Input";
 import { Card, CardContent } from "components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FlashcardSchema,
-  flashcardSchema,
-} from "@deck/validations/deck.schema";
+import { FlashcardSchema, flashcardSchema } from "@deck/validations/deck.schema";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -20,17 +18,15 @@ import {
   DialogFooter,
 } from "components/ui/dialog";
 import {
-  AlertCircle,
-  ChevronLeft,
-  ChevronRight,
-  Edit2,
-  Eye,
-  Plus,
-  Search,
-  Trash2,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Input } from "components/ui/Input";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "components/ui/alert-dialog";
 import {
   Form,
   FormControl,
@@ -41,30 +37,31 @@ import {
 } from "components/ui/form";
 import { Textarea } from "components/ui/text-area";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "components/ui/alert-dialog";
-import { Flashcard } from "./flashcard";
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  Edit2,
+  Eye,
+  Plus,
+  Search,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ImageUpload, ImageUploadRef } from "components/ui/image-upload";
 import {
   addFlashcardAction,
   deleteFlashcardAction,
   updateFlashcardAction,
 } from "@deck/actions/flashcards.action";
+import { Flashcard } from "components/library/flashcard";
 
-export const FlashcardList = ({
-  deck,
-  userId,
-}: {
+interface FlashcardManagementProps {
   deck: Deck;
   userId: string;
-}) => {
+}
+
+export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -72,9 +69,7 @@ export const FlashcardList = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(
-    null
-  );
+  const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(null);
   const [currentFlashcard, setCurrentFlashcard] = useState<{
     id: string;
     question: string;
@@ -301,148 +296,144 @@ export const FlashcardList = ({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">
-            {deck.flashcards?.length || 0} flashcards
-          </span>
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-muted/40 rounded-lg p-4 border">
+        <div className="relative w-full sm:max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search flashcards..."
+            className="pl-9 pr-9 bg-white dark:bg-slate-900"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(0);
+            }}
+          />
+          {searchTerm && (
+            <button
+              onClick={() => {
+                setSearchTerm("");
+                setCurrentPage(0);
+              }}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={handleAddDialogClose}>
-          <DialogTrigger asChild>
-            <Button className="shrink-0">
-              <Plus className="h-4 w-4 mr-1" />
-              Add Flashcard
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[550px]">
-            <DialogHeader>
-              <DialogTitle>Add New Flashcard</DialogTitle>
-            </DialogHeader>
-            <Form {...addForm}>
-              <div className="space-y-6 pt-4">
-                <FormField
-                  control={addForm.control}
-                  name="question"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Question</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter the question"
-                          className="resize-none"
-                          rows={3}
-                          disabled={isLoading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+        
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          <span className="text-sm font-medium text-muted-foreground">
+            {deck.flashcards?.length || 0} total cards
+          </span>
+          <Dialog open={isAddDialogOpen} onOpenChange={handleAddDialogClose}>
+            <DialogTrigger asChild>
+              <Button className="shrink-0">
+                <Plus className="h-4 w-4 mr-1" />
+                Add Flashcard
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[550px]">
+              <DialogHeader>
+                <DialogTitle>Add New Flashcard</DialogTitle>
+              </DialogHeader>
+              <Form {...addForm}>
+                <div className="space-y-6 pt-4">
+                  <FormField
+                    control={addForm.control}
+                    name="question"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Question</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter the question"
+                            className="resize-none"
+                            rows={3}
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={addForm.control}
-                  name="answer"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Answer</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter the answer"
-                          className="resize-none"
-                          rows={3}
-                          disabled={isLoading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={addForm.control}
+                    name="answer"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Answer</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter the answer"
+                            className="resize-none"
+                            rows={3}
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={addForm.control}
-                  name="questionImageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Question Image (Optional)</FormLabel>
-                      <FormControl>
-                        <ImageUpload
-                          ref={addImageUploadRef}
-                          value={field.value || undefined}
-                          onChange={(url) => field.onChange(url || "")}
-                          disabled={isLoading}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <DialogFooter className="mt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    addForm.reset();
-                    addImageUploadRef.current?.reset();
-                    setIsAddDialogOpen(false);
-                  }}
-                  disabled={isLoading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="button"
-                  onClick={addForm.handleSubmit(onSubmitAdd)}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Adding..." : "Add Flashcard"}
-                </Button>
-              </DialogFooter>
-            </Form>
-          </DialogContent>
-        </Dialog>
+                  <FormField
+                    control={addForm.control}
+                    name="questionImageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Question Image (Optional)</FormLabel>
+                        <FormControl>
+                          <ImageUpload
+                            ref={addImageUploadRef}
+                            value={field.value || undefined}
+                            onChange={(url) => field.onChange(url || "")}
+                            disabled={isLoading}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <DialogFooter className="mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      addForm.reset();
+                      addImageUploadRef.current?.reset();
+                      setIsAddDialogOpen(false);
+                    }}
+                    disabled={isLoading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={addForm.handleSubmit(onSubmitAdd)}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Adding..." : "Add Flashcard"}
+                  </Button>
+                </DialogFooter>
+              </Form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search flashcards..."
-          className="pl-9"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setCurrentPage(0);
-          }}
-        />
-      </div>
+      {searchTerm && (
+        <div className="text-sm text-muted-foreground">
+          Found {totalFilteredCards} {totalFilteredCards === 1 ? "result" : "results"} for "{searchTerm}"
+        </div>
+      )}
 
       {deck.flashcards && deck.flashcards.length > 0 ? (
         <>
-          <div className="flex justify-between items-center text-sm text-muted-foreground">
-            <p>
-              {searchTerm
-                ? `${totalFilteredCards} results`
-                : `${deck.flashcards.length} total flashcards`}
-            </p>
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setSearchTerm("");
-                  setCurrentPage(0);
-                }}
-                className="p-0 m-0 h-4 hover:bg-transparent"
-              >
-                Clear search
-              </Button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {currentCards?.map((flashcard) => (
               <Flashcard
                 key={flashcard.id.toString()}
@@ -456,8 +447,9 @@ export const FlashcardList = ({
               />
             ))}
           </div>
+
           {totalFilteredCards > cardsPerPage && (
-            <div className="flex flex-wrap justify-between items-center pt-4 border-t mt-6 gap-2">
+            <div className="flex justify-center items-center gap-4 mt-8">
               <Button
                 variant="outline"
                 size="sm"
@@ -470,18 +462,23 @@ export const FlashcardList = ({
                 <span className="sm:hidden">Prev</span>
               </Button>
 
-              <p className="text-sm text-muted-foreground order-3 sm:order-2 w-full sm:w-auto text-center">
-                Page {currentPage + 1} of {totalPages}
-              </p>
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-medium">
+                  {currentPage + 1}
+                </span>
+                <span className="text-muted-foreground text-sm">of</span>
+                <span className="text-sm font-medium">{totalPages}</span>
+              </div>
 
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleNextPage}
                 disabled={currentPage >= totalPages - 1}
-                className="flex items-center gap-1 order-2 sm:order-3 ml-auto sm:ml-0"
+                className="flex items-center gap-1"
               >
-                Next
+                <span className="hidden sm:inline">Next</span>
+                <span className="sm:hidden">Next</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -525,7 +522,7 @@ export const FlashcardList = ({
         </AlertDialogContent>
       </AlertDialog>
 
-       <Dialog open={isEditDialogOpen} onOpenChange={handleEditDialogClose}>
+      <Dialog open={isEditDialogOpen} onOpenChange={handleEditDialogClose}>
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">

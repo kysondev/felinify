@@ -15,7 +15,6 @@ import {
 import Link from "next/link";
 import { getDeckById } from "@deck/services/deck.service";
 import { getUser, getUserWithId } from "@user/services/user.service";
-import { User as UserType } from "db/types/models.types";
 import { Progress } from "components/ui/progress";
 import ExploreDeckStudyOptions from "components/explore/explore-deck-study-options";
 import ExploreFlashcardGrid from "components/explore/explore-flashcard-list";
@@ -42,11 +41,11 @@ export default async function DeckPage({ params }: DeckPageProps) {
       <div className="container max-w-5xl mx-auto py-8 px-4">
         <nav className="flex items-center text-sm text-muted-foreground mt-16">
           <Link
-            href="/workspace"
+            href="/workspace/explore"
             className="flex items-center hover:text-foreground transition-colors"
           >
-            <Home className="h-4 w-4 mr-1" />
-            <span>Workspace</span>
+            <Compass className="h-4 w-4 mr-1" />
+            Explore
           </Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <Link
@@ -190,9 +189,20 @@ export default async function DeckPage({ params }: DeckPageProps) {
 
         <div className="flex flex-col gap-4 min-w-[200px] h-full">
           <div className="p-4 rounded-lg border border-border/60 bg-muted/30">
-            <h3 className="text-sm font-semibold text-foreground mb-3">
-              Deck Statistics
-            </h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-foreground">
+                Deck Statistics
+              </h3>
+              {user?.id === deck.userId && (
+                <Link 
+                  href={`/workspace/deck/${deck.id}/stats`}
+                  className="text-primary hover:text-primary/80 transition-colors"
+                  title="View detailed statistics"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              )}
+            </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -253,10 +263,20 @@ export default async function DeckPage({ params }: DeckPageProps) {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-medium">Flashcard Preview</h2>
-              <span className="text-sm text-muted-foreground">
-                Showing {deck.flashcards?.length || 0} of{" "}
-                {deck.flashcards?.length || 0} cards
-              </span>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">
+                  Showing {deck.flashcards?.length || 0} of{" "}
+                  {deck.flashcards?.length || 0} cards
+                </span>
+                {user?.id === deck.userId && (
+                  <Button asChild variant="outline" size="sm" className="whitespace-nowrap">
+                    <Link href={`/workspace/deck/${deck.id}/flashcards`}>
+                      <Edit3 className="h-4 w-4 mr-2" />
+                      Manage
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
 
             <ExploreFlashcardGrid flashcards={deck.flashcards || []} />

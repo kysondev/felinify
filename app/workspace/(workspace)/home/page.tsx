@@ -167,7 +167,7 @@ export default async function HomePage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {recentDecks.map((deck, index) => (
-                  <Link href={`/workspace/deck/edit/${deck.id}`} key={deck.id}>
+                  <Link href={`/workspace/explore/deck/${deck.id}`} key={deck.id}>
                     <Card
                       key={deck.id}
                       className="group border cursor-pointer border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/60 transition-all duration-300 hover:border-primary/30"
