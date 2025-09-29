@@ -185,9 +185,9 @@ model UserDeckProgress {
 
 model Flashcard {
   id              String   @id @default(cuid())
-  question        String
-  answer          String
-  questionImageUrl String?
+  term            String
+  definition      String
+  termImageUrl    String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   deck            Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)

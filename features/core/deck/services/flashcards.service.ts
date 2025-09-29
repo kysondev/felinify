@@ -27,9 +27,9 @@ export const addFlashcard = async (
       .insertInto("flashcard")
       .values({
         id: cuid(),
-        question: flashcardData.question,
-        answer: flashcardData.answer,
-        questionImageUrl: flashcardData.questionImageUrl || null,
+        term: flashcardData.term,
+        definition: flashcardData.definition,
+        termImageUrl: flashcardData.termImageUrl || null,
         deckId: flashcardData.deckId,
         createdAt: new Date().toLocaleString(),
         updatedAt: new Date().toLocaleString(),
@@ -92,9 +92,9 @@ export const updateFlashcard = async (
     const updatedFlashcard = await db
       .updateTable("flashcard")
       .set({
-        question: flashcardData.question,
-        answer: flashcardData.answer,
-        questionImageUrl: flashcardData.questionImageUrl || null,
+        term: flashcardData.term,
+        definition: flashcardData.definition,
+        termImageUrl: flashcardData.termImageUrl || null,
         updatedAt: new Date(),
       })
       .where("id", "=", flashcardId)

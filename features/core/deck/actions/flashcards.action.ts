@@ -9,9 +9,9 @@ import { getUser } from "@user/services/user.service";
 export const addFlashcardAction = async (
   deckId: string,
   userId: string,
-  question: string,
-  answer: string,
-  questionImageUrl?: string | null
+  term: string,
+  definition: string,
+  termImageUrl?: string | null
 ) => {
   try {
     const { data: user } = await getUser();
@@ -22,9 +22,9 @@ export const addFlashcardAction = async (
       return { success: false, message: "Email not verified" };
     }
     const result = await addFlashcard(userId, {
-      question,
-      answer,
-      questionImageUrl,
+      term,
+      definition,
+      termImageUrl,
       deckId,
     });
 
@@ -45,7 +45,7 @@ export const addFlashcardAction = async (
 
 export const updateFlashcardAction = async (
   flashcardId: string,
-  flashcardData: { question: string; answer: string; questionImageUrl?: string | null }
+  flashcardData: { term: string; definition: string; termImageUrl?: string | null }
 ) => {
   try {
     const { data: user } = await getUser();

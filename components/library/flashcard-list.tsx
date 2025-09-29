@@ -77,9 +77,9 @@ export const FlashcardList = ({
   );
   const [currentFlashcard, setCurrentFlashcard] = useState<{
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
   } | null>(null);
   const [fullViewContent, setFullViewContent] = useState<{
     title: string;
@@ -96,18 +96,18 @@ export const FlashcardList = ({
   const addForm = useForm<FlashcardSchema>({
     resolver: zodResolver(flashcardSchema),
     defaultValues: {
-      question: "",
-      answer: "",
-      questionImageUrl: "",
+      term: "",
+      definition: "",
+      termImageUrl: "",
     },
   });
 
   const editForm = useForm<FlashcardSchema>({
     resolver: zodResolver(flashcardSchema),
     defaultValues: {
-      question: "",
-      answer: "",
-      questionImageUrl: "",
+      term: "",
+      definition: "",
+      termImageUrl: "",
     },
   });
 
@@ -128,8 +128,8 @@ export const FlashcardList = ({
       const result = await addFlashcardAction(
         deck.id,
         userId,
-        data.question,
-        data.answer,
+        data.term,
+        data.definition,
         imageUrl
       );
       fetch(`/api/revalidate?path=/workspace/library`);
@@ -159,7 +159,7 @@ export const FlashcardList = ({
 
     setIsLoading(true);
     try {
-      let imageUrl: string | null = data.questionImageUrl || null;
+      let imageUrl: string | null = data.termImageUrl || null;
       if (editImageUploadRef.current) {
         try {
           const uploadedUrl = await editImageUploadRef.current.uploadImage();
@@ -174,9 +174,9 @@ export const FlashcardList = ({
       const updateResult = await updateFlashcardAction(
         currentFlashcard.id,
         { 
-          question: data.question, 
-          answer: data.answer, 
-          questionImageUrl: imageUrl 
+          term: data.term, 
+          definition: data.definition, 
+          termImageUrl: imageUrl 
         }
       );
 
@@ -235,15 +235,15 @@ export const FlashcardList = ({
 
   const handleEdit = (flashcard: {
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
   }) => {
     setCurrentFlashcard(flashcard);
     editForm.reset({
-      question: flashcard.question,
-      answer: flashcard.answer,
-      questionImageUrl: flashcard.questionImageUrl || "",
+      term: flashcard.term,
+      definition: flashcard.definition,
+      termImageUrl: flashcard.termImageUrl || "",
     });
     setIsEditDialogOpen(true);
   };
@@ -276,8 +276,8 @@ export const FlashcardList = ({
 
   const filteredFlashcards = deck.flashcards?.filter(
     (card) =>
-      card.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      card.answer.toLowerCase().includes(searchTerm.toLowerCase())
+      card.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.definition.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalFilteredCards = filteredFlashcards?.length || 0;
@@ -323,13 +323,13 @@ export const FlashcardList = ({
               <div className="space-y-6 pt-4">
                 <FormField
                   control={addForm.control}
-                  name="question"
+                  name="term"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Question</FormLabel>
+                      <FormLabel>Term</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Enter the question"
+                          placeholder="Enter the term"
                           className="resize-none"
                           rows={3}
                           disabled={isLoading}
@@ -343,13 +343,13 @@ export const FlashcardList = ({
 
                 <FormField
                   control={addForm.control}
-                  name="answer"
+                  name="definition"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Answer</FormLabel>
+                      <FormLabel>Definition</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Enter the answer"
+                          placeholder="Enter the definition"
                           className="resize-none"
                           rows={3}
                           disabled={isLoading}
@@ -363,10 +363,10 @@ export const FlashcardList = ({
 
                 <FormField
                   control={addForm.control}
-                  name="questionImageUrl"
+                  name="termImageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Question Image (Optional)</FormLabel>
+                      <FormLabel>Term Image (Optional)</FormLabel>
                       <FormControl>
                         <ImageUpload
                           ref={addImageUploadRef}
@@ -447,9 +447,9 @@ export const FlashcardList = ({
               <Flashcard
                 key={flashcard.id.toString()}
                 id={flashcard.id.toString()}
-                question={flashcard.question}
-                answer={flashcard.answer}
-                questionImageUrl={flashcard.questionImageUrl}
+                term={flashcard.term}
+                definition={flashcard.definition}
+                termImageUrl={flashcard.termImageUrl}
                 onEdit={handleEdit}
                 onShowFullContent={showFullContent}
                 isPreview={true}
@@ -537,15 +537,15 @@ export const FlashcardList = ({
             <div className="space-y-6 pt-4">
               <FormField
                 control={editForm.control}
-                name="question"
+                name="term"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Question
+                      Term
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter the question"
+                        placeholder="Enter the term"
                         className="resize-none"
                         rows={3}
                         disabled={isLoading}
@@ -559,15 +559,15 @@ export const FlashcardList = ({
 
               <FormField
                 control={editForm.control}
-                name="answer"
+                name="definition"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Answer
+                      Definition
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter the answer"
+                        placeholder="Enter the definition"
                         className="resize-none"
                         rows={3}
                         disabled={isLoading}
@@ -581,11 +581,11 @@ export const FlashcardList = ({
 
               <FormField
                 control={editForm.control}
-                name="questionImageUrl"
+                name="termImageUrl"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Question Image (Optional)
+                      Term Image (Optional)
                     </FormLabel>
                     <FormControl>
                       <ImageUpload

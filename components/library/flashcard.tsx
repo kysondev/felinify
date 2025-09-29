@@ -9,14 +9,14 @@ import { ArrowRight, Edit2, Eye, FileUp } from "lucide-react";
 
 interface FlashcardProps {
   id: string;
-  question: string;
-  answer: string;
-  questionImageUrl?: string | null;
+  term: string;
+  definition: string;
+  termImageUrl?: string | null;
   onEdit?: (flashcard: {
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
   }) => void;
   onShowFullContent?: (title: string, content: string) => void;
   isPreview?: boolean;
@@ -25,9 +25,9 @@ interface FlashcardProps {
 
 export const Flashcard = ({
   id,
-  question,
-  answer,
-  questionImageUrl,
+  term,
+  definition,
+  termImageUrl,
   onEdit,
   onShowFullContent,
   isPreview = false,
@@ -35,11 +35,13 @@ export const Flashcard = ({
 }: FlashcardProps) => {
   const [isFlipped, setIsFlipped] = useState(defaultFlipped);
 
-  const isTextOverflowing = (text: string) => {
+  const isTextOverflowing = (text: string | null | undefined) => {
+    if (!text) return false;
     return text.length > 120;
   };
 
-  const truncateText = (text: string) => {
+  const truncateText = (text: string | null | undefined) => {
+    if (!text) return '';
     if (isTextOverflowing(text)) {
       return text.slice(0, 120) + "...";
     }
@@ -65,7 +67,7 @@ export const Flashcard = ({
             variant={isFlipped ? "secondary" : "outline"}
             className={`px-2.5 py-0.5 ${isFlipped ? "bg-primary/10 text-primary" : ""}`}
           >
-            {isFlipped ? "Answer" : "Question"}
+            {isFlipped ? "Definition" : "Term"}
           </Badge>
           {isPreview && (
             <Button
@@ -77,9 +79,9 @@ export const Flashcard = ({
                 e.stopPropagation();
                 onEdit?.({
                   id,
-                  question,
-                  answer,
-                  questionImageUrl,
+                  term,
+                  definition,
+                  termImageUrl,
                 });
               }}
             >
@@ -90,11 +92,11 @@ export const Flashcard = ({
 
         <div className="flex-grow flex flex-col justify-center min-h-[100px] my-2">
           <div className="flex gap-3 items-start">
-            {!isFlipped && questionImageUrl && (
+            {!isFlipped && termImageUrl && (
               <div className="flex-shrink-0 w-16 h-16">
                 <FlashcardImage
-                  src={questionImageUrl}
-                  alt="Question image"
+                  src={termImageUrl}
+                  alt="Term image"
                   className="w-full h-full"
                 />
               </div>
@@ -102,17 +104,17 @@ export const Flashcard = ({
             <div className="flex-1 min-w-0">
               {isFlipped ? (
                 <p className="text-muted-foreground break-words">
-                  {truncateText(answer)}
+                  {truncateText(definition)}
                 </p>
               ) : (
-                <p className="break-words font-medium">{truncateText(question)}</p>
+                <p className="break-words font-medium">{truncateText(term)}</p>
               )}
             </div>
           </div>
         </div>
 
-        {((isFlipped && isTextOverflowing(answer)) ||
-          (!isFlipped && isTextOverflowing(question))) && (
+        {((isFlipped && isTextOverflowing(definition)) ||
+          (!isFlipped && isTextOverflowing(term))) && (
           <Button
             variant="link"
             size="sm"
@@ -120,8 +122,8 @@ export const Flashcard = ({
             onClick={(e) => {
               e.stopPropagation();
               onShowFullContent?.(
-                isFlipped ? "Answer" : "Question",
-                isFlipped ? answer : question
+                isFlipped ? "Definition" : "Term",
+                isFlipped ? definition : term
               );
             }}
           >
@@ -133,7 +135,7 @@ export const Flashcard = ({
         <div className="flex justify-between items-center border-t mt-4 pt-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <FileUp className="h-3 w-3 text-primary/70" />
-            Click to {isFlipped ? "see question" : "reveal answer"}
+            Click to {isFlipped ? "see term" : "reveal definition"}
           </div>
           <ArrowRight className="h-3 w-3 text-primary/70" />
         </div>

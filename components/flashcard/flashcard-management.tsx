@@ -18,16 +18,6 @@ import {
   DialogFooter,
 } from "components/ui/dialog";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "components/ui/alert-dialog";
-import {
   Form,
   FormControl,
   FormField,
@@ -66,15 +56,14 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isFullViewDialogOpen, setIsFullViewDialogOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [flashcardToDelete, setFlashcardToDelete] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentFlashcard, setCurrentFlashcard] = useState<{
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
   } | null>(null);
   const [fullViewContent, setFullViewContent] = useState<{
     title: string;
@@ -91,18 +80,18 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
   const addForm = useForm<FlashcardSchema>({
     resolver: zodResolver(flashcardSchema),
     defaultValues: {
-      question: "",
-      answer: "",
-      questionImageUrl: "",
+      term: "",
+      definition: "",
+      termImageUrl: "",
     },
   });
 
   const editForm = useForm<FlashcardSchema>({
     resolver: zodResolver(flashcardSchema),
     defaultValues: {
-      question: "",
-      answer: "",
-      questionImageUrl: "",
+      term: "",
+      definition: "",
+      termImageUrl: "",
     },
   });
 
@@ -123,14 +112,15 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
       const result = await addFlashcardAction(
         deck.id,
         userId,
-        data.question,
-        data.answer,
+        data.term,
+        data.definition,
         imageUrl
       );
       fetch(`/api/revalidate?path=/workspace/library`);
       fetch(`/api/revalidate?path=/workspace/explore`);
       fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
       fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+      fetch(`/api/revalidate?path=/workspace/deck/${deck.id}/flashcards`);
 
       if (result.success) {
         toast.success("Flashcard added successfully");
@@ -154,7 +144,7 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
     setIsLoading(true);
     try {
-      let imageUrl: string | null = data.questionImageUrl || null;
+      let imageUrl: string | null = data.termImageUrl || null;
       if (editImageUploadRef.current) {
         try {
           const uploadedUrl = await editImageUploadRef.current.uploadImage();
@@ -169,9 +159,9 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
       const updateResult = await updateFlashcardAction(
         currentFlashcard.id,
         { 
-          question: data.question, 
-          answer: data.answer, 
-          questionImageUrl: imageUrl 
+          term: data.term, 
+          definition: data.definition, 
+          termImageUrl: imageUrl 
         }
       );
 
@@ -184,6 +174,8 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
         fetch(`/api/revalidate?path=/workspace/explore`);
         fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
         fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}/flashcards`);
+
         router.refresh();
       } else {
         toast.error(updateResult.message || "Failed to update flashcard");
@@ -196,17 +188,18 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
     }
   };
 
-  const confirmDelete = (flashcardId: string) => {
-    setFlashcardToDelete(flashcardId);
-    setDeleteDialogOpen(true);
+
+  const handleDeleteClick = () => {
+    setIsEditDialogOpen(false);
+    setIsDeleteDialogOpen(true);
   };
 
-  const handleDelete = async () => {
-    if (!flashcardToDelete) return;
+  const handleDeleteConfirm = async () => {
+    if (!currentFlashcard) return;
 
     setIsDeleting(true);
     try {
-      const result = await deleteFlashcardAction(flashcardToDelete, userId);
+      const result = await deleteFlashcardAction(currentFlashcard.id, userId);
 
       if (result.success) {
         toast.success("Flashcard deleted successfully");
@@ -214,9 +207,10 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
         fetch(`/api/revalidate?path=/workspace/explore`);
         fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
         fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/workspace/deck/${deck.id}/flashcards`);
         router.refresh();
-        setDeleteDialogOpen(false);
-        setFlashcardToDelete(null);
+        setIsDeleteDialogOpen(false);
+        setCurrentFlashcard(null);
       } else {
         toast.error(result.message || "Failed to delete flashcard");
       }
@@ -230,15 +224,15 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
   const handleEdit = (flashcard: {
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
   }) => {
     setCurrentFlashcard(flashcard);
     editForm.reset({
-      question: flashcard.question,
-      answer: flashcard.answer,
-      questionImageUrl: flashcard.questionImageUrl || "",
+      term: flashcard.term,
+      definition: flashcard.definition,
+      termImageUrl: flashcard.termImageUrl || "",
     });
     setIsEditDialogOpen(true);
   };
@@ -271,8 +265,8 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
   const filteredFlashcards = deck.flashcards?.filter(
     (card) =>
-      card.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      card.answer.toLowerCase().includes(searchTerm.toLowerCase())
+      card.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.definition.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalFilteredCards = filteredFlashcards?.length || 0;
@@ -341,13 +335,13 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
                 <div className="space-y-6 pt-4">
                   <FormField
                     control={addForm.control}
-                    name="question"
+                    name="term"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Question</FormLabel>
+                        <FormLabel>Term</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Enter the question"
+                            placeholder="Enter the term"
                             className="resize-none"
                             rows={3}
                             disabled={isLoading}
@@ -361,13 +355,13 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
                   <FormField
                     control={addForm.control}
-                    name="answer"
+                    name="definition"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Answer</FormLabel>
+                        <FormLabel>Definition</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Enter the answer"
+                            placeholder="Enter the definition"
                             className="resize-none"
                             rows={3}
                             disabled={isLoading}
@@ -381,10 +375,10 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
                   <FormField
                     control={addForm.control}
-                    name="questionImageUrl"
+                    name="termImageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Question Image (Optional)</FormLabel>
+                        <FormLabel>Term Image (Optional)</FormLabel>
                         <FormControl>
                           <ImageUpload
                             ref={addImageUploadRef}
@@ -438,9 +432,9 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
               <Flashcard
                 key={flashcard.id.toString()}
                 id={flashcard.id.toString()}
-                question={flashcard.question}
-                answer={flashcard.answer}
-                questionImageUrl={flashcard.questionImageUrl}
+                term={flashcard.term}
+                definition={flashcard.definition}
+                termImageUrl={flashcard.termImageUrl}
                 onEdit={handleEdit}
                 onShowFullContent={showFullContent}
                 isPreview={true}
@@ -501,26 +495,6 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
         </Card>
       )}
 
-      <AlertDialog
-        open={deleteDialogOpen}
-        onOpenChange={(open) => !isDeleting && setDeleteDialogOpen(open)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              flashcard.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
-              {isDeleting ? "Deleting..." : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       <Dialog open={isEditDialogOpen} onOpenChange={handleEditDialogClose}>
         <DialogContent className="sm:max-w-[550px]">
@@ -534,15 +508,15 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
             <div className="space-y-6 pt-4">
               <FormField
                 control={editForm.control}
-                name="question"
+                name="term"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Question
+                      Term
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter the question"
+                        placeholder="Enter the term"
                         className="resize-none"
                         rows={3}
                         disabled={isLoading}
@@ -556,15 +530,15 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
               <FormField
                 control={editForm.control}
-                name="answer"
+                name="definition"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Answer
+                      Definition
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter the answer"
+                        placeholder="Enter the definition"
                         className="resize-none"
                         rows={3}
                         disabled={isLoading}
@@ -578,11 +552,11 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
               <FormField
                 control={editForm.control}
-                name="questionImageUrl"
+                name="termImageUrl"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium">
-                      Question Image (Optional)
+                      Term Image (Optional)
                     </FormLabel>
                     <FormControl>
                       <ImageUpload
@@ -601,15 +575,9 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
               <Button
                 type="button"
                 variant="destructive"
-                size="icon"
-                onClick={() => {
-                  if (currentFlashcard) {
-                    confirmDelete(currentFlashcard.id);
-                    setIsEditDialogOpen(false);
-                  }
-                }}
-                disabled={isLoading}
-                className="p-3 mr-auto w-fit"
+                size="sm"
+                onClick={handleDeleteClick}
+                className="flex items-center gap-2 mr-auto"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -663,6 +631,35 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
               onClick={() => setIsFullViewDialogOpen(false)}
             >
               Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">Are you absolutely sure?</DialogTitle>
+          </DialogHeader>
+          <div className="">
+            <p className="text-muted-foreground text-sm">
+              This action cannot be undone. This will permanently delete the flashcard.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="default"
+              onClick={handleDeleteConfirm}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>

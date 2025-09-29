@@ -58,8 +58,9 @@ export default function ExploreFlashcardGrid({
           <Flashcard
             key={String(flashcard.id)}
             id={String(flashcard.id)}
-            question={String(flashcard.question)}
-            answer={String(flashcard.answer)}
+            term={String(flashcard.term)}
+            definition={String(flashcard.definition)}
+            termImageUrl={flashcard.termImageUrl}
             onShowFullContent={handleShowFullContent}
             isPreview={false}
           />

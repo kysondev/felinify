@@ -130,9 +130,9 @@ export interface ReviewTable {
 
 export interface FlashcardTable {
   id: Generated<string> | string;
-  question: string;
-  answer: string;
-  questionImageUrl: string | null;
+  term: string;
+  definition: string;
+  termImageUrl: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
   deckId: string;

@@ -55,24 +55,24 @@ export const updateDeckSchema = z.object({
 
 export const flashcardSchema = z
   .object({
-    question: z
+    term: z
       .string()
-      .min(1, { message: "Question is required" })
-      .max(500, { message: "Question must be less than 500 characters" }),
+      .min(1, { message: "Term is required" })
+      .max(500, { message: "Term must be less than 500 characters" }),
 
-    answer: z
+    definition: z
       .string()
-      .min(1, { message: "Answer is required" })
-      .max(500, { message: "Answer must be less than 500 characters" }),
+      .min(1, { message: "Definition is required" })
+      .max(500, { message: "Definition must be less than 500 characters" }),
 
-    questionImageUrl: z
+    termImageUrl: z
       .string()
-      .url({ message: "Invalid question image URL" })
+      .url({ message: "Invalid term image URL" })
       .optional()
       .or(z.literal("")),
   })
   .refine(
-    ({ question, answer }) => {
+    ({ term, definition }) => {
       const normalize = (str: string) =>
         str
           .toLowerCase()
@@ -80,11 +80,11 @@ export const flashcardSchema = z
           .split(/\s+/)
           .filter(Boolean);
 
-      const questionWords = new Set(normalize(question));
-      const answerWords = normalize(answer);
+      const termWords = new Set(normalize(term));
+      const definitionWords = normalize(definition);
 
-      for (const word of answerWords) {
-        if (questionWords.has(word) && !commonWords.has(word)) {
+      for (const word of definitionWords) {
+        if (termWords.has(word) && !commonWords.has(word)) {
           return false;
         }
       }
@@ -93,8 +93,8 @@ export const flashcardSchema = z
     },
     {
       message:
-        "Answer must not repeat words from the question (except common words).",
-      path: ["answer"],
+        "Definition must not repeat words from the term (except common words).",
+      path: ["definition"],
     }
   );
 
