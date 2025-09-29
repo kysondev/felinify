@@ -3,7 +3,11 @@
 import { useSearchParams } from "next/navigation";
 import { useDeckLoader } from "@study/hooks/use-deck-loader";
 import { useStudyLoadingState } from "@study/hooks/use-study-loading-state";
-import { ErrorState, SessionHeader, StudyLoadingScreen } from "components/study";
+import {
+  ErrorState,
+  SessionHeader,
+  StudyLoadingScreen,
+} from "components/study";
 import NoAccessState from "components/study/states/no-access-state";
 import { FlipCard } from "components/study/flip-card";
 import { FlipControls } from "components/study/flip-controls";
@@ -23,7 +27,7 @@ export default function FlipStudyPage() {
 
   // Use the shared loading state hook
   const loadingState = useStudyLoadingState({
-    mode: 'flip',
+    mode: "flip",
     isLoading,
     deck,
     isStarted: !!(deck && state && state.currentCard),
@@ -73,9 +77,9 @@ export default function FlipStudyPage() {
       />
 
       <FlipCard
-        question={state.currentCard.question}
-        answer={state.currentCard.answer}
-        questionImageUrl={state.currentCard.questionImageUrl}
+        question={state.currentCard.term}
+        answer={state.currentCard.definition}
+        questionImageUrl={state.currentCard.termImageUrl}
         isFlipped={state.isFlipped}
         onToggle={actions.onFlip}
       />
