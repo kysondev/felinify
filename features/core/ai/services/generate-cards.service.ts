@@ -6,7 +6,7 @@ export const generateFlashcards = async (notes: string) => {
   try {
     const system = `
 You are an AI assistant that creates flashcards from user notes.
-Each flashcard should consist of a concise **question** (ideally a single vocabulary word or short phrase) and a clear, accurate **answer**.
+Each flashcard should consist of a concise **term** (ideally a single vocabulary word or short phrase) and a clear, accurate **answer**.
 
 Respond **only** in **valid JSON format** using this structure:
 
@@ -32,8 +32,8 @@ Respond **only** in **valid JSON format** using this structure:
     const parsed = JSON.parse(cleaned);
 
     const flashcards = parsed.map((card: { q: string; a: string }) => ({
-      question: card.q,
-      answer: card.a,
+      term: card.q,
+      definiton: card.a,
     }));
 
     return { success: true, flashcards };

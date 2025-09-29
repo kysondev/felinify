@@ -78,7 +78,7 @@ export const generateFlashcardsAction = async (
 export const addGeneratedFlashcardsToDeckAction = async (
   userId: string,
   deckId: string,
-  flashcards: { question: string; answer: string }[]
+  flashcards: { term: string; definiton: string }[]
 ) => {
   try {
     const { data: user } = await getUser();
@@ -98,8 +98,8 @@ export const addGeneratedFlashcardsToDeckAction = async (
 
     for (const flashcard of flashcards) {
       const result = await addFlashcard(userId, {
-        question: flashcard.question,
-        answer: flashcard.answer,
+        term: flashcard.term,
+        definition: flashcard.definiton,
         deckId,
       });
 

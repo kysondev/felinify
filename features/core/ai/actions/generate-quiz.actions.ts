@@ -54,9 +54,9 @@ export const generateAdaptiveQuizAction = async (
 
     const flashcardsWithPerformance = deck.flashcards.map((card) => ({
       id: card.id,
-      question: card.question,
-      answer: card.answer,
-      questionImageUrl: card.questionImageUrl,
+      term: card.term,
+      definition: card.definition,
+      termImageUrl: card.termImageUrl,
       numCorrect: (card as any).numCorrect || 0,
       numIncorrect: (card as any).numIncorrect || 0,
     }));

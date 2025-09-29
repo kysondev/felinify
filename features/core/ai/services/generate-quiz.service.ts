@@ -6,9 +6,9 @@ import { shuffle } from "@study/utils/flashcards.utils";
 export const generateAdaptiveQuiz = async (
   flashcards: {
     id: string;
-    question: string;
-    answer: string;
-    questionImageUrl?: string | null;
+    term: string;
+    definition: string;
+    termImageUrl?: string | null;
     numCorrect: number;
     numIncorrect: number;
   }[],
@@ -57,7 +57,7 @@ Rules:
         model: openai("gpt-4o-mini"),
         system,
         temperature: 0.7,
-        prompt: `Flashcard: Q: ${flashcard.question} | A: ${flashcard.answer}`,
+        prompt: `Flashcard: Q: ${flashcard.term} | A: ${flashcard.definition}`,
       });
 
       const cleaned = text.trim().replace(/^```json|```$/g, "");
@@ -69,13 +69,15 @@ Rules:
     const questions = await Promise.all(questionPromises);
     const parsedQuestions = questions.map(
       (question: { id: string; q: string; c: string; o: string[] }) => {
-        const originalFlashcard = targetFlashcards.find(card => card.id === question.id);
+        const originalFlashcard = targetFlashcards.find(
+          (card) => card.id === question.id
+        );
         return {
           id: question.id,
           question: question.q,
           answer: question.c,
           options: question.o,
-          questionImageUrl: originalFlashcard?.questionImageUrl || null,
+          questionImageUrl: originalFlashcard?.termImageUrl || null,
         };
       }
     );

@@ -47,7 +47,7 @@ const Hero = ({
           <div className="mx-auto flex max-w-5xl flex-col gap-8">
             <div className="inline-flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2">
               <Sparkles className="w-4 h-4" />
-              <span>Launching Soon</span>
+              <span>V1.0 Launching Soon</span>
             </div>
             <h1 className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent leading-tight">
               {heading}
