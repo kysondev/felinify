@@ -49,19 +49,7 @@ export const getDecksByUserId = async (userId: string) => {
       .execute();
 
     return { success: true, data: decks as unknown as Deck[] };
-
-    const normalizedDecks = (decks || []).map((d: any) => ({
-      ...d,
-      flashcards: d.flashcards
-        ? d.flashcards.map((f: any) => ({
-            ...f,
-            question: f.question ?? f.term ?? "",
-            answer: f.answer ?? f.definition ?? "",
-          }))
-        : [],
-    }));
-
-    return { success: true, data: normalizedDecks as unknown as Deck[] };
+    
   } catch (error) {
     console.error("Error fetching decks by userId:", error);
     throw error;
