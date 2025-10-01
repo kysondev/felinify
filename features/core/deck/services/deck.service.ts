@@ -49,6 +49,19 @@ export const getDecksByUserId = async (userId: string) => {
       .execute();
 
     return { success: true, data: decks as unknown as Deck[] };
+
+    const normalizedDecks = (decks || []).map((d: any) => ({
+      ...d,
+      flashcards: d.flashcards
+        ? d.flashcards.map((f: any) => ({
+            ...f,
+            question: f.question ?? f.term ?? "",
+            answer: f.answer ?? f.definition ?? "",
+          }))
+        : [],
+    }));
+
+    return { success: true, data: normalizedDecks as unknown as Deck[] };
   } catch (error) {
     console.error("Error fetching decks by userId:", error);
     throw error;
@@ -135,6 +148,8 @@ export const getDeckById = async (deckId: string, userId: string) => {
           ...flashcard,
           numCorrect: performance.numCorrect,
           numIncorrect: performance.numIncorrect,
+          question: flashcard.question ?? flashcard.term ?? "",
+          answer: flashcard.answer ?? flashcard.definition ?? "",
         };
       });
     }
@@ -327,9 +342,20 @@ export const getAllDecks = async (page: number = 1, limit: number = 12) => {
       )
       .executeTakeFirst();
 
+    const normalizedPublicDecks = (decks || []).map((d: any) => ({
+      ...d,
+      flashcards: d.flashcards
+        ? d.flashcards.map((f: any) => ({
+            ...f,
+            question: f.question ?? f.term ?? "",
+            answer: f.answer ?? f.definition ?? "",
+          }))
+        : [],
+    }));
+
     return {
       success: true,
-      data: decks as unknown as Deck[],
+      data: normalizedPublicDecks as unknown as Deck[],
       pagination: {
         page,
         limit,

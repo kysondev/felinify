@@ -303,6 +303,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
               reviews={reviews}
               deckId={deckId}
               currentUserId={user?.id}
+              deckOwnerId={deck.userId}
             />
           </div>
         </TabsContent>

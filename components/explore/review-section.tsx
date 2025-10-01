@@ -15,12 +15,14 @@ interface ReviewSectionProps {
   reviews: Review[] | undefined;
   deckId: string;
   currentUserId?: string;
+  deckOwnerId: string;
 }
 
 export const ReviewSection = ({
   reviews,
   deckId,
   currentUserId,
+  deckOwnerId
 }: ReviewSectionProps) => {
   const [showReviewDialog, setShowReviewDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -30,6 +32,8 @@ export const ReviewSection = ({
   const userHasReviewed = reviews?.some(
     (review) => review.userId === currentUserId
   );
+
+  const isDeckOwner = deckOwnerId === currentUserId;
 
   const handleDeleteReview = async (reviewId: string) => {
     setIsDeleting(reviewId);
@@ -54,7 +58,7 @@ export const ReviewSection = ({
   return (
     <>
       <div className="space-y-4">
-        {!userHasReviewed && (
+        {!userHasReviewed && !isDeckOwner && (
           <div className="flex justify-end">
             <Button
               variant="outline"
