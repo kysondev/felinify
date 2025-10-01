@@ -6,21 +6,8 @@ import {
 } from "components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface FAQProps {
-  title?: string;
-  subtitle?: string;
-  faqs?: FAQItem[];
-}
-
-export function FAQ({
-  title = "Frequently Asked Questions",
-  subtitle = "Everything you need to know about Felinify",
-  faqs = [
+export function FAQ() {
+  const faqs = [
     {
       question: "How does Felinify's AI flashcard generation work?",
       answer:
@@ -51,8 +38,7 @@ export function FAQ({
       answer:
         "If you cancel your subscription, you'll maintain access to all features until the end of your billing period. After that, your account will revert to the free tier, but you'll still have access to all your flashcards (though you may need to reduce your deck count to meet free tier limits).",
     },
-  ],
-}: FAQProps) {
+  ];
   return (
     <section
       className="py-16 sm:py-20 lg:py-24 bg-muted/30"
@@ -60,18 +46,20 @@ export function FAQ({
       aria-labelledby="faq-heading"
     >
       <div className="px-4 max-w-[1200px] mx-auto">
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2
             id="faq-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
-            {title}
+            Frequently Asked Questions
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
-            {subtitle}
+            Everything you need to know about Felinify
           </p>
         </div>
 
+        {/* FAQ content */}
         <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -82,6 +70,7 @@ export function FAQ({
             </h3>
           </div>
 
+          {/* Accordion */}
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem

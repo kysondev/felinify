@@ -44,6 +44,7 @@ const Pricing = () => {
         aria-labelledby="pricing-heading"
       >
       <div className="px-4 max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2
             id="pricing-heading"
@@ -57,6 +58,7 @@ const Pricing = () => {
           </p>
         </div>
 
+        {/* Billing toggle */}
         <div className="flex justify-center mb-12">
           <div className="bg-muted flex h-12 w-fit shrink-0 items-center rounded-lg p-1 text-base shadow-sm border border-border">
             <RadioGroup
@@ -97,6 +99,7 @@ const Pricing = () => {
           </div>
         </div>
 
+        {/* Pricing cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <div className="group relative bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <div className="text-center mb-8">

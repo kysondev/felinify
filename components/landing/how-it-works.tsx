@@ -1,29 +1,14 @@
 "use client";
 
 import { Lightbulb, LineChart } from "lucide-react";
-import Link from "next/link";
 import { memo, useState } from "react";
 import { Button } from "../ui/button";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 
-interface Step {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  details: string[];
-  time: string;
-}
-
-interface HowItWorksProps {
-  title?: string;
-  subtitle?: string;
-  steps?: Step[];
-}
-
 const StepCard = memo(
-  ({ step, index, isLast }: { step: Step; index: number; isLast: boolean }) => (
+  ({ step, index, isLast }: { step: any; index: number; isLast: boolean }) => (
     <div className="relative group">
       <div className="bg-card border border-border rounded-xl p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -49,7 +34,7 @@ const StepCard = memo(
           </p>
 
           <ul className="space-y-3">
-            {step.details.map((detail, i) => (
+            {step.details.map((detail: string, i: number) => (
               <li key={i} className="flex items-start gap-3 text-sm">
                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors duration-200">
                   <div className="w-2 h-2 bg-primary rounded-full group-hover:scale-110 transition-transform duration-200"></div>
@@ -79,10 +64,8 @@ const StepCard = memo(
 
 StepCard.displayName = "StepCard";
 
-export const HowItWorks = ({
-  title = "How Felinify Works",
-  subtitle = "Transform your study routine in three simple steps — from notes to mastery in minutes",
-  steps = [
+export const HowItWorks = () => {
+  const steps = [
     {
       title: "Create AI Flashcards",
       description:
@@ -131,8 +114,7 @@ export const HowItWorks = ({
       ],
       time: "Ongoing",
     },
-  ],
-}: HowItWorksProps) => {
+  ];
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const router = useRouter();
 
@@ -157,18 +139,20 @@ export const HowItWorks = ({
         aria-labelledby="how-it-works-heading"
       >
       <div className="px-4 max-w-[1200px] mx-auto">
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2
             id="how-it-works-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
-            {title}
+            How Felinify Works
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
-            {subtitle}
+            Transform your study routine in three simple steps — from notes to mastery in minutes
           </p>
         </div>
 
+        {/* Steps grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {steps.map((step, index) => (
             <StepCard
@@ -180,6 +164,7 @@ export const HowItWorks = ({
           ))}
         </div>
 
+        {/* CTA section */}
         <div className="text-center mt-12 sm:mt-16 p-8 bg-card border border-border rounded-xl">
           <p className="text-muted-foreground mb-6 text-base sm:text-lg leading-relaxed">
             See how easy it is? Most students create their first deck in under a

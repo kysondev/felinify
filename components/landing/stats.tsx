@@ -6,23 +6,8 @@ import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 
-interface Stat {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  highlight?: string;
-}
-
-interface StatsProps {
-  title?: string;
-  subtitle?: string;
-  stats?: Stat[];
-}
-
-export function Stats({
-  title = "Why Students Choose Felinify",
-  subtitle = "Experience the difference with our intelligent study platform designed for modern learners",
-  stats = [
+export function Stats() {
+  const stats = [
     {
       title: "AI-Powered Learning",
       description:
@@ -51,8 +36,7 @@ export function Stats({
       icon: <Target className="w-6 h-6" />,
       highlight: "Flexible",
     },
-  ],
-}: StatsProps) {
+  ];
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const router = useRouter();
 
@@ -74,15 +58,17 @@ export function Stats({
       />
       <section className="pb-20">
       <div className="px-4 max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold lg:text-4xl mb-6 text-primary">
-            {title}
+            Why Students Choose Felinify
           </h2>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">
-            {subtitle}
+            Experience the difference with our intelligent study platform designed for modern learners
           </p>
         </div>
 
+        {/* Stats grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div
@@ -116,6 +102,7 @@ export function Stats({
           ))}
         </div>
 
+        {/* CTA section */}
         <div className="text-center mt-16 p-8 bg-card border border-border rounded-xl">
           <div className="inline-flex items-center justify-center gap-3 mb-4">
             <div className="bg-primary/10 p-2 rounded-full">

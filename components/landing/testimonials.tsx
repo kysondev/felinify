@@ -1,17 +1,6 @@
 import { Star, Quote } from "lucide-react";
 import { memo } from "react";
 
-interface TestimonialProps {
-  title?: string;
-  subtitle?: string;
-  testimonials?: {
-    name: string;
-    role: string;
-    quote: string;
-    rating: number;
-  }[];
-}
-
 const TestimonialCard = memo(
   ({ testimonial, index }: { testimonial: any; index: number }) => (
     <div
@@ -73,10 +62,8 @@ const TestimonialCard = memo(
 
 TestimonialCard.displayName = "TestimonialCard";
 
-export function Testimonials({
-  title = "What Our Users Say",
-  subtitle = "Join thousands of students who've transformed their study habits with Felinify",
-  testimonials = [
+export function Testimonials() {
+  const testimonials = [
     {
       name: "Emily Carter",
       role: "High School Junior",
@@ -98,8 +85,7 @@ export function Testimonials({
         "Studying for finals stressed me out, but Felinify kept me on track. The app's layout is super simple, and it helped me stay focused and actually remember what I studied.",
       rating: 4,
     },
-  ],
-}: TestimonialProps) {
+  ];
   return (
     <section
       className="py-16 sm:py-20 lg:py-24"
@@ -107,18 +93,20 @@ export function Testimonials({
       aria-labelledby="testimonials-heading"
     >
       <div className="px-4 max-w-[1200px] mx-auto">
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2
             id="testimonials-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
-            {title}
+            What Our Users Say
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-            {subtitle}
+            Join thousands of students who've transformed their study habits with Felinify
           </p>
         </div>
 
+        {/* Testimonials grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard

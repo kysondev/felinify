@@ -5,30 +5,7 @@ import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 
-interface FooterLink {
-  text: string;
-  url: string;
-  action?: () => void;
-}
-
-interface MenuItem {
-  title: string;
-  links: FooterLink[];
-}
-
-interface FooterProps {
-  logo?: {
-    url: string;
-    alt: string;
-    title: string;
-  };
-  tagline?: string;
-  menuItems?: MenuItem[];
-  copyright?: string;
-  bottomLinks?: FooterLink[];
-}
-
-const Footer = (props: FooterProps) => {
+const Footer = () => {
   const [showSubscribe, setShowSubscribe] = useState(false);
   const router = useRouter();
 
@@ -46,64 +23,56 @@ const Footer = (props: FooterProps) => {
     }
   };
 
-  const {
-    logo = {
-      alt: "Logo",
-      title: "Felinify",
-      url: "#",
+  const menuItems = [
+    {
+      title: "Product",
+      links: [
+        { text: "Features", url: "#features" },
+        { text: "Pricing", url: "#pricing" },
+        {
+          text: "Explore Decks",
+          url: "/workspace/explore",
+          action: () => handleWorkspaceClick("/workspace/explore"),
+        },
+      ],
     },
-    tagline = "Smarter studying starts here.",
-    menuItems = [
-      {
-        title: "Product",
-        links: [
-          { text: "Features", url: "#features" },
-          { text: "Pricing", url: "#pricing" },
-          {
-            text: "Explore Decks",
-            url: "/workspace/explore",
-            action: () => handleWorkspaceClick("/workspace/explore"),
-          },
-        ],
-      },
-      {
-        title: "Account",
-        links: [
-          { text: "Login", url: "/auth/login" },
-          { text: "Sign Up", url: "/auth/signup" },
-          {
-            text: "Library",
-            url: "/workspace/library",
-            action: () => handleWorkspaceClick("/workspace/library"),
-          },
-          {
-            text: "Settings",
-            url: "/workspace/settings",
-            action: () => handleWorkspaceClick("/workspace/settings"),
-          },
-        ],
-      },
-      {
-        title: "Support",
-        links: [
-          { text: "FAQ", url: "#faq" },
-          { text: "Newsletter", url: "#", action: handleNewsletterClick },
-        ],
-      },
-      {
-        title: "Connect",
-        links: [
-          { text: "Email", url: "mailto:contact@felinify.com" },
-          { text: "GitHub", url: "https://github.com/kysondev/felinify" },
-        ],
-      },
-    ],
-    copyright = "© 2025 Felinify.com. All rights reserved.",
-    bottomLinks = [
-      { text: "Terms of Service", url: "/terms" },
-      { text: "Privacy Policy", url: "/privacy" },
-    ],
-  } = props;
+    {
+      title: "Account",
+      links: [
+        { text: "Login", url: "/auth/login" },
+        { text: "Sign Up", url: "/auth/signup" },
+        {
+          text: "Library",
+          url: "/workspace/library",
+          action: () => handleWorkspaceClick("/workspace/library"),
+        },
+        {
+          text: "Settings",
+          url: "/workspace/settings",
+          action: () => handleWorkspaceClick("/workspace/settings"),
+        },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { text: "FAQ", url: "#faq" },
+        { text: "Newsletter", url: "#", action: handleNewsletterClick },
+      ],
+    },
+    {
+      title: "Connect",
+      links: [
+        { text: "Email", url: "mailto:contact@felinify.com" },
+        { text: "GitHub", url: "https://github.com/kysondev/felinify" },
+      ],
+    },
+  ];
+
+  const bottomLinks = [
+    { text: "Terms of Service", url: "/terms" },
+    { text: "Privacy Policy", url: "/privacy" },
+  ];
   return (
     <>
       <SubscriptionPopup open={showSubscribe} setOpen={setShowSubscribe} />
@@ -111,6 +80,7 @@ const Footer = (props: FooterProps) => {
         <div className="px-4 max-w-[1200px] mx-auto">
           <footer>
             <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
+              {/* Brand section */}
               <div className="col-span-2 mb-8 lg:mb-0">
                 <div className="flex items-center gap-2 lg:justify-start">
                   <Image
@@ -120,11 +90,13 @@ const Footer = (props: FooterProps) => {
                     height={30}
                   />
                   <p className="text-xl font-semibold text-primary">
-                    {logo.title}
+                    Felinify
                   </p>
                 </div>
-                <p className="mt-4 text-muted-foreground">{tagline}</p>
+                <p className="mt-4 text-muted-foreground">Smarter studying starts here.</p>
               </div>
+              
+              {/* Menu sections */}
               {menuItems.map((section, sectionIdx) => (
                 <div key={sectionIdx}>
                   <h3 className="mb-4 font-bold text-sm text-primary">
@@ -152,8 +124,10 @@ const Footer = (props: FooterProps) => {
                 </div>
               ))}
             </div>
+            
+            {/* Bottom section */}
             <div className="mt-16 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
-              <p>{copyright}</p>
+              <p>© 2025 Felinify.com. All rights reserved.</p>
               <ul className="flex gap-6">
                 {bottomLinks.map((link, linkIdx) => (
                   <li

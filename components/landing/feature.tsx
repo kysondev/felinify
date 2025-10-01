@@ -8,20 +8,7 @@ import {
 import { memo } from "react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
-interface Feature {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  highlight?: string;
-}
-
-interface FeatureProps {
-  heading?: string;
-  subtitle?: string;
-  features?: Feature[];
-}
-
-const FeatureItem = memo(({ feature, index }: { feature: Feature; index: number }) => (
+const FeatureItem = memo(({ feature, index }: { feature: any; index: number }) => (
   <div
     className="group relative bg-card border cursor-default border-border rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
     role="article"
@@ -58,10 +45,8 @@ const FeatureItem = memo(({ feature, index }: { feature: Feature; index: number 
 
 FeatureItem.displayName = "FeatureItem";
 
-const Feature = ({
-  heading = "Powerful Study Features",
-  subtitle = "Experience the complete set of tools designed to make your learning journey effective and engaging",
-  features = [
+const Feature = () => {
+  const features = [
     {
       title: "Three Study Modes",
       description:
@@ -104,8 +89,7 @@ const Feature = ({
       icon: <Award className="w-6 h-6" />,
       highlight: "Premium",
     },
-  ],
-}: FeatureProps) => {
+  ];
   return (
     <section 
       className="pb-20" 
@@ -113,18 +97,20 @@ const Feature = ({
       aria-labelledby="features-heading"
     >
       <div className="px-4 max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 
             id="features-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
           >
-            {heading}
+            Powerful Study Features
           </h2>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">
-            {subtitle}
+            Experience the complete set of tools designed to make your learning journey effective and engaging
           </p>
         </div>
         
+        {/* Features grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <FeatureItem 

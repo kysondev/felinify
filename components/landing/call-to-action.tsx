@@ -6,28 +6,14 @@ import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 
-interface CtaProps {
-  title?: string;
-  description?: string;
-  buttonText?: string;
-  buttonUrl?: string;
-  items?: string[];
-}
-
-const defaultItems = [
-  "AI-Powered Flashcard Generation",
-  "Multiple study modes",
-  "Minimalist Focus Mode",
-  "Sync Across All Devices",
-  "Highly customizable",
-];
-
-const Cta = ({
-  title = "Boost Your Learning Efficiency",
-  description = "Master any subject with AI-enhanced flashcards, smart repetition, and a distraction-free study experience built for serious learners.",
-  buttonText = "Start Learning Free",
-  items = defaultItems,
-}: CtaProps) => {
+const Cta = () => {
+  const items = [
+    "AI-Powered Flashcard Generation",
+    "Multiple study modes",
+    "Minimalist Focus Mode",
+    "Sync Across All Devices",
+    "Highly customizable",
+  ];
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const router = useRouter();
 
@@ -52,21 +38,24 @@ const Cta = ({
           <div className="flex justify-center">
             <div className="w-full">
               <div className="flex flex-col items-start justify-between gap-10 rounded-2xl bg-primary/5 border border-primary/20 px-8 py-12 md:flex-row lg:px-16 lg:py-20">
+                {/* Left content */}
                 <div className="md:w-1/2">
                   <h3 className="mb-4 text-3xl font-semibold md:text-4xl text-primary">
-                    {title}
+                    Boost Your Learning Efficiency
                   </h3>
-                  <p className="text-muted-foreground text-lg">{description}</p>
+                  <p className="text-muted-foreground text-lg">Master any subject with AI-enhanced flashcards, smart repetition, and a distraction-free study experience built for serious learners.</p>
                   <Button
                     className="mt-8 px-8"
                     size="lg"
                     onClick={handleWorkspaceClick}
                   >
                     <span className="flex items-center gap-2">
-                      {buttonText} <ArrowRight className="size-4" />
+                      Start Learning Free <ArrowRight className="size-4" />
                     </span>
                   </Button>
                 </div>
+                
+                {/* Right content - feature list */}
                 <div className="md:w-1/3">
                   <ul className="flex flex-col space-y-4 text-md font-medium">
                     {items.map((item, idx) => (

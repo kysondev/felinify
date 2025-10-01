@@ -7,23 +7,7 @@ import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
 
-interface HeroProps {
-  heading?: string;
-  description?: string;
-  button?: {
-    text: string;
-    url: string;
-  };
-}
-
-const Hero = ({
-  heading = "AI Flashcards That Actually Make You Smarter",
-  description = "Built for students who want to stop wasting time. Create flashcards from notes, study with smart quizzes, and track mastery. Join thousands of students boosting retention by 94%.",
-  button = {
-    text: "Get Started",
-    url: "/workspace",
-  },
-}: HeroProps) => {
+const Hero = () => {
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const router = useRouter();
 
@@ -44,19 +28,25 @@ const Hero = ({
       />
       <section className="pt-24 pb-20 flex justify-center">
         <div className="container text-center">
+          {/* Badge */}
           <div className="mx-auto flex max-w-5xl flex-col gap-8">
             <div className="inline-flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2">
               <Sparkles className="w-4 h-4" />
               <span>V1.0 Launching Soon</span>
             </div>
+            
+            {/* Main headline */}
             <h1 className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent leading-tight">
-              {heading}
+              AI Flashcards That Actually Make You Smarter
             </h1>
+            
+            {/* Description */}
             <p className="text-muted-foreground text-balance lg:text-lg max-w-4xl mx-auto leading-relaxed">
-              {description}
+              Built for students who want to stop wasting time. Create flashcards from notes, study with smart quizzes, and track mastery. Join thousands of students boosting retention by 94%.
             </p>
           </div>
 
+          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10">
             <Button
               size="lg"
@@ -64,7 +54,7 @@ const Hero = ({
               onClick={handleGetStartedClick}
             >
               <span className="flex items-center gap-2">
-                {button.text} <ArrowRight className="w-4 h-4" />
+                Get Started <ArrowRight className="w-4 h-4" />
               </span>
             </Button>
             <Button
@@ -76,6 +66,7 @@ const Hero = ({
             </Button>
           </div>
 
+          {/* GitHub Link */}
           <div className="flex justify-center mt-6">
             <a
               href="https://github.com/kysondev/felinify"
@@ -88,6 +79,7 @@ const Hero = ({
             </a>
           </div>
 
+          {/* Feature highlights */}
           <div className="flex items-center justify-center gap-4 sm:gap-8 mt-6 sm:mt-8 text-xs sm:text-sm text-muted-foreground">
             <div className="flex items-center gap-1 sm:gap-2">
               <svg
@@ -147,6 +139,7 @@ const Hero = ({
             </div>
           </div>
 
+          {/* Product screenshot */}
           <div className="relative mt-10 overflow-hidden px-1 sm:px-2">
             <div className="bg-gradient-to-b to-[#FEFEFE] dark:to-gray-950 absolute inset-0 z-10 from-transparent from-35%"></div>
             <div className="relative mx-auto max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 bg-[#FEFEFE] dark:bg-gray-900 p-1 sm:p-3 shadow-lg shadow-zinc-950/15">
