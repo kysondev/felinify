@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Deck } from "db/types/models.types";
 import { useStudySession } from "@study/hooks/use-study-session";
 
@@ -21,6 +21,7 @@ export function useFlipEngine({
 }: FlipEngineConfig) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [cardKey, setCardKey] = useState(0); // Key to force remount
 
   const totalCards = deck?.flashcards?.length ?? 0;
   const currentCard = useMemo(() => {
@@ -48,6 +49,7 @@ export function useFlipEngine({
       currentCardIndex === 0 ? totalCards - 1 : currentCardIndex - 1;
     setIsFlipped(false);
     setCurrentCardIndex(newIndex);
+    setCardKey(prev => prev + 1); // Force remount to prevent animation
   }, [deck, currentCardIndex, totalCards]);
 
   // Navigate to next card
@@ -57,6 +59,7 @@ export function useFlipEngine({
       currentCardIndex === totalCards - 1 ? 0 : currentCardIndex + 1;
     setIsFlipped(false);
     setCurrentCardIndex(newIndex);
+    setCardKey(prev => prev + 1); // Force remount to prevent animation
   }, [deck, currentCardIndex, totalCards]);
 
   // Toggle card flip state
@@ -85,6 +88,7 @@ export function useFlipEngine({
       currentIndex: currentCardIndex,
       totalCards,
       isFlipped,
+      cardKey,
       studyTime,
       totalProgress,
       isSaving,

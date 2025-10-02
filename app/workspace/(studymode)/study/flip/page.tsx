@@ -77,6 +77,7 @@ export default function FlipStudyPage() {
       />
 
       <FlipCard
+        key={state.cardKey}
         question={state.currentCard.term}
         answer={state.currentCard.definition}
         questionImageUrl={state.currentCard.termImageUrl}
