@@ -89,6 +89,7 @@ export default function FlipStudyPage() {
         onPrev={actions.onPrev}
         onFlip={actions.onFlip}
         onNext={actions.onNext}
+        onShuffle={actions.onShuffle}
       />
     </div>
   );

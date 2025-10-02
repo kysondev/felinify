@@ -22,12 +22,24 @@ export function useFlipEngine({
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardKey, setCardKey] = useState(0); // Key to force remount
+  const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
 
   const totalCards = deck?.flashcards?.length ?? 0;
+  
+  // Initialize shuffled indices when deck changes
+  useEffect(() => {
+    if (deck?.flashcards?.length) {
+      const indices = Array.from({ length: deck.flashcards.length }, (_, i) => i);
+      setShuffledIndices(indices);
+      setCurrentCardIndex(0);
+    }
+  }, [deck?.flashcards?.length]);
+
   const currentCard = useMemo(() => {
-    if (!deck?.flashcards || totalCards === 0) return null;
-    return deck.flashcards[currentCardIndex];
-  }, [deck, currentCardIndex, totalCards]);
+    if (!deck?.flashcards || totalCards === 0 || shuffledIndices.length === 0) return null;
+    const actualIndex = shuffledIndices[currentCardIndex];
+    return deck.flashcards[actualIndex];
+  }, [deck, currentCardIndex, totalCards, shuffledIndices]);
 
   const {
     studyTime,
@@ -67,12 +79,27 @@ export function useFlipEngine({
     setIsFlipped((prev) => !prev);
   }, []);
 
+  // Shuffle the flashcards order
+  const onShuffle = useCallback(() => {
+    if (!deck?.flashcards?.length) return;
+    
+    const newIndices = [...shuffledIndices];
+    for (let i = newIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newIndices[i], newIndices[j]] = [newIndices[j], newIndices[i]];
+    }
+    
+    setShuffledIndices(newIndices);
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
+    setCardKey(prev => prev + 1); // Force remount to prevent animation
+  }, [deck, shuffledIndices]);
+
   // Start study session when deck is loaded
   useEffect(() => {
     if (deck && totalCards > 0) {
       startStudySession();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deck, totalCards]);
 
   // Calculate progress percentage through the deck
@@ -100,6 +127,7 @@ export function useFlipEngine({
       onPrev,
       onNext,
       onFlip,
+      onShuffle,
       handleEndSession,
     },
   } as const;
