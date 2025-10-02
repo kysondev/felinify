@@ -29,9 +29,6 @@ export function FlipCard({
       >
         <div className="absolute inset-0 backface-hidden">
           <Card className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 shadow-md hover:shadow-lg transition-shadow border-2 border-secondary/30 rounded-xl cursor-pointer bg-gradient-to-br from-background to-secondary/10">
-            <div className="absolute top-3 md:top-4 left-3 md:left-4 text-primary/50">
-              <Lightbulb className="h-4 w-4 md:h-5 md:w-5" />
-            </div>
             <div className="absolute top-3 md:top-4 right-3 md:right-4 text-xs text-muted-foreground">
               Question
             </div>
@@ -59,9 +56,6 @@ export function FlipCard({
 
         <div className="absolute inset-0 backface-hidden rotate-y-180">
           <Card className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 shadow-md hover:shadow-lg transition-shadow rounded-xl cursor-pointer">
-            <div className="absolute top-3 md:top-4 left-3 md:left-4 text-primary/50">
-              <RotateCw className="h-4 w-4 md:h-5 md:w-5" />
-            </div>
             <div className="absolute top-3 md:top-4 right-3 md:right-4 text-xs text-muted-foreground">
               Answer
             </div>
