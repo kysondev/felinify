@@ -272,6 +272,114 @@ export const deleteDeck = async (deckId: string, userId: string) => {
   }
 };
 
+export const cloneDeck = async (deckId: string, userId: string) => {
+  try {
+    const originalDeck = await db
+      .selectFrom("deck")
+      .select((eb) => [
+        "id",
+        "name",
+        "description",
+        "visibility",
+        jsonArrayFrom(
+          eb
+            .selectFrom("flashcard")
+            .selectAll()
+            .whereRef("flashcard.deckId", "=", "deck.id")
+        ).as("flashcards"),
+        jsonArrayFrom(
+          eb
+            .selectFrom("tag")
+            .selectAll()
+            .whereRef("tag.deckId", "=", "deck.id")
+        ).as("tags"),
+      ])
+      .where("id", "=", deckId)
+      .executeTakeFirst();
+
+    if (!originalDeck) {
+      return {
+        success: false,
+        message: "Deck not found or not available for cloning",
+      };
+    }
+
+    const newDeckId = cuid();
+    const clonedDeck = await db
+      .insertInto("deck")
+      .values({
+        id: newDeckId,
+        name: `${originalDeck.name} (Copy)`,
+        description: originalDeck.description,
+        userId: userId,
+        rating: 0,
+        studyCount: 0,
+        studyHour: 0,
+        visibility: "private",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!clonedDeck) {
+      return { success: false, message: "Error creating cloned deck" };
+    }
+
+    await db
+      .insertInto("userDeckProgress")
+      .values({
+        id: cuid(),
+        userId: userId,
+        deckId: newDeckId,
+        mastery: 0,
+        completedSessions: 0,
+        challengeCompleted: 0,
+        lastStudied: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+      .execute();
+
+    if (originalDeck.flashcards && originalDeck.flashcards.length > 0) {
+      const flashcardsToInsert = originalDeck.flashcards.map((flashcard: any) => ({
+        id: cuid(),
+        deckId: newDeckId,
+        term: flashcard.term || "",
+        definition: flashcard.definition || "",
+        termImageUrl: flashcard.termImageUrl || null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }));
+
+      await db
+        .insertInto("flashcard")
+        .values(flashcardsToInsert)
+        .execute();
+    }
+
+    if (originalDeck.tags && originalDeck.tags.length > 0) {
+      const tagsToInsert = originalDeck.tags.map((tag: any) => ({
+        id: cuid(),
+        deckId: newDeckId,
+        name: tag.name,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }));
+
+      await db
+        .insertInto("tag")
+        .values(tagsToInsert)
+        .execute();
+    }
+
+    return { success: true, data: clonedDeck };
+  } catch (error) {
+    console.error("Error cloning deck:", error);
+    return { success: false, message: "Error cloning deck", error };
+  }
+};
+
 export const getAllDecks = async (page: number = 1, limit: number = 12) => {
   try {
     const offset = (page - 1) * limit;

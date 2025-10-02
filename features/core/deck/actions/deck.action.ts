@@ -3,8 +3,12 @@ import {
   createDeck,
   updateDeck,
   deleteDeck,
+  cloneDeck,
+  getDecksByUserId,
 } from "@deck/services/deck.service";
-import { getUser } from "@user/services/user.service";
+import { getUser, getUserSubscription } from "@user/services/user.service";
+import { getPlanDetails } from "@subscription/utils/get-plan-details";
+import { hasReachedMaxDeck } from "@subscription/utils/limits";
 
 export const createDeckAction = async (
   userId: string,
@@ -91,5 +95,41 @@ export const deleteDeckAction = async (deckId: string, userId: string) => {
   } catch (error) {
     console.error("Error deleting deck:", error);
     return { success: false, message: "Error deleting deck", error };
+  }
+};
+
+export const cloneDeckAction = async (deckId: string) => {
+  try {
+    const { data: user } = await getUser();
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+    if (!user.emailVerified) {
+      return { success: false, message: "Email not verified" };
+    }
+
+    const { data: subscription } = await getUserSubscription(user.id);
+
+    const { data: decks } = await getDecksByUserId(user.id);
+    
+    const hasReachedLimit = hasReachedMaxDeck(subscription?.plan as "pro" | "ultra" | "starter", decks);
+
+    if (hasReachedLimit) {
+      return { success: false, message: "You have reached the limit of decks you can create." };
+    }
+    
+    const result = await cloneDeck(deckId, user.id);
+    if (result.success) {
+      return {
+        success: true,
+        message: "Deck cloned successfully",
+        data: result.data,
+      };
+    } else {
+      return { success: false, message: result.message };
+    }
+  } catch (error) {
+    console.error("Error cloning deck:", error);
+    return { success: false, message: "Error cloning deck", error };
   }
 };

@@ -3,7 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { StudyModeDialog } from "components/study";
-import { Play } from "lucide-react";
+import { Play, Copy } from "lucide-react";
+import { Button } from "components/ui/button";
+import { cloneDeckAction } from "@deck/actions/deck.action";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "components/ui/alert-dialog";
+import toast from "react-hot-toast";
 
 interface ExploreDeckStudyOptionsProps {
   deckId: string;
@@ -15,6 +29,8 @@ export default function ExploreDeckStudyOptions({
   const router = useRouter();
   const [showStudyModeDialog, setShowStudyModeDialog] =
     useState<boolean>(false);
+  const [isCloning, setIsCloning] = useState<boolean>(false);
+  const [showCloneDialog, setShowCloneDialog] = useState<boolean>(false);
 
   const handleStudyModeSelect = (mode: string) => {
     if (mode === "flip") {
@@ -28,14 +44,66 @@ export default function ExploreDeckStudyOptions({
     }
   };
 
+  const handleCloneDeck = async () => {
+    setIsCloning(true);
+    setShowCloneDialog(false);
+    try {
+      const result = await cloneDeckAction(deckId);
+      if (result.success) {
+        toast.success("Deck cloned successfully! Check your library.");
+        fetch(`/api/revalidate?path=/workspace/library`);
+        fetch(`/api/revalidate?path=/workspace/explore`);
+        fetch(`/api/revalidate?path=/workspace/deck/edit/${deckId}`);
+        fetch(`/api/revalidate?path=/workspace/explore/deck/${deckId}`);
+        router.push("/workspace/library");
+      } else {
+        toast.error(result.message || "Failed to clone deck");
+      }
+    } catch (error) {
+      console.error("Error cloning deck:", error);
+      toast.error("An error occurred while cloning the deck");
+    } finally {
+      setIsCloning(false);
+    }
+  };
+
   return (
+    <div className="flex gap-2">
       <StudyModeDialog
         open={showStudyModeDialog}
         onOpenChange={setShowStudyModeDialog}
         onStudyModeSelect={handleStudyModeSelect}
         triggerText="Study Deck"
         triggerIcon={<Play className="h-4 w-4 mr-2" />}
-        className="w-full"
+        className="flex-1"
       />
+      <AlertDialog open={showCloneDialog} onOpenChange={setShowCloneDialog}>
+        <AlertDialogTrigger asChild>
+          <Button
+            disabled={isCloning}
+            variant="outline"
+            size="sm"
+            className="px-3"
+            title={isCloning ? "Cloning..." : "Clone Deck"}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clone this deck?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will create a copy of this deck in your library. The cloned deck will be private and you can modify it as needed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleCloneDeck} disabled={isCloning}>
+              {isCloning ? "Cloning..." : "Clone Deck"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
   );
 }
