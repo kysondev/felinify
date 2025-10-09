@@ -14,6 +14,7 @@ import { useTransition } from "react";
 import Form from "next/form";
 import { Loading } from "components/ui/loading";
 import { forgotPassword } from "@auth/actions/auth.action";
+import Link from "next/link";
 
 export function ForgotPasswordForm({
   className,
@@ -57,9 +58,10 @@ export function ForgotPasswordForm({
           </Form>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:text-primary [&_a]:font-medium [&_a]:hover:underline">
+        By clicking continue, you agree to our{" "}
+        <Link href="/terms">Terms of Service</Link> and{" "}
+        <Link href="/privacy">Privacy Policy</Link>.
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ import NextForm from "next/form";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import OTPSkeleton from "./skeletons/otp-skeleton";
+import Link from "next/link";
 
 const OTPForm = dynamic(() => import("./otp-form"), {
   loading: () => <OTPSkeleton />,
@@ -249,19 +250,20 @@ export function LoginForm({
 
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a
+              <Link
                 href="/auth/signup"
                 className="text-primary font-medium hover:underline"
               >
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:text-primary [&_a]:font-medium [&_a]:hover:underline">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{" "}
+        <Link href="/terms">Terms of Service</Link> and{" "}
+        <Link href="/privacy">Privacy Policy</Link>.
       </div>
     </div>
   );

@@ -4,7 +4,13 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/Input";
 import { Label } from "../ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { Alert, AlertDescription } from "../ui/alert";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { setupUsername } from "@auth/actions/auth.action";
@@ -19,11 +25,6 @@ export function UsernameSetupForm() {
   const [isChecking, setIsChecking] = useState(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const router = useRouter();
-
-  const validateUsername = (value: string) => {
-    const validation = usernameSchema.safeParse({ username: value });
-    return validation.success;
-  };
 
   const checkUsernameAvailability = async (value: string) => {
     const validation = usernameSchema.safeParse({ username: value });
@@ -54,7 +55,7 @@ export function UsernameSetupForm() {
     setUsername(value);
     setError("");
     setIsValid(null);
-    
+
     if (value.length >= 3) {
       const timeoutId = setTimeout(() => {
         checkUsernameAvailability(value);
@@ -65,7 +66,7 @@ export function UsernameSetupForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const validation = usernameSchema.safeParse({ username });
     if (!validation.success) {
       setError(validation.error.issues[0].message);
@@ -99,7 +100,8 @@ export function UsernameSetupForm() {
       <CardHeader>
         <CardTitle>Username Setup</CardTitle>
         <CardDescription>
-          Choose a unique username for your account. This will be visible to other users.
+          Choose a unique username for your account. This will be visible to
+          other users.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -118,13 +120,20 @@ export function UsernameSetupForm() {
                 required
               />
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                {isChecking && <Loader2 className="h-4 w-4 animate-spin text-gray-400" />}
-                {!isChecking && isValid === true && <CheckCircle className="h-4 w-4 text-green-500" />}
-                {!isChecking && isValid === false && <XCircle className="h-4 w-4 text-red-500" />}
+                {isChecking && (
+                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                )}
+                {!isChecking && isValid === true && (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
+                {!isChecking && isValid === false && (
+                  <XCircle className="h-4 w-4 text-red-500" />
+                )}
               </div>
             </div>
             <div className="text-xs text-gray-500">
-              Username must be 3-20 characters long and contain only letters and numbers
+              Username must be 3-20 characters long and contain only letters and
+              numbers
             </div>
           </div>
 
