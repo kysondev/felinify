@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
+import Image from "next/image";
 
 const Hero = () => {
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
@@ -34,15 +35,17 @@ const Hero = () => {
               <Sparkles className="w-4 h-4" />
               <span>V1.0 Launching Soon</span>
             </div>
-            
+
             {/* Main headline */}
             <h1 className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent leading-tight">
               AI Flashcards That Actually Make You Smarter
             </h1>
-            
+
             {/* Description */}
             <p className="text-muted-foreground text-balance lg:text-lg max-w-4xl mx-auto leading-relaxed">
-              Built for students who want to stop wasting time. Create flashcards from notes, study with smart quizzes, and track mastery. Join thousands of students boosting retention by 94%.
+              Built for students who want to stop wasting time. Create
+              flashcards from notes, study with smart quizzes, and track
+              mastery. Join thousands of students boosting retention by 94%.
             </p>
           </div>
 
@@ -149,7 +152,7 @@ const Hero = () => {
                     media="(max-width: 640px)"
                     srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756331513/Screenshot_2025-08-27_175059_tjhsxt.png"
                   />
-                  <img
+                  <Image
                     className="w-full h-auto"
                     src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756331516/Screenshot_2025-08-27_175047_apmekq.png"
                     alt="Felinify AI flashcard application interface showing study dashboard"
