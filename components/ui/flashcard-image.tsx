@@ -2,7 +2,6 @@
 
 import { cn } from "lib/cn";
 import { ImageModal } from "./image-modal";
-import Image from "next/image";
 
 interface FlashcardImageProps {
   src: string;
@@ -19,7 +18,7 @@ export function FlashcardImage({ src, alt, className }: FlashcardImageProps) {
           className
         )}
       >
-        <Image
+        <img
           src={src}
           alt={alt}
           className="w-full h-full object-contain"

@@ -11,7 +11,6 @@ import { Card } from "./card";
 import { ImageModal } from "./image-modal";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
-import Image from "next/image";
 
 interface ImageUploadProps {
   value?: string;
@@ -163,7 +162,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
           <Card className="relative group border-2 border-dashed border-primary/30 rounded-lg overflow-hidden">
             <div className="relative max-h-32 min-h-20">
               <ImageModal src={displayUrl} alt="Flashcard image">
-                <Image
+                <img
                   src={displayUrl}
                   alt="Flashcard image"
                   className="w-full h-full object-contain"

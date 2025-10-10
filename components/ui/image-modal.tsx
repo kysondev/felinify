@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "./button";
 import { X, ZoomIn } from "lucide-react";
-import Image from "next/image";
 
 interface ImageModalProps {
   src: string;
@@ -71,7 +70,7 @@ export function ImageModal({ src, alt, children }: ImageModalProps) {
           >
             <X className="h-4 w-4" />
           </Button>
-          <Image
+          <img
             src={src}
             alt={alt}
             className="w-full h-full object-contain max-h-[90vh] rounded-lg"

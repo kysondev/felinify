@@ -85,7 +85,13 @@ export function SignUpForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="space-y-1 text-center pb-4">
           <div className="mx-auto mb-2">
-            <Image src="/felinify.png" alt="Felinify" className="h-10 w-auto" />
+            <Image
+              src="/felinify.png"
+              alt="Felinify"
+              className="h-10 w-auto"
+              width={40}
+              height={40}
+            />
           </div>
           <CardTitle className="text-2xl font-semibold">
             Create Account
