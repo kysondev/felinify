@@ -24,21 +24,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const authPages = [
-    {
-      url: `${baseUrl}/auth/login`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/auth/signup`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    },
-  ];
-
   const workspacePages = [
     {
       url: `${baseUrl}/workspace/library`,
@@ -60,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const routes = [...landingPages, ...authPages, ...workspacePages];
+  const routes = [...landingPages, ...workspacePages];
 
   return routes;
 }

@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Log in to your Felinify account to access your flashcards and continue your learning journey.",
   keywords: ["login", "sign in", "account access", "flashcard app"],
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
   openGraph: {
     title: "Log In | Felinify",
