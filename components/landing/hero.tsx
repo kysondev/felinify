@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Play, Sparkles } from "lucide-react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
@@ -63,9 +63,14 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="px-8 py-5 text-base w-full sm:w-auto"
+              className="px-8 py-5 text-base w-full sm:w-auto group"
             >
-              Watch Demo
+              <span className="flex items-center gap-2">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 group-hover:bg-primary transition-colors">
+                  <Play className="w-3 h-3 text-primary group-hover:text-primary-foreground transition-colors" fill="currentColor" />
+                </div>
+                Watch Demo
+              </span>
             </Button>
           </div>
 
@@ -82,71 +87,45 @@ const Hero = () => {
             </a>
           </div>
 
-          {/* Feature highlights */}
-          <div className="flex items-center justify-center gap-4 sm:gap-8 mt-6 sm:mt-8 text-xs sm:text-sm text-muted-foreground">
-            <div className="flex items-center gap-1 sm:gap-2">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span className="font-semibold text-foreground whitespace-nowrap">
-                Launching Soon
-              </span>
-            </div>
-            <div className="w-1 h-1 bg-muted-foreground rounded-full"></div>
-            <div className="flex items-center gap-1 sm:gap-2">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                />
-              </svg>
-              <span className="font-semibold text-foreground whitespace-nowrap">
-                AI-Powered
-              </span>
-            </div>
-            <div className="w-1 h-1 bg-muted-foreground rounded-full"></div>
-            <div className="flex items-center gap-1 sm:gap-2">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
-              <span className="font-semibold text-foreground whitespace-nowrap">
-                Join Beta
-              </span>
-            </div>
-          </div>
-
           {/* Product screenshot */}
           <div className="relative mt-10 overflow-hidden px-1 sm:px-2">
             <div className="bg-gradient-to-b to-[#FEFEFE] dark:to-gray-950 absolute inset-0 z-10 from-transparent from-35%"></div>
-            <div className="relative mx-auto max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 bg-[#FEFEFE] dark:bg-gray-900 p-1 sm:p-3 shadow-lg shadow-zinc-950/15">
-              <div className="relative rounded-lg overflow-hidden">
+            <div className="relative mx-auto max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 bg-[#FEFEFE] dark:bg-gray-900 shadow-2xl shadow-zinc-950/20">
+              <div className="bg-muted/30 px-2 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between border-b border-border">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-border"></div>
+                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-border"></div>
+                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-border"></div>
+                </div>
+
+                <div className="absolute left-1/2 -translate-x-1/2 bg-background border border-border/50 rounded-md sm:rounded-lg px-2 sm:px-4 py-1 sm:py-1.5 flex items-center gap-1 sm:gap-2 w-[140px] sm:w-[280px] md:w-[420px] lg:w-[480px]">
+                  <svg className="w-2 h-2 sm:w-3 sm:h-3 text-muted-foreground hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span className="text-[10px] sm:text-xs text-muted-foreground truncate">felinify.com</span>
+                </div>
+                
+                <div className="hidden sm:flex items-center gap-2">
+                  <div className="w-5 h-5 rounded bg-transparent flex items-center justify-center">
+                    <svg className="w-3 h-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </div>
+                  <div className="w-5 h-5 rounded bg-transparent flex items-center justify-center">
+                    <svg className="w-3 h-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                  <div className="w-5 h-5 rounded bg-transparent flex items-center justify-center">
+                    <svg className="w-3 h-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="w-8 sm:hidden"></div>
+              </div>
+
+              <div className="relative rounded-b-lg overflow-hidden">
                 <picture>
                   <source
                     media="(max-width: 640px)"
@@ -172,60 +151,60 @@ const Hero = () => {
             </p>
             <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-10 lg:gap-12">
               <div className="flex items-center gap-3">
-                <img 
-                  src="/nextjs.svg" 
-                  alt="NextJS" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/nextjs.svg"
+                  alt="NextJS"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   NextJS
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <img 
-                  src="/cloudflare.svg" 
-                  alt="Cloudflare" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/cloudflare.svg"
+                  alt="Cloudflare"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   Cloudflare
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <img 
-                  src="/stripe.svg" 
-                  alt="Stripe" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/stripe.svg"
+                  alt="Stripe"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   Stripe
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <img 
-                  src="/upstash.svg" 
-                  alt="Upstash" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/upstash.svg"
+                  alt="Upstash"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   Upstash
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <img 
-                  src="/cloudinary.svg" 
-                  alt="Cloudinary" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/cloudinary.svg"
+                  alt="Cloudinary"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   Cloudinary
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <img 
-                  src="/resend.svg" 
-                  alt="Resend" 
-                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                <img
+                  src="/resend.svg"
+                  alt="Resend"
+                  className="w-7 h-7 sm:w-8 sm:h-8"
                 />
                 <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                   Resend

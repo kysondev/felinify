@@ -6,7 +6,7 @@ import { Hero } from "components/landing/hero";
 import { HowItWorks } from "components/landing/how-it-works";
 import { LandingNavbar } from "components/landing-navbar";
 import { Pricing } from "components/landing/pricing";
-import { Stats } from "components/landing/stats";
+import { FlashcardShowcase } from "components/landing/flashcard-showcase";
 import { Testimonials } from "components/landing/testimonials";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
@@ -86,15 +86,24 @@ export default function Home() {
       <JsonLd data={softwareAppSchema} />
       <JsonLd data={websiteSchema} />
       <JsonLd data={organizationSchema} />
-      <div className="px-4 max-w-[1200px] mx-auto">
-        <LandingNavbar />
-        <Hero />
+
+      <div className="relative">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#80808015_1px,transparent_1px),linear-gradient(to_bottom,#80808015_1px,transparent_1px)] bg-[size:48px_48px]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,transparent_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,transparent_70%)]"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary opacity-20 blur-[100px]"></div>
+        </div>
+        
+        <div className="px-4 max-w-[1200px] mx-auto">
+          <LandingNavbar />
+          <Hero />
+        </div>
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
       <FeatureShowcase />
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
-      <Stats />
+      <FlashcardShowcase />
       </div>
       <HowItWorks />
       <div className="px-4 max-w-[1200px] mx-auto">

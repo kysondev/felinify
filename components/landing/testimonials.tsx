@@ -92,16 +92,16 @@ export function Testimonials() {
       id="testimonials"
       aria-labelledby="testimonials-heading"
     >
-      <div className="px-4 max-w-[1200px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="mb-12 sm:mb-16">
           <h2
             id="testimonials-heading"
-            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground"
           >
             What Our Users Say
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
             Join thousands of students who've transformed their study habits with Felinify
           </p>
         </div>

@@ -140,14 +140,14 @@ export const HowItWorks = () => {
       >
       <div className="px-4 max-w-[1200px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="mb-12 sm:mb-16">
           <h2
             id="how-it-works-heading"
-            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+            className="text-2xl font-bold sm:text-3xl lg:text-4xl text-foreground mb-4"
           >
             How Felinify Works
           </h2>
-          <p className="text-muted-foreground max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
             Transform your study routine in three simple steps — from notes to mastery in minutes
           </p>
         </div>

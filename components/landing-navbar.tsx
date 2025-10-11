@@ -23,6 +23,7 @@ import {
   SheetTrigger,
 } from "components/ui/sheet";
 import Image from "next/image";
+import Link from "next/link";
 
 interface MenuItem {
   title: string;
@@ -59,10 +60,7 @@ const LandingNavbar = ({
   },
   menu = [
     { title: "Home", url: "/" },
-    {
-      title: "Features",
-      url: "#features",
-    },
+    { title: "Explore", url: "/explore" },
     {
       title: "Pricing",
       url: "#pricing",
@@ -74,8 +72,9 @@ const LandingNavbar = ({
   },
 }: Navbar1Props) => {
   return (
-    <section className="py-4 flex justify-center">
-      <div className="w-full">
+    <section className="p-2 flex justify-center sticky top-0 z-50">
+      <div className="w-full max-w-7xl mx-auto">
+        <div className="bg-background/95 backdrop-blur-lg border border-border rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 px-3 sm:px-6 py-2 sm:py-3">
         {/* Desktop Menu */}
         <nav className="hidden justify-between w-full lg:flex">
           <div className="flex items-center gap-4">
@@ -100,11 +99,8 @@ const LandingNavbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
             <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
+              <Link href={auth.login.url}>Get Started</Link>
             </Button>
           </div>
         </nav>
@@ -156,17 +152,15 @@ const LandingNavbar = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
-                    </Button>
                     <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
+                      <Link href={auth.login.url}>Get Started</Link>
                     </Button>
                   </div>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -193,7 +187,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+        className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
       >
         {item.title}
       </NavigationMenuLink>

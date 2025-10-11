@@ -57,7 +57,7 @@ export function Stats() {
         setOpen={setShowSubscriptionPopup} 
       />
       <section className="py-16 sm:py-20 lg:py-24">
-      <div className="px-4 max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold lg:text-4xl mb-6 text-primary">

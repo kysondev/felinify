@@ -33,8 +33,8 @@ const Cta = () => {
         open={showSubscriptionPopup}
         setOpen={setShowSubscriptionPopup}
       />
-      <section className="py-16">
-        <div className="px-4 max-w-[1200px] mx-auto">
+      <section className="">
+        <div className="max-w-[1200px] mx-auto">
           <div className="flex justify-center">
             <div className="w-full">
               <div className="group relative bg-card border border-border rounded-xl p-12 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">

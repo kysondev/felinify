@@ -7,11 +7,11 @@ import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 export function FeatureShowcase() {
   return (
     <>
-      <section className="">
-        <div className="px-4 max-w-7xl mx-auto">
+      <section>
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary">
+            <h2 className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground">
               Study smarter, not harder — no delays, just results.
             </h2>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">

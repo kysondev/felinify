@@ -45,12 +45,12 @@ export function FAQ() {
       id="faq"
       aria-labelledby="faq-heading"
     >
-      <div className="px-4 max-w-[1200px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2
             id="faq-heading"
-            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+            className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground"
           >
             Frequently Asked Questions
           </h2>

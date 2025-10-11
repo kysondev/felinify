@@ -43,12 +43,12 @@ const Pricing = () => {
         id="pricing"
         aria-labelledby="pricing-heading"
       >
-        <div className="px-4 max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 sm:mb-16">
             <h2
               id="pricing-heading"
-              className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-primary"
+              className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground"
             >
               Simple, Transparent Pricing
             </h2>
