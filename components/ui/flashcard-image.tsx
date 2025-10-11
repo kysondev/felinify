@@ -12,7 +12,12 @@ interface FlashcardImageProps {
 export function FlashcardImage({ src, alt, className }: FlashcardImageProps) {
   return (
     <ImageModal src={src} alt={alt}>
-      <div className={cn("aspect-square relative overflow-hidden rounded-lg bg-white", className)}>
+      <div
+        className={cn(
+          "aspect-square relative overflow-hidden rounded-lg bg-white",
+          className
+        )}
+      >
         <img
           src={src}
           alt={alt}

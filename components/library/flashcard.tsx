@@ -41,7 +41,7 @@ export const Flashcard = ({
   };
 
   const truncateText = (text: string | null | undefined) => {
-    if (!text) return '';
+    if (!text) return "";
     if (isTextOverflowing(text)) {
       return text.slice(0, 120) + "...";
     }
@@ -54,7 +54,7 @@ export const Flashcard = ({
 
   return (
     <Card
-      className={`overflow-hidden h-full flex flex-col group border-primary/10 ${
+      className={`overflow-hidden h-full flex flex-col group border-primary/10 cursor-pointer ${
         isFlipped
           ? "bg-gradient-to-br from-accent/5 to-transparent border-primary/20"
           : "hover:border-primary/30"

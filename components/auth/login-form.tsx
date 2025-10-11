@@ -33,6 +33,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import OTPSkeleton from "./skeletons/otp-skeleton";
 import Link from "next/link";
+import Image from "next/image";
 
 const OTPForm = dynamic(() => import("./otp-form"), {
   loading: () => <OTPSkeleton />,
@@ -86,7 +87,13 @@ export function LoginForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="space-y-1 text-center pb-4">
           <div className="mx-auto mb-2">
-            <img src="/felinify.png" alt="Felinify" className="h-10 w-auto" />
+            <Image
+              src="/felinify.png"
+              alt="Felinify"
+              className="h-10 w-auto"
+              width={40}
+              height={40}
+            />
           </div>
           <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
@@ -112,9 +119,11 @@ export function LoginForm({
                       type="submit"
                       disabled={!AUTH_CONFIG.isOAuthEnabled}
                     >
-                      <img
+                      <Image
                         src="/github.svg"
                         alt="github"
+                        width={20}
+                        height={20}
                         className="absolute left-4 h-5 w-5"
                       />
                       <span>Continue with GitHub</span>

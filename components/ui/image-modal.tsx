@@ -27,7 +27,7 @@ export function ImageModal({ src, alt, children }: ImageModalProps) {
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       e.stopPropagation();
       handleClose();
     }
@@ -39,52 +39,53 @@ export function ImageModal({ src, alt, children }: ImageModalProps) {
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
     } else {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
-  const modalContent = isOpen && mounted ? (
-    <div 
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80"
-      onClick={handleBackdropClick}
-    >
-      <div className="relative max-w-4xl max-h-[90vh] mx-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClose();
-          }}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-contain max-h-[90vh] rounded-lg"
-          style={{
-            objectFit: "contain",
-            objectPosition: "center",
-          }}
-        />
+  const modalContent =
+    isOpen && mounted ? (
+      <div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80"
+        onClick={handleBackdropClick}
+      >
+        <div className="relative max-w-4xl max-h-[90vh] mx-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClose();
+            }}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+          <img
+            src={src}
+            alt={alt}
+            className="w-full h-full object-contain max-h-[90vh] rounded-lg"
+            style={{
+              objectFit: "contain",
+              objectPosition: "center",
+            }}
+          />
+        </div>
       </div>
-    </div>
-  ) : null;
+    ) : null;
 
   return (
     <>
-      <div 
+      <div
         className="cursor-pointer group relative"
         onClick={(e) => {
           e.stopPropagation();
