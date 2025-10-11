@@ -1,6 +1,6 @@
 import { Cta } from "components/landing/call-to-action";
 import { FAQ } from "components/landing/faq";
-import { Feature } from "components/landing/feature";
+import { FeatureShowcase } from "components/landing/feature-showcase";
 import { Footer } from "components/landing/footer";
 import { Hero } from "components/landing/hero";
 import { HowItWorks } from "components/landing/how-it-works";
@@ -90,9 +90,11 @@ export default function Home() {
         <LandingNavbar />
         <Hero />
       </div>
-      <Stats />
       <div className="px-4 max-w-[1200px] mx-auto">
-        <Feature />
+      <FeatureShowcase />
+      </div>
+      <div className="px-4 max-w-[1200px] mx-auto">
+      <Stats />
       </div>
       <HowItWorks />
       <div className="px-4 max-w-[1200px] mx-auto">
@@ -101,7 +103,9 @@ export default function Home() {
       <div className="px-4 max-w-[1200px] mx-auto">
         <Pricing />
       </div>
+      <div className="px-4 max-w-[1200px] mx-auto">
       <FAQ />
+      </div>
       <div className="px-4 max-w-[1200px] mx-auto">
         <Cta />
         <Footer />

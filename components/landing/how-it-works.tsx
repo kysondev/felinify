@@ -135,7 +135,7 @@ export const HowItWorks = () => {
         setOpen={setShowSubscriptionPopup} 
       />
       <section
-        className="py-16 sm:py-20 lg:py-24 bg-muted/30"
+        className="py-16 sm:py-20 lg:py-24"
         aria-labelledby="how-it-works-heading"
       >
       <div className="px-4 max-w-[1200px] mx-auto">

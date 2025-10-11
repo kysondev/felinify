@@ -32,7 +32,7 @@ const Hero = () => {
           <div className="mx-auto flex max-w-5xl flex-col gap-8">
             <div className="inline-flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2">
               <Sparkles className="w-4 h-4" />
-              <span>V1.0 Launching Soon</span>
+              <span>Launching Soon</span>
             </div>
             
             {/* Main headline */}
@@ -159,6 +159,74 @@ const Hero = () => {
                   />
                 </picture>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent from-40% via-white/20 to-white dark:via-gray-950/20 dark:to-gray-950"></div>
+              </div>
+            </div>
+          </div>
+          {/* Technology Stack */}
+          <div className="bottom-10 relative z-10">
+            <p className="text-sm text-muted-foreground mb-6 text-center">
+              Powered by industry-leading tools
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-10 lg:gap-12">
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/nextjs.svg" 
+                  alt="NextJS" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  NextJS
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/cloudflare.svg" 
+                  alt="Cloudflare" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  Cloudflare
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/stripe.svg" 
+                  alt="Stripe" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  Stripe
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/upstash.svg" 
+                  alt="Upstash" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  Upstash
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/cloudinary.svg" 
+                  alt="Cloudinary" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  Cloudinary
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/resend.svg" 
+                  alt="Resend" 
+                  className="w-7 h-7 sm:w-8 sm:h-8" 
+                />
+                <span className="text-lg sm:text-xl font-medium text-muted-foreground">
+                  Resend
+                </span>
               </div>
             </div>
           </div>

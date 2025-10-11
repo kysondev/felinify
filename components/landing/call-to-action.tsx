@@ -37,7 +37,10 @@ const Cta = () => {
         <div className="px-4 max-w-[1200px] mx-auto">
           <div className="flex justify-center">
             <div className="w-full">
-              <div className="flex flex-col items-start justify-between gap-10 rounded-2xl bg-primary/5 border border-primary/20 px-8 py-12 md:flex-row lg:px-16 lg:py-20">
+              <div className="group relative bg-card border border-border rounded-xl p-12 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="relative z-10 flex flex-col items-start justify-between gap-10 md:flex-row">
                 {/* Left content */}
                 <div className="md:w-1/2">
                   <h3 className="mb-4 text-3xl font-semibold md:text-4xl text-primary">
@@ -68,6 +71,10 @@ const Cta = () => {
                     ))}
                   </ul>
                 </div>
+                </div>
+                
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/20 to-transparent rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-500" />
               </div>
             </div>
           </div>

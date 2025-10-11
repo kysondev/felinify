@@ -41,7 +41,7 @@ export function FAQ() {
   ];
   return (
     <section
-      className="py-16 sm:py-20 lg:py-24 bg-muted/30"
+      className="py-16 sm:py-20 lg:py-24"
       id="faq"
       aria-labelledby="faq-heading"
     >
