@@ -116,14 +116,14 @@ export const SidebarClient = ({
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href="/workspace/settings" className="w-full">
+              <Link href="/settings" className="w-full">
                 <DropdownMenuItem className="cursor-pointer">
                   <Settings2 className="w-4 h-4 mr-2" />
                   Settings
                 </DropdownMenuItem>
               </Link>
               <Link
-                href="/workspace/settings?tab=subscription&openUpgradeDialog=true"
+                href="/settings?tab=subscription&openUpgradeDialog=true"
                 className="w-full"
               >
                 <DropdownMenuItem className="cursor-pointer">
@@ -171,7 +171,7 @@ export const SidebarClient = ({
         className={`mt-auto flex items-center ${collapsed ? "justify-center" : "justify-between"}`}
       >
         {!collapsed && (
-          <Link href="/workspace/settings">
+          <Link href="/settings">
             <Settings2 className="w-4 h-4 text-muted-foreground cursor-pointer" />
           </Link>
         )}

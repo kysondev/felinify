@@ -45,8 +45,8 @@ export const DeckTagManager = ({
             setCurrentTags([]);
             router.refresh();
             toast.success("Tag removed successfully");
-            fetch(`/api/revalidate?path=/workspace/deck/edit/${deckId}`);
-            fetch(`/api/revalidate?path=/workspace/explore`);
+            fetch(`/api/revalidate?path=/decks/edit/${deckId}`);
+            fetch(`/api/revalidate?path=/explore`);
           } else {
             toast.error(result.message || "Failed to remove tag");
           }
@@ -68,8 +68,8 @@ export const DeckTagManager = ({
             setCurrentTags([result.data as Tag]);
             router.refresh();
             toast.success("Tag added successfully");
-            fetch(`/api/revalidate?path=/workspace/deck/edit/${deckId}`);
-            fetch(`/api/revalidate?path=/workspace/explore`);
+            fetch(`/api/revalidate?path=/decks/edit/${deckId}`);
+            fetch(`/api/revalidate?path=/explore`);
           } else {
             toast.error(result.message || "Failed to add tag");
           }

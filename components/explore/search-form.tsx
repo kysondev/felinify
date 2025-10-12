@@ -23,7 +23,7 @@ export const SearchForm = ({
 
     if (searchQuery.trim()) {
       const encodedQuery = encodeURIComponent(searchQuery.trim());
-      router.push(`/workspace/explore/search/${encodedQuery}`);
+      router.push(`/explore/search/${encodedQuery}`);
     }
   };
 

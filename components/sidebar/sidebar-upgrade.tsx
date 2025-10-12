@@ -24,7 +24,7 @@ export const SidebarUpgrade = () => {
             Unlimited energy, AI-powered study modes, and exclusive content
           </p>
           <Link
-            href="/workspace/settings?tab=subscription&openUpgradeDialog=true"
+            href="/settings?tab=subscription&openUpgradeDialog=true"
             className="inline-flex items-center text-xs font-semibold bg-white/20 hover:bg-white/30 text-primary-foreground px-3 py-1.5 rounded-lg transition-all duration-200 hover:scale-105"
           >
             Upgrade Now

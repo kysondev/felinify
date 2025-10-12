@@ -165,13 +165,13 @@ export const useStudySession = ({
           });
         }
       }
-      fetch(`/api/revalidate?path=/workspace/library`);
-      fetch(`/api/revalidate?path=/workspace/explore`);
-      fetch(`/api/revalidate?path=/workspace/explore/deck/${deck?.id}`);
-      fetch(`/api/revalidate?path=/workspace/deck/edit/${deck?.id}`);
-      fetch(`/api/revalidate?path=/workspace/study/challenge`);
-      fetch(`/api/revalidate?path=/workspace/study/flip`);
-      fetch(`/api/revalidate?path=/workspace/study/quiz`);
+      fetch(`/api/revalidate?path=/library`);
+      fetch(`/api/revalidate?path=/explore`);
+      fetch(`/api/revalidate?path=/decks/${deck?.id}`);
+      fetch(`/api/revalidate?path=/deck/edit/${deck?.id}`);
+      fetch(`/api/revalidate?path=/study/challenge`);
+      fetch(`/api/revalidate?path=/study/flip`);
+      fetch(`/api/revalidate?path=/study/quiz`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
@@ -199,17 +199,17 @@ export const useStudySession = ({
           });
         }
       }
-      fetch(`/api/revalidate?path=/workspace/library`);
-      fetch(`/api/revalidate?path=/workspace/explore`);
-      fetch(`/api/revalidate?path=/workspace/explore/deck/${deck?.id}`);
-      fetch(`/api/revalidate?path=/workspace/deck/edit/${deck?.id}`);
-      fetch(`/api/revalidate?path=/workspace/study/challenge`);
-      fetch(`/api/revalidate?path=/workspace/study/flip`);
-      fetch(`/api/revalidate?path=/workspace/study/quiz`);
+      fetch(`/api/revalidate?path=/library`);
+      fetch(`/api/revalidate?path=/explore`);
+      fetch(`/api/revalidate?path=/decks/${deck?.id}`);
+      fetch(`/api/revalidate?path=/deck/edit/${deck?.id}`);
+      fetch(`/api/revalidate?path=/study/challenge`);
+      fetch(`/api/revalidate?path=/study/flip`);
+      fetch(`/api/revalidate?path=/study/quiz`);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
-      router.push("/workspace/library");
+      router.push("/library");
       router.refresh();
       setIsSaving(false);
       setIsLoading(false);

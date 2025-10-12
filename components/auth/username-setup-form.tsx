@@ -84,7 +84,7 @@ export function UsernameSetupForm() {
     try {
       const result = await setupUsername(username);
       if (result.success) {
-        router.push("/workspace");
+        router.push("/library");
       } else {
         setError(result.message || "Failed to set username");
       }

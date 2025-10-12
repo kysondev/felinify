@@ -17,13 +17,13 @@ export const DeckStudy = ({ deck, user }: { deck: Deck; user: User }) => {
 
   const handleStudyModeSelect = (mode: string) => {
     if (mode === "flip") {
-      router.push(`/workspace/study/flip?deckId=${deck.id}`);
+      router.push(`/study/flip?deckId=${deck.id}`);
     }
     if (mode === "challenge") {
-      router.push(`/workspace/study/challenge?deckId=${deck.id}`);
+      router.push(`/study/challenge?deckId=${deck.id}`);
     }
     if (mode === "quiz") {
-      router.push(`/workspace/study/quiz?deckId=${deck.id}`);
+      router.push(`/study/quiz?deckId=${deck.id}`);
     }
   };
 

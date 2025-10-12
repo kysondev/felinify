@@ -87,10 +87,10 @@ export const DeckEditForm = ({
           });
           router.refresh();
           toast.success("Deck updated successfully");
-          fetch(`/api/revalidate?path=/workspace/library`);
-          fetch(`/api/revalidate?path=/workspace/explore`);
-          fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
-          fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+          fetch(`/api/revalidate?path=/library`);
+          fetch(`/api/revalidate?path=/explore`);
+          fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
+          fetch(`/api/revalidate?path=/decks/${deck.id}`);
         } else {
           toast.error(result.message || "Failed to update deck");
         }
@@ -110,10 +110,10 @@ export const DeckEditForm = ({
         toast.success("Deck deleted successfully");
         router.refresh();
         setDeleteDialogOpen(false);
-        fetch(`/api/revalidate?path=/workspace/library`);
-        fetch(`/api/revalidate?path=/workspace/explore`);
-        fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+        fetch(`/api/revalidate?path=/library`);
+        fetch(`/api/revalidate?path=/explore`);
+        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
+        fetch(`/api/revalidate?path=/decks/${deck.id}`);
       } else {
         toast.error(result.message || "Failed to delete deck");
       }
@@ -122,7 +122,7 @@ export const DeckEditForm = ({
       console.error(error);
     } finally {
       setIsDeleting(false);
-      router.push("/workspace/library");
+      router.push("/library");
     }
   };
 
@@ -152,7 +152,7 @@ export const DeckEditForm = ({
                       Deck Name
                     </FormLabel>
                     <span className="text-xs text-muted-foreground">
-                      {nameValue.length}/20
+                      {nameValue.length}/50
                     </span>
                   </div>
                   <FormControl>

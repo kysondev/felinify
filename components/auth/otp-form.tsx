@@ -42,7 +42,7 @@ const OTPForm = ({ onCancel, className, ...props }: OTPFormProps) => {
       const result = await verifyOTP(otp.split(""));
       if (result.success) {
         toast.success("Logged in successfully");
-        router.push("/workspace");
+        router.push("/library");
       } else {
         toast.error(
           result.error || "Invalid verification code. Please try again."

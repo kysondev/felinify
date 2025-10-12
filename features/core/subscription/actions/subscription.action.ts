@@ -20,9 +20,9 @@ export const createSubscriptionAction = async (
 
     const { error } = await authClient.subscription.upgrade({
       plan: plan.name,
-      successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/workspace/settings?tab=subscription`,
-      cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/workspace/settings?tab=subscription`,
-      returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/workspace/settings?tab=subscription`,
+      successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings?tab=subscription`,
+      cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings?tab=subscription`,
+      returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings?tab=subscription`,
       subscriptionId: currentSubscriptionId,
     });
 

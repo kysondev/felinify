@@ -36,10 +36,10 @@ export const DeckVisibilityToggle = ({
           setIsPublic(checked);
           router.refresh();
           toast.success(`Deck is now ${checked ? "public" : "private"}`);
-          fetch(`/api/revalidate?path=/workspace/library`);
-          fetch(`/api/revalidate?path=/workspace/explore`);
-          fetch(`/api/revalidate?path=/workspace/deck/edit/${deck.id}`);
-          fetch(`/api/revalidate?path=/workspace/explore/deck/${deck.id}`);
+          fetch(`/api/revalidate?path=/library`);
+          fetch(`/api/revalidate?path=/explore`);
+          fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
+          fetch(`/api/revalidate?path=/decks/${deck.id}`);
         } else {
           toast.error(result.message || "Failed to update deck visibility");
         }

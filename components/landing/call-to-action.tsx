@@ -23,7 +23,7 @@ const Cta = () => {
     if (isBetaMode) {
       setShowSubscriptionPopup(true);
     } else {
-      router.push("/workspace");
+      router.push("/library");
     }
   };
 

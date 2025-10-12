@@ -21,13 +21,13 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
 
   const handleStudyModeSelect = (mode: string) => {
     if (mode === "flip") {
-      router.push(`/workspace/study/flip?deckId=${deck.id}`);
+      router.push(`/study/flip?deckId=${deck.id}`);
     }
     if (mode === "challenge") {
-      router.push(`/workspace/study/challenge?deckId=${deck.id}`);
+      router.push(`/study/challenge?deckId=${deck.id}`);
     }
     if (mode === "quiz") {
-      router.push(`/workspace/study/quiz?deckId=${deck.id}`);
+      router.push(`/study/quiz?deckId=${deck.id}`);
     }
   };
 
@@ -40,7 +40,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
             <div className="flex items-center justify-between mb-1">
               <h3
                 className="font-semibold text-xl text-foreground line-clamp-1 hover:text-primary transition-colors duration-300 cursor-pointer"
-                onClick={() => router.push(`/workspace/explore/deck/${deck.id}`)}
+                onClick={() => router.push(`/decks/${deck.id}`)}
               >
                 {deck.name}
               </h3>
@@ -115,7 +115,7 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
 
         <div className="flex gap-3">
           <Link
-            href={`/workspace/explore/deck/${deck.id}`}
+            href={`/decks/${deck.id}`}
             passHref
             className="flex-1"
           >

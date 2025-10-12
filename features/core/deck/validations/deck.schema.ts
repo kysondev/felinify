@@ -26,7 +26,7 @@ export const createDeckSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Name must be at least 3 characters" })
-    .max(20, { message: "Name must be less than 20 characters" }),
+    .max(50, { message: "Name must be less than 50 characters" }),
   description: z.string().optional(),
   visibility: z.enum(["public", "private"]),
 });
@@ -35,7 +35,7 @@ export const createDeckWithAISchema = z.object({
   name: z
     .string()
     .min(3, { message: "Name must be at least 3 characters" })
-    .max(30, { message: "Name must be less than 30 characters" }),
+    .max(50, { message: "Name must be less than 50 characters" }),
   notes: z
     .string()
     .min(100, { message: "Notes must be at least 100 characters" })
@@ -47,7 +47,7 @@ export const updateDeckSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Name must be at least 3 characters" })
-    .max(30, { message: "Name must be less than 30 characters" })
+    .max(50, { message: "Name must be less than 50 characters" })
     .optional(),
   description: z.string().optional(),
   visibility: z.enum(["public", "private"]).optional(),

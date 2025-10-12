@@ -5,6 +5,18 @@ import { db } from "lib/db";
 import cuid from "cuid";
 import { jsonObjectFrom, jsonArrayFrom } from "kysely/helpers/postgres";
 
+export const getDeck = async (deckId: string) => {
+  "use cache";
+  try {
+    const deck = await db.selectFrom("deck").selectAll().where("id", "=", deckId).executeTakeFirst();
+    return { success: true, data: deck };
+  }
+  catch (error) {
+    console.error("Error fetching deck:", error);
+    return { success: false, message: "Error fetching deck", error };
+  }
+};
+
 export const getDecksByUserId = async (userId: string) => {
   "use cache";
   try {

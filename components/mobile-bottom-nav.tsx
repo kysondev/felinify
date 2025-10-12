@@ -9,27 +9,27 @@ const navigationItems = [
   {
     label: "Home",
     icon: Home,
-    href: "/workspace/home"
+    href: "/home"
   },
   {
     label: "Library",
     icon: Library,
-    href: "/workspace/library"
+    href: "/library"
   },
   {
     label: "Explore",
     icon: Compass,
-    href: "/workspace/explore"
+    href: "/explore"
   },
   {
     label: "Assistant",
     icon: BotMessageSquare,
-    href: "/workspace/assistant"
+    href: "/assistant"
   },
   {
     label: "Leaderboard",
     icon: Trophy,
-    href: "/workspace/leaderboard"
+    href: "/leaderboard"
   },
 ];
 

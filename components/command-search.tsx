@@ -68,19 +68,19 @@ export function CommandSearch({ triggerClassName }: CommandSearchProps) {
           <CommandEmpty>No results found.</CommandEmpty>
 
           <CommandGroup heading="Quick Actions">
-            <CommandItem onSelect={() => navigateTo("/workspace/explore")}>
+            <CommandItem onSelect={() => navigateTo("/explore")}>
               <Compass className="mr-2" />
               <span>Explore decks</span>
             </CommandItem>
-            <CommandItem onSelect={() => navigateTo("/workspace/library")}>
+            <CommandItem onSelect={() => navigateTo("/library")}>
               <Library className="mr-2" />
               <span>My library</span>
             </CommandItem>
-            <CommandItem onSelect={() => navigateTo("/workspace/assistant")}>
+            <CommandItem onSelect={() => navigateTo("/assistant")}>
               <BotMessageSquare className="mr-2" />
               <span>AI Assistant</span>
             </CommandItem>
-            <CommandItem onSelect={() => navigateTo("/workspace/leaderboard")}>
+            <CommandItem onSelect={() => navigateTo("/leaderboard")}>
               <Trophy className="mr-2" />
               <span>Leaderboard</span>
             </CommandItem>
@@ -90,7 +90,7 @@ export function CommandSearch({ triggerClassName }: CommandSearchProps) {
             <CommandItem
               onSelect={() =>
                 navigateTo(
-                  `/workspace/explore/search/${encodeURIComponent(searchQuery)}`
+                  `/explore/search/${encodeURIComponent(searchQuery)}`
                 )
               }
             >

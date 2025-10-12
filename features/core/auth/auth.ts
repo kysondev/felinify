@@ -97,10 +97,10 @@ export const auth = betterAuth({
             if (subscription && subscription.referenceId) {
               await refillEnergyForUser(subscription.referenceId);
               fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
               );
               fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
               );
             }
           } catch (error) {
@@ -115,10 +115,10 @@ export const auth = betterAuth({
             if (subscription && subscription.referenceId) {
               await refillEnergyForUser(subscription.referenceId);
               fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
               );
               fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
+                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
               );
             }
           } catch (error) {
@@ -130,10 +130,10 @@ export const auth = betterAuth({
         },
         onSubscriptionCancel: async () => {
           fetch(
-            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/library`
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
           );
           fetch(
-            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/workspace/settings`
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
           );
         },
       },

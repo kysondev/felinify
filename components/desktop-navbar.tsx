@@ -93,14 +93,14 @@ export const DesktopNavbar = async () => {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <Link href="/workspace/settings" className="w-full">
+                <Link href="/settings" className="w-full">
                   <DropdownMenuItem className="cursor-pointer">
                     <Settings2 className="w-4 h-4 mr-2" />
                     Settings
                   </DropdownMenuItem>
                 </Link>
                 <Link
-                  href="/workspace/settings?tab=subscription&openUpgradeDialog=true"
+                  href="/settings?tab=subscription&openUpgradeDialog=true"
                   className="w-full"
                 >
                   <DropdownMenuItem className="cursor-pointer">

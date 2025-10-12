@@ -10,7 +10,7 @@ const NoAccessState = () => {
         <p className="text-muted-foreground mb-6">
           You do not have permission to view this page.
         </p>
-        <Button onClick={() => router.push("/workspace/library")}>
+        <Button onClick={() => router.push("/library")}>
           Return to Library
         </Button>
       </div>

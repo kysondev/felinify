@@ -79,8 +79,8 @@ export const CreateReviewDialog = ({
           toast.success("Review submitted successfully");
           form.reset();
           onOpenChange(false);
-          fetch(`/api/revalidate?path=/workspace/explore`);
-          fetch(`/api/revalidate?path=/workspace/explore/deck/${deckId}`);
+          fetch(`/api/revalidate?path=/explore`);
+          fetch(`/api/revalidate?path=/decks/${deckId}`);
           router.refresh();
         } else {
           toast.error(result.message || "Failed to submit review");

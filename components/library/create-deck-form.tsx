@@ -87,7 +87,7 @@ export function CreateDeckForm({
         data.visibility
       );
       if (result.success) {
-        fetch(`/api/revalidate?path=/workspace/library`);
+        fetch(`/api/revalidate?path=/library`);
         setOpen(false);
         router.refresh();
         toast.success("Deck created successfully");
@@ -162,13 +162,13 @@ export function CreateDeckForm({
         setIsGenerating(false);
         return;
       }
-      fetch(`/api/revalidate?path=/workspace/library`);
+      fetch(`/api/revalidate?path=/library`);
       setTimeout(() => {
         setIsGenerating(false);
         setOpen(false);
         toast.success(`Deck created with ${addResult.addedCount} flashcards`);
         aiForm.reset();
-        router.push(`/workspace/deck/edit/${deckId}`);
+        router.push(`/decks/${deckId}`);
         router.refresh();
         if (onSuccess) onSuccess();
       }, 500);

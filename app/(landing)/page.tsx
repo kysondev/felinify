@@ -15,8 +15,39 @@ export const metadata: Metadata = {
   title: "Felinify | AI Flashcards For Focused, Fast Learning",
   description:
     "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+  keywords: [
+    "flashcards",
+    "AI flashcards",
+    "study app",
+    "learning",
+    "education",
+    "spaced repetition",
+    "quiz",
+    "study tools",
+    "academic success",
+  ],
   alternates: {
     canonical: "/",
+  },
+  openGraph: {
+    title: "Felinify | AI Flashcards For Focused, Fast Learning",
+    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    type: "website",
+    url: "/",
+    images: [
+      {
+        url: "/felinify.png",
+        width: 1200,
+        height: 630,
+        alt: "Felinify - AI Flashcards For Focused, Fast Learning",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Felinify | AI Flashcards For Focused, Fast Learning",
+    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    images: ["/felinify.png"],
   },
 };
 
@@ -63,7 +94,7 @@ export default function Home() {
     description: "AI Flashcards For Focused, Fast Learning",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://felinify.com/workspace/explore?q={search_term_string}",
+      target: "https://felinify.com/explore?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };

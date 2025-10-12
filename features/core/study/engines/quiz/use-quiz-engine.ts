@@ -245,7 +245,7 @@ export function useQuizEngine({
       handleAnswer,
       handleNext,
       handleEndSession,
-      goToLibrary: () => router.push("/workspace/library"),
+      goToLibrary: () => router.push("/library"),
     },
   } as const;
 }

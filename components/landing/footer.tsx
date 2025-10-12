@@ -31,8 +31,8 @@ const Footer = () => {
         { text: "Pricing", url: "#pricing" },
         {
           text: "Explore Decks",
-          url: "/workspace/explore",
-          action: () => handleWorkspaceClick("/workspace/explore"),
+          url: "/explore",
+          action: () => handleWorkspaceClick("/explore"),
         },
       ],
     },
@@ -43,13 +43,13 @@ const Footer = () => {
         { text: "Sign Up", url: "/auth/signup" },
         {
           text: "Library",
-          url: "/workspace/library",
-          action: () => handleWorkspaceClick("/workspace/library"),
+          url: "/library",
+          action: () => handleWorkspaceClick("/library"),
         },
         {
           text: "Settings",
-          url: "/workspace/settings",
-          action: () => handleWorkspaceClick("/workspace/settings"),
+          url: "/settings",
+          action: () => handleWorkspaceClick("/settings"),
         },
       ],
     },

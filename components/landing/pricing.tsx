@@ -22,7 +22,7 @@ const Pricing = () => {
     if (isBetaMode) {
       setShowSubscriptionPopup(true);
     } else {
-      router.push("/workspace");
+      router.push("/library");
     }
   };
   const proOriginalYearly = 35.99;

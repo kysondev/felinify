@@ -18,7 +18,7 @@ const Hero = () => {
     if (isBetaMode) {
       setShowSubscriptionPopup(true);
     } else {
-      router.push("/workspace");
+      router.push("/library");
     }
   };
   return (

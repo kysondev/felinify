@@ -8,6 +8,7 @@ import { PenTool, MessageSquare, Star, Trash2 } from "lucide-react";
 import { Review } from "db/types/models.types";
 import { CreateReviewDialog } from "./create-review-dialog";
 import { deleteReviewAction } from "@review/actions/review.action";
+import { LoginDialog } from "components/auth/login-dialog";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -26,6 +27,7 @@ export const ReviewSection = ({
 }: ReviewSectionProps) => {
   const [showReviewDialog, setShowReviewDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
   const router = useRouter();
 
   // Check if current user has already left a review
@@ -41,8 +43,8 @@ export const ReviewSection = ({
       const result = await deleteReviewAction(reviewId);
       if (result.success) {
         toast.success("Review deleted successfully");
-        fetch(`/api/revalidate?path=/workspace/explore`);
-        fetch(`/api/revalidate?path=/workspace/explore/deck/${deckId}`);
+        fetch(`/api/revalidate?path=/explore`);
+        fetch(`/api/revalidate?path=/decks/${deckId}`);
         router.refresh();
       } else {
         toast.error(result.message || "Failed to delete review");
@@ -63,7 +65,13 @@ export const ReviewSection = ({
             <Button
               variant="outline"
               className="flex items-center gap-2"
-              onClick={() => setShowReviewDialog(true)}
+              onClick={() => {
+                if (!currentUserId) {
+                  setShowLoginDialog(true);
+                } else {
+                  setShowReviewDialog(true);
+                }
+              }}
             >
               <PenTool className="h-4 w-4" />
               Write a Review
@@ -171,6 +179,13 @@ export const ReviewSection = ({
         open={showReviewDialog}
         onOpenChange={setShowReviewDialog}
         deckId={deckId}
+      />
+      
+      <LoginDialog
+        open={showLoginDialog}
+        onOpenChange={setShowLoginDialog}
+        title="Sign in to write a review"
+        description="You need to be signed in to write reviews and help other learners."
       />
     </>
   );

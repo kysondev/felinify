@@ -17,7 +17,7 @@ export const createCustomerPortalSession = async () => {
 
     const portalSession = await stripeClient.billingPortal.sessions.create({
       customer: userWithId.stripeCustomerId,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/workspace/settings?tab=subscription`,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings?tab=subscription`,
     });
 
     return {

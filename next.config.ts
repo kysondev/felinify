@@ -3,15 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
-  async redirects() {
-    return [
-      {
-        source: "/workspace",
-        destination: "/workspace/home",
-        permanent: true,
-      },
-    ];
-  },
   experimental: {
     useCache: true,
   },

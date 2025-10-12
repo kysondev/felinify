@@ -53,7 +53,7 @@ export const signUp = async (
   } catch (error) {
     toast.error("Something went wrong");
   }
-  redirect("/workspace");
+  redirect("/home");
 };
 
 export const signInWithEmail = async (
@@ -77,7 +77,7 @@ export const signInWithEmail = async (
     const { error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/workspace",
+      callbackURL: "/home",
       fetchOptions: {
         onSuccess: async (ctx) => {
           if (ctx.data.twoFactorRedirect) {
@@ -109,7 +109,7 @@ export const signInWithGoogle = async () => {
 
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/workspace",
+      callbackURL: "/home",
       newUserCallbackURL: "/auth/setup-username",
     });
     if (error) {
@@ -130,7 +130,7 @@ export const signInWithGithub = async () => {
 
     const { error } = await authClient.signIn.social({
       provider: "github",
-      callbackURL: "/workspace",
+      callbackURL: "/home",
       newUserCallbackURL: "/auth/setup-username",
     });
     if (error) {
@@ -263,7 +263,7 @@ export const initializeUsername = async () => {
     const user = session.user;
 
     if (user.usernameSet) {
-      return { success: true, message: "Username already set", redirectTo: "/workspace" };
+      return { success: true, message: "Username already set", redirectTo: "/home" };
     }
 
     if (!user.name) {
@@ -285,7 +285,7 @@ export const initializeUsername = async () => {
           return { success: false, message: "Failed to update username" };
         }
 
-        return { success: true, message: "Username set automatically", redirectTo: "/workspace" };
+        return { success: true, message: "Username set automatically", redirectTo: "/home" };
       } else {
         const { customAlphabet } = await import("nanoid");
         const nanoid = customAlphabet("0123456789", 4);
@@ -300,7 +300,7 @@ export const initializeUsername = async () => {
           return { success: false, message: "Failed to update username" };
         }
 
-        return { success: true, message: "Username set automatically with suffix", redirectTo: "/workspace" };
+        return { success: true, message: "Username set automatically with suffix", redirectTo: "/home" };
       }
     } else {
       return { success: false, message: "Name is not a valid username", redirectTo: "/auth/setup-username" };

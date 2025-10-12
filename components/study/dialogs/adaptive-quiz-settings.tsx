@@ -56,7 +56,7 @@ const AdaptiveQuizSettings = ({
       }
 
       router.push(
-        `/workspace/study/quiz?deckId=${deckId}&token=${result.token}`
+        `/explore/study/quiz?deckId=${deckId}&token=${result.token}`
       );
     } catch (error) {
       console.error("Error starting quiz:", error);

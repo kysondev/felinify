@@ -16,7 +16,7 @@ export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
       <CardContent className="p-0 flex flex-col h-full">
         <div className="p-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-2">
-            <Link href={`/workspace/explore/deck/${deck.id}`}>
+            <Link href={`/decks/${deck.id}`}>
               <h3 className="font-semibold text-lg line-clamp-1 text-foreground hover:text-primary transition-colors">
                 {deck.name}
               </h3>
@@ -74,7 +74,7 @@ export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
                 @{user?.name}
               </span>
             </div>
-            <Link href={`/workspace/explore/deck/${deck.id}`} passHref>
+            <Link href={`/decks/${deck.id}`} passHref>
               <Button className="font-medium h-8 px-4 text-sm" size="sm">
                 View
                 <ChevronRight className="h-4 w-4 ml-1" />

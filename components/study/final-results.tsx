@@ -36,7 +36,7 @@ export const FinalResults = ({
     if (onFinish) {
       await onFinish();
     } else {
-      redirect("/workspace/library");
+      redirect("/explore/library");
     }
   };
 

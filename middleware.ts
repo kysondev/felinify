@@ -44,7 +44,7 @@ export default async function middleware(request: NextRequest) {
       }
       
       if (AUTH_ROUTES.includes(currentPath) && currentPath !== "/auth/setup-username") {
-        return NextResponse.redirect(new URL("/workspace", request.url));
+        return NextResponse.redirect(new URL("/home", request.url));
       }
     } else {
       if (!isAuthRoute) {

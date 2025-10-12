@@ -31,7 +31,7 @@ export function useDeckLoader(deckId: string | null): UseDeckLoaderResult {
   useEffect(() => {
     const fetchDeck = async () => {
       if (!deckId) {
-        router.push("/workspace/library");
+        router.push("/library");
         return;
       }
 
@@ -46,7 +46,7 @@ export function useDeckLoader(deckId: string | null): UseDeckLoaderResult {
         const deckResponse = await getDeckById(deckId, user.id);
 
         if (!deckResponse.data) {
-          router.push("/workspace/library");
+          router.push("/library");
           return;
         }
 
