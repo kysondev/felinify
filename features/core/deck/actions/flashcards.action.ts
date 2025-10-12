@@ -7,7 +7,7 @@ import {
 import { getUser } from "@user/services/user.service";
 
 export const addFlashcardAction = async (
-  deckId: string,
+  deckId: number,
   userId: string,
   term: string,
   definition: string,

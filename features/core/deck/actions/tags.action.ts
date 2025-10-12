@@ -6,7 +6,7 @@ import {
 import { getUser } from "@user/services/user.service";
 
 export const addTagToDeckAction = async (
-  deckId: string,
+  deckId: number,
   tag: string,
   userId: string
 ) => {
@@ -36,7 +36,7 @@ export const addTagToDeckAction = async (
 
 export const removeTagFromDeckAction = async (
   tagId: string,
-  deckId: string,
+  deckId: number,
   userId: string
 ) => {
   try {
@@ -63,7 +63,7 @@ export const removeTagFromDeckAction = async (
   }
 };
 
-export const getTagsByDeckIdAction = async (deckId: string, userId: string) => {
+export const getTagsByDeckIdAction = async (deckId: number, userId: string) => {
   try {
     const { data: user } = await getUser();
     if (!user) {

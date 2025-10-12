@@ -2,7 +2,7 @@
  * Utility functions for revalidating Next.js cache paths
  */
 
-export const revalidateDeckPaths = async (deckId: string) => {
+export const revalidateDeckPaths = async (deckId: number) => {
   const paths = [
     '/library',
     '/explore',
@@ -15,7 +15,7 @@ export const revalidateDeckPaths = async (deckId: string) => {
   );
 };
 
-export const revalidateDeckWithFlashcards = async (deckId: string) => {
+export const revalidateDeckWithFlashcards = async (deckId: number) => {
   const paths = [
     '/library',
     '/explore',
@@ -37,7 +37,7 @@ export const revalidateExplore = async () => {
   await fetch('/api/revalidate?path=/explore');
 };
 
-export const revalidateStudyPaths = async (deckId: string) => {
+export const revalidateStudyPaths = async (deckId: number) => {
   const paths = [
     '/library',
     '/explore',

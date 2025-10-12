@@ -22,7 +22,7 @@ import toast from "react-hot-toast";
 import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface ExploreDeckStudyOptionsProps {
-  deckId: string;
+  deckId: number;
   isAuthenticated?: boolean;
 }
 

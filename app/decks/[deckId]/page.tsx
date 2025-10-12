@@ -29,7 +29,8 @@ interface DeckPageProps {
 
 export async function generateMetadata({ params }: DeckPageProps): Promise<Metadata> {
   const { deckId } = await params;
-  const { data: deck } = await getDeck(deckId);
+  const deckIdNumber = parseInt(deckId, 10);
+  const { data: deck } = await getDeck(deckIdNumber);
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
   
   if (!deck) {
@@ -81,10 +82,11 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
 
 export default async function DeckPage({ params }: DeckPageProps) {
   const { deckId } = await params;
+  const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckId, user?.id as string);
+  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
-  const { data: reviews } = await getReviewsByDeckId(deckId);
+  const { data: reviews } = await getReviewsByDeckId(deckIdNumber);
 
   const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
@@ -341,7 +343,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
               </div>
             </div>
 
-            <ExploreFlashcardGrid flashcards={deck.flashcards || []} />
+            <ExploreFlashcardGrid flashcards={(deck.flashcards || []) as any} />
           </div>
         </TabsContent>
 
@@ -363,7 +365,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
 
             <ReviewSection
               reviews={reviews}
-              deckId={deckId}
+              deckId={deckIdNumber}
               currentUserId={user?.id}
               deckOwnerId={deck.userId}
             />

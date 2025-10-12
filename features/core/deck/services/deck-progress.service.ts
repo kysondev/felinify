@@ -5,7 +5,7 @@ import { db } from "lib/db";
 
 export const createUserDeckProgress = async (
   userId: string,
-  deckId: string
+  deckId: number
 ) => {
   try {
     const newProgress = await db

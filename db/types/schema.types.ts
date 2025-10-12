@@ -81,7 +81,7 @@ export interface SubscriptionTable {
 }
 
 export interface DeckTable {
-  id: Generated<string> | string;
+  id: Generated<number> | number;
   name: string;
   description: string | null;
   rating: number;
@@ -100,7 +100,7 @@ export interface DeckTable {
 export interface UserDeckProgressTable {
   id: Generated<string> | string;
   userId: string;
-  deckId: string;
+  deckId: number;
   mastery: number;
   completedSessions: number;
   challengeCompleted: number;
@@ -112,7 +112,7 @@ export interface UserDeckProgressTable {
 export interface TagTable {
   id: Generated<string> | string;
   name: string;
-  deckId: string;
+  deckId: number;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }
@@ -121,7 +121,7 @@ export interface ReviewTable {
   id: Generated<string> | string;
   description: string | null;
   rating: number;
-  deckId: string;
+  deckId: number;
   userId: string;
   user: User | null;
   createdAt: ColumnType<Date, string | undefined, never>;
@@ -135,7 +135,7 @@ export interface FlashcardTable {
   termImageUrl: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
-  deckId: string;
+  deckId: number;
 }
 
 export interface FlashcardPerformanceTable {
@@ -155,7 +155,7 @@ export interface StudySessionTable {
   id: Generated<string> | string;
   userId: string;
   lengthInSeconds: Number | null;
-  deckId: string | null;
+  deckId: number | null;
   CreatedAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }
@@ -167,7 +167,7 @@ export interface QuizAccessTokenTable {
   used: boolean;
   expiresAt: Date;
   userId: string;
-  deckId: string | null;
+  deckId: number | null;
   createdAt: ColumnType<Date, string | undefined, never>;
   updatedAt: ColumnType<Date, string | undefined>;
 }

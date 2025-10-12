@@ -21,7 +21,7 @@ interface AdaptiveQuizSettingsProps {
   setShowQuizSettings: (open: boolean) => void;
   numOfQuestions: number;
   setNumOfQuestions: (num: number) => void;
-  deckId: string;
+  deckId: number;
   user: User;
 }
 

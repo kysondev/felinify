@@ -120,7 +120,7 @@ export const deleteReview = async (reviewId: string, userId: string) => {
   }
 };
 
-export const getReviewsByDeckId = async (deckId: string) => {
+export const getReviewsByDeckId = async (deckId: number) => {
   try {
     const reviews = await db
       .selectFrom("review")

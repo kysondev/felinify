@@ -33,6 +33,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Loading } from "../ui/loading";
+import { AIGenerationCard } from "../ui/ai-generation-card";
 import {
   addGeneratedFlashcardsToDeckAction,
   generateFlashcardsAction,
@@ -54,6 +55,8 @@ export function CreateDeckForm({
   const [isPending, startTransition] = useTransition();
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [generationStatus, setGenerationStatus] = useState("Analyzing your content...");
+  const [estimatedTime, setEstimatedTime] = useState("30 seconds");
   const { setOpen } = useDialog();
 
   const userSubscription =
@@ -103,6 +106,9 @@ export function CreateDeckForm({
   const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
     setIsGenerating(true);
     setProgress(10);
+    setGenerationStatus("Preparing generation...");
+    setEstimatedTime("45 seconds");
+    
     const result = await hasEnoughEnergy(user.id, 1);
     if (!result.success) {
       toast.error("You don't have enough energy to generate flashcards");
@@ -111,7 +117,10 @@ export function CreateDeckForm({
     }
 
     try {
-      setProgress(30);
+      setProgress(20);
+      setGenerationStatus("Creating deck...");
+      setEstimatedTime("40 seconds");
+      
       const deckResult = await createDeckAction(
         user.id,
         data.name,
@@ -132,7 +141,9 @@ export function CreateDeckForm({
         return;
       }
 
-      setProgress(50);
+      setProgress(40);
+      setGenerationStatus("Analyzing your content...");
+      setEstimatedTime("30 seconds");
 
       const flashcardsResult = await generateFlashcardsAction(
         data.name,
@@ -140,6 +151,8 @@ export function CreateDeckForm({
         data.visibility
       );
       setProgress(70);
+      setGenerationStatus("Generating flashcards...");
+      setEstimatedTime("15 seconds");
 
       if (!flashcardsResult.success) {
         toast.error(
@@ -150,19 +163,29 @@ export function CreateDeckForm({
       }
 
       setProgress(85);
+      setGenerationStatus("Processing flashcards...");
+      setEstimatedTime("10 seconds");
+      
       const addResult = await addGeneratedFlashcardsToDeckAction(
         user.id,
         deckId,
         flashcardsResult.flashcards
       );
 
-      setProgress(100);
+      setProgress(95);
+      setGenerationStatus("Finalizing deck...");
+      setEstimatedTime("5 seconds");
 
       if (!addResult.success) {
         toast.error(addResult.message || "Failed to add flashcards to deck");
         setIsGenerating(false);
         return;
       }
+      
+      setProgress(100);
+      setGenerationStatus("Complete!");
+      setEstimatedTime("0 seconds");
+      
       revalidateLibrary();
       setTimeout(() => {
         setIsGenerating(false);
@@ -172,7 +195,7 @@ export function CreateDeckForm({
         router.push(`/decks/${deckId}`);
         router.refresh();
         if (onSuccess) onSuccess();
-      }, 500);
+      }, 1000);
     } catch (error) {
       console.error("Error in AI flashcard generation:", error);
       toast.error("Something went wrong during flashcard generation");
@@ -319,24 +342,21 @@ export function CreateDeckForm({
             automatically create a deck with flashcards for you.
           </p>
 
-          {isGenerating && (
+          {isGenerating ? (
             <div className="mb-4">
-              <Progress value={progress} />
-              <p className="text-xs text-muted-foreground mt-1 text-center">
-                {progress < 30 && "Preparing..."}
-                {progress >= 30 && progress < 50 && "Creating deck..."}
-                {progress >= 50 && progress < 70 && "Generating flashcards..."}
-                {progress >= 70 && progress < 85 && "Processing flashcards..."}
-                {progress >= 85 && "Adding flashcards to deck..."}
-              </p>
+              <AIGenerationCard
+                progress={progress}
+                status={generationStatus}
+                estimatedTime={estimatedTime}
+                isActive={isGenerating}
+              />
             </div>
-          )}
-
-          <Form {...aiForm}>
-            <form
-              onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
-              className="space-y-3"
-            >
+          ) : (
+            <Form {...aiForm}>
+              <form
+                onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+                className="space-y-3"
+              >
               <FormField
                 control={aiForm.control}
                 name="name"
@@ -478,6 +498,7 @@ export function CreateDeckForm({
               </div>
             </form>
           </Form>
+          )}
         </div>
       </TabsContent>
     </Tabs>

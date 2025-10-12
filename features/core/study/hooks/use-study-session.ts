@@ -142,7 +142,7 @@ export const useStudySession = ({
 
     return {
       userId,
-      deckId: String(deck.id),
+      deckId: deck.id,
       mastery: getNewMastery(),
       completedSessions: (deck.progress?.completedSessions || 0) + 1,
       lastStudied: new Date(),
@@ -161,12 +161,12 @@ export const useStudySession = ({
         if (deck) {
           await saveStudySessionAction({
             userId: userId as string,
-            deckId: String(deck.id),
+            deckId: deck.id,
             lengthInSeconds: studyTime as Number,
           });
         }
       }
-      await revalidateStudyPaths(deck?.id as string);
+      await revalidateStudyPaths(deck?.id as number);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
@@ -189,12 +189,12 @@ export const useStudySession = ({
         if (deck) {
           await saveStudySessionAction({
             userId: userId as string,
-            deckId: String(deck.id),
+            deckId: deck.id,
             lengthInSeconds: studyTime as Number,
           });
         }
       }
-      await revalidateStudyPaths(deck?.id as string);
+      await revalidateStudyPaths(deck?.id as number);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {

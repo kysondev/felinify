@@ -15,7 +15,8 @@ import { FinalResults } from "components/study/final-results";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
-  const deckId = searchParams.get("deckId");
+  const deckIdParam = searchParams.get("deckId");
+  const deckId = deckIdParam ? parseInt(deckIdParam, 10) : null;
   // State for quiz settings
   const [showSettings, setShowSettings] = useState(true);
   const [quizStarted, setQuizStarted] = useState(false);

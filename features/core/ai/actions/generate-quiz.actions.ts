@@ -3,7 +3,7 @@ import { getUser } from "@user/services/user.service";
 import { getDeckById } from "@deck/services/deck.service";
 
 export const generateAdaptiveQuizAction = async (
-  deckId: string,
+  deckId: number,
   numQuestions: number
 ) => {
   try {

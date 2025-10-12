@@ -15,8 +15,9 @@ export default async function DeckEditPage({
   params: Promise<{ deckId: string }>;
 }) {
   const { deckId } = await params;
+  const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckId, user?.id as string);
+  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
 
   const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 

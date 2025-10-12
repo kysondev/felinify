@@ -60,7 +60,7 @@ export const saveStudySessionAction = async (data: NewStudySession) => {
 
 export const updateChallengeCompletionAction = async (
   userId: string,
-  deckId: string
+  deckId: number
 ) => {
   try {
     const result = await updateChallengeCompletionCount(userId, deckId);

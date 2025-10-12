@@ -13,8 +13,9 @@ export default async function FlashcardManagementPage({
   params: Promise<{ deckId: string }>;
 }) {
   const { deckId } = await params;
+  const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckId, user?.id as string);
+  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
 
   if (!deck || deck.userId !== user?.id) {
     if (deck?.visibility === "public") {

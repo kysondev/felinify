@@ -6,7 +6,7 @@ export type ChallengeView = "question" | "saving" | "finalResults";
 export interface ChallengeConfig {
   deck: Deck | null;
   isTimed: boolean;
-  deckId: string | null;
+  deckId: number | null;
   userId: string | null;
   initialMastery: number;
   shouldStart?: boolean;

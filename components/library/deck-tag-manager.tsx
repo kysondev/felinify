@@ -15,7 +15,7 @@ import {
 import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface DeckTagManagerProps {
-  deckId: string;
+  deckId: number;
   userId: string;
   tags?: Tag[];
 }

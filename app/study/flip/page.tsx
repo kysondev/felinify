@@ -15,7 +15,8 @@ import { useFlipEngine } from "@study/engines/flip/use-flip-engine";
 
 export default function FlipStudyPage() {
   const searchParams = useSearchParams();
-  const deckId = searchParams.get("deckId");
+  const deckIdParam = searchParams.get("deckId");
+  const deckId = deckIdParam ? parseInt(deckIdParam, 10) : null;
   const { deck, userIdRef, initialMasteryRef, isLoading, noPermission } =
     useDeckLoader(deckId);
 

@@ -73,7 +73,7 @@ export const updateDeckAction = async (deckData: UpdateDeck) => {
   }
 };
 
-export const deleteDeckAction = async (deckId: string, userId: string) => {
+export const deleteDeckAction = async (deckId: number, userId: string) => {
   try {
     const { data: user } = await getUser();
     if (!user) {
@@ -98,7 +98,7 @@ export const deleteDeckAction = async (deckId: string, userId: string) => {
   }
 };
 
-export const cloneDeckAction = async (deckId: string) => {
+export const cloneDeckAction = async (deckId: number) => {
   try {
     const { data: user } = await getUser();
     if (!user) {

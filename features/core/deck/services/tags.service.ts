@@ -3,7 +3,7 @@ import cuid from "cuid";
 import { db } from "lib/db";
 
 export const addTagToDeck = async (
-  deckId: string,
+  deckId: number,
   tag: string,
   userId: string
 ) => {
@@ -47,7 +47,7 @@ export const addTagToDeck = async (
 
 export const removeTagFromDeck = async (
   tagId: string,
-  deckId: string,
+  deckId: number,
   userId: string
 ) => {
   try {
@@ -86,7 +86,7 @@ export const removeTagFromDeck = async (
   }
 };
 
-export const getTagsByDeckId = async (deckId: string, userId: string) => {
+export const getTagsByDeckId = async (deckId: number, userId: string) => {
   try {
     const deckExists = await db
       .selectFrom("deck")

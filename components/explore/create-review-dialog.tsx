@@ -32,7 +32,7 @@ import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 interface CreateReviewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  deckId: string;
+  deckId: number;
 }
 
 export const CreateReviewDialog = ({

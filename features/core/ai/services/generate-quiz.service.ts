@@ -5,7 +5,7 @@ import { shuffle } from "@study/utils/flashcards.utils";
 
 export const generateAdaptiveQuiz = async (
   flashcards: {
-    id: string;
+    id: string | number;
     term: string;
     definition: string;
     termImageUrl?: string | null;

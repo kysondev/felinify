@@ -4,7 +4,7 @@ import cuid from "cuid";
 import { createReview, deleteReview } from "@review/services/review.service";
 
 export const createReviewAction = async (
-  deckId: string,
+  deckId: number,
   rating: number,
   description: string | null
 ) => {

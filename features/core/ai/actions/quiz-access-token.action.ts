@@ -12,7 +12,7 @@ import {
 } from "@user/services/user.service";
 
 export const createQuizAccessTokenAction = async (
-  deckId: string,
+  deckId: number,
   numQuestions: number
 ) => {
   try {
@@ -106,7 +106,7 @@ export const createQuizAccessTokenAction = async (
 
 export const validateQuizAccessTokenAction = async (
   token: string,
-  deckId: string
+  deckId: number
 ) => {
   try {
     const userResult = await getUser();

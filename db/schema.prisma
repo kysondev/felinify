@@ -119,7 +119,7 @@ model Subcription {
 }
 
 model Deck {
-  id        String    @id @default(cuid())
+  id        Int       @id
   name      String
   description String?
   rating Float @default(0)
@@ -149,7 +149,7 @@ model Tag {
   name     String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deckId   String
+  deckId   Int
   deck Deck  @relation(fields: [deckId], references: [id], onDelete: Cascade)
   @@map("tag")
 }
@@ -162,7 +162,7 @@ model Review {
   rating    Int @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deckId   String
+  deckId   Int
   deck Deck  @relation(fields: [deckId], references: [id], onDelete: Cascade)
   @@map("review")
 }
@@ -172,7 +172,7 @@ model UserDeckProgress {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   deck      Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
-  deckId    String
+  deckId    Int
   mastery   Float    @default(0.0)
   completedSessions Int @default(0)
   challengeCompleted Int @default(0)
@@ -191,7 +191,7 @@ model Flashcard {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   deck            Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
-  deckId          String
+  deckId          Int
   performances    FlashcardPerformance[]
   @@map("flashcard")
 }
@@ -217,7 +217,7 @@ model StudySession {
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   lengthInSeconds     Int?
-  deckId     String?
+  deckId     Int?
   deck       Deck?     @relation(fields: [deckId], references: [id], onDelete: Cascade)
   CreatedAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -230,7 +230,7 @@ model QuizAccessToken {
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   deck       Deck      @relation(fields: [deckId], references: [id], onDelete: Cascade)
-  deckId     String
+  deckId     Int
   numQuestions Int
   used       Boolean   @default(false)
   expiresAt  DateTime

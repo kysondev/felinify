@@ -18,7 +18,7 @@ interface UseDeckLoaderResult {
  * Loads the current user and deck, handles redirects and permission checks.
  * Centralizes the repeated logic used by study mode pages.
  */
-export function useDeckLoader(deckId: string | null): UseDeckLoaderResult {
+export function useDeckLoader(deckId: number | null): UseDeckLoaderResult {
   const router = useRouter();
 
   const [deck, setDeck] = useState<Deck | null>(null);

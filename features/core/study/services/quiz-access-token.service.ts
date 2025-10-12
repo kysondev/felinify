@@ -4,7 +4,7 @@ import { db } from "lib/db";
 
 export const createQuizAccessToken = async (
   userId: string,
-  deckId: string,
+  deckId: number,
   numQuestions: number
 ) => {
   try {
@@ -76,7 +76,7 @@ export const createQuizAccessToken = async (
 export const validateQuizAccessToken = async (
   token: string,
   userId: string,
-  deckId: string
+  deckId: number
 ) => {
   try {
     const accessToken = await db

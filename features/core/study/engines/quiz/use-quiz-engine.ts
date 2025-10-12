@@ -22,7 +22,7 @@ interface QuizEngineConfig {
   deck: Deck | null;
   userId: string | null;
   initialMastery: number;
-  deckId: string | null;
+  deckId: number | null;
   shouldStart?: boolean;
   setShowSettings: (show: boolean) => void;
   setQuizStarted: (started: boolean) => void;

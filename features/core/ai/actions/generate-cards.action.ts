@@ -77,7 +77,7 @@ export const generateFlashcardsAction = async (
 
 export const addGeneratedFlashcardsToDeckAction = async (
   userId: string,
-  deckId: string,
+  deckId: number,
   flashcards: { term: string; definiton: string }[]
 ) => {
   try {

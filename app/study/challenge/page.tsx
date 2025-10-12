@@ -18,7 +18,8 @@ import { ChallengeSettingsPage } from "components/study/challenge-settings-page"
 export default function ChallengePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const deckId = searchParams.get("deckId");
+  const deckIdParam = searchParams.get("deckId");
+  const deckId = deckIdParam ? parseInt(deckIdParam, 10) : null;
   const isTimed = searchParams.get("timed") === "true";
 
   const [showSettings, setShowSettings] = useState(true);

@@ -15,7 +15,7 @@ import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface ReviewSectionProps {
   reviews: Review[] | undefined;
-  deckId: string;
+  deckId: number;
   currentUserId?: string;
   deckOwnerId: string;
 }

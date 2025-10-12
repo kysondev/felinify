@@ -4,8 +4,9 @@ import { Deck, NewDeck, UpdateDeck } from "db/types/models.types";
 import { db } from "lib/db";
 import cuid from "cuid";
 import { jsonObjectFrom, jsonArrayFrom } from "kysely/helpers/postgres";
+import { generateDeckId } from "@common/utils/deck-id.utils";
 
-export const getDeck = async (deckId: string) => {
+export const getDeck = async (deckId: number) => {
   "use cache";
   try {
     const deck = await db.selectFrom("deck").selectAll().where("id", "=", deckId).executeTakeFirst();
@@ -68,7 +69,7 @@ export const getDecksByUserId = async (userId: string) => {
   }
 };
 
-export const getDeckById = async (deckId: string, userId: string) => {
+export const getDeckById = async (deckId: number, userId: string) => {
   "use cache";
   try {
     const deck = await db
@@ -163,10 +164,11 @@ export const getDeckById = async (deckId: string, userId: string) => {
 
 export const createDeck = async (deckData: NewDeck) => {
   try {
+    const newDeckId = generateDeckId();
     const newDeck = await db
       .insertInto("deck")
       .values({
-        id: cuid(),
+        id: newDeckId,
         name: deckData.name,
         description: deckData.description || null,
         userId: deckData.userId,
@@ -215,7 +217,7 @@ export const updateDeck = async (deckData: UpdateDeck) => {
     const deckExists = await db
       .selectFrom("deck")
       .select("id")
-      .where("id", "=", deckData.id as string)
+      .where("id", "=", deckData.id as number)
       .where("userId", "=", deckData.userId as string)
       .executeTakeFirst();
 
@@ -236,7 +238,7 @@ export const updateDeck = async (deckData: UpdateDeck) => {
         ...(deckData.visibility && { visibility: deckData.visibility }),
         updatedAt: new Date(),
       })
-      .where("id", "=", deckData.id as string)
+      .where("id", "=", deckData.id as number)
       .returningAll()
       .executeTakeFirst();
 
@@ -251,7 +253,7 @@ export const updateDeck = async (deckData: UpdateDeck) => {
   }
 };
 
-export const deleteDeck = async (deckId: string, userId: string) => {
+export const deleteDeck = async (deckId: number, userId: string) => {
   try {
     const deckExists = await db
       .selectFrom("deck")
@@ -284,7 +286,7 @@ export const deleteDeck = async (deckId: string, userId: string) => {
   }
 };
 
-export const cloneDeck = async (deckId: string, userId: string) => {
+export const cloneDeck = async (deckId: number, userId: string) => {
   try {
     const originalDeck = await db
       .selectFrom("deck")
@@ -316,7 +318,7 @@ export const cloneDeck = async (deckId: string, userId: string) => {
       };
     }
 
-    const newDeckId = cuid();
+    const newDeckId = generateDeckId();
     const clonedDeck = await db
       .insertInto("deck")
       .values({
@@ -343,7 +345,7 @@ export const cloneDeck = async (deckId: string, userId: string) => {
       .values({
         id: cuid(),
         userId: userId,
-        deckId: newDeckId,
+        deckId: clonedDeck.id,
         mastery: 0,
         completedSessions: 0,
         challengeCompleted: 0,
@@ -356,7 +358,7 @@ export const cloneDeck = async (deckId: string, userId: string) => {
     if (originalDeck.flashcards && originalDeck.flashcards.length > 0) {
       const flashcardsToInsert = originalDeck.flashcards.map((flashcard: any) => ({
         id: cuid(),
-        deckId: newDeckId,
+        deckId: clonedDeck.id,
         term: flashcard.term || "",
         definition: flashcard.definition || "",
         termImageUrl: flashcard.termImageUrl || null,
@@ -373,7 +375,7 @@ export const cloneDeck = async (deckId: string, userId: string) => {
     if (originalDeck.tags && originalDeck.tags.length > 0) {
       const tagsToInsert = originalDeck.tags.map((tag: any) => ({
         id: cuid(),
-        deckId: newDeckId,
+        deckId: clonedDeck.id,
         name: tag.name,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

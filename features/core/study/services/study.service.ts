@@ -9,7 +9,7 @@ export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
     const deckExists = await db
       .selectFrom("deck")
       .select("id")
-      .where("id", "=", data.deckId as string)
+      .where("id", "=", data.deckId as number)
       .executeTakeFirst();
 
     if (!deckExists) {
@@ -22,14 +22,14 @@ export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
     const progressExists = await db
       .selectFrom("userDeckProgress")
       .select("id")
-      .where("deckId", "=", data.deckId as string)
+      .where("deckId", "=", data.deckId as number)
       .where("userId", "=", data.userId as string)
       .executeTakeFirst();
 
     if (!progressExists) {
       const newProgress = await createUserDeckProgress(
         data.userId as string,
-        data.deckId as string
+        data.deckId as number
       );
       if (!newProgress.success) {
         return newProgress;
@@ -44,7 +44,7 @@ export const saveStudyProgressToDeck = async (data: UpdateProgress) => {
         lastStudied: data.lastStudied,
         updatedAt: new Date(),
       })
-      .where("deckId", "=", data.deckId as string)
+      .where("deckId", "=", data.deckId as number)
       .where("userId", "=", data.userId as string)
       .returningAll()
       .executeTakeFirst();
@@ -82,7 +82,7 @@ export const saveStudySession = async (data: NewStudySession) => {
     const existingDeck = await db
       .selectFrom("deck")
       .selectAll()
-      .where("id", "=", data.deckId as string)
+      .where("id", "=", data.deckId as number)
       .executeTakeFirst();
 
     if (!existingDeck) {
@@ -94,7 +94,7 @@ export const saveStudySession = async (data: NewStudySession) => {
       .set({
         studyCount: existingDeck.studyCount + 1,
       })
-      .where("id", "=", data.deckId as string)
+      .where("id", "=", data.deckId as number)
       .execute();
 
     if (!updateDeckStudyCount) {
@@ -110,7 +110,7 @@ export const saveStudySession = async (data: NewStudySession) => {
       .set({
         studyHour: newStudyHour,
       })
-      .where("id", "=", data.deckId as string)
+      .where("id", "=", data.deckId as number)
       .execute();
 
     if (!updateDeckStudyHours) {
@@ -150,7 +150,7 @@ export const saveStudySession = async (data: NewStudySession) => {
 
 export const updateChallengeCompletionCount = async (
   userId: string,
-  deckId: string
+  deckId: number
 ) => {
   try {
     const progressExists = await db
