@@ -19,6 +19,7 @@ import {
 } from "components/ui/alert-dialog";
 import { LoginDialog } from "components/auth/login-dialog";
 import toast from "react-hot-toast";
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface ExploreDeckStudyOptionsProps {
   deckId: string;
@@ -65,10 +66,7 @@ export default function ExploreDeckStudyOptions({
       const result = await cloneDeckAction(deckId);
       if (result.success) {
         toast.success("Deck cloned successfully! Check your library.");
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/${deckId}/edit`);
-        fetch(`/api/revalidate?path=/decks/${deckId}`);
+        await revalidateDeckPaths(deckId);
         router.push("/library");
       } else {
         toast.error(result.message || "Failed to clone deck");

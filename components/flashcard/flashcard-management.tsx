@@ -45,6 +45,7 @@ import {
   updateFlashcardAction,
 } from "@deck/actions/flashcards.action";
 import { Flashcard } from "components/library/flashcard";
+import { revalidateDeckWithFlashcards } from "@common/utils/revalidation.utils";
 
 interface FlashcardManagementProps {
   deck: Deck;
@@ -116,11 +117,7 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
         data.definition,
         imageUrl
       );
-      fetch(`/api/revalidate?path=/library`);
-      fetch(`/api/revalidate?path=/explore`);
-      fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-      fetch(`/api/revalidate?path=/decks/${deck.id}`);
-      fetch(`/api/revalidate?path=/decks/${deck.id}/flashcards`);
+      await revalidateDeckWithFlashcards(deck.id);
 
       if (result.success) {
         toast.success("Flashcard added successfully");
@@ -170,11 +167,7 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
         editForm.reset();
         editImageUploadRef.current?.reset();
         setIsEditDialogOpen(false);
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}/flashcards`);
+        await revalidateDeckWithFlashcards(deck.id);
 
         router.refresh();
       } else {
@@ -203,11 +196,7 @@ export const FlashcardManagement = ({ deck, userId }: FlashcardManagementProps) 
 
       if (result.success) {
         toast.success("Flashcard deleted successfully");
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}/flashcards`);
+        await revalidateDeckWithFlashcards(deck.id);
         router.refresh();
         setIsDeleteDialogOpen(false);
         setCurrentFlashcard(null);

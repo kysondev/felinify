@@ -57,6 +57,7 @@ import {
   deleteFlashcardAction,
   updateFlashcardAction,
 } from "@deck/actions/flashcards.action";
+import { revalidateDeckWithFlashcards } from "@common/utils/revalidation.utils";
 
 export const FlashcardList = ({
   deck,
@@ -132,10 +133,7 @@ export const FlashcardList = ({
         data.definition,
         imageUrl
       );
-      fetch(`/api/revalidate?path=/library`);
-      fetch(`/api/revalidate?path=/explore`);
-      fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-      fetch(`/api/revalidate?path=/decks/${deck.id}`);
+      await revalidateDeckWithFlashcards(deck.id);
 
       if (result.success) {
         toast.success("Flashcard added successfully");
@@ -185,10 +183,7 @@ export const FlashcardList = ({
         editForm.reset();
         editImageUploadRef.current?.reset();
         setIsEditDialogOpen(false);
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}`);
+        await revalidateDeckWithFlashcards(deck.id);
         router.refresh();
       } else {
         toast.error(updateResult.message || "Failed to update flashcard");
@@ -215,10 +210,7 @@ export const FlashcardList = ({
 
       if (result.success) {
         toast.success("Flashcard deleted successfully");
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}`);
+        await revalidateDeckWithFlashcards(deck.id);
         router.refresh();
         setDeleteDialogOpen(false);
         setFlashcardToDelete(null);

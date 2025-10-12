@@ -22,6 +22,7 @@ import {
 import { toast } from "react-hot-toast";
 import { Pencil, Save, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 import {
   Form,
   FormControl,
@@ -87,10 +88,7 @@ export const DeckEditForm = ({
           });
           router.refresh();
           toast.success("Deck updated successfully");
-          fetch(`/api/revalidate?path=/library`);
-          fetch(`/api/revalidate?path=/explore`);
-          fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-          fetch(`/api/revalidate?path=/decks/${deck.id}`);
+          await revalidateDeckPaths(deck.id);
         } else {
           toast.error(result.message || "Failed to update deck");
         }
@@ -110,10 +108,7 @@ export const DeckEditForm = ({
         toast.success("Deck deleted successfully");
         router.refresh();
         setDeleteDialogOpen(false);
-        fetch(`/api/revalidate?path=/library`);
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-        fetch(`/api/revalidate?path=/decks/${deck.id}`);
+        await revalidateDeckPaths(deck.id);
       } else {
         toast.error(result.message || "Failed to delete deck");
       }

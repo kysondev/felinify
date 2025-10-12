@@ -5,6 +5,7 @@ import {
   saveStudyProgressAction,
   saveStudySessionAction,
 } from "@study/actions/study.action";
+import { revalidateStudyPaths } from "@common/utils/revalidation.utils";
 
 interface UseStudySessionProps {
   deck: Deck | null;
@@ -165,13 +166,7 @@ export const useStudySession = ({
           });
         }
       }
-      fetch(`/api/revalidate?path=/library`);
-      fetch(`/api/revalidate?path=/explore`);
-      fetch(`/api/revalidate?path=/decks/${deck?.id}`);
-      fetch(`/api/revalidate?path=/deck/edit/${deck?.id}`);
-      fetch(`/api/revalidate?path=/study/challenge`);
-      fetch(`/api/revalidate?path=/study/flip`);
-      fetch(`/api/revalidate?path=/study/quiz`);
+      await revalidateStudyPaths(deck?.id as string);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {
@@ -199,13 +194,7 @@ export const useStudySession = ({
           });
         }
       }
-      fetch(`/api/revalidate?path=/library`);
-      fetch(`/api/revalidate?path=/explore`);
-      fetch(`/api/revalidate?path=/decks/${deck?.id}`);
-      fetch(`/api/revalidate?path=/deck/edit/${deck?.id}`);
-      fetch(`/api/revalidate?path=/study/challenge`);
-      fetch(`/api/revalidate?path=/study/flip`);
-      fetch(`/api/revalidate?path=/study/quiz`);
+      await revalidateStudyPaths(deck?.id as string);
     } catch (error) {
       console.error("Error saving study progress:", error);
     } finally {

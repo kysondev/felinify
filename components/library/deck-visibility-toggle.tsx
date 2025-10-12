@@ -1,5 +1,6 @@
 "use client";
 
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 import { updateDeckAction } from "@deck/actions/deck.action";
 import { Badge } from "components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
@@ -36,10 +37,7 @@ export const DeckVisibilityToggle = ({
           setIsPublic(checked);
           router.refresh();
           toast.success(`Deck is now ${checked ? "public" : "private"}`);
-          fetch(`/api/revalidate?path=/library`);
-          fetch(`/api/revalidate?path=/explore`);
-          fetch(`/api/revalidate?path=/decks/edit/${deck.id}`);
-          fetch(`/api/revalidate?path=/decks/${deck.id}`);
+          await revalidateDeckPaths(deck.id);
         } else {
           toast.error(result.message || "Failed to update deck visibility");
         }

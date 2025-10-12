@@ -14,7 +14,7 @@ export default async function ExploreLayout({
 
   if (user) {
     return (
-      <div className="flex h-screen bg-[#F6F8FA]" suppressHydrationWarning>
+      <div className="flex h-screen bg-[#F6F8FA]">
         <div className="hidden md:block">
           <Sidebar />
         </div>
@@ -40,7 +40,7 @@ export default async function ExploreLayout({
   }
 
   return (
-    <div className="overflow-x-hidden" suppressHydrationWarning>
+    <div className="overflow-x-hidden">
       <div className="relative">
         <div className="px-4 max-w-[1200px] mx-auto">
           <LandingNavbar />

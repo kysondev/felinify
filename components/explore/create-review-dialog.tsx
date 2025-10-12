@@ -27,6 +27,7 @@ import {
 } from "@review/validations/review.schema";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface CreateReviewDialogProps {
   open: boolean;
@@ -79,8 +80,7 @@ export const CreateReviewDialog = ({
           toast.success("Review submitted successfully");
           form.reset();
           onOpenChange(false);
-          fetch(`/api/revalidate?path=/explore`);
-          fetch(`/api/revalidate?path=/decks/${deckId}`);
+          await revalidateDeckPaths(deckId);
           router.refresh();
         } else {
           toast.error(result.message || "Failed to submit review");

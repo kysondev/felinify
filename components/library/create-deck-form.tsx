@@ -37,6 +37,7 @@ import {
   addGeneratedFlashcardsToDeckAction,
   generateFlashcardsAction,
 } from "@ai/actions/generate-cards.action";
+import { revalidateLibrary } from "@common/utils/revalidation.utils";
 
 export function CreateDeckForm({
   user,
@@ -87,7 +88,7 @@ export function CreateDeckForm({
         data.visibility
       );
       if (result.success) {
-        fetch(`/api/revalidate?path=/library`);
+        revalidateLibrary();
         setOpen(false);
         router.refresh();
         toast.success("Deck created successfully");
@@ -162,7 +163,7 @@ export function CreateDeckForm({
         setIsGenerating(false);
         return;
       }
-      fetch(`/api/revalidate?path=/library`);
+      revalidateLibrary();
       setTimeout(() => {
         setIsGenerating(false);
         setOpen(false);

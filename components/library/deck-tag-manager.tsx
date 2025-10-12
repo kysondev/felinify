@@ -12,6 +12,7 @@ import {
   addTagToDeckAction,
   removeTagFromDeckAction,
 } from "@deck/actions/tags.action";
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface DeckTagManagerProps {
   deckId: string;
@@ -45,8 +46,7 @@ export const DeckTagManager = ({
             setCurrentTags([]);
             router.refresh();
             toast.success("Tag removed successfully");
-            fetch(`/api/revalidate?path=/decks/edit/${deckId}`);
-            fetch(`/api/revalidate?path=/explore`);
+            await revalidateDeckPaths(deckId);
           } else {
             toast.error(result.message || "Failed to remove tag");
           }
@@ -68,8 +68,7 @@ export const DeckTagManager = ({
             setCurrentTags([result.data as Tag]);
             router.refresh();
             toast.success("Tag added successfully");
-            fetch(`/api/revalidate?path=/decks/edit/${deckId}`);
-            fetch(`/api/revalidate?path=/explore`);
+            await revalidateDeckPaths(deckId);
           } else {
             toast.error(result.message || "Failed to add tag");
           }

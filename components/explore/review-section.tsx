@@ -11,6 +11,7 @@ import { deleteReviewAction } from "@review/actions/review.action";
 import { LoginDialog } from "components/auth/login-dialog";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 
 interface ReviewSectionProps {
   reviews: Review[] | undefined;
@@ -43,8 +44,7 @@ export const ReviewSection = ({
       const result = await deleteReviewAction(reviewId);
       if (result.success) {
         toast.success("Review deleted successfully");
-        fetch(`/api/revalidate?path=/explore`);
-        fetch(`/api/revalidate?path=/decks/${deckId}`);
+        await revalidateDeckPaths(deckId);
         router.refresh();
       } else {
         toast.error(result.message || "Failed to delete review");
