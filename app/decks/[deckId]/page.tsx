@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
 import { getReviewsByDeckId } from "@review/services/review.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { Metadata } from "next";
+import { Review } from "db/types/models.types";
 
 interface DeckPageProps {
   params: Promise<{ deckId: string }>;
@@ -364,7 +365,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
             </div>
 
             <ReviewSection
-              reviews={reviews}
+              reviews={reviews as Review[]}
               deckId={deckIdNumber}
               currentUserId={user?.id}
               deckOwnerId={deck.userId}
