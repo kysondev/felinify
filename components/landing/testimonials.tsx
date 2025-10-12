@@ -1,16 +1,23 @@
+"use client";
+
 import { Star, Quote } from "lucide-react";
 import { memo } from "react";
+import { motion } from "framer-motion";
 
 const TestimonialCard = memo(
   ({ testimonial, index }: { testimonial: any; index: number }) => (
-    <div
-      className="group relative bg-card border border-border rounded-xl p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+    <motion.div
+      className="group relative bg-card border border-border rounded-xl p-8 h-full overflow-hidden hover:shadow-lg transition-shadow duration-200"
       role="article"
       aria-labelledby={`testimonial-${index}`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-      <div className="absolute top-4 right-4 text-primary/20 group-hover:text-primary/30 transition-colors duration-300">
+      <div className="absolute top-4 right-4 text-primary/20 group-hover:text-primary/30 transition-colors duration-200">
         <Quote className="w-8 h-8" />
       </div>
 
@@ -55,8 +62,8 @@ const TestimonialCard = memo(
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/20 to-transparent rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-    </div>
+      <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/20 to-transparent rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-200" />
+    </motion.div>
   )
 );
 
@@ -94,7 +101,13 @@ export function Testimonials() {
     >
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
-        <div className="mb-12 sm:mb-16">
+        <motion.div 
+          className="mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2
             id="testimonials-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground"
@@ -104,7 +117,7 @@ export function Testimonials() {
           <p className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
             Join thousands of students who've transformed their study habits with Felinify
           </p>
-        </div>
+        </motion.div>
 
         {/* Testimonials grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

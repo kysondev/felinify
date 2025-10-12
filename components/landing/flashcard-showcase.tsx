@@ -10,9 +10,57 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
+import { motion } from "framer-motion";
 
 export function FlashcardShowcase() {
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, rotateY: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateY: 0,
+      transition: {
+        duration: 0.6,
+      },
+    },
+  };
+
+  const cardStackVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.08,
+      },
+    },
+  };
 
   return (
     <>
@@ -23,44 +71,65 @@ export function FlashcardShowcase() {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-16">
+          <motion.div 
+            className="mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              <div>
+              <motion.div variants={itemVariants}>
                 <h2 className="text-3xl font-bold lg:text-4xl text-foreground mb-0">
                   Two Powerful Ways To Create Flashcards
                 </h2>
-              </div>
-              <div className="lg:pt-2">
+              </motion.div>
+              <motion.div className="lg:pt-2" variants={itemVariants}>
                 <p className="text-muted-foreground text-base leading-relaxed">
                   Whether you prefer hands-on control or lightning-fast automation, Felinify adapts to your learning style and workflow.
                 </p>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             
-            <Card className="group relative p-8 border-muted-foreground/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              
-              <div className="relative z-10 space-y-6">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                      1
+            <motion.div variants={cardVariants}>
+              <Card className="group relative p-8 border-muted-foreground/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
+                
+                <div className="relative z-10 space-y-6">
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                        1
+                      </div>
+                      <h3 className="text-2xl font-bold text-foreground">
+                        Manual Creation
+                      </h3>
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground">
-                      Manual Creation
-                    </h3>
+                    <p className="text-muted-foreground text-base leading-relaxed">
+                      Build your perfect study set card by card. Add images, format text, and organize everything exactly how you want it.
+                    </p>
                   </div>
-                  <p className="text-muted-foreground text-base leading-relaxed">
-                    Build your perfect study set card by card. Add images, format text, and organize everything exactly how you want it.
-                  </p>
-                </div>
 
-                <div className="relative w-full max-w-lg mx-auto mt-8" style={{ height: '480px' }}>
-                  <Card className="overflow-hidden absolute left-0 top-8 w-[75%] h-[280px] border-primary/10 hover:border-primary/30 cursor-pointer origin-top-left" style={{ transform: 'rotate(-6deg)' }}>
+                  <motion.div 
+                    className="relative w-full max-w-lg mx-auto mt-8" 
+                    style={{ height: '480px' }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                  <div>
+                    <Card className="overflow-hidden absolute left-0 top-8 w-[75%] h-[280px] border-primary/10 hover:border-primary/30 cursor-pointer origin-top-left hover:shadow-lg transition-all duration-200" style={{ transform: 'rotate(-6deg)' }}>
                     <CardContent className="p-5 flex flex-col flex-grow h-full">
                       <div className="flex justify-between items-center mb-3">
                         <Badge variant="outline" className="px-2.5 py-0.5">Term</Badge>
@@ -77,7 +146,9 @@ export function FlashcardShowcase() {
                       </div>
                     </CardContent>
                   </Card>
-                  <Card className="overflow-hidden absolute right-0 bottom-0 w-[75%] h-[280px] border-primary/10 hover:border-primary/30 cursor-pointer origin-bottom-right" style={{ transform: 'rotate(6deg)' }}>
+                  </div>
+                  <div>
+                    <Card className="overflow-hidden absolute right-0 bottom-0 w-[75%] h-[280px] border-primary/10 hover:border-primary/30 cursor-pointer origin-bottom-right hover:shadow-lg transition-all duration-200" style={{ transform: 'rotate(6deg)' }}>
                     <CardContent className="p-5 flex flex-col flex-grow h-full">
                       <div className="flex justify-between items-center mb-3">
                         <Badge variant="outline" className="px-2.5 py-0.5">Term</Badge>
@@ -94,8 +165,10 @@ export function FlashcardShowcase() {
                       </div>
                     </CardContent>
                   </Card>
+                  </div>
 
-                  <Card className="overflow-hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[320px] shadow-xl border-primary/10 hover:border-primary/30 cursor-pointer group z-10">
+                  <div>
+                    <Card className="overflow-hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[320px] shadow-xl border-primary/10 hover:border-primary/30 cursor-pointer group z-10 hover:shadow-2xl transition-all duration-200">
                     <CardContent className="p-5 flex flex-col flex-grow h-full">
                       <div className="flex justify-between items-center mb-3">
                         <Badge variant="outline" className="px-2.5 py-0.5">Term</Badge>
@@ -114,11 +187,14 @@ export function FlashcardShowcase() {
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                  </div>
+                </motion.div>
               </div>
             </Card>
+            </motion.div>
 
             {/* Right Column */}
+            <motion.div variants={cardVariants}>
             <Card className="group relative p-8 border-muted-foreground/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
@@ -219,7 +295,8 @@ export function FlashcardShowcase() {
                 </div>
               </div>
             </Card>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </>

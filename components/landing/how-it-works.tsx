@@ -6,10 +6,18 @@ import { Button } from "../ui/button";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const StepCard = memo(
   ({ step, index, isLast }: { step: any; index: number; isLast: boolean }) => (
-    <div className="relative group">
+    <motion.div 
+      className="relative group"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+    >
       <div className="bg-card border border-border rounded-xl p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -58,7 +66,7 @@ const StepCard = memo(
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 );
 
@@ -140,7 +148,13 @@ export const HowItWorks = () => {
       >
       <div className="px-4 max-w-[1200px] mx-auto">
         {/* Header */}
-        <div className="mb-12 sm:mb-16">
+        <motion.div 
+          className="mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2
             id="how-it-works-heading"
             className="text-2xl font-bold sm:text-3xl lg:text-4xl text-foreground mb-4"
@@ -150,7 +164,7 @@ export const HowItWorks = () => {
           <p className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
             Transform your study routine in three simple steps — from notes to mastery in minutes
           </p>
-        </div>
+        </motion.div>
 
         {/* Steps grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
