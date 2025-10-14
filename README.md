@@ -56,27 +56,6 @@ To get a local copy up and running follow these simple example steps.
    git remote -v # confirm the changes
    ```
 
-## Roadmap
-
-- [x] Landing Page
-- [x] Authentication & Settings
-- [x] Manual Flashcard & Deck creation
-- [x] Library & Edit Deck Page
-- [x] AI Flashcard Generation
-- [x] Classic Flip Study Mode
-- [x] Challenge Mode
-- [x] AI Adaptive Quiz Mode
-- [x] Stripe Payment & Paid Plans
-- [x] Explore Page & Flashcard Sharing
-- [ ] Flashcard Learning Progress Tracking
-- [ ] Learn Mode
-- [ ] Flashcard Question Hints
-- [ ] Felinify AI Agent
-- [ ] Keyword Based AI Flashcard Generation
-- [ ] Leveling System
-- [ ] Study Streak System
-- [ ] Weekly Study Minutes Leaderboard
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
