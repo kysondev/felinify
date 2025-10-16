@@ -151,6 +151,7 @@ export const getDeckById = async (deckId: number, userId: string) => {
           numIncorrect: performance.numIncorrect,
           question: flashcard.question ?? flashcard.term ?? "",
           answer: flashcard.answer ?? flashcard.definition ?? "",
+          questionImageUrl: flashcard.questionImageUrl ?? flashcard.termImageUrl ?? null,
         };
       });
     }
@@ -459,6 +460,7 @@ export const getAllDecks = async (page: number = 1, limit: number = 12) => {
             ...f,
             question: f.question ?? f.term ?? "",
             answer: f.answer ?? f.definition ?? "",
+            questionImageUrl: f.questionImageUrl ?? f.termImageUrl ?? null,
           }))
         : [],
     }));
