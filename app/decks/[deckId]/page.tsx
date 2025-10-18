@@ -167,7 +167,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
 
   return (
     <div className="container max-w-5xl mx-auto py-8 px-4 space-y-6">
-      <nav className="flex items-center text-sm text-muted-foreground mt-12">
+      <nav className="flex items-center text-sm text-muted-foreground mt-6 sm:mt-12 flex-wrap">
         <Link
           href="/explore"
           className="flex items-center hover:text-foreground transition-colors"

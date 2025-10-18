@@ -32,7 +32,7 @@ export default async function DeckStatsPage({
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
 
   return (
-    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-8">
+    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-6 sm:mt-12">
       <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2">
         <Link
           href="/explore"

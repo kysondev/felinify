@@ -37,7 +37,7 @@ export default async function DeckEditPage({
 
   return (
     <div className="container max-w-6xl mx-auto px-4 py-8">
-      <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2">
+      <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2 mt-6 sm:mt-12">
         <Link
           href="/explore"
           className="flex items-center hover:text-foreground transition-colors"

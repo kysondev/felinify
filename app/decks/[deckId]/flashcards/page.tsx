@@ -34,7 +34,7 @@ export default async function FlashcardManagementPage({
   const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
   return (
-    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-8">
+    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 mt-6 sm:mt-12">
       <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2">
         <Link
           href="/explore"
