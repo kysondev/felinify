@@ -82,15 +82,10 @@ export default async function DeckEditPage({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-6">
-          <div className="bg-white dark:bg-slate-900 border rounded-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Deck Information</h2>
-              <DeckEditForm
-                deck={deck as unknown as Deck}
-                userId={user?.id as string}
-              />
-            </div>
-          </div>
+          <DeckEditForm
+            deck={deck as unknown as Deck}
+            userId={user?.id as string}
+          />
           
           <div className="bg-white dark:bg-slate-900 border rounded-lg">
             <div className="p-6">
@@ -113,27 +108,16 @@ export default async function DeckEditPage({
         </div>
         
         <div className="space-y-6">
-          <div className="bg-white dark:bg-slate-900 border rounded-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Tags</h2>
-              <DeckTagManager
-                deckId={deck.id}
-                userId={user?.id as string}
-                tags={(deck as any).tags || []}
-              />
-            </div>
-          </div>
+          <DeckTagManager
+            deckId={deck.id}
+            userId={user?.id as string}
+            tags={(deck as any).tags || []}
+          />
 
-
-          <div className="bg-white dark:bg-slate-900 border rounded-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Visibility</h2>
-              <DeckVisibilityToggle
-                deck={deck as unknown as Deck}
-                userId={user?.id as string}
-              />
-            </div>
-          </div>
+          <DeckVisibilityToggle
+            deck={deck as unknown as Deck}
+            userId={user?.id as string}
+          />
         </div>
       </div>
     </div>

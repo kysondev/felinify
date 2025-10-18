@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { Tag } from "db/types/models.types";
 import { Button } from "components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
 import { toast } from "react-hot-toast";
 import { Tag as TagIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -87,17 +86,18 @@ export const DeckTagManager = ({
   };
 
   return (
-    <Card className="border-muted-foreground/20">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <TagIcon className="h-5 w-5 text-primary" />
-          Tag
-        </CardTitle>
-        <p className="text-sm text-muted-foreground mt-1">
-          Select a category tag for your deck
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="bg-white dark:bg-slate-900 border rounded-lg">
+      <div className="p-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <TagIcon className="h-5 w-5 text-primary" />
+            Tags
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Select a category tag for your deck
+          </p>
+        </div>
+        <div className="space-y-4">
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground font-medium">
             Available tags:
@@ -130,7 +130,8 @@ export const DeckTagManager = ({
             No tag selected. Choose a tag to categorize your deck.
           </p>
         )}
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+    </div>
   );
 };

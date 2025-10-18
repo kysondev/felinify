@@ -5,13 +5,6 @@ import { Deck } from "db/types/models.types";
 import { Button } from "components/ui/button";
 import { Input } from "components/ui/Input";
 import { Textarea } from "components/ui/text-area";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "components/ui/card";
 import { deleteDeckAction, updateDeckAction } from "@deck/actions/deck.action";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -123,20 +116,19 @@ export const DeckEditForm = ({
 
   return (
     <>
-      <Card className="border-muted-foreground/20">
-        <CardHeader className="pb-4 flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900 border rounded-lg">
+        <div className="p-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold flex items-center gap-2">
               <Pencil className="h-5 w-5 text-primary" />
               Deck Information
-            </CardTitle>
+            </h2>
             <p className="text-sm text-muted-foreground mt-1">
               Update your deck details
             </p>
           </div>
-        </CardHeader>
-        <Form {...form}>
-          <CardContent className="space-y-6">
+          <Form {...form}>
+            <div className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -197,32 +189,33 @@ export const DeckEditForm = ({
                 </FormItem>
               )}
             />
-          </CardContent>
-          <CardFooter className="border-t pt-4 flex justify-between items-center">
-            <Button
-              type="submit"
-              onClick={form.handleSubmit(onSubmit)}
-              disabled={isLoading || !isDirty}
-              className={`${!isDirty ? "opacity-50" : ""}`}
-            >
-              <Save className="h-4 w-4" />
-              {isLoading ? "Saving..." : "Save Changes"}
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              size="icon"
-              onClick={() => {
-                setDeleteDialogOpen(true);
-              }}
-              disabled={isLoading}
-              className="p-3 w-fit"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </CardFooter>
-        </Form>
-      </Card>
+            </div>
+            <div className="border-t pt-4 flex justify-between items-center mt-6">
+              <Button
+                type="submit"
+                onClick={form.handleSubmit(onSubmit)}
+                disabled={isLoading || !isDirty}
+                className={`${!isDirty ? "opacity-50" : ""}`}
+              >
+                <Save className="h-4 w-4" />
+                {isLoading ? "Saving..." : "Save Changes"}
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                onClick={() => {
+                  setDeleteDialogOpen(true);
+                }}
+                disabled={isLoading}
+                className="p-3 w-fit"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </div>
       <AlertDialog
         open={deleteDialogOpen}
         onOpenChange={(open) => !isDeleting && setDeleteDialogOpen(open)}

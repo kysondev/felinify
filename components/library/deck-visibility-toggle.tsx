@@ -3,7 +3,6 @@
 import { revalidateDeckPaths } from "@common/utils/revalidation.utils";
 import { updateDeckAction } from "@deck/actions/deck.action";
 import { Badge } from "components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
 import { Switch } from "components/ui/switch";
 import { Deck } from "db/types/models.types";
 import { Eye, EyeOff, Globe, Lock } from "lucide-react";
@@ -49,21 +48,22 @@ export const DeckVisibilityToggle = ({
   };
 
   return (
-    <Card className="border-muted-foreground/20">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          {isPublic ? (
-            <Globe className="h-5 w-5 text-primary" />
-          ) : (
-            <Lock className="h-5 w-5 text-primary" />
-          )}
-          Deck Visibility
-        </CardTitle>
-        <p className="text-sm text-muted-foreground mt-1">
-          Control who can see and access your deck
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="bg-white dark:bg-slate-900 border rounded-lg">
+      <div className="p-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            {isPublic ? (
+              <Globe className="h-5 w-5 text-primary" />
+            ) : (
+              <Lock className="h-5 w-5 text-primary" />
+            )}
+            Visibility
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Control who can see and access your deck
+          </p>
+        </div>
+        <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
@@ -97,7 +97,8 @@ export const DeckVisibilityToggle = ({
           )}
           <p>• You can change this setting at any time</p>
         </div>
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+    </div>
   );
 };
