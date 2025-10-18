@@ -193,7 +193,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <h1 className="text-3xl font-bold">{deck.name}</h1>
-                <p className="text-muted-foreground mt-2">{deck.description}</p>
+                <p className="text-muted-foreground mt-2">{deck.description || "No description"}</p>
               </div>
               {user?.id === deck.userId && (
                 <Button asChild variant="outline" size="sm" className="shrink-0">
