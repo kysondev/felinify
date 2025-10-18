@@ -1,4 +1,3 @@
-import React from "react";
 import { Timer } from "lucide-react";
 import { Progress } from "components/ui/progress";
 

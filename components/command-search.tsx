@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   Search,
   Compass,
   Library,
-  Home,
   BotMessageSquare,
   Trophy,
 } from "lucide-react";

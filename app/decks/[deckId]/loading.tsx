@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
-import { ChevronRight, Clock, Home, Star, User, Compass, Target, Edit3, Play, Copy } from "lucide-react";
+import { ChevronRight, Clock, Star, User, Compass, Target, Edit3, Play, Copy } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "components/ui/card";
 import { Avatar, AvatarFallback } from "components/ui/avatar";

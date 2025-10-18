@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "components/ui/button";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
 import { SubscriptionPopup } from "./subscription-popup";

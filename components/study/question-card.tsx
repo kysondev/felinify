@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "components/ui/card";
 import { FlashcardImage } from "components/ui/flashcard-image";
 import { CheckCircle, XCircle } from "lucide-react";

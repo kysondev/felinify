@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { CommandSearch } from "../command-search";
 import {
@@ -10,7 +10,6 @@ import {
   Zap,
   Crown,
   LogOut,
-  X,
 } from "lucide-react";
 import Link from "next/link";
 import {

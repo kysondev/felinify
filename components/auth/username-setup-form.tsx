@@ -43,7 +43,7 @@ export function UsernameSetupForm() {
       } else {
         setError("");
       }
-    } catch (err) {
+    } catch {
       setIsValid(false);
       setError("Error checking username availability");
     } finally {
@@ -88,7 +88,7 @@ export function UsernameSetupForm() {
       } else {
         setError(result.message || "Failed to set username");
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

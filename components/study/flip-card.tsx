@@ -1,9 +1,7 @@
 "use client";
 
-import React from "react";
 import { Card } from "components/ui/card";
 import { FlashcardImage } from "components/ui/flashcard-image";
-import { Lightbulb, RotateCw } from "lucide-react";
 
 interface FlipCardProps {
   question: string;

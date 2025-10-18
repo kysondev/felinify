@@ -66,7 +66,7 @@ export function SubscriptionPopup({
       } else {
         toast.error(result.error || "Failed to subscribe");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);

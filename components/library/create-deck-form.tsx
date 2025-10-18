@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/Input";
-import { Progress } from "components/ui/progress";
 import { Switch } from "components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
 import { Textarea } from "components/ui/text-area";
