@@ -5,7 +5,7 @@ import { Deck } from "db/types/models.types";
  * Hook for selecting and managing flashcards for study sessions.
  * Handles random card selection and retrieval for challenge mode.
  */
-export function useCardSelection(deck: Deck | null, totalCards: number) {
+export function useCardSelection(deck: Deck | null) {
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
 
   // Randomly select all cards for the study session
