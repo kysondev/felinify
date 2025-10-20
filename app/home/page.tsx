@@ -1,4 +1,4 @@
-import { getDecksByUserId } from "@deck/services/deck.service";
+import { getUserDecks } from "@deck/services/deck-read.service";
 import { getUser } from "@user/services/user.service";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const { data: user } = await getUser();
-  const { data: decks } = await getDecksByUserId(user?.id as string);
+  const { data: decks } = await getUserDecks(user?.id as string);
 
   const totalDecks = decks?.length || 0;
   const totalCards =

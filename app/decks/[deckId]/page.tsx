@@ -12,7 +12,7 @@ import {
   Edit3,
 } from "lucide-react";
 import Link from "next/link";
-import { getDeck, getDeckById } from "@deck/services/deck.service";
+import { getDeck, getUserDeckById } from "@deck/services/deck-read.service";
 import { getUser, getUserWithId } from "@user/services/user.service";
 import { Progress } from "components/ui/progress";
 import ExploreDeckStudyOptions from "components/explore/explore-deck-study-options";
@@ -85,7 +85,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
+  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
   const { data: reviews } = await getReviewsByDeckId(deckIdNumber);
 

@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { Deck } from "db/types/models.types";
-import { getAllDecks } from "@deck/services/deck.service";
+import { getAllDecks } from "@deck/services/deck-read.service";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://felinify.com";

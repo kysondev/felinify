@@ -1,4 +1,3 @@
-import { getDeckById } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
 import { FlashcardManagement } from "components/flashcard/flashcard-management";
 import { Deck } from "db/types/models.types";
@@ -6,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, ArrowLeft, Compass } from "lucide-react";
 import { Button } from "components/ui/button";
 import { redirect } from "next/navigation";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 
 export default async function FlashcardManagementPage({
   params,
@@ -15,7 +15,7 @@ export default async function FlashcardManagementPage({
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
+  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
 
   if (!deck || deck.userId !== user?.id) {
     if (deck?.visibility === "public") {

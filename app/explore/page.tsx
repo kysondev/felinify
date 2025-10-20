@@ -13,7 +13,7 @@ import Link from "next/link";
 import {
   getFeaturedDecks,
   getPopularDecks,
-} from "@deck/services/deck-query.service";
+} from "@deck/services/deck-read.service";
 
 export const metadata: Metadata = {
   title: "Explore Flashcard Decks | Felinify",

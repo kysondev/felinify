@@ -6,7 +6,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
-import { getFeaturedDecks } from "@deck/services/deck-query.service";
+import { getFeaturedDecks } from "@deck/services/deck-read.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export const metadata: Metadata = {

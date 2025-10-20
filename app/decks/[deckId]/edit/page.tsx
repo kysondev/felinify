@@ -1,4 +1,3 @@
-import { getDeckById } from "@deck/services/deck.service";
 import { getUser } from "@user/services/user.service";
 import { DeckEditForm } from "components/library/deck-edit-form";
 import { DeckVisibilityToggle } from "components/library/deck-visibility-toggle";
@@ -8,6 +7,7 @@ import Link from "next/link";
 import { ChevronRight, ArrowLeft, Compass, Edit3 } from "lucide-react";
 import { Button } from "components/ui/button";
 import { redirect } from "next/navigation";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 
 export default async function DeckEditPage({
   params,
@@ -17,7 +17,7 @@ export default async function DeckEditPage({
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
+  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
 
   const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 

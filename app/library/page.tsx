@@ -1,6 +1,6 @@
 import { Button } from "components/ui/button";
 import { PlusCircle, Library, Home, ChevronRight } from "lucide-react";
-import { getDecksByUserId } from "@deck/services/deck.service";
+import { getUserDecks } from "@deck/services/deck-read.service";
 import { getUser, getUserSubscription } from "@user/services/user.service";
 import {
   Dialog,
@@ -38,8 +38,9 @@ export const metadata: Metadata = {
 
 export default async function LibraryPage() {
   const { data: user } = await getUser();
-  const { data: decks } = await getDecksByUserId(user?.id as string);
+  const { data: decks } = await getUserDecks(user?.id as string);
   const { data: subscription } = await getUserSubscription(user?.id as string);
+  const safeDecks = decks || [];
 
   const librarySchema = {
     "@context": "https://schema.org",
@@ -47,7 +48,7 @@ export default async function LibraryPage() {
     name: "My Flashcard Library",
     description: "Personal collection of flashcard decks for studying",
     itemListElement:
-      decks?.map((deck, index) => ({
+      safeDecks.map((deck, index) => ({
         "@type": "ListItem",
         position: index + 1,
         item: {
@@ -64,13 +65,13 @@ export default async function LibraryPage() {
   };
 
   const totalCards =
-    decks?.reduce((sum, deck) => sum + (deck.flashcards?.length || 0), 0) || 0;
+    safeDecks.reduce((sum, deck) => sum + (deck.flashcards?.length || 0), 0) || 0;
 
   const averageMastery =
-    decks?.length > 0
+    safeDecks.length > 0
       ? Math.round(
-          decks.reduce((sum, deck) => sum + (deck.progress?.mastery || 0), 0) /
-            decks.length
+          safeDecks.reduce((sum, deck) => sum + (deck.progress?.mastery || 0), 0) /
+            safeDecks.length
         )
       : 0;
 
@@ -162,7 +163,7 @@ export default async function LibraryPage() {
                       <CreateDeckForm
                         user={user as User}
                         subscription={subscription as Subscription}
-                        decks={decks}
+                        decks={safeDecks}
                       />
                     </div>
                   </DialogContent>
@@ -230,7 +231,7 @@ export default async function LibraryPage() {
         </div>
 
         <LibraryTabs
-          decks={decks}
+          decks={safeDecks}
           user={user as User}
           subscription={subscription as Subscription}
           averageMastery={averageMastery}

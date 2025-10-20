@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
-import { getDecksByTag } from "@deck/services/deck-query.service";
+import { getDecksByTag } from "@deck/services/deck-read.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface TagPageProps {

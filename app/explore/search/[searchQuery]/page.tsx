@@ -6,7 +6,7 @@ import { Button } from "components/ui/button";
 import { Search, ArrowLeft, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import JsonLd from "components/SEO/json-ld";
-import { getDecksBySearch } from "@deck/services/deck-query.service";
+import { getDecksBySearch } from "@deck/services/deck-read.service";
 
 interface SearchPageProps {
   params: Promise<{ searchQuery: string }>;

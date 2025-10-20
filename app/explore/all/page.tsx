@@ -6,8 +6,8 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import JsonLd from "components/SEO/json-ld";
-import { getAllDecks } from "@deck/services/deck.service";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
+import { getAllDecks } from "@deck/services/deck-read.service";
 
 export const metadata: Metadata = {
   title: "All Decks | Felinify",
@@ -35,6 +35,7 @@ export default async function AllDecksPage({
   const { page: pageParam } = await searchParams;
   const page = Number.parseInt(pageParam ?? "1", 10);
   const { data: decks, pagination } = await getAllDecks(page, 12);
+  const safeDecks = decks || [];
 
   const schema = {
     "@context": "https://schema.org",
@@ -76,20 +77,20 @@ export default async function AllDecksPage({
         </div>
       </div>
 
-      {decks.length > 0 ? (
+      {safeDecks.length > 0 ? (
         <div className="space-y-8">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">
-              Decks ({pagination?.total || decks.length})
+              Decks ({pagination?.total || safeDecks.length})
             </h2>
             <Badge variant="secondary" className="px-3 py-1">
-              {pagination?.total || decks.length} result
-              {(pagination?.total || decks.length) !== 1 ? "s" : ""}
+              {pagination?.total || safeDecks.length} result
+              {(pagination?.total || safeDecks.length) !== 1 ? "s" : ""}
             </Badge>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {decks.map((deck) => (
+            {safeDecks.map((deck) => (
               <ExploreDeckCard key={deck.id} deck={deck as Deck} />
             ))}
           </div>

@@ -1,14 +1,10 @@
-import { UpdateDeck } from "db/types/models.types";
-import {
-  createDeck,
-  updateDeck,
-  deleteDeck,
-  cloneDeck,
-  getDecksByUserId,
-} from "@deck/services/deck.service";
+import { Deck, UpdateDeck } from "db/types/models.types";
 import { getUser, getUserSubscription } from "@user/services/user.service";
-import { getPlanDetails } from "@subscription/utils/get-plan-details";
 import { hasReachedMaxDeck } from "@subscription/utils/limits";
+import { createDeck, updateDeck } from "@deck/services/deck-write.service";
+import { deleteDeck } from "@deck/services/deck-delete.service";
+import { getUserDecks } from "@deck/services/deck-read.service";
+import { cloneDeck } from "@deck/services/deck-clone.service";
 
 export const createDeckAction = async (
   userId: string,
@@ -110,9 +106,9 @@ export const cloneDeckAction = async (deckId: number) => {
 
     const { data: subscription } = await getUserSubscription(user.id);
 
-    const { data: decks } = await getDecksByUserId(user.id);
+    const { data: decks } = await getUserDecks(user.id);
     
-    const hasReachedLimit = hasReachedMaxDeck(subscription?.plan as "pro" | "ultra" | "starter", decks);
+    const hasReachedLimit = hasReachedMaxDeck(subscription?.plan as "pro" | "ultra" | "starter", decks as Deck[]);
 
     if (hasReachedLimit) {
       return { success: false, message: "You have reached the limit of decks you can create." };

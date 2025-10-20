@@ -1,6 +1,6 @@
 import { generateAdaptiveQuiz } from "@ai/services/generate-quiz.service";
 import { getUser } from "@user/services/user.service";
-import { getDeckById } from "@deck/services/deck.service";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 
 export const generateAdaptiveQuizAction = async (
   deckId: number,
@@ -21,7 +21,7 @@ export const generateAdaptiveQuizAction = async (
 
     const userId = userResult.data.id;
 
-    const deckResult = await getDeckById(deckId, userId);
+    const deckResult = await getUserDeckById(deckId, userId);
     if (!deckResult.success || !deckResult.data) {
       return {
         success: false,
@@ -53,12 +53,12 @@ export const generateAdaptiveQuizAction = async (
     }
 
     const flashcardsWithPerformance = deck.flashcards.map((card) => ({
-      id: card.id,
+      id: String(card.id),
       term: card.term,
       definition: card.definition,
       termImageUrl: card.termImageUrl,
-      numCorrect: (card as any).numCorrect || 0,
-      numIncorrect: (card as any).numIncorrect || 0,
+      numCorrect: Number((card as any).numCorrect || 0),
+      numIncorrect: Number((card as any).numIncorrect || 0),
     }));
 
     const quizResult = await generateAdaptiveQuiz(

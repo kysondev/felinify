@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUser } from "@user/services/user.service";
-import { getDeckById } from "@deck/services/deck.service";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 import { Deck } from "db/types/models.types";
 
 interface UseDeckLoaderResult {
@@ -43,7 +43,7 @@ export function useDeckLoader(deckId: number | null): UseDeckLoaderResult {
         }
 
         userIdRef.current = user.id;
-        const deckResponse = await getDeckById(deckId, user.id);
+        const deckResponse = await getUserDeckById(deckId, user.id);
 
         if (!deckResponse.data) {
           router.push("/library");

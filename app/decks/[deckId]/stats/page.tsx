@@ -1,4 +1,3 @@
-import { getDeckById } from "@deck/services/deck.service";
 import { getUser, getUserWithId } from "@user/services/user.service";
 import { DeckStats } from "components/library/deck-stats";
 import { Deck } from "db/types/models.types";
@@ -6,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, ArrowLeft, Compass, BarChart2 } from "lucide-react";
 import { Button } from "components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 
 export default async function DeckStatsPage({
   params,
@@ -15,7 +15,7 @@ export default async function DeckStatsPage({
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getDeckById(deckIdNumber, user?.id as string);
+  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
   
   if (!deck) {
     return (

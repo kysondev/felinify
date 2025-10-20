@@ -1,6 +1,6 @@
 "use server";
 
-import { getDeckById } from "@deck/services/deck.service";
+import { getUserDeckById } from "@deck/services/deck-read.service";
 import {
   createQuizAccessToken,
   validateQuizAccessToken,
@@ -29,7 +29,7 @@ export const createQuizAccessTokenAction = async (
 
     const userId = userResult.data.id;
 
-    const deckResult = await getDeckById(deckId, userId);
+    const deckResult = await getUserDeckById(deckId, userId);
     if (!deckResult.success || !deckResult.data) {
       return {
         success: false,
