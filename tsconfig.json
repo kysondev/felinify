@@ -19,19 +19,22 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@auth/*": ["features/core/auth/*"],
-      "@deck/*": ["features/core/deck/*"],
-      "@study/*": ["features/core/study/*"],
-      "@explore/*": ["features/core/explore/*"],
-      "@review/*": ["features/core/review/*"],
-      "@subscription/*": ["features/core/subscription/*"],
-      "@user/*": ["features/core/user/*"],
-      "@email/*": ["features/core/email/*"],
-      "@ai/*": ["features/core/ai/*"],
-      "@common/*": ["features/common/*"],
-      "@styles/*": ["styles/*"]
+      "@auth/*": ["src/features/core/auth/*"],
+      "@deck/*": ["src/features/core/deck/*"],
+      "@study/*": ["src/features/core/study/*"],
+      "@explore/*": ["src/features/core/explore/*"],
+      "@review/*": ["src/features/core/review/*"],
+      "@subscription/*": ["src/features/core/subscription/*"],
+      "@user/*": ["src/features/core/user/*"],
+      "@email/*": ["src/features/core/email/*"],
+      "@ai/*": ["src/features/core/ai/*"],
+      "@common/*": ["src/features/common/*"],
+      "@styles/*": ["src/styles/*"],
+      "@components/*": ["src/components/*"],
+      "@ui/*": ["src/components/ui/*"]
     },
-    "target": "ES2023"
+    "target": "ES2023",
+    "types": ["node"]
   },
   "include": [
     "eslint.config.js",

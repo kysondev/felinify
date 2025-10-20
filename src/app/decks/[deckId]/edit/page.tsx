@@ -1,0 +1,126 @@
+import { getUser } from "@user/services/user.service";
+import { DeckEditForm } from "@components/library/deck-edit-form";
+import { DeckVisibilityToggle } from "@components/library/deck-visibility-toggle";
+import { DeckTagManager } from "@components/library/deck-tag-manager";
+import { Deck } from "db/types/models.types";
+import Link from "next/link";
+import { ChevronRight, ArrowLeft, Compass, Edit3 } from "lucide-react";
+import { Button } from "@ui/button";
+import { redirect } from "next/navigation";
+import { getUserDeckById } from "@deck/services/deck-read.service";
+
+export default async function DeckEditPage({
+  params,
+}: {
+  params: Promise<{ deckId: string }>;
+}) {
+  const { deckId } = await params;
+  const deckIdNumber = parseInt(deckId, 10);
+  const { data: user } = await getUser();
+  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
+
+  const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+
+  if (!deck || deck.userId !== user?.id) {
+    if (deck?.visibility === "public") {
+      return redirect(`/decks/${deckId}`);
+    }
+    return (
+      <div className="text-muted-foreground w-full h-screen flex flex-col items-center justify-center">
+        Deck not found or you do not have permission to view it.
+        <Button asChild variant="default" className="mt-4">
+          <Link href="/library">Return to library</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container max-w-6xl mx-auto px-4 py-8">
+      <nav className="flex flex-wrap items-center text-sm text-muted-foreground mb-6 gap-y-2 mt-6 sm:mt-12">
+        <Link
+          href="/explore"
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <Compass className="h-4 w-4 mr-1" />
+          <span>Explore</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <Link
+          href={primaryTag === "General" ? "/explore" : `/explore/tag/${encodeURIComponent(primaryTag)}`}
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <span>{primaryTag}</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <Link
+          href={`/decks/${deckId}`}
+          className="flex items-center hover:text-foreground transition-colors"
+        >
+          <span className="truncate max-w-[120px] sm:max-w-[200px]">{deck.name}</span>
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <span className="text-foreground font-medium">Edit</span>
+      </nav>
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b pb-6">
+        <div>
+          <h1 className="text-3xl font-bold">
+            Edit Deck
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            {deck.name}
+          </p>
+        </div>
+        <Button asChild variant="outline" className="shrink-0">
+          <Link href={`/decks/${deckId}`}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Deck
+          </Link>
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <DeckEditForm
+            deck={deck as unknown as Deck}
+            userId={user?.id as string}
+          />
+          
+          <div className="bg-white dark:bg-slate-900 border rounded-lg">
+            <div className="p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Flashcards</h2>
+                  <p className="text-muted-foreground mt-1">
+                    This deck contains {deck.flashcards?.length || 0} flashcards
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href={`/decks/${deck.id}/flashcards`}>
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Manage Flashcards
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-6">
+          <DeckTagManager
+            deckId={deck.id}
+            userId={user?.id as string}
+            tags={(deck as any).tags || []}
+          />
+
+          <DeckVisibilityToggle
+            deck={deck as unknown as Deck}
+            userId={user?.id as string}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+

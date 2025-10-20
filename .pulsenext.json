@@ -1,6 +1,0 @@
-{
-  "projectName": "felinify",
-  "version": "0.1.1",
-  "createdAt": "2025-07-04T10:45:42.500Z",
-  "modules": ["database", "email", "auth"]
-}
