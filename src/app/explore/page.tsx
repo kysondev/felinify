@@ -216,11 +216,23 @@ export default async function Explore() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {featuredDecks.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {featuredDecks.slice(0, 4).map((deck) => (
             <ExploreDeckCard key={deck.id} deck={deck as Deck} />
           ))}
-        </div>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <CardsIcon className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">No Recently Added Decks</h3>
+            <p className="text-muted-foreground">
+              Start studying to see recently added decks
+            </p>
+          </div>
+        )}
       </div>
       <div className="mt-16 text-center">
         <Card className="bg-primary text-primary-foreground border-primary">
