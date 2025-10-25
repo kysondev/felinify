@@ -43,7 +43,7 @@ export const SearchForm = ({
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
         <Input
           placeholder={placeholder}
-          className="pl-12 py-3 text-base focus:border-primary transition-colors"
+          className="pl-12 py-3 text-base focus:border-primary transition-colors rounded-full"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -52,7 +52,7 @@ export const SearchForm = ({
       <Button
         type="submit"
         variant="outline"
-        className="lg:w-auto"
+        className="lg:w-auto h-10"
         disabled={!searchQuery.trim()}
       >
         <Search className="w-4 h-4 mr-2" />

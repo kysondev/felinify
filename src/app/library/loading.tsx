@@ -4,7 +4,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { Button } from "@ui/button";
 import { Input } from "@ui/Input";
 import Link from "next/link";
-import { ChevronRight, Home, Library, PlusCircle, BarChart3, Filter, Search } from "lucide-react";
+import {
+  ChevronRight,
+  Home,
+  Library,
+  PlusCircle,
+  BarChart3,
+  Filter,
+  Search,
+} from "lucide-react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function LibraryLoading() {
@@ -54,18 +62,21 @@ export default function LibraryLoading() {
               </div>
 
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                {getGreeting()}, <span className="inline-block h-7 w-24 bg-white/20 rounded animate-pulse"></span>
+                {getGreeting()},{" "}
+                <span className="inline-block h-7 w-24 bg-white/20 rounded animate-pulse"></span>
               </h1>
 
               <p className="text-white/80 text-sm md:text-base max-w-2xl leading-relaxed">
                 Ready to expand your knowledge? Your learning journey continues
                 here with{" "}
                 <span className="font-semibold text-white">
-                  <span className="inline-block h-4 w-8 bg-white/20 rounded animate-pulse"></span> decks
+                  <span className="inline-block h-4 w-8 bg-white/20 rounded animate-pulse"></span>{" "}
+                  decks
                 </span>{" "}
                 and{" "}
                 <span className="font-semibold text-white">
-                  <span className="inline-block h-4 w-8 bg-white/20 rounded animate-pulse"></span> cards
+                  <span className="inline-block h-4 w-8 bg-white/20 rounded animate-pulse"></span>{" "}
+                  cards
                 </span>{" "}
                 waiting for you.
               </p>
@@ -82,7 +93,7 @@ export default function LibraryLoading() {
                 </Button>
               </div>
             </div>
-            
+
             <div className="hidden md:flex flex-col items-center justify-center bg-white/10 rounded-2xl p-6 backdrop-blur-sm w-[160px] h-[160px] shadow-inner">
               <div className="flex flex-col items-center justify-center w-full h-full">
                 <div className="relative mb-3">
@@ -112,9 +123,7 @@ export default function LibraryLoading() {
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">
-                      50%
-                    </span>
+                    <span className="text-white font-bold text-lg">50%</span>
                   </div>
                 </div>
 
@@ -153,7 +162,7 @@ export default function LibraryLoading() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="Search your decks..."
-                  className="pl-10 w-full lg:w-64 bg-white"
+                  className="pl-10 w-full lg:w-64 bg-white rounded-full"
                   disabled
                 />
               </div>
@@ -226,4 +235,3 @@ export default function LibraryLoading() {
     </div>
   );
 }
-

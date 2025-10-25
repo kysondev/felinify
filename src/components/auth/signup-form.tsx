@@ -132,6 +132,8 @@ export function SignUpForm({
                       <Image
                         src="/github.svg"
                         alt="github"
+                        width={20}
+                        height={20}
                         className="absolute left-4 h-5 w-5"
                       />
                       <span>Continue with GitHub</span>

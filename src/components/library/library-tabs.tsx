@@ -104,7 +104,7 @@ export const LibraryTabs = ({
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               placeholder="Search your decks..."
-              className="pl-10 w-full lg:w-64 bg-white"
+              className="pl-10 w-full lg:w-64 bg-white rounded-full"
               value={searchQuery}
               onChange={(e) => {
                 handleSearch(e.target.value);

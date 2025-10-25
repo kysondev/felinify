@@ -146,7 +146,7 @@ export default async function LibraryPage() {
                     <Button
                       size="default"
                       variant="secondary"
-                      className="gap-2 px-6 py-2 font-semibold rounded-xl bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="gap-2 px-6 py-2 font-semibold bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       <PlusCircle className="h-4 w-4" />
                       Create Deck

@@ -244,16 +244,7 @@ export function UpgradePlanDialog({
 
         <div className="flex justify-end mt-6">
           <Button onClick={handleSubscribe} disabled={isCurrentPlan}>
-            {isCurrentPlan
-              ? "Current Plan"
-              : currentPlanBase === selectedPlan &&
-                  isCurrentPlanYearly !== isAnnually
-                ? isAnnually
-                  ? "Upgrade to Yearly Plan"
-                  : "Switch to Monthly Plan"
-                : `Subscribe to ${
-                    selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)
-                  } ${isAnnually ? "Yearly" : "Monthly"} Plan`}
+            {isCurrentPlan ? "Current Plan" : "Subscribe"}
           </Button>
         </div>
       </DialogContent>

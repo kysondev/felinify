@@ -74,93 +74,100 @@ const LandingNavbar = ({
   return (
     <section className="p-2 flex justify-center sticky top-0 z-50">
       <div className="w-full max-w-7xl mx-auto">
-        <div className="bg-background/95 backdrop-blur-lg border border-border rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 px-3 sm:px-6 py-2 sm:py-3">
-        {/* Desktop Menu */}
-        <nav className="hidden justify-between w-full lg:flex">
-          <div className="flex items-center gap-4">
-            {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <Image
-                src="/felinify.png"
-                alt="Felinify"
-                width={25}
-                height={25}
-              />
-              <span className="text-lg font-semibold tracking-tighter text-primary">
-                {logo.title}
-              </span>
-            </a>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
-                </NavigationMenuList>
-              </NavigationMenu>
+        <div className="bg-background/95 backdrop-blur-lg border border-border rounded-full shadow-lg transition-shadow duration-300 px-3 sm:px-6 py-2 sm:py-3">
+          {/* Desktop Menu */}
+          <nav className="hidden justify-between w-full lg:flex">
+            <div className="flex items-center gap-4">
+              {/* Logo */}
+              <a href={logo.url} className="flex items-center gap-2">
+                <Image
+                  src="/felinify.png"
+                  alt="Felinify"
+                  width={25}
+                  height={25}
+                />
+                <span className="text-lg font-semibold tracking-tighter text-primary">
+                  {logo.title}
+                </span>
+              </a>
+              <div className="flex items-center">
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    {menu.map((item) => renderMenuItem(item))}
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button asChild className="rounded-full">
+                <Link href={auth.login.url}>Get Started</Link>
+              </Button>
+            </div>
+          </nav>
+
+          {/* Mobile Menu */}
+          <div className="block lg:hidden">
+            <div className="flex items-center justify-between">
+              {/* Logo */}
+              <a href={logo.url} className="flex items-center gap-2">
+                <Image
+                  src="/felinify.png"
+                  alt="Felinify"
+                  width={25}
+                  height={25}
+                />
+                <span className="text-lg font-semibold tracking-tighter text-primary">
+                  {logo.title}
+                </span>
+              </a>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    suppressHydrationWarning
+                  >
+                    <Menu className="size-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  className="overflow-y-auto"
+                  suppressHydrationWarning
+                >
+                  <SheetHeader>
+                    <SheetTitle>
+                      <a href={logo.url} className="flex items-center gap-2">
+                        <Image
+                          src="/felinify.png"
+                          alt="Felinify"
+                          width={25}
+                          height={25}
+                        />
+                        <span className="text-lg font-semibold tracking-tighter text-primary">
+                          {logo.title}
+                        </span>
+                      </a>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 p-4">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="flex w-full flex-col gap-4"
+                    >
+                      {menu.map((item) => renderMobileMenuItem(item))}
+                    </Accordion>
+
+                    <div className="flex flex-col gap-3">
+                      <Button asChild>
+                        <Link href={auth.login.url}>Get Started</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button asChild>
-              <Link href={auth.login.url}>Get Started</Link>
-            </Button>
-          </div>
-        </nav>
-
-        {/* Mobile Menu */}
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <Image
-                src="/felinify.png"
-                alt="Felinify"
-                width={25}
-                height={25}
-              />
-              <span className="text-lg font-semibold tracking-tighter text-primary">
-                {logo.title}
-              </span>
-            </a>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" suppressHydrationWarning>
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="overflow-y-auto" suppressHydrationWarning>
-                <SheetHeader>
-                  <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                      <Image
-                        src="/felinify.png"
-                        alt="Felinify"
-                        width={25}
-                        height={25}
-                      />
-                      <span className="text-lg font-semibold tracking-tighter text-primary">
-                        {logo.title}
-                      </span>
-                    </a>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
-                    {menu.map((item) => renderMobileMenuItem(item))}
-                  </Accordion>
-
-                  <div className="flex flex-col gap-3">
-                    <Button asChild>
-                      <Link href={auth.login.url}>Get Started</Link>
-                    </Button>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
         </div>
       </div>
     </section>

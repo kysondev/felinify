@@ -158,7 +158,7 @@ export const CreateReviewDialog = ({
                   <FormControl>
                     <Textarea
                       placeholder="Share your thoughts about this deck..."
-                      className="min-h-[120px] resize-none"
+                      className="min-h-[120px] resize-none rounded-full"
                       disabled={isLoading}
                       {...field}
                     />

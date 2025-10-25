@@ -77,10 +77,10 @@ const Hero = () => {
             animate="visible"
           >
             <motion.div
-              className="inline-flex items-center justify-center gap-2 mx-auto px-4 py-2 bg-primary/10 rounded-full text-primary font-medium text-sm mb-2"
+              className="inline-flex items-center justify-center gap-2 mx-auto px-3.5 py-1.5 rounded-full border border-border bg-background/60 text-foreground/80 backdrop-blur supports-[backdrop-filter]:bg-background/40 shadow-sm font-medium text-sm mb-2"
               variants={itemVariants}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-primary" />
               <span>Launching Soon</span>
             </motion.div>
 
@@ -111,10 +111,10 @@ const Hero = () => {
             animate="visible"
             transition={{ delay: 0.6 }}
           >
-            <motion.div className="hover:scale-105 transition-transform duration-200 w-full sm:w-auto">
+            <motion.div className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="px-8 py-5 text-base w-full sm:w-auto"
+                className="px-8 py-5 text-base w-full sm:w-auto rounded-full"
                 onClick={handleGetStartedClick}
               >
                 <span className="flex items-center gap-2">
@@ -122,11 +122,11 @@ const Hero = () => {
                 </span>
               </Button>
             </motion.div>
-            <motion.div className="hover:scale-105 transition-transform duration-200 w-full sm:w-auto">
+            <motion.div className="w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="lg"
-                className="px-8 py-5 text-base w-full sm:w-auto group"
+                className="px-8 py-5 text-base w-full sm:w-auto group rounded-full"
                 onClick={handleExploreDeckClick}
               >
                 <span className="flex items-center gap-2">

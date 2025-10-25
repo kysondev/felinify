@@ -202,7 +202,7 @@ export default async function HomePage() {
               <Button
                 size="lg"
                 variant="default"
-                className="w-full gap-3 py-6 font-semibold rounded-lg shadow hover:shadow-md transition-all duration-300"
+                className="w-full gap-3 py-6 font-semibold shadow hover:shadow-md transition-all duration-300"
               >
                 <Library className="h-5 w-5" />
                 My Library
@@ -213,7 +213,7 @@ export default async function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full gap-3 py-6 font-semibold rounded-lg hover:bg-muted/30 transition-all duration-300"
+                className="w-full gap-3 py-6 font-semibold hover:bg-muted/30 transition-all duration-300"
               >
                 <CardsIcon size={20} className="text-primary" />
                 Explore Decks
@@ -225,4 +225,3 @@ export default async function HomePage() {
     </div>
   );
 }
-
