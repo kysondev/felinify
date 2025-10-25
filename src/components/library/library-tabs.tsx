@@ -114,7 +114,7 @@ export const LibraryTabs = ({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="bg-white">
+              <Button variant="outline" size="sm" className="bg-white h-10">
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
                 {selectedTags.length > 0 && (

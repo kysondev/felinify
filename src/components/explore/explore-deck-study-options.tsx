@@ -28,7 +28,7 @@ interface ExploreDeckStudyOptionsProps {
 
 export default function ExploreDeckStudyOptions({
   deckId,
-  isAuthenticated = true
+  isAuthenticated = true,
 }: ExploreDeckStudyOptionsProps) {
   const router = useRouter();
   const [showStudyModeDialog, setShowStudyModeDialog] =
@@ -42,7 +42,7 @@ export default function ExploreDeckStudyOptions({
       setShowLoginDialog(true);
       return;
     }
-    
+
     if (mode === "flip") {
       router.push(`/study/flip?deckId=${deckId}`);
     }
@@ -59,7 +59,7 @@ export default function ExploreDeckStudyOptions({
       setShowLoginDialog(true);
       return;
     }
-    
+
     setIsCloning(true);
     setShowCloneDialog(false);
     try {
@@ -96,7 +96,7 @@ export default function ExploreDeckStudyOptions({
               disabled={isCloning}
               variant="outline"
               size="sm"
-              className="px-3"
+              className="px-3 h-9"
               title={isCloning ? "Cloning..." : "Clone Deck"}
               onClick={() => !isAuthenticated && setShowLoginDialog(true)}
             >
@@ -107,7 +107,8 @@ export default function ExploreDeckStudyOptions({
             <AlertDialogHeader>
               <AlertDialogTitle>Clone this deck?</AlertDialogTitle>
               <AlertDialogDescription>
-                This will create a copy of this deck in your library. The cloned deck will be private and you can modify it as needed.
+                This will create a copy of this deck in your library. The cloned
+                deck will be private and you can modify it as needed.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -119,7 +120,7 @@ export default function ExploreDeckStudyOptions({
           </AlertDialogContent>
         </AlertDialog>
       </div>
-      
+
       <LoginDialog
         open={showLoginDialog}
         onOpenChange={setShowLoginDialog}

@@ -1,147 +1,86 @@
-"use client";
-
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import { Deck } from "db/types/models.types";
-import { TrendingUp, Edit3, Play, Target } from "lucide-react";
 import { CardsIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Progress } from "@ui/progress";
 import { Badge } from "@ui/badge";
-import { formatDate } from "@common/utils/date.utils";
-import { StudyModeDialog } from "@components/study";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
-  const [showStudyModeDialog, setShowStudyModeDialog] =
-    useState<boolean>(false);
+  const deckTag =
+    deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
-  const router = useRouter();
+  const visibilityText = deck.visibility === "public" ? "Public" : "Private";
 
-  const handleStudyModeSelect = (mode: string) => {
-    if (mode === "flip") {
-      router.push(`/study/flip?deckId=${deck.id}`);
-    }
-    if (mode === "challenge") {
-      router.push(`/study/challenge?deckId=${deck.id}`);
-    }
-    if (mode === "quiz") {
-      router.push(`/study/quiz?deckId=${deck.id}`);
-    }
-  };
-
+  const flashcardCount = deck.flashcards?.length || 0;
 
   return (
-    <Card>
-      <CardContent className="p-6 cursor-default">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              <h3
-                className="font-semibold text-xl text-foreground line-clamp-1 hover:text-primary transition-colors duration-300 cursor-pointer"
-                onClick={() => router.push(`/decks/${deck.id}`)}
-              >
-                {deck.name}
-              </h3>
-              <Badge
-                variant={deck.visibility === "public" ? "default" : "secondary"}
-                className="text-xs font-semibold px-2 py-1 rounded-full"
-              >
-                {deck.visibility === "public" ? "Public" : "Private"}
-              </Badge>
-            </div>
-            <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed min-h-[45.5px]">
-              {deck.description || "No description available"}
-            </p>
-          </div>
+    <Card className="overflow-hidden w-full hover:shadow-lg transition-all duration-300 group border border-border bg-white h-full flex flex-col">
+      <div
+        className="relative h-32 bg-gradient-to-br from-blue-50 to-indigo-100 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${deck.imageUrl})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+
+        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-gray-800 px-2 py-1 rounded-md flex items-center gap-1 text-xs font-medium shadow-sm">
+          <CardsIcon size={12} className="text-primary" />
+          <span>{flashcardCount}</span>
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-muted/50 to-muted/30 border border-border/30">
-            <div className="p-2 rounded-lg bg-muted">
-              <CardsIcon size={16} className="text-primary" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg font-bold text-foreground">
-                {deck.flashcards?.length || 0}
-              </p>
-              <p className="text-xs text-muted-foreground font-medium">Cards</p>
-            </div>
-          </div>
+      <CardContent className="p-4 flex flex-col gap-3 flex-1">
+        <Link href={`/decks/${deck.id}`} className="block">
+          <h3 className="font-semibold text-base text-foreground mb-1 line-clamp-2 hover:text-primary transition-colors group-hover:text-primary">
+            {deck.name}
+          </h3>
+        </Link>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-muted/50 to-muted/30 border border-border/30">
-            <div className="p-2 rounded-lg bg-muted">
-              <TrendingUp className="h-4 w-4 text-green-500" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg font-bold text-foreground">
-                {deck.progress?.completedSessions || 0}
-              </p>
-              <p className="text-xs text-muted-foreground font-medium">
-                Sessions
-              </p>
-            </div>
-          </div>
-        </div>
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {deck.description || "No description available"}
+        </p>
 
-        <div className="p-4 rounded-xl bg-gradient-to-r from-muted/40 via-muted/20 to-transparent border border-border/40 mb-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-primary/10">
-                <Target className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-sm font-bold text-foreground">
-                Mastery Progress
-              </span>
-            </div>
-            <div className="text-right">
-              <span className={`text-xl font-bold text-primary`}>
-                {deck.progress?.mastery || 0}%
-              </span>
-              <p className="text-xs text-muted-foreground font-medium">
-                {deck.progress?.lastStudied
-                  ? formatDate(deck.progress.lastStudied)
-                  : "Never"}
-              </p>
-            </div>
-          </div>
-
-          <Progress
-            value={deck.progress?.mastery || 0}
-            className="w-full h-2 rounded-full"
-          />
-        </div>
-
-        <div className="flex gap-3">
-          <Link
-            href={`/decks/${deck.id}`}
-            passHref
-            className="flex-1"
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full font-semibold rounded-xl border hover:bg-muted transition-all duration-300"
+        <div className="mt-auto space-y-3">
+          <div className="flex gap-1.5">
+            <Badge
+              variant="secondary"
+              className="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border-blue-200"
             >
-              <Edit3 className="h-4 w-4 mr-2" />
-              View
-            </Button>
-          </Link>
+              {deckTag}
+            </Badge>
+            <Badge
+              variant="secondary"
+              className="text-xs px-2 py-0.5 rounded-md bg-gray-50 text-gray-600 border-gray-200"
+            >
+              {visibilityText}
+            </Badge>
+          </div>
 
-          <StudyModeDialog
-            open={showStudyModeDialog}
-            onOpenChange={setShowStudyModeDialog}
-            onStudyModeSelect={handleStudyModeSelect}
-            triggerText="Study"
-            triggerIcon={<Play className="h-4 w-4 mr-2" />}
-            className="flex-1 font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all duration-300"
-          />
+          <div className="flex items-center justify-between">
+            <div className="w-full max-w-[60%]">
+              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-green-500 transition-all"
+                  style={{ width: `${deck.progress?.mastery || 0}%` }}
+                />
+              </div>
+              <div className="mt-1 text-xs text-muted-foreground">
+                {deck.progress?.mastery || 0}% Mastery
+              </div>
+            </div>
+
+            <Link href={`/decks/${deck.id}`} passHref>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs font-medium rounded-md border-gray-200 hover:border-primary hover:text-primary transition-colors"
+              >
+                View
+              </Button>
+            </Link>
+          </div>
         </div>
       </CardContent>
-
-
-
     </Card>
   );
 };

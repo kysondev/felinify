@@ -84,6 +84,7 @@ export interface DeckTable {
   id: Generated<number> | number;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   rating: number;
   studyCount: number;
   studyHour: number;

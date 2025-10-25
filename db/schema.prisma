@@ -14,7 +14,7 @@ model User {
   email         String    @unique
   name          String?
   emailVerified Boolean   @default(false)
-  image         String?   @default("https://res.cloudinary.com/dyu7ogoqc/image/upload/v1751746247/3b27a87fcf7d90ae564be23d7a37f778-modified_1_knthse.png")
+  image         String?   @default("https://res.cloudinary.com/dyu7ogoqc/image/upload/v1754097644/odsjwixha8d48gfswujc.jpg")
   role          ROLE      @default(user)
   energy        Int       @default(10)
   usernameSet   Boolean   @default(false)
@@ -122,6 +122,7 @@ model Deck {
   id        Int       @id
   name      String
   description String?
+  imageUrl String?
   rating Float @default(0)
   studyCount Int @default(0)
   studyHour Int @default(0)

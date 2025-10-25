@@ -2,82 +2,69 @@ import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import { Deck } from "db/types/models.types";
-import { Star, ChevronRight, TrendingUp, User } from "lucide-react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { getUserWithId } from "@user/services/user.service";
-import Image from "next/image";
 
 export const ExploreDeckCard = async ({ deck }: { deck: Deck }) => {
   const { data: user } = await getUserWithId(deck.userId);
 
+  const deckTag =
+    deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+  const visibilityText = deck.visibility === "public" ? "Public" : "Private";
+  const flashcardCount = deck.flashcards?.length || 0;
+
   return (
-    <Card className="border border-border bg-white transition-all duration-200 hover:shadow-lg h-full flex flex-col cursor-default">
-      <CardContent className="p-0 flex flex-col h-full">
-        <div className="p-4 flex-shrink-0">
-          <div className="flex items-center justify-between mb-2">
-            <Link href={`/decks/${deck.id}`}>
-              <h3 className="font-semibold text-lg line-clamp-1 text-foreground hover:text-primary transition-colors">
-                {deck.name}
-              </h3>
-            </Link>
-            <Badge variant="secondary" className="text-xs font-medium">
-              {deck.tags?.[0]?.name || "General"}
+    <Card className="overflow-hidden w-full hover:shadow-lg transition-all duration-300 group border border-border bg-white h-full flex flex-col">
+      <div
+        className="relative h-32 bg-gradient-to-br from-blue-50 to-indigo-100 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${deck.imageUrl}')` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-gray-800 px-2 py-1 rounded-md flex items-center gap-1 text-xs font-medium shadow-sm">
+          <CardsIcon size={12} className="text-primary" />
+          <span>{flashcardCount}</span>
+        </div>
+      </div>
+
+      <CardContent className="p-4 flex flex-col gap-3 flex-1">
+        <Link href={`/decks/${deck.id}`} className="block">
+          <h3 className="font-semibold text-base text-foreground mb-1 truncate hover:text-primary transition-colors group-hover:text-primary">
+            {deck.name}
+          </h3>
+        </Link>
+
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {deck.description || "No description available"}
+        </p>
+
+        <div className="mt-auto space-y-3">
+          <div className="flex gap-1.5">
+            <Badge
+              variant="secondary"
+              className="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border-blue-200"
+            >
+              {deckTag}
+            </Badge>
+            <Badge
+              variant="secondary"
+              className="text-xs px-2 py-0.5 rounded-md bg-gray-50 text-gray-600 border-gray-200"
+            >
+              {visibilityText}
             </Badge>
           </div>
-          <p className="text-muted-foreground text-sm line-clamp-2 min-h-[2.5rem]">
-            {deck.description || "No description available"}
-          </p>
-        </div>
 
-        <div className="p-4 flex-1 flex flex-col">
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
-              <CardsIcon size={16} className="text-primary mx-auto mb-1" />
-              <p className="text-sm font-semibold text-foreground">
-                {deck.flashcards?.length || 0}
-              </p>
-              <p className="text-xs text-muted-foreground">Cards</p>
-            </div>
-            <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
-              <Star className="h-4 w-4 text-yellow-500 mx-auto mb-1" />
-              <p className="text-sm font-semibold text-foreground">
-                {deck.rating || "N/A"}
-              </p>
-              <p className="text-xs text-muted-foreground">Rating</p>
-            </div>
-            <div className="text-center p-2 bg-white rounded-lg border border-gray-100">
-              <TrendingUp className="h-4 w-4 text-green-500 mx-auto mb-1" />
-              <p className="text-sm font-semibold text-foreground">
-                {deck.studyCount || 0}
-              </p>
-              <p className="text-xs text-muted-foreground">Studies</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
-            <div className="flex items-center gap-2">
-              {user?.image ? (
-                <Image
-                  src={user.image}
-                  alt={user.name || "User"}
-                  width={24}
-                  height={24}
-                  className="rounded-full object-cover border border-gray-200 w-6 h-6"
-                />
-              ) : (
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <User className="h-3 w-3 text-white" />
-                </div>
-              )}
-              <span className="text-sm text-muted-foreground">
-                @{user?.name}
-              </span>
+          <div className="flex items-center justify-between">
+            <div className="text-xs text-muted-foreground truncate">
+              {user?.name ? `@${user.name}` : ""}
             </div>
             <Link href={`/decks/${deck.id}`} passHref>
-              <Button className="font-medium h-8 px-4 text-sm" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs font-medium rounded-md border-gray-200 hover:border-primary hover:text-primary transition-colors"
+              >
                 View
-                <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </Link>
           </div>

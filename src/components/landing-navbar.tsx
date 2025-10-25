@@ -99,7 +99,7 @@ const LandingNavbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild size="sm">
+            <Button asChild>
               <Link href={auth.login.url}>Get Started</Link>
             </Button>
           </div>

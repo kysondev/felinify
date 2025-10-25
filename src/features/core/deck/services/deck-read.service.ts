@@ -31,6 +31,7 @@ export const getUserDecks = async (
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",
@@ -84,6 +85,7 @@ export const getUserDeckById = async (
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",
@@ -173,7 +175,16 @@ export const getUserDeckById = async (
 export const getAllDecks = async (
   page: number = 1,
   limit: number = 12
-): Promise<ServiceResult<Deck[]> & { pagination: { page: number; limit: number; total: number; totalPages: number } }> => {
+): Promise<
+  ServiceResult<Deck[]> & {
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }
+> => {
   try {
     const offset = (page - 1) * limit;
 
@@ -184,6 +195,7 @@ export const getAllDecks = async (
         "userId",
         "name",
         "description",
+        "imageUrl",
         "createdAt",
         "updatedAt",
         "rating",
@@ -267,6 +279,7 @@ export const getFeaturedDecks = async () => {
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",
@@ -314,6 +327,7 @@ export const getPopularDecks = async () => {
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",
@@ -362,6 +376,7 @@ export const getDecksBySearch = async (searchQuery: string) => {
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",
@@ -410,6 +425,7 @@ export const getDecksByTag = async (tagName: string) => {
         "id",
         "userId",
         "name",
+        "imageUrl",
         "description",
         "createdAt",
         "updatedAt",

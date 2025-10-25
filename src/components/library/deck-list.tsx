@@ -95,7 +95,7 @@ export const DeckList = ({
               <Dialog>
                 <DialogTrigger asChild>
                   <Card className="border-2 border-dashed border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group">
-                    <CardContent className="flex flex-col items-center justify-center p-8 min-h-[400px] text-center">
+                    <CardContent className="flex flex-col items-center justify-center p-8 min-h-[292px] text-center">
                       <div className="p-4 bg-primary/10 rounded-full mb-4 group-hover:scale-110 transition-transform">
                         <PlusCircle className="h-8 w-8 text-primary" />
                       </div>

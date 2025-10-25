@@ -107,7 +107,7 @@ export default async function LibraryPage() {
             <span>Library</span>
           </Link>
         </nav>
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/90 p-6 mb-8">
+        <div className="relative overflow-hidden rounded-2xl bg-primary p-6 mb-8">
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
             <div className="absolute bottom-0 -left-4 w-16 h-16 bg-white/5 rounded-full blur-2xl"></div>
