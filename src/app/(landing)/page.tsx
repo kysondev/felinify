@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     title: "Felinify | AI Flashcards For Focused, Fast Learning",
     description:
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    type: "website",
-    url: "/",
+    url: "https://felinify.com",
+    siteName: "Felinify",
     images: [
       {
         url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
@@ -43,6 +43,8 @@ export const metadata: Metadata = {
         alt: "Felinify - AI Flashcards For Focused, Fast Learning",
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
