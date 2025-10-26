@@ -42,12 +42,9 @@ export default async function ExploreLayout({
   return (
     <div className="overflow-x-hidden">
       <div className="relative">
-        <div className="px-4 max-w-[1200px] mx-auto">
-          <LandingNavbar />
-        </div>
+        <LandingNavbar />
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">{children}</div>
     </div>
   );
 }
-
