@@ -31,7 +31,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Felinify | AI Flashcards For Focused, Fast Learning",
-    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    description:
+      "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     type: "website",
     url: "/",
     images: [
@@ -46,13 +47,13 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Felinify | AI Flashcards For Focused, Fast Learning",
-    description: "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
+    description:
+      "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     images: ["/felinify.png"],
   },
 };
 
 export default function Home() {
-
   const softwareAppSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -130,10 +131,10 @@ export default function Home() {
         </div>
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
-      <FeatureShowcase />
+        <FeatureShowcase />
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
-      <FlashcardShowcase />
+        <FlashcardShowcase />
       </div>
       <HowItWorks />
       <div className="px-4 max-w-[1200px] mx-auto">
@@ -143,7 +144,7 @@ export default function Home() {
         <Pricing />
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
-      <FAQ />
+        <FAQ />
       </div>
       <div className="px-4 max-w-[1200px] mx-auto">
         <Cta />

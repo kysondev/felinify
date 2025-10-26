@@ -89,7 +89,7 @@ const Hero = () => {
               className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent leading-tight"
               variants={itemVariants}
             >
-              AI Flashcards That Actually Make You Smarter
+              Built For Learners Who Want More Than Memorization
             </motion.h1>
 
             {/* Description */}
@@ -97,9 +97,9 @@ const Hero = () => {
               className="text-muted-foreground text-balance lg:text-lg max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              Built for students who want to stop wasting time. Create
-              flashcards from notes, study with smart quizzes, and track
-              mastery. Join thousands of students boosting retention by 94%.
+              Stop cramming. Start learning smarter. Create flashcards from your
+              notes, test your understanding with intelligent quizzes, and see
+              your progress soar as you master every topic.
             </motion.p>
           </motion.div>
 

@@ -79,7 +79,7 @@ const LandingNavbar = ({
           <nav className="hidden justify-between w-full lg:flex">
             <div className="flex items-center gap-4">
               {/* Logo */}
-              <a href={logo.url} className="flex items-center gap-2">
+              <Link href={logo.url} className="flex items-center gap-2">
                 <Image
                   src="/felinify.png"
                   alt="Felinify"
@@ -89,7 +89,7 @@ const LandingNavbar = ({
                 <span className="text-lg font-semibold tracking-tighter text-primary">
                   {logo.title}
                 </span>
-              </a>
+              </Link>
               <div className="flex items-center">
                 <NavigationMenu>
                   <NavigationMenuList>
@@ -98,9 +98,12 @@ const LandingNavbar = ({
                 </NavigationMenu>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <Button asChild variant="ghost" className="rounded-full">
+                <Link href={auth.login.url}>{auth.login.title}</Link>
+              </Button>
               <Button asChild className="rounded-full">
-                <Link href={auth.login.url}>Get Started</Link>
+                <Link href={auth.signup.url}>Get Started</Link>
               </Button>
             </div>
           </nav>
@@ -109,7 +112,7 @@ const LandingNavbar = ({
           <div className="block lg:hidden">
             <div className="flex items-center justify-between">
               {/* Logo */}
-              <a href={logo.url} className="flex items-center gap-2">
+              <Link href={logo.url} className="flex items-center gap-2">
                 <Image
                   src="/felinify.png"
                   alt="Felinify"
@@ -119,7 +122,7 @@ const LandingNavbar = ({
                 <span className="text-lg font-semibold tracking-tighter text-primary">
                   {logo.title}
                 </span>
-              </a>
+              </Link>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -136,7 +139,7 @@ const LandingNavbar = ({
                 >
                   <SheetHeader>
                     <SheetTitle>
-                      <a href={logo.url} className="flex items-center gap-2">
+                      <Link href={logo.url} className="flex items-center gap-2">
                         <Image
                           src="/felinify.png"
                           alt="Felinify"
@@ -146,7 +149,7 @@ const LandingNavbar = ({
                         <span className="text-lg font-semibold tracking-tighter text-primary">
                           {logo.title}
                         </span>
-                      </a>
+                      </Link>
                     </SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-6 p-4">
@@ -159,8 +162,11 @@ const LandingNavbar = ({
                     </Accordion>
 
                     <div className="flex flex-col gap-3">
-                      <Button asChild>
-                        <Link href={auth.login.url}>Get Started</Link>
+                      <Button asChild variant="ghost" className="rounded-full w-full">
+                        <Link href={auth.login.url}>{auth.login.title}</Link>
+                      </Button>
+                      <Button asChild className="rounded-full w-full">
+                        <Link href={auth.signup.url}>Get Started</Link>
                       </Button>
                     </div>
                   </div>
@@ -219,9 +225,9 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link key={item.title} href={item.url} className="text-md font-semibold">
       {item.title}
-    </a>
+    </Link>
   );
 };
 
