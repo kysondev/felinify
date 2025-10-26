@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
+    background_color: "#C96442",
     theme_color: "#C96442",
     icons: [
       {
@@ -17,12 +17,12 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/x-icon",
       },
       {
-        src: "/felinify.png",
+        src: "/felinify-white.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/felinify.png",
+        src: "/felinify-white.png",
         sizes: "512x512",
         type: "image/png",
       },

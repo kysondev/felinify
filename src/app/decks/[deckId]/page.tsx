@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
       url: `/decks/${deckId}`,
       images: [
         {
-          url: "/felinify.png",
+          url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
           width: 1200,
           height: 630,
           alt: `${deck.name} - ${primaryTag} Flashcards`,
@@ -76,7 +76,9 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
       card: "summary_large_image",
       title: `${deck.name} | ${primaryTag} Flashcards`,
       description: deck.description || `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards`,
-      images: ["/felinify.png"],
+      images: [
+        "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+      ],
     },
   };
 }

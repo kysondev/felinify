@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     url: "/explore",
     images: [
       {
-        url: "/felinify.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
         width: 1200,
         height: 630,
         alt: "Explore Flashcard Decks - Felinify",
@@ -52,7 +52,9 @@ export const metadata: Metadata = {
     title: "Explore Flashcard Decks | Felinify",
     description:
       "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
-    images: ["/felinify.png"],
+    images: [
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+    ],
   },
 };
 
