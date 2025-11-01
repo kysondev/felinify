@@ -4,6 +4,8 @@ import { Deck } from "db/types/models.types";
 import { CardsIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { Badge } from "@ui/badge";
+import { Progress } from "@ui/progress";
+import { ArrowRight, Lock, Globe } from "lucide-react";
 
 export const DeckCard = ({ deck }: { deck: Deck }) => {
   const deckTag =
@@ -14,29 +16,29 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
   const flashcardCount = deck.flashcards?.length || 0;
 
   return (
-    <Card className="overflow-hidden w-full hover:shadow-lg transition-all duration-300 group border border-border bg-white h-full flex flex-col">
+    <Card className="group relative overflow-hidden w-full h-full flex flex-col rounded-xl border border-border bg-card hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
       <div
-        className="relative h-32 bg-gradient-to-br from-blue-50 to-indigo-100 bg-cover bg-center bg-no-repeat"
+        className="relative h-32 bg-muted/40 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${deck.imageUrl})`,
+          backgroundImage: deck.imageUrl ? `url(${deck.imageUrl})` : undefined,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent" />
 
-        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-gray-800 px-2 py-1 rounded-md flex items-center gap-1 text-xs font-medium shadow-sm">
+        <div className="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border/60 bg-background/70 backdrop-blur text-xs font-medium shadow-sm">
           <CardsIcon size={12} className="text-primary" />
-          <span>{flashcardCount}</span>
+          <span className="text-foreground/80">{flashcardCount}</span>
         </div>
       </div>
 
-      <CardContent className="p-4 flex flex-col gap-3 flex-1">
+      <CardContent className="p-5 flex flex-col gap-3 flex-1">
         <Link href={`/decks/${deck.id}`} className="block">
-          <h3 className="font-semibold text-base text-foreground mb-1 line-clamp-2 hover:text-primary transition-colors group-hover:text-primary">
+          <h3 className="font-semibold text-base text-foreground mb-1 line-clamp-2 transition-colors group-hover:text-primary">
             {deck.name}
           </h3>
         </Link>
 
-        <p className="text-sm text-muted-foreground line-clamp-2">
+        <p className="text-sm text-muted-foreground truncate">
           {deck.description || "No description available"}
         </p>
 
@@ -44,26 +46,26 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
           <div className="flex gap-1.5">
             <Badge
               variant="secondary"
-              className="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border-blue-200"
+              className="text-[11px] px-2 py-0.5 rounded-md"
             >
               {deckTag}
             </Badge>
             <Badge
               variant="secondary"
-              className="text-xs px-2 py-0.5 rounded-md bg-gray-50 text-gray-600 border-gray-200"
+              className="text-[11px] px-2 py-0.5 rounded-md inline-flex items-center gap-1.5"
             >
+              {deck.visibility === "public" ? (
+                <Globe className="h-3 w-3 text-primary" />
+              ) : (
+                <Lock className="h-3 w-3 text-muted-foreground" />
+              )}
               {visibilityText}
             </Badge>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="w-full max-w-[60%]">
-              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-green-500 transition-all"
-                  style={{ width: `${deck.progress?.mastery || 0}%` }}
-                />
-              </div>
+              <Progress value={deck.progress?.mastery || 0} className="h-1.5" />
               <div className="mt-1 text-xs text-muted-foreground">
                 {deck.progress?.mastery || 0}% Mastery
               </div>
@@ -73,9 +75,11 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 px-3 text-xs font-medium rounded-md border-gray-200 hover:border-primary hover:text-primary transition-colors"
+                className="h-8 px-3 text-xs font-medium rounded-full border-border hover:border-primary hover:text-primary"
               >
-                View
+                <span className="flex items-center gap-1">
+                  View <ArrowRight className="h-3 w-3" />
+                </span>
               </Button>
             </Link>
           </div>
