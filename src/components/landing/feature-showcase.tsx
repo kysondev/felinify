@@ -1,6 +1,14 @@
 "use client";
 
-import { Clock, BookOpen, Brain, Target, Zap, TrendingUp, Play } from "lucide-react";
+import {
+  Clock,
+  BookOpen,
+  Brain,
+  Target,
+  Zap,
+  TrendingUp,
+  Play,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
 import { Skeleton } from "../ui/skeleton";
@@ -60,7 +68,9 @@ export function FeatureShowcase() {
               className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              Transform your learning with AI-powered flashcards that adapt to your pace, track your progress, and help you master any subject faster than ever before.
+              Transform your learning with AI-powered flashcards that adapt to
+              your pace, track your progress, and help you master any subject
+              faster than ever before.
             </motion.p>
           </motion.div>
 
@@ -86,9 +96,12 @@ export function FeatureShowcase() {
                     <CardsIcon size={20} />
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">AI Flashcard Generation</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">
+                    AI Flashcard Generation
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-2">
-                    Turn notes into flashcards instantly. See a preview of fronts and backs as they’re generated.
+                    Turn notes into flashcards instantly. See a preview of
+                    fronts and backs as they’re generated.
                   </p>
 
                   <div className="relative h-40 sm:h-44 mt-2">
@@ -103,13 +116,17 @@ export function FeatureShowcase() {
                         <div className="w-5 h-5 rounded bg-primary/10 flex items-center justify-center text-primary">
                           <CardsIcon size={12} />
                         </div>
-                        <span className="text-xs font-medium text-foreground">Front</span>
+                        <span className="text-xs font-medium text-foreground">
+                          Front
+                        </span>
                       </div>
                       <div className="h-2 w-5/6 bg-muted rounded mb-1"></div>
                       <div className="h-2 w-2/3 bg-muted rounded"></div>
                     </div>
                     <div className="absolute bottom-0 left-10 w-44 sm:w-48 h-28 sm:h-32 rotate-1 shadow-sm border border-border rounded-md bg-white dark:bg-card p-3">
-                      <div className="text-[10px] text-muted-foreground mb-1">Back</div>
+                      <div className="text-[10px] text-muted-foreground mb-1">
+                        Back
+                      </div>
                       <div className="h-2 w-3/4 bg-muted rounded mb-1"></div>
                       <div className="h-2 w-1/2 bg-muted rounded mb-1"></div>
                       <div className="h-2 w-2/3 bg-muted rounded"></div>
@@ -131,23 +148,32 @@ export function FeatureShowcase() {
                     <TrendingUp className="w-5 h-5" />
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">Smart Progress Tracking</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">
+                    Smart Progress Tracking
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-2">
-                    Quickly scan your momentum with a weekly spark chart and a clear goal snapshot.
+                    Quickly scan your momentum with a weekly spark chart and a
+                    clear goal snapshot.
                   </p>
 
                   <div className="bg-white rounded-lg shadow-sm border border-border p-4 flex flex-col">
                     <div className="grid grid-cols-5 gap-4 items-start mb-3">
                       <div className="col-span-3">
                         <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-medium text-foreground">Study Progress</span>
+                          <span className="text-sm font-medium text-foreground">
+                            Study Progress
+                          </span>
                           <div className="flex items-center gap-1">
-                            <span className="text-lg font-bold text-primary">87%</span>
+                            <span className="text-lg font-bold text-primary">
+                              87%
+                            </span>
                             <span className="text-xs text-green-600">+15%</span>
                           </div>
                         </div>
                         <Progress value={87} className="w-full h-2 mb-2" />
-                        <p className="text-xs text-muted-foreground">Great progress on Biology deck!</p>
+                        <p className="text-xs text-muted-foreground">
+                          Great progress on Biology deck!
+                        </p>
                       </div>
                       <div className="col-span-2">
                         <div className="flex items-end justify-between h-24">
@@ -157,10 +183,15 @@ export function FeatureShowcase() {
                           <div className="w-2.5 rounded bg-primary h-20"></div>
                           <div className="w-2.5 rounded bg-primary/70 h-16"></div>
                         </div>
-                        <div className="mt-2 text-[10px] text-muted-foreground text-right">Last 7 days</div>
+                        <div className="mt-2 text-[10px] text-muted-foreground text-right">
+                          Last 7 days
+                        </div>
                       </div>
                     </div>
-                    <Button size="sm" className="mt-3 w-full bg-primary text-primary-foreground">
+                    <Button
+                      size="sm"
+                      className="mt-3 w-full bg-primary text-primary-foreground"
+                    >
                       <Play className="w-3 h-3 mr-1" />
                       Continue Study
                     </Button>
@@ -171,7 +202,7 @@ export function FeatureShowcase() {
               </motion.div>
 
               <motion.div
-                className="group relative bg-card border cursor-default border-border rounded-xl p-6 overflow-visible hover:shadow-lg transition-shadow duration-200"
+                className="group relative bg-card border cursor-default border-border rounded-xl overflow-hidden p-6 hover:shadow-lg transition-shadow duration-200"
                 variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -181,9 +212,12 @@ export function FeatureShowcase() {
                     <Brain className="w-5 h-5" />
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">Multiple Study Modes</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">
+                    Multiple Study Modes
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-2">
-                    Choose Review, Quiz, or Challenge. Preview settings and get going faster.
+                    Choose Review, Quiz, or Challenge. Preview settings and get
+                    going faster.
                   </p>
 
                   <div className="bg-white rounded-lg shadow-sm border border-border p-4 h-full flex flex-col">
@@ -201,19 +235,25 @@ export function FeatureShowcase() {
 
                     <div className="relative h-40">
                       <div className="absolute left-0 top-1 w-40 h-28 -rotate-2 border border-border rounded-md bg-white dark:bg-card p-3 shadow-sm">
-                        <div className="text-[10px] text-muted-foreground mb-1">Front</div>
+                        <div className="text-[10px] text-muted-foreground mb-1">
+                          Front
+                        </div>
                         <div className="h-2 w-5/6 bg-muted rounded mb-1"></div>
                         <div className="h-2 w-2/3 bg-muted rounded"></div>
                       </div>
                       <div className="absolute left-8 top-6 w-40 h-28 rotate-2 border border-border rounded-md bg-white dark:bg-card p-3 shadow-sm">
-                        <div className="text-[10px] text-muted-foreground mb-1">Back</div>
+                        <div className="text-[10px] text-muted-foreground mb-1">
+                          Back
+                        </div>
                         <div className="h-2 w-3/4 bg-muted rounded mb-1"></div>
                         <div className="h-2 w-1/2 bg-muted rounded mb-1"></div>
                         <div className="h-2 w-4/6 bg-muted rounded"></div>
                       </div>
 
                       <div className="absolute right-1 top-1 w-44 border border-border rounded-md bg-white dark:bg-card p-3 shadow-sm">
-                        <div className="text-[10px] text-muted-foreground mb-2">Multiple Choice</div>
+                        <div className="text-[10px] text-muted-foreground mb-2">
+                          Multiple Choice
+                        </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div className="h-6 rounded border border-border" />
                           <div className="h-6 rounded border border-primary bg-primary/10" />
@@ -221,8 +261,6 @@ export function FeatureShowcase() {
                           <div className="h-6 rounded border border-border" />
                         </div>
                       </div>
-
-
                     </div>
                   </div>
                 </div>
@@ -243,9 +281,12 @@ export function FeatureShowcase() {
                     <Target className="w-5 h-5" />
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">Deck Organization</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">
+                    Deck Organization
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-3">
-                    Lightweight, glanceable organization preview with a playful layout.
+                    Lightweight, glanceable organization preview with a playful
+                    layout.
                   </p>
 
                   <div className="bg-white rounded-lg shadow-sm border border-border p-4 h-full">
@@ -328,7 +369,9 @@ export function FeatureShowcase() {
                     <Clock className="w-5 h-5" />
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">Study Sessions</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">
+                    Study Sessions
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-3">
                     Track time on task and accuracy at a glance.
                   </p>
@@ -339,40 +382,66 @@ export function FeatureShowcase() {
                         <div className="relative w-28 h-28 mx-auto">
                           <div
                             className="absolute inset-0 rounded-full"
-                            style={{ background: 'conic-gradient(hsl(var(--primary)) 0% 62%, hsl(var(--muted)) 62% 100%)' }}
+                            style={{
+                              background:
+                                "conic-gradient(hsl(var(--primary)) 0% 62%, hsl(var(--muted)) 62% 100%)",
+                            }}
                           />
                           <div className="absolute inset-2 rounded-full bg-background border border-border flex items-center justify-center">
                             <div className="text-center">
-                              <div className="text-xl font-semibold text-foreground">45</div>
-                              <div className="text-xs text-muted-foreground">min</div>
+                              <div className="text-xl font-semibold text-foreground">
+                                45
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                min
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="col-span-3">
                         <div className="text-center mb-3">
-                          <div className="text-sm font-medium text-foreground">Today's Session</div>
+                          <div className="text-sm font-medium text-foreground">
+                            Today's Session
+                          </div>
                         </div>
                         <div className="space-y-2 text-xs mb-3">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Cards reviewed:</span>
-                            <span className="text-foreground font-medium">32</span>
+                            <span className="text-muted-foreground">
+                              Cards reviewed:
+                            </span>
+                            <span className="text-foreground font-medium">
+                              32
+                            </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Accuracy:</span>
-                            <span className="text-foreground font-medium">92%</span>
+                            <span className="text-muted-foreground">
+                              Accuracy:
+                            </span>
+                            <span className="text-foreground font-medium">
+                              92%
+                            </span>
                           </div>
                         </div>
-                        <Button size="sm" className="w-full bg-primary text-primary-foreground">
+                        <Button
+                          size="sm"
+                          className="w-full bg-primary text-primary-foreground"
+                        >
                           <Play className="w-3 h-3 mr-1" />
                           Start Session
                         </Button>
                       </div>
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-2 text-[11px] text-muted-foreground">
-                      <div className="rounded bg-muted/30 px-2 py-1 text-center">Streak 5d</div>
-                      <div className="rounded bg-muted/30 px-2 py-1 text-center">Focus 84%</div>
-                      <div className="rounded bg-muted/30 px-2 py-1 text-center">Sessions 3</div>
+                      <div className="rounded bg-muted/30 px-2 py-1 text-center">
+                        Streak 5d
+                      </div>
+                      <div className="rounded bg-muted/30 px-2 py-1 text-center">
+                        Focus 84%
+                      </div>
+                      <div className="rounded bg-muted/30 px-2 py-1 text-center">
+                        Sessions 3
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -381,10 +450,8 @@ export function FeatureShowcase() {
               </motion.div>
             </div>
           </motion.div>
-
         </div>
       </section>
     </>
   );
 }
-
