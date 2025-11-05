@@ -7,7 +7,6 @@ import { HowItWorks } from "@components/landing/how-it-works";
 import { LandingNavbar } from "@components/landing-navbar";
 import { Pricing } from "@components/landing/pricing";
 import { FlashcardShowcase } from "@components/landing/flashcard-showcase";
-import { Testimonials } from "@components/landing/testimonials";
 import { Metadata } from "next";
 import JsonLd from "@components/SEO/json-ld";
 
@@ -141,9 +140,6 @@ export default function Home() {
         <FlashcardShowcase />
       </div>
       <HowItWorks />
-      <div className="px-4 max-w-[1200px] mx-auto">
-        <Testimonials />
-      </div>
       <div className="px-4 max-w-[1200px] mx-auto">
         <Pricing />
       </div>
