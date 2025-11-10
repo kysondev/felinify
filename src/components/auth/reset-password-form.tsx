@@ -77,10 +77,16 @@ const ResetPasswordForm = ({
           </Form>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:text-primary [&_a]:font-medium [&_a]:hover:underline">
+      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:text-primary [&_a]:font-medium">
         By clicking continue, you agree to our{" "}
-        <Link href="/terms">Terms of Service</Link> and{" "}
-        <Link href="/privacy">Privacy Policy</Link>.
+        <Link href="/terms" className="hover:underline">
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="hover:underline">
+          Privacy Policy
+        </Link>
+        .
       </div>
     </div>
   );
