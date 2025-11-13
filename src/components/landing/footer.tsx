@@ -32,7 +32,6 @@ const Footer = () => {
         {
           text: "Explore Decks",
           url: "/explore",
-          action: () => handleWorkspaceClick("/explore"),
         },
       ],
     },
@@ -89,13 +88,13 @@ const Footer = () => {
                     width={30}
                     height={30}
                   />
-                  <p className="text-xl font-semibold text-primary">
-                    Felinify
-                  </p>
+                  <p className="text-xl font-semibold text-primary">Felinify</p>
                 </div>
-                <p className="mt-4 text-muted-foreground">Smarter studying starts here.</p>
+                <p className="mt-4 text-muted-foreground">
+                  Smarter studying starts here.
+                </p>
               </div>
-              
+
               {/* Menu sections */}
               {menuItems.map((section, sectionIdx) => (
                 <div key={sectionIdx}>
@@ -124,7 +123,7 @@ const Footer = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Bottom section */}
             <div className="mt-16 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
               <p>© 2025 Felinify.com. All rights reserved.</p>

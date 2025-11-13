@@ -48,7 +48,7 @@ export function FeatureShowcase() {
 
   return (
     <>
-      <section>
+      <section id="features">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
