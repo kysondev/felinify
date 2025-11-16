@@ -14,9 +14,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="overflow-x-hidden">
-      <div className="px-4 max-w-[1200px] mx-auto">
-        <LandingNavbar />
-      </div>
+      <LandingNavbar />
 
       <main className="px-4 max-w-[1200px] mx-auto py-16">
         <div className="max-w-4xl mx-auto">
