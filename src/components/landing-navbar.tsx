@@ -63,7 +63,7 @@ const LandingNavbar = ({
     { title: "Explore", url: "/explore" },
     {
       title: "Pricing",
-      url: "#pricing",
+      url: "/pricing",
     },
   ],
   auth = {

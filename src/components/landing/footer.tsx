@@ -28,7 +28,7 @@ const Footer = () => {
       title: "Product",
       links: [
         { text: "Features", url: "#features" },
-        { text: "Pricing", url: "#pricing" },
+        { text: "Pricing", url: "/pricing" },
         {
           text: "Explore Decks",
           url: "/explore",
