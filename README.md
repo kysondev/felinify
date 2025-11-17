@@ -22,7 +22,7 @@
 
 ## About The Project
 
-![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png)
+![Product Name Screen Shot](https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png)
 
 > ⭐️ If you find this project interesting, consider leaving a star. Thanks!
 
