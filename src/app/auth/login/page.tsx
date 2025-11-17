@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
         width: 1200,
         height: 630,
         alt: "Felinify Login",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Log in to your Felinify account to access your flashcards and continue your learning journey.",
     images: [
-      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
     ],
   },
 };

@@ -28,12 +28,14 @@ interface DeckPageProps {
   params: Promise<{ deckId: string }>;
 }
 
-export async function generateMetadata({ params }: DeckPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: DeckPageProps): Promise<Metadata> {
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: deck } = await getDeck(deckIdNumber);
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
-  
+
   if (!deck) {
     return {
       title: "Deck Not Found | Felinify",
@@ -41,12 +43,13 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
     };
   }
 
-  const primaryTag = deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+  const primaryTag =
+    deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
   const flashcardCount = deck.flashcards?.length || 0;
 
   return {
     title: `${deck.name} | ${primaryTag} Flashcards | Felinify`,
-    description: `${deck.description || `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards with ${deck.name}. Created by ${deckOwner?.name || 'the community'}.`}`,
+    description: `${deck.description || `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards with ${deck.name}. Created by ${deckOwner?.name || "the community"}.`}`,
     keywords: [
       "flashcards",
       deck.name.toLowerCase(),
@@ -60,12 +63,14 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
     },
     openGraph: {
       title: `${deck.name} | ${primaryTag} Flashcards`,
-      description: deck.description || `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards`,
+      description:
+        deck.description ||
+        `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards`,
       type: "website",
       url: `/decks/${deckId}`,
       images: [
         {
-          url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+          url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
           width: 1200,
           height: 630,
           alt: `${deck.name} - ${primaryTag} Flashcards`,
@@ -75,9 +80,11 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
     twitter: {
       card: "summary_large_image",
       title: `${deck.name} | ${primaryTag} Flashcards`,
-      description: deck.description || `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards`,
+      description:
+        deck.description ||
+        `Study ${flashcardCount} ${primaryTag.toLowerCase()} flashcards`,
       images: [
-        "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+        "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
       ],
     },
   };
@@ -87,11 +94,15 @@ export default async function DeckPage({ params }: DeckPageProps) {
   const { deckId } = await params;
   const deckIdNumber = parseInt(deckId, 10);
   const { data: user } = await getUser();
-  const { data: deck } = await getUserDeckById(deckIdNumber, user?.id as string);
+  const { data: deck } = await getUserDeckById(
+    deckIdNumber,
+    user?.id as string
+  );
   const { data: deckOwner } = await getUserWithId(deck?.userId as string);
   const { data: reviews } = await getReviewsByDeckId(deckIdNumber);
 
-  const primaryTag = deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
+  const primaryTag =
+    deck?.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
   if (!deck || (deck.visibility === "private" && deck.userId !== user?.id)) {
     return (
@@ -106,7 +117,11 @@ export default async function DeckPage({ params }: DeckPageProps) {
           </Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <Link
-            href={primaryTag === "General" ? "/explore" : `/explore/tag/${encodeURIComponent(primaryTag)}`}
+            href={
+              primaryTag === "General"
+                ? "/explore"
+                : `/explore/tag/${encodeURIComponent(primaryTag)}`
+            }
             className="flex items-center hover:text-foreground transition-colors"
           >
             <span>{primaryTag}</span>
@@ -179,7 +194,11 @@ export default async function DeckPage({ params }: DeckPageProps) {
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
         <Link
-          href={primaryTag === "General" ? "/explore" : `/explore/tag/${encodeURIComponent(primaryTag)}`}
+          href={
+            primaryTag === "General"
+              ? "/explore"
+              : `/explore/tag/${encodeURIComponent(primaryTag)}`
+          }
           className="flex items-center hover:text-foreground transition-colors"
         >
           <span>{primaryTag}</span>
@@ -195,10 +214,17 @@ export default async function DeckPage({ params }: DeckPageProps) {
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <h1 className="text-3xl font-bold">{deck.name}</h1>
-                <p className="text-muted-foreground mt-2">{deck.description || "No description"}</p>
+                <p className="text-muted-foreground mt-2">
+                  {deck.description || "No description"}
+                </p>
               </div>
               {user?.id === deck.userId && (
-                <Button asChild variant="outline" size="sm" className="shrink-0">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0"
+                >
                   <Link href={`/decks/${deck.id}/edit`}>
                     <Edit3 className="h-4 w-4" />
                   </Link>
@@ -241,7 +267,10 @@ export default async function DeckPage({ params }: DeckPageProps) {
                 </span>
                 {!user && (
                   <p className="text-xs text-muted-foreground">
-                    <Link href="/auth/login" className="text-primary hover:underline">
+                    <Link
+                      href="/auth/login"
+                      className="text-primary hover:underline"
+                    >
                       Sign in
                     </Link>{" "}
                     to track
@@ -250,7 +279,10 @@ export default async function DeckPage({ params }: DeckPageProps) {
               </div>
             </div>
 
-            <Progress value={user ? masteryProgress : 0} className="w-full h-2" />
+            <Progress
+              value={user ? masteryProgress : 0}
+              className="w-full h-2"
+            />
           </div>
         </div>
 
@@ -261,7 +293,7 @@ export default async function DeckPage({ params }: DeckPageProps) {
                 Deck Statistics
               </h3>
               {user?.id === deck.userId && (
-                <Link 
+                <Link
                   href={`/decks/${deck.id}/stats`}
                   className="text-primary hover:text-primary/80 transition-colors"
                   title="View detailed statistics"
@@ -336,7 +368,12 @@ export default async function DeckPage({ params }: DeckPageProps) {
                   {deck.flashcards?.length || 0} cards
                 </span>
                 {user?.id === deck.userId && (
-                  <Button asChild variant="outline" size="sm" className="whitespace-nowrap">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="whitespace-nowrap"
+                  >
                     <Link href={`/decks/${deck.id}/flashcards`}>
                       <Edit3 className="h-4 w-4 mr-2" />
                       Manage

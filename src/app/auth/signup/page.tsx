@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
         width: 1200,
         height: 630,
         alt: "Felinify Sign Up",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     description:
       "Create your Felinify account and start using AI-powered flashcards for focused, fast learning.",
     images: [
-      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
     ],
   },
 };

@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     url: "/explore",
     images: [
       {
-        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
         width: 1200,
         height: 630,
         alt: "Explore Flashcard Decks - Felinify",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     description:
       "Discover thousands of high-quality flashcard decks created by students, educators, and professionals worldwide.",
     images: [
-      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
     ],
   },
 };
@@ -220,16 +220,18 @@ export default async function Explore() {
 
         {featuredDecks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {featuredDecks.slice(0, 4).map((deck) => (
-            <ExploreDeckCard key={deck.id} deck={deck as Deck} />
-          ))}
+            {featuredDecks.slice(0, 4).map((deck) => (
+              <ExploreDeckCard key={deck.id} deck={deck as Deck} />
+            ))}
           </div>
         ) : (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
               <CardsIcon className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">No Recently Added Decks</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              No Recently Added Decks
+            </h3>
             <p className="text-muted-foreground">
               Start studying to see recently added decks
             </p>

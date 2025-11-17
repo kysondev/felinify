@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "Felinify",
     images: [
       {
-        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+        url: "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
         width: 1200,
         height: 630,
         alt: "Felinify - AI Flashcards For Focused, Fast Learning",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     description:
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
     images: [
-      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1756332486/New_Project_1_v4ukje.png",
+      "https://res.cloudinary.com/dyu7ogoqc/image/upload/v1763237407/New_Project_3_uij9md.png",
     ],
   },
   robots: {
