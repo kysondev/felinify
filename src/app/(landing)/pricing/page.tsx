@@ -1,4 +1,3 @@
-import { LandingNavbar } from "@components/landing-navbar";
 import { Footer } from "@components/landing/footer";
 import { PricingPagePlans } from "@components/landing/pricing-page-plans";
 import { Metadata } from "next";
@@ -15,9 +14,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="overflow-x-hidden">
-      <LandingNavbar />
-
+    <>
       <main className="px-4 max-w-[1200px] mx-auto py-16 space-y-16">
         <section className="text-center space-y-4">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
@@ -161,6 +158,6 @@ export default function PricingPage() {
       <div className="px-4 max-w-[1200px] mx-auto">
         <Footer />
       </div>
-    </div>
+    </>
   );
 }

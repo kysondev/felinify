@@ -4,7 +4,6 @@ import { FeatureShowcase } from "@components/landing/feature-showcase";
 import { Footer } from "@components/landing/footer";
 import { Hero } from "@components/landing/hero";
 import { HowItWorks } from "@components/landing/how-it-works";
-import { LandingNavbar } from "@components/landing-navbar";
 import { Pricing } from "@components/landing/pricing";
 import { FlashcardShowcase } from "@components/landing/flashcard-showcase";
 import { Metadata } from "next";
@@ -117,7 +116,7 @@ export default function Home() {
   };
 
   return (
-    <div className="overflow-x-hidden">
+    <>
       <JsonLd data={softwareAppSchema} />
       <JsonLd data={websiteSchema} />
       <JsonLd data={organizationSchema} />
@@ -128,7 +127,6 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
           <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary opacity-20 blur-[100px]"></div>
         </div>
-        <LandingNavbar />
         <div className="px-4 max-w-[1200px] mx-auto">
           <Hero />
         </div>
@@ -150,6 +148,6 @@ export default function Home() {
         <Cta />
         <Footer />
       </div>
-    </div>
+    </>
   );
 }

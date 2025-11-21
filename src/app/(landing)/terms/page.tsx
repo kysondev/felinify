@@ -1,4 +1,3 @@
-import { LandingNavbar } from "@components/landing-navbar";
 import { Footer } from "@components/landing/footer";
 import { Metadata } from "next";
 
@@ -13,9 +12,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="overflow-x-hidden">
-      <LandingNavbar />
-
+    <>
       <main className="px-4 max-w-[1200px] mx-auto py-16">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
@@ -247,6 +244,6 @@ export default function TermsPage() {
       <div className="px-4 max-w-[1200px] mx-auto">
         <Footer />
       </div>
-    </div>
+    </>
   );
 }
