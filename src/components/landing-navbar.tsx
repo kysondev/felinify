@@ -1,29 +1,10 @@
-import { Menu } from "lucide-react";
+"use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@ui/accordion";
-import { Button } from "@ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@ui/sheet";
+import { useState } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 interface MenuItem {
   title: string;
@@ -71,6 +52,15 @@ const LandingNavbar = ({
     signup: { title: "Sign up", url: "/auth/signup" },
   },
 }: Navbar1Props) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  const toggleAccordion = (title: string) => {
+    setOpenAccordion((prev) => (prev === title ? null : title));
+  };
+
+  const closeMobile = () => setMobileOpen(false);
+
   return (
     <section className="p-2 flex justify-center sticky top-0 z-50">
       <div className="w-full max-w-7xl mx-auto">
@@ -90,21 +80,25 @@ const LandingNavbar = ({
                   {logo.title}
                 </span>
               </Link>
-              <div className="flex items-center">
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    {menu.map((item) => renderMenuItem(item))}
-                  </NavigationMenuList>
-                </NavigationMenu>
+              <div className="flex items-center gap-2">
+                {menu.map((item) => (
+                  <DesktopMenuItem key={item.title} item={item} />
+                ))}
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button asChild variant="ghost" className="rounded-full">
-                <Link href={auth.login.url}>{auth.login.title}</Link>
-              </Button>
-              <Button asChild className="rounded-full">
-                <Link href={auth.signup.url}>Get Started</Link>
-              </Button>
+              <Link
+                href={auth.login.url}
+                className="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                {auth.login.title}
+              </Link>
+              <Link
+                href={auth.signup.url}
+                className="rounded-full px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground hover:opacity-90 transition-colors"
+              >
+                Get Started
+              </Link>
             </div>
           </nav>
 
@@ -123,55 +117,125 @@ const LandingNavbar = ({
                   {logo.title}
                 </span>
               </Link>
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    suppressHydrationWarning
-                  >
-                    <Menu className="size-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent
-                  className="overflow-y-auto"
-                  suppressHydrationWarning
-                >
-                  <SheetHeader>
-                    <SheetTitle>
-                      <Link href={logo.url} className="flex items-center gap-2">
-                        <Image
-                          src="/felinify.png"
-                          alt="Felinify"
-                          width={25}
-                          height={25}
-                        />
-                        <span className="text-lg font-semibold tracking-tighter text-primary">
-                          {logo.title}
-                        </span>
-                      </Link>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-6 p-4">
-                    <Accordion
-                      type="single"
-                      collapsible
-                      className="flex w-full flex-col gap-4"
-                    >
-                      {menu.map((item) => renderMobileMenuItem(item))}
-                    </Accordion>
+              <Button
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground hover:bg-muted transition-colors"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+                variant="outline"
+              >
+                <Menu className="size-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                    <div className="flex flex-col gap-3">
-                      <Button asChild variant="ghost" className="rounded-full w-full">
-                        <Link href={auth.login.url}>{auth.login.title}</Link>
-                      </Button>
-                      <Button asChild className="rounded-full w-full">
-                        <Link href={auth.signup.url}>Get Started</Link>
-                      </Button>
-                    </div>
+      <div className="lg:hidden">
+        <div
+          className={`fixed inset-0 z-40 bg-background/60 backdrop-blur-sm transition-opacity duration-150 ${
+            mobileOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+          onClick={closeMobile}
+          aria-hidden={!mobileOpen}
+        />
+        <div
+          className={`fixed left-0 right-0 top-14 z-50 px-2 transition-all duration-200 ${
+            mobileOpen
+              ? "translate-y-0 opacity-100 pointer-events-auto"
+              : "-translate-y-4 opacity-0 pointer-events-none"
+          }`}
+          aria-hidden={!mobileOpen}
+        >
+          <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card shadow-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/felinify.png"
+                  alt="Felinify"
+                  width={22}
+                  height={22}
+                />
+                <span className="text-base font-semibold tracking-tight text-primary">
+                  {logo.title}
+                </span>
+              </div>
+              <Button
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground hover:bg-muted transition-colors"
+                onClick={closeMobile}
+                variant="outline"
+              >
+                <X className="size-4" />
+              </Button>
+            </div>
+
+            <div className="p-4 flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
+              {menu.map((item) =>
+                item.items ? (
+                  <div
+                    key={item.title}
+                    className="rounded-lg border border-border bg-muted/20"
+                  >
+                    <Button
+                      className="w-full px-3 py-3 flex items-center justify-between text-left text-sm font-semibold"
+                      onClick={() => toggleAccordion(item.title)}
+                    >
+                      <span>{item.title}</span>
+                      <ChevronDown
+                        className={`size-4 text-muted-foreground transition-transform ${
+                          openAccordion === item.title ? "rotate-180" : ""
+                        }`}
+                      />
+                    </Button>
+                    {openAccordion === item.title && (
+                      <div className="border-t border-border">
+                        {item.items.map((subItem) => (
+                          <Link
+                            key={subItem.title}
+                            href={subItem.url}
+                            className="block px-4 py-3 hover:bg-muted text-sm"
+                            onClick={closeMobile}
+                          >
+                            <div className="font-medium">{subItem.title}</div>
+                            {subItem.description && (
+                              <p className="text-xs text-muted-foreground">
+                                {subItem.description}
+                              </p>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </SheetContent>
-              </Sheet>
+                ) : (
+                  <Link
+                    key={item.title}
+                    href={item.url}
+                    className="rounded-lg px-3 py-3 text-sm font-semibold hover:bg-muted"
+                    onClick={closeMobile}
+                  >
+                    {item.title}
+                  </Link>
+                )
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3 px-4 pb-4">
+              <Link
+                href={auth.login.url}
+                className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground border border-border hover:bg-muted transition-colors"
+                onClick={closeMobile}
+              >
+                {auth.login.title}
+              </Link>
+              <Link
+                href={auth.signup.url}
+                className="rounded-full px-4 py-2 text-center text-sm font-semibold bg-primary text-primary-foreground hover:opacity-90 transition-colors"
+                onClick={closeMobile}
+              >
+                Get Started
+              </Link>
             </div>
           </div>
         </div>
@@ -180,73 +244,45 @@ const LandingNavbar = ({
   );
 };
 
-const renderMenuItem = (item: MenuItem) => {
+const DesktopMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items) {
     return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
-          {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    );
-  }
-
-  return (
-    <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
-        {item.title}
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  );
-};
-
-const renderMobileMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
+      <div className="relative group">
+        <Button className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium hover:bg-muted transition-colors">
           {item.title}
-        </AccordionTrigger>
-        <AccordionContent className="mt-2">
-          {item.items.map((subItem) => (
-            <SubMenuLink key={subItem.title} item={subItem} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
+        </Button>
+        <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 absolute left-0 top-full mt-2 w-72 rounded-lg border border-border bg-popover shadow-lg">
+          <div className="py-2">
+            {item.items.map((subItem) => (
+              <Link
+                key={subItem.title}
+                href={subItem.url}
+                className="flex gap-3 px-4 py-3 hover:bg-muted transition-colors"
+              >
+                <div className="text-foreground">{subItem.icon}</div>
+                <div>
+                  <div className="text-sm font-semibold">{subItem.title}</div>
+                  {subItem.description && (
+                    <p className="text-xs text-muted-foreground">
+                      {subItem.description}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Link key={item.title} href={item.url} className="text-md font-semibold">
+    <Link
+      href={item.url}
+      className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium hover:bg-muted transition-colors"
+    >
       {item.title}
     </Link>
-  );
-};
-
-const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  return (
-    <a
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
-      href={item.url}
-    >
-      <div className="text-foreground">{item.icon}</div>
-      <div>
-        <div className="text-sm font-semibold">{item.title}</div>
-        {item.description && (
-          <p className="text-sm leading-snug text-muted-foreground">
-            {item.description}
-          </p>
-        )}
-      </div>
-    </a>
   );
 };
 
