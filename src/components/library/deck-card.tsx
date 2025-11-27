@@ -16,9 +16,10 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
   const flashcardCount = deck.flashcards?.length || 0;
 
   return (
-    <Card className="group relative overflow-hidden w-full h-full flex flex-col rounded-xl border border-border bg-card hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+    <Card className="group relative overflow-hidden w-full h-full min-h-[268px] flex flex-col rounded-xl border border-border bg-card hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+      <div className="pointer-events-none absolute -top-6 -right-6 w-28 h-28 rounded-full bg-gradient-to-br from-primary/15 to-transparent opacity-70 blur-2xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-110" />
       <div
-        className="relative h-32 bg-muted/40 bg-cover bg-center bg-no-repeat"
+        className="relative h-28 bg-muted/40 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: deck.imageUrl ? `url(${deck.imageUrl})` : undefined,
         }}
@@ -31,9 +32,9 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
         </div>
       </div>
 
-      <CardContent className="p-5 flex flex-col gap-3 flex-1">
+      <CardContent className="p-6 flex flex-col gap-3 flex-1">
         <Link href={`/decks/${deck.id}`} className="block">
-          <h3 className="font-semibold text-base text-foreground mb-1 line-clamp-2 transition-colors group-hover:text-primary">
+          <h3 className="font-semibold text-lg text-foreground mb-1 line-clamp-2 transition-colors group-hover:text-primary">
             {deck.name}
           </h3>
         </Link>
