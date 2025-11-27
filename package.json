@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:docker": "docker compose --project-directory . -f infrastructure/docker-compose.yml build",
     "start": "next start",
     "lint": "next lint"
   },
