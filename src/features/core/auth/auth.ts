@@ -1,7 +1,6 @@
 import argon2 from "argon2";
 import { betterAuth } from "better-auth";
 import { admin, openAPI, twoFactor } from "better-auth/plugins";
-import { redis } from "src/lib/redis";
 import { db } from "src/lib/db";
 import { stripe } from "@better-auth/stripe";
 import { plans } from "@subscription/config/plans.config";
@@ -29,39 +28,6 @@ export const auth = betterAuth({
       usernameSet: {
         type: "boolean",
       },
-    },
-  },
-  secondaryStorage: {
-    async get(key: string): Promise<string | null> {
-      try {
-        const value = await redis.get(key);
-
-        if (value !== null && typeof value === "object") {
-          return JSON.stringify(value);
-        }
-        return String(value);
-      } catch (error) {
-        console.error(`Error retrieving key ${key} from Redis:`, error);
-        return null;
-      }
-    },
-    async set(key: string, value: string, ttl?: number): Promise<void> {
-      try {
-        if (ttl) {
-          await redis.setex(key, ttl, value);
-        } else {
-          await redis.set(key, value);
-        }
-      } catch (error) {
-        console.error(`Error setting key ${key} in Redis:`, error);
-      }
-    },
-    async delete(key: string): Promise<void> {
-      try {
-        await redis.del(key);
-      } catch (error) {
-        console.error(`Error deleting key ${key} from Redis:`, error);
-      }
     },
   },
   advanced: {

@@ -1,6 +1,10 @@
 "use client";
 import { authClient } from "@auth/auth-client";
-import { signInSchema, signUpSchema, usernameSchema } from "@auth/validations/auth.schema";
+import {
+  signInSchema,
+  signUpSchema,
+  usernameSchema,
+} from "@auth/validations/auth.schema";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import { AUTH_CONFIG, AUTH_DISABLED_MESSAGES } from "@auth/config/auth.config";
@@ -171,7 +175,7 @@ export const forgotPassword = async (formData: FormData) => {
       toast.error("Please fill all the fields");
       return;
     }
-    const { error } = await authClient.forgetPassword({
+    const { error } = await authClient.requestPasswordReset({
       email,
       redirectTo: "/auth/reset-password",
     });
@@ -248,14 +252,17 @@ export const setupUsername = async (username: string) => {
     return { success: true, message: "Username set successfully" };
   } catch (error) {
     console.error("Error setting up username:", error);
-    return { success: false, message: "Something went wrong. Please try again." };
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 };
 
 export const initializeUsername = async () => {
   try {
     const { data: session } = await authClient.getSession();
-    
+
     if (!session?.user) {
       return { success: false, message: "User not authenticated" };
     }
@@ -263,18 +270,26 @@ export const initializeUsername = async () => {
     const user = session.user;
 
     if (user.usernameSet) {
-      return { success: true, message: "Username already set", redirectTo: "/home" };
+      return {
+        success: true,
+        message: "Username already set",
+        redirectTo: "/home",
+      };
     }
 
     if (!user.name) {
-      return { success: false, message: "No name available from social provider", redirectTo: "/auth/setup-username" };
+      return {
+        success: false,
+        message: "No name available from social provider",
+        redirectTo: "/auth/setup-username",
+      };
     }
 
     const validation = usernameSchema.safeParse({ username: user.name });
-    
+
     if (validation.success) {
       const availabilityCheck = await checkUserNameAvailability(user.name);
-      
+
       if (availabilityCheck.success) {
         const { error } = await authClient.updateUser({
           name: user.name,
@@ -285,12 +300,16 @@ export const initializeUsername = async () => {
           return { success: false, message: "Failed to update username" };
         }
 
-        return { success: true, message: "Username set automatically", redirectTo: "/home" };
+        return {
+          success: true,
+          message: "Username set automatically",
+          redirectTo: "/home",
+        };
       } else {
         const { customAlphabet } = await import("nanoid");
         const nanoid = customAlphabet("0123456789", 4);
         const newUsername = `${user.name}${nanoid()}`;
-        
+
         const { error } = await authClient.updateUser({
           name: newUsername,
           usernameSet: true,
@@ -300,10 +319,18 @@ export const initializeUsername = async () => {
           return { success: false, message: "Failed to update username" };
         }
 
-        return { success: true, message: "Username set automatically with suffix", redirectTo: "/home" };
+        return {
+          success: true,
+          message: "Username set automatically with suffix",
+          redirectTo: "/home",
+        };
       }
     } else {
-      return { success: false, message: "Name is not a valid username", redirectTo: "/auth/setup-username" };
+      return {
+        success: false,
+        message: "Name is not a valid username",
+        redirectTo: "/auth/setup-username",
+      };
     }
   } catch (error) {
     console.error("Error initializing username:", error);
