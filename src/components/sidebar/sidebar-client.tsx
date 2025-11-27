@@ -39,11 +39,21 @@ export const SidebarClient = ({
   user,
   userEnergy,
 }: SidebarClientProps) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const saved = localStorage.getItem("felinify-sidebar-collapsed");
+    return saved === "true";
+  });
   const planDetails = getPlanDetails(subscription as Subscription);
 
   const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+    setCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("felinify-sidebar-collapsed", String(next));
+      }
+      return next;
+    });
   };
   const SignOutButton = ({ className }: { className?: string }) => {
     return (
