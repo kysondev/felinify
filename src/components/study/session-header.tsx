@@ -31,6 +31,7 @@ interface SessionHeaderProps {
   newMastery: number;
   initialMastery: number;
   isSaving: boolean;
+  minimal?: boolean;
 }
 
 /*
@@ -51,9 +52,55 @@ export const SessionHeader = ({
   newMastery,
   initialMastery,
   isSaving,
+  minimal = false,
 }: SessionHeaderProps) => (
   <>
-    {currentRound && numOfRounds ? (
+    {minimal ? (
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold truncate">
+            {deck.name}
+          </h1>
+          <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
+            {deck.description || "No description"}
+          </p>
+        </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex items-center gap-1 px-2 md:px-3 py-1 md:py-2 h-8 md:h-10 text-primary border-primary/30 hover:bg-primary/10"
+            >
+              <Save className="h-4 w-4" />
+              <span className="hidden sm:inline">End Session</span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>End Study Session?</AlertDialogTitle>
+              <AlertDialogDescription className="flex flex-col gap-1">
+                Your progress will be saved.
+                <span>You&apos;ve studied for {formatTime(studyTime)}.</span>
+                <span className="text-primary font-medium">
+                  You&apos;ll gain {newMastery - initialMastery}% mastery from
+                  this session.
+                </span>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Continue Studying</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleEndSession}
+                disabled={isSaving}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {isSaving ? "Saving..." : "Save & End Session"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    ) : currentRound && numOfRounds ? (
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -164,18 +211,24 @@ export const SessionHeader = ({
       </div>
     )}
 
-    <div className="flex items-center justify-between mb-4">
-      <div>
-        <h1 className="text-xl md:text-2xl font-bold truncate">{deck.name}</h1>
-        <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
-          {deck.description || "No description"}
-        </p>
-      </div>
-    </div>
+    {!minimal && (
+      <>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold truncate">
+              {deck.name}
+            </h1>
+            <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
+              {deck.description || "No description"}
+            </p>
+          </div>
+        </div>
 
-    <Progress
-      value={totalProgress}
-      className="w-full h-2 rounded-full overflow-hidden mb-6 md:mb-8"
-    />
+        <Progress
+          value={totalProgress}
+          className="w-full h-2 rounded-full overflow-hidden mb-6 md:mb-8"
+        />
+      </>
+    )}
   </>
 );
