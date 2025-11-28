@@ -62,7 +62,7 @@ const LandingNavbar = ({
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <section className="p-2 flex justify-center sticky top-0 z-50">
+    <section className="absolute inset-x-0 top-0 z-50 p-2 flex justify-center">
       <div className="w-full max-w-7xl mx-auto">
         <div className="bg-background/95 backdrop-blur-lg border border-border rounded-full shadow-lg transition-shadow duration-300 px-3 sm:px-6 py-2 sm:py-3">
           {/* Desktop Menu */}

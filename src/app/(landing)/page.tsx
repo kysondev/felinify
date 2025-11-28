@@ -121,7 +121,7 @@ export default function Home() {
       <JsonLd data={websiteSchema} />
       <JsonLd data={organizationSchema} />
 
-      <div className="relative">
+      <div className="relative pt-12 sm:pt-20">
         <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#80808015_1px,transparent_1px),linear-gradient(to_bottom,#80808015_1px,transparent_1px)] bg-[size:48px_48px]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,transparent_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,transparent_70%)]"></div>
           <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background via-background/50 to-transparent"></div>

@@ -5,7 +5,7 @@ import { Search, Sparkles } from "lucide-react";
 
 export default function Loading() {
   return (
-    <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6 mt-16">
+    <div className="container max-w-7xl mx-auto pt-40 pb-10 px-4 md:px-6">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-medium text-sm mb-4">
           <Sparkles className="w-4 h-4" />
@@ -259,4 +259,3 @@ export default function Loading() {
     </div>
   );
 }
-

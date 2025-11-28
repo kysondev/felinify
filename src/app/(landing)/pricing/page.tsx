@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <>
-      <main className="px-4 max-w-[1200px] mx-auto py-16 space-y-16">
+      <main className="px-4 max-w-[1200px] mx-auto pt-40 pb-16 space-y-16">
         <section className="text-center space-y-4">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
             Pick the Felinify plan that fits you

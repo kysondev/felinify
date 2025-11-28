@@ -4,6 +4,7 @@ import { MobileNavbar } from "@components/mobile-navbar";
 import { MobileBottomNav } from "@components/mobile-bottom-nav";
 import { DesktopNavbar } from "@components/desktop-navbar";
 import { LandingNavbar } from "@components/landing-navbar";
+import { Footer } from "@components/landing/footer";
 
 export default async function ExploreLayout({
   children,
@@ -44,7 +45,10 @@ export default async function ExploreLayout({
       <div className="relative">
         <LandingNavbar />
       </div>
-      <div className="px-4 max-w-[1200px] mx-auto">{children}</div>
+      <div className="px-4 max-w-[1200px] mx-auto">
+        {children}
+        <Footer />
+      </div>
     </div>
   );
 }
