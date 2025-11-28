@@ -74,7 +74,7 @@ export default function FlipStudyPage() {
   return (
     <div className="min-h-svh bg-background">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-8 md:py-10 space-y-5">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center justify-between gap-3 flex-wrap min-w-0">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold tracking-wide uppercase text-primary shadow-sm">
               Flip &amp; Learn
@@ -83,16 +83,15 @@ export default function FlipStudyPage() {
               Quick recall, one card at a time.
             </span>
           </div>
-          <div className="text-xs text-muted-foreground">
-            Deck:{" "}
-            <span className="font-semibold text-foreground">
+          <div className="hidden sm:block text-xs text-muted-foreground min-w-0 flex-1 text-right">
+            <span className="font-semibold text-foreground truncate inline-block max-w-[55vw] sm:max-w-[260px] align-middle">
               {state.deck?.name}
             </span>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.7fr,1fr] items-stretch">
-          <div className="rounded-2xl border border-border bg-card shadow-sm flex flex-col h-full">
+        <div className="grid gap-6 lg:grid-cols-[1.7fr,1fr] items-stretch min-w-0">
+          <div className="rounded-2xl border border-border bg-card shadow-sm flex flex-col h-full min-w-0">
             <div className="border-b border-border bg-muted px-4 sm:px-5 py-3.5 sm:py-4 rounded-t-2xl">
               <SessionHeader
                 deck={{
@@ -160,7 +159,7 @@ export default function FlipStudyPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm flex flex-col h-full">
+          <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm flex flex-col h-full min-w-0">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">

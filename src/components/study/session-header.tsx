@@ -56,12 +56,12 @@ export const SessionHeader = ({
 }: SessionHeaderProps) => (
   <>
     {minimal ? (
-      <div className="flex items-start justify-between gap-4">
-        <div>
+      <div className="flex items-start justify-between gap-4 min-w-0">
+        <div className="min-w-0">
           <h1 className="text-xl md:text-2xl font-bold truncate">
             {deck.name}
           </h1>
-          <p className="text-muted-foreground text-sm md:text-base line-clamp-1">
+          <p className="text-muted-foreground text-sm md:text-base truncate">
             {deck.description || "No description"}
           </p>
         </div>
