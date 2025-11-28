@@ -9,6 +9,8 @@ import {
   StudyLoadingScreen,
 } from "@components/study";
 import { Progress } from "@ui/progress";
+import { Button } from "@ui/button";
+import { CheckCircle2, Flag } from "lucide-react";
 import { formatTime } from "@common/utils/date.utils";
 import NoAccessState from "@components/study/states/no-access-state";
 import { FlipCard } from "@components/study/flip-card";
@@ -75,7 +77,7 @@ export default function FlipStudyPage() {
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold tracking-wide uppercase text-primary shadow-sm">
-              Flip mode
+              Flip &amp; Learn
             </span>
             <span className="text-sm text-muted-foreground">
               Quick recall, one card at a time.
@@ -120,7 +122,28 @@ export default function FlipStudyPage() {
                 onToggle={actions.onFlip}
               />
 
-              <div className="rounded-xl border border-border bg-muted px-3 sm:px-4 py-3 sm:py-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button
+                  variant="default"
+                  className="w-full justify-center rounded-lg shadow-sm"
+                  onClick={() => {}}
+                  title="Mark as learned (coming soon)"
+                >
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  Mark as learned
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-center rounded-lg border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground shadow-sm"
+                  onClick={() => {}}
+                  title="Mark for review (coming soon)"
+                >
+                  <Flag className="h-4 w-4 mr-2" />
+                  Need review
+                </Button>
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted px-3 sm:px-4 py-3 sm:py-3.5 space-y-3">
                 <div className="flex items-center justify-between text-sm font-medium text-foreground mb-2">
                   <span>Card controls</span>
                   <span className="text-xs text-muted-foreground">
@@ -132,6 +155,7 @@ export default function FlipStudyPage() {
                   onNext={actions.onNext}
                   onShuffle={actions.onShuffle}
                 />
+
               </div>
             </div>
           </div>
