@@ -300,7 +300,6 @@ const Hero = () => {
                   key={tech.name}
                   className="flex items-center gap-3"
                   variants={itemVariants}
-                  whileHover={{ scale: 1.1 }}
                   transition={{ delay: index * 0.1 }}
                 >
                   <img
