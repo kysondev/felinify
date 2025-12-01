@@ -1,7 +1,7 @@
 import { Button } from "@ui/button";
 import { Card, CardContent } from "@ui/card";
 import { Deck } from "db/types/models.types";
-import { CardsIcon } from "@phosphor-icons/react";
+import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { Badge } from "@ui/badge";
 import { Progress } from "@ui/progress";
@@ -32,9 +32,12 @@ export const DeckCard = ({ deck }: { deck: Deck }) => {
         </div>
       </div>
 
-      <CardContent className="p-6 flex flex-col gap-3 flex-1">
+      <CardContent className="p-6 flex flex-col gap-2 flex-1">
         <Link href={`/decks/${deck.id}`} className="block">
-          <h3 className="font-semibold text-lg text-foreground mb-1 line-clamp-2 transition-colors group-hover:text-primary">
+          <h3
+            className="font-semibold text-lg text-foreground mb-0.5 truncate transition-colors group-hover:text-primary"
+            title={deck.name}
+          >
             {deck.name}
           </h3>
         </Link>
