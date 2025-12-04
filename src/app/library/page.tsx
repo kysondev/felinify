@@ -58,10 +58,6 @@ export default async function LibraryPage() {
     safeDecks.reduce((sum, deck) => sum + (deck.flashcards?.length || 0), 0) ||
     0;
 
-  const getUserFirstName = (fullName: string) => {
-    return fullName?.split(" ")[0] || "there";
-  };
-
   const getDeckActivityDate = (deck: Deck) =>
     deck.progress?.lastStudied || deck.updatedAt || deck.createdAt;
 
