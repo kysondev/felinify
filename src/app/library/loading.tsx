@@ -1,15 +1,26 @@
 import { Skeleton } from "@ui/skeleton";
 import { Card, CardContent } from "@ui/card";
 import { Button } from "@ui/button";
+import { Input } from "@ui/Input";
 import Link from "next/link";
-import { ChevronRight, Home, Library, Search, Filter, PlusCircle } from "lucide-react";
+import {
+  ChevronRight,
+  Home,
+  Library,
+  Search,
+  Filter,
+  PlusCircle,
+} from "lucide-react";
 
 export default function LibraryLoading() {
   return (
     <div className="min-h-screen bg-background mt-2">
       <div className="container max-w-7xl mx-auto py-6 px-4 md:py-10 md:px-6">
         <nav className="flex items-center text-sm text-muted-foreground mb-6">
-          <Link href="/home" className="flex items-center hover:text-foreground transition-colors">
+          <Link
+            href="/home"
+            className="flex items-center hover:text-foreground transition-colors"
+          >
             <Home className="h-4 w-4 mr-1" />
             <span>Home</span>
           </Link>
@@ -24,21 +35,27 @@ export default function LibraryLoading() {
         </nav>
 
         <div className="mb-8 space-y-2">
-          <Skeleton className="h-8 w-64" />
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-4 w-16" />
-          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+            Personal Deck Library
+          </h1>
+          <p className="text-muted-foreground text-sm md:text-base leading-relaxed flex flex-wrap items-center gap-1">
+            <span>Your personal library has</span>
+            <span className="inline-block h-4 w-8 rounded-sm bg-muted animate-pulse align-middle" />
+            <span>decks and</span>
+            <span className="inline-block h-4 w-10 rounded-sm bg-muted animate-pulse align-middle" />
+            <span>cards.</span>
+          </p>
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
           <div className="w-full lg:max-w-[420px]">
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4">
-                <Search className="h-4 w-4" />
-              </div>
-              <Skeleton className="h-10 w-full rounded-full" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search your decks..."
+                className="pl-10 w-full bg-white rounded-full"
+                disabled
+              />
             </div>
           </div>
 
@@ -52,7 +69,10 @@ export default function LibraryLoading() {
               <Filter className="h-4 w-4 mr-2" />
               <span>Filter</span>
             </Button>
-            <Button className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 px-2.5 sm:px-4 w-full sm:w-auto justify-center" disabled>
+            <Button
+              className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 px-2.5 sm:px-4 w-full sm:w-auto justify-center"
+              disabled
+            >
               <PlusCircle className="h-4 w-4 mr-2" />
               <span>Create</span>
             </Button>
@@ -62,12 +82,19 @@ export default function LibraryLoading() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">Recent decks</p>
-              <h2 className="text-xl font-semibold text-foreground">Jump back into your studies</h2>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                Recent decks
+              </p>
+              <h2 className="text-xl font-semibold text-foreground">
+                Jump back into your studies
+              </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Card key={`recent-skel-${i}`} className="overflow-hidden h-full rounded-xl border border-border bg-card">
+                <Card
+                  key={`recent-skel-${i}`}
+                  className="overflow-hidden h-full rounded-xl border border-border bg-card"
+                >
                   <CardContent className="p-0 h-full">
                     <div className="flex h-full items-stretch min-h-[96px]">
                       <Skeleton className="w-24 sm:w-28 h-full min-h-[96px]" />
@@ -98,12 +125,19 @@ export default function LibraryLoading() {
 
           <div className="space-y-3">
             <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">All decks</p>
-              <h2 className="text-xl font-semibold text-foreground">Your collection</h2>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                All decks
+              </p>
+              <h2 className="text-xl font-semibold text-foreground">
+                Your collection
+              </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Card key={`deck-skel-${i}`} className="rounded-xl border border-border">
+                <Card
+                  key={`deck-skel-${i}`}
+                  className="rounded-xl border border-border"
+                >
                   <CardContent className="p-5 space-y-4">
                     <div className="space-y-2">
                       <Skeleton className="h-5 w-3/4" />
@@ -128,12 +162,19 @@ export default function LibraryLoading() {
 
           <div className="space-y-3">
             <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">Suggested decks</p>
-              <h2 className="text-xl font-semibold text-foreground">Explore these picks</h2>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                Suggested decks
+              </p>
+              <h2 className="text-xl font-semibold text-foreground">
+                Explore these picks
+              </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Card key={`suggested-skel-${i}`} className="overflow-hidden h-full rounded-xl border border-border bg-card">
+                <Card
+                  key={`suggested-skel-${i}`}
+                  className="overflow-hidden h-full rounded-xl border border-border bg-card"
+                >
                   <CardContent className="p-0 h-full">
                     <div className="flex h-full items-stretch min-h-[96px]">
                       <Skeleton className="w-24 sm:w-28 h-full min-h-[96px]" />
