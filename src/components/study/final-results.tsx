@@ -36,7 +36,7 @@ export const FinalResults = ({
     if (onFinish) {
       await onFinish();
     } else {
-      redirect("/explore/library");
+      redirect("/library");
     }
   };
 
@@ -79,7 +79,7 @@ export const FinalResults = ({
                   <span className="font-medium">Total Questions</span>
                   <span className="font-semibold">{totalCards}</span>
                 </div>
-              </div>  
+              </div>
 
               <div className="flex items-center justify-between">
                 <span className="font-medium">Study Time</span>
