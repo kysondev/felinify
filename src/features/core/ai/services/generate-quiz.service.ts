@@ -48,7 +48,8 @@ Respond ONLY in valid JSON format:
   "id": "${flashcard.id}"
 }
 Rules:
-- Create a question that tests understanding but isn't identical to the flashcard question
+- Create a question that tests understanding of the term and definition/answer
+- The question must only include the information that is included in the flashcard
 - Include exactly 4 plausible options with only one correct
 - Make the question clear and concise
 - Position the correct answer randomly`;
@@ -57,7 +58,7 @@ Rules:
         model: openai("gpt-4o-mini"),
         system,
         temperature: 0.7,
-        prompt: `Flashcard: Q: ${flashcard.term} | A: ${flashcard.definition}`,
+        prompt: `Flashcard: T: ${flashcard.term} | D: ${flashcard.definition}`,
       });
 
       const cleaned = text.trim().replace(/^```json|```$/g, "");
