@@ -11,6 +11,10 @@ import {
   sendTwoFAEmail,
   sendVerificationEmail,
 } from "@email/services/email.service";
+import {
+  revalidateLibrary,
+  revalidateSettings,
+} from "@common/utils/revalidation.utils";
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -62,12 +66,8 @@ export const auth = betterAuth({
           try {
             if (subscription && subscription.referenceId) {
               await refillEnergyForUser(subscription.referenceId);
-              fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
-              );
-              fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
-              );
+              revalidateLibrary();
+              revalidateSettings();
             }
           } catch (error) {
             console.error(
@@ -80,12 +80,8 @@ export const auth = betterAuth({
           try {
             if (subscription && subscription.referenceId) {
               await refillEnergyForUser(subscription.referenceId);
-              fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
-              );
-              fetch(
-                `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
-              );
+              revalidateLibrary();
+              revalidateSettings();
             }
           } catch (error) {
             console.error(
@@ -95,12 +91,8 @@ export const auth = betterAuth({
           }
         },
         onSubscriptionCancel: async () => {
-          fetch(
-            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
-          );
-          fetch(
-            `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
-          );
+          revalidateLibrary();
+          revalidateSettings();
         },
       },
     }),

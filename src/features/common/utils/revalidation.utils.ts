@@ -4,51 +4,67 @@
 
 export const revalidateDeckPaths = async (deckId: number) => {
   const paths = [
-    '/library',
-    '/explore',
+    "/library",
+    "/explore",
     `/decks/edit/${deckId}`,
     `/decks/${deckId}`,
   ];
 
   await Promise.all(
-    paths.map(path => fetch(`/api/revalidate?path=${path}`))
+    paths.map((path) =>
+      fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=${path}`)
+    )
   );
 };
 
 export const revalidateDeckWithFlashcards = async (deckId: number) => {
   const paths = [
-    '/library',
-    '/explore',
+    "/library",
+    "/explore",
     `/decks/edit/${deckId}`,
     `/decks/${deckId}`,
     `/decks/${deckId}/flashcards`,
   ];
 
   await Promise.all(
-    paths.map(path => fetch(`/api/revalidate?path=${path}`))
+    paths.map((path) =>
+      fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=${path}`)
+    )
   );
 };
 
 export const revalidateLibrary = async () => {
-  await fetch('/api/revalidate?path=/library');
+  await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/library`
+  );
 };
 
 export const revalidateExplore = async () => {
-  await fetch('/api/revalidate?path=/explore');
+  await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/explore`
+  );
+};
+
+export const revalidateSettings = async () => {
+  await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/settings`
+  );
 };
 
 export const revalidateStudyPaths = async (deckId: number) => {
   const paths = [
-    '/library',
-    '/explore',
+    "/library",
+    "/explore",
     `/decks/${deckId}`,
     `/deck/edit/${deckId}`,
-    '/study/challenge',
-    '/study/flip',
-    '/study/quiz',
+    "/study/challenge",
+    "/study/flip",
+    "/study/quiz",
   ];
 
   await Promise.all(
-    paths.map(path => fetch(`/api/revalidate?path=${path}`))
+    paths.map((path) =>
+      fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=${path}`)
+    )
   );
 };
