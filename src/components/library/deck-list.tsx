@@ -23,6 +23,8 @@ import { useState, useEffect } from "react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { Badge } from "@ui/badge";
 import Link from "next/link";
+import formatActivityDate from "@deck/utils/format-activity-date.utils";
+import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
 
 export const DeckList = ({
   decks,
@@ -43,18 +45,6 @@ export const DeckList = ({
   const [currentPage, setCurrentPage] = useState(0);
   const decksPerPage = 8;
   const safeRecentDecks = recentDecks || [];
-
-  const getDeckActivityDate = (deck: Deck) =>
-    deck.progress?.lastStudied || deck.updatedAt || deck.createdAt;
-
-  const formatActivityDate = (
-    value: Date | string | null | undefined
-  ): string => {
-    if (!value) return "No recent activity";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "No recent activity";
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  };
 
   useEffect(() => {
     setCurrentPage(0);

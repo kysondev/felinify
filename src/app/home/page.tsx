@@ -15,6 +15,8 @@ import {
   NotebookPen,
   PlusCircle,
 } from "lucide-react";
+import formatActivityDate from "@deck/utils/format-activity-date.utils";
+import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
 
 export const metadata: Metadata = {
   title: "Home | Felinify",
@@ -76,16 +78,6 @@ export default async function HomePage() {
   })();
 
   const firstName = user?.name?.split(" ")[0] || "there";
-
-  const getDeckActivityDate = (deck: Deck) =>
-    deck.progress?.lastStudied || deck.updatedAt || deck.createdAt;
-
-  const formatActivityDate = (value: Date | string | null | undefined) => {
-    if (!value) return "No recent activity";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "No recent activity";
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  };
 
   const renderDeckPreview = (deck: Deck, badgeLabel?: string) => (
     <Card
