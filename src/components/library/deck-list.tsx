@@ -41,7 +41,7 @@ export const DeckList = ({
 }) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
-  const decksPerPage = 9;
+  const decksPerPage = 8;
   const safeRecentDecks = recentDecks || [];
 
   const getDeckActivityDate = (deck: Deck) =>
@@ -70,21 +70,32 @@ export const DeckList = ({
           <div
             className="w-24 sm:w-28 h-full min-h-[96px] bg-muted/60 bg-cover bg-center flex-shrink-0"
             style={{
-              backgroundImage: deck.imageUrl ? `url(${deck.imageUrl})` : undefined,
+              backgroundImage: deck.imageUrl
+                ? `url(${deck.imageUrl})`
+                : undefined,
             }}
           />
           <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col gap-2">
             <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-muted-foreground">
-              <Badge variant="secondary" className="text-[11px] px-2 py-0.5 rounded-md">
+              <Badge
+                variant="secondary"
+                className="text-[11px] px-2 py-0.5 rounded-md"
+              >
                 {badgeLabel}
               </Badge>
-              <Badge variant="secondary" className="text-[11px] px-2 py-0.5 rounded-md">
+              <Badge
+                variant="secondary"
+                className="text-[11px] px-2 py-0.5 rounded-md"
+              >
                 {(deck.tags && deck.tags[0]?.name) || "General"}
               </Badge>
             </div>
 
             <div className="space-y-0.5">
-              <h3 className="text-base font-semibold text-foreground truncate" title={deck.name}>
+              <h3
+                className="text-base font-semibold text-foreground truncate"
+                title={deck.name}
+              >
                 {deck.name}
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-1">
@@ -102,7 +113,10 @@ export const DeckList = ({
               </div>
 
               <Button asChild variant="outline" size="sm" className="gap-1">
-                <Link href={`/decks/${deck.id}`} className="inline-flex items-center gap-1">
+                <Link
+                  href={`/decks/${deck.id}`}
+                  className="inline-flex items-center gap-1"
+                >
                   Open
                   <ArrowRight className="h-4 w-4" />
                 </Link>
