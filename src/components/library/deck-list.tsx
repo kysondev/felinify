@@ -9,22 +9,12 @@ import {
   DialogTrigger,
 } from "@ui/dialog";
 import { Card, CardContent } from "@ui/card";
-import {
-  ChevronLeft,
-  ChevronRight,
-  PlusCircle,
-  Clock,
-  ArrowRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
 import { CreateDeckForm } from "./create-deck-form";
 import { Button } from "@ui/button";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
-import { Badge } from "@ui/badge";
-import Link from "next/link";
-import formatActivityDate from "@deck/utils/format-activity-date.utils";
-import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
 
 export const DeckList = ({
   decks,
