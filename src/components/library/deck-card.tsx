@@ -12,14 +12,9 @@ import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
 type DeckCardProps = {
   deck: Deck;
   variant?: "default" | "secondary";
-  badgeLabel?: string;
 };
 
-export const DeckCard = ({
-  deck,
-  variant = "default",
-  badgeLabel,
-}: DeckCardProps) => {
+export const DeckCard = ({ deck, variant = "default" }: DeckCardProps) => {
   const deckTag =
     deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
@@ -42,14 +37,6 @@ export const DeckCard = ({
             />
             <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col gap-2">
               <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-muted-foreground">
-                {badgeLabel && (
-                  <Badge
-                    variant="secondary"
-                    className="text-[11px] px-2 py-0.5 rounded-md"
-                  >
-                    {badgeLabel}
-                  </Badge>
-                )}
                 <Badge
                   variant="secondary"
                   className="text-[11px] px-2 py-0.5 rounded-md"

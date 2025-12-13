@@ -100,12 +100,7 @@ export const DeckList = ({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {recentToShow.map((deck) => (
-              <DeckCard
-                key={deck.id}
-                deck={deck}
-                variant="secondary"
-                badgeLabel="Recent"
-              />
+              <DeckCard key={deck.id} deck={deck} variant="secondary" />
             ))}
           </div>
           <div className="border-t border-border" />
@@ -260,12 +255,7 @@ export const DeckList = ({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {suggestedDecks.map((deck) => (
-              <DeckCard
-                key={deck.id}
-                deck={deck}
-                variant="secondary"
-                badgeLabel="Suggested"
-              />
+              <DeckCard key={deck.id} deck={deck} variant="secondary" />
             ))}
           </div>
         </div>
