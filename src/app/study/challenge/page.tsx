@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   LoadingState,
@@ -15,7 +15,7 @@ import { useChallengeEngine } from "@study/engines/challenge/use-challenge-engin
 import { QuestionView } from "@components/study/question-view";
 import { ChallengeSettingsPage } from "@components/study/challenge-settings-page";
 
-export default function ChallengePage() {
+function ChallengePageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const deckIdParam = searchParams.get("deckId");
@@ -149,5 +149,13 @@ export default function ChallengePage() {
         }
       })()}
     </div>
+  );
+}
+
+export default function ChallengePage() {
+  return (
+    <Suspense fallback={null}>
+      <ChallengePageInner />
+    </Suspense>
   );
 }

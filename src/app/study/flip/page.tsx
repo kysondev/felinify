@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDeckLoader } from "@study/hooks/use-deck-loader";
 import { useStudyLoadingState } from "@study/hooks/use-study-loading-state";
@@ -17,7 +18,7 @@ import { FlipCard } from "@components/study/flip-card";
 import { FlipControls } from "@components/study/flip-controls";
 import { useFlipEngine } from "@study/engines/flip/use-flip-engine";
 
-export default function FlipStudyPage() {
+function FlipStudyPageInner() {
   const searchParams = useSearchParams();
   const deckIdParam = searchParams.get("deckId");
   const deckId = deckIdParam ? parseInt(deckIdParam, 10) : null;
@@ -248,5 +249,13 @@ export default function FlipStudyPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FlipStudyPage() {
+  return (
+    <Suspense fallback={null}>
+      <FlipStudyPageInner />
+    </Suspense>
   );
 }

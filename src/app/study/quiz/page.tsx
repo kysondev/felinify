@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@ui/button";
 import { ErrorState, StudyLoadingScreen } from "@components/study";
@@ -13,7 +13,7 @@ import { QuestionCard } from "@components/study/question-card";
 import { SessionHeader } from "@components/study/session-header";
 import { FinalResults } from "@components/study/final-results";
 
-export default function QuizPage() {
+function QuizPageInner() {
   const searchParams = useSearchParams();
   const deckIdParam = searchParams.get("deckId");
   const deckId = deckIdParam ? parseInt(deckIdParam, 10) : null;
@@ -168,5 +168,13 @@ export default function QuizPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function QuizPage() {
+  return (
+    <Suspense fallback={null}>
+      <QuizPageInner />
+    </Suspense>
   );
 }

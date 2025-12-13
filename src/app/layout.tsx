@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "@styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { DM_Sans } from "next/font/google";
+import { TopProgressBar } from "@components/ui/top-progress-bar";
+import { Suspense } from "react";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -81,6 +83,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable}`}>
       <body className={`antialiased font-sans`} suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <div>
           <Toaster
             toastOptions={{
