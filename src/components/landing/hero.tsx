@@ -247,11 +247,11 @@ const Hero = () => {
                 <picture>
                   <source
                     media="(max-width: 640px)"
-                    srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/q_auto:eco,f_auto,w_640/upscalemedia-transformed_1_ygznha.png"
+                    srcSet="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1765662329/Screenshot_2025-12-13_at_16-43-35_My_Library_Felinify_trannb.png"
                   />
                   <Image
                     className="w-full h-auto"
-                    src="https://res.cloudinary.com/dyu7ogoqc/image/upload/q_auto:best,f_auto,w_1920/upscalemedia-transformed_oynsxa.png"
+                    src="https://res.cloudinary.com/dyu7ogoqc/image/upload/v1765662164/Screenshot_2025-12-13_at_16-38-31_My_Library_Felinify_fo41ey.png"
                     alt="Felinify AI flashcard application interface showing study dashboard"
                     loading="eager"
                     width="1200"
