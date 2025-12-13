@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { CommandSearch } from "../command-search";
 import {
@@ -41,10 +41,21 @@ export const SidebarClient = ({
 }: SidebarClientProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
+    if (window.innerWidth < 768) return false;
     const saved = localStorage.getItem("felinify-sidebar-collapsed");
     return saved === "true";
   });
   const planDetails = getPlanDetails(subscription as Subscription);
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        setCollapsed(false);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const toggleSidebar = () => {
     setCollapsed((prev) => {
@@ -66,7 +77,7 @@ export const SidebarClient = ({
 
   return (
     <div
-      className={`${collapsed ? "w-[40px]" : "w-64"} transition-all duration-300 flex flex-col flex-grow relative`}
+      className={`${collapsed ? "md:w-[40px]" : "w-64 md:w-64"} transition-all duration-300 flex flex-col flex-grow relative`}
     >
       {!collapsed ? (
         <DropdownMenu>
@@ -167,7 +178,7 @@ export const SidebarClient = ({
       )}
 
       {!collapsed && (
-        <div className="bg-white rounded-md border border-[#E7E6E6] mt-3">
+        <div className="bg-white rounded-md border border-[#E7E6E6] mt-3 hidden md:block">
           <CommandSearch triggerClassName="flex items-center w-full pl-8 pr-4 py-2 border-0 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-lg text-sm text-gray-500 relative" />
         </div>
       )}
@@ -177,7 +188,7 @@ export const SidebarClient = ({
       {!collapsed && planDetails.name == "starter" && <SidebarUpgrade />}
 
       <div
-        className={`mt-auto flex items-center ${collapsed ? "justify-center" : "justify-between"}`}
+        className={`mt-auto hidden md:flex items-center ${collapsed ? "justify-center" : "justify-between"}`}
       >
         {!collapsed && (
           <Link href="/settings">

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Zap, Settings2, Crown, LogOut } from "lucide-react";
+import { Zap, Settings2, Crown, LogOut, Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -13,23 +13,44 @@ import {
 import { Badge } from "./ui/badge";
 import { getUser, getUserEnergy } from "@user/services/user.service";
 import { signOut } from "@auth/actions/auth.action";
+import { CommandSearch } from "./command-search";
 
-export const MobileNavbar = async () => {
+export const MobileNavbar = async ({
+  sidebarToggleId,
+}: {
+  sidebarToggleId?: string;
+}) => {
   const { data: user } = await getUser();
   const energy = await getUserEnergy(user?.id as string);
 
   return (
     <div className="flex w-full justify-between items-center">
-      <Link href="/home" className="flex items-center space-x-2">
-        <Image
-          src="/felinify.png"
-          alt="Felinify Logo"
-          width={24}
-          height={24}
-          className="w-6 h-6"
-        />
-        <span className="font-semibold text-primary">Felinify</span>
-      </Link>
+      <div className="flex items-center gap-2">
+        <Link href="/home" className="flex items-center">
+          <Image
+            src="/felinify.png"
+            alt="Felinify Logo"
+            width={28}
+            height={28}
+            className="w-7 h-7"
+          />
+        </Link>
+        <div className="flex items-center">
+          {sidebarToggleId && (
+            <label
+              htmlFor={sidebarToggleId}
+              className="inline-flex items-center justify-center rounded-lg p-2 text-muted-foreground transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 cursor-pointer"
+              aria-label="Toggle sidebar"
+            >
+              <Menu className="h-5 w-5" />
+            </label>
+          )}
+          <CommandSearch
+            iconOnly
+            triggerClassName="inline-flex items-center justify-center rounded-lg p-2 text-muted-foreground transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+          />
+        </div>
+      </div>
 
       <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full">

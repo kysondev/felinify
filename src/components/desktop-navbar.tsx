@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Zap, Settings2, Crown, LogOut } from "lucide-react";
+import { Zap, Settings2, Crown, LogOut, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -35,6 +35,13 @@ export const DesktopNavbar = async () => {
         </div>
 
         <div className="flex items-center space-x-4">
+          <Button
+            type="button"
+            size="icon"
+            className="h-10 w-10 rounded-full bg-primary text-white hover:bg-primary/90"
+          >
+            <Plus className="w-5 h-5" />
+          </Button>
           <div className="flex items-center space-x-2 px-4 py-2 bg-primary/10 rounded-full">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">

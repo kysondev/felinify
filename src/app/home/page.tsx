@@ -253,7 +253,12 @@ export default async function HomePage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {recentDecks.map((deck) => (
-                  <DeckCard key={deck.id} deck={deck} variant="secondary" />
+                  <DeckCard
+                    key={deck.id}
+                    deck={deck}
+                    variant="secondary"
+                    badgeLabel="Recent"
+                  />
                 ))}
               </div>
             )}
@@ -281,7 +286,12 @@ export default async function HomePage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {suggestedDecks.map((deck) => (
-                  <DeckCard key={deck.id} deck={deck} variant="secondary" />
+                  <DeckCard
+                    key={deck.id}
+                    deck={deck}
+                    variant="secondary"
+                    badgeLabel="Suggested"
+                  />
                 ))}
               </div>
             )}

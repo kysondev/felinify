@@ -12,9 +12,14 @@ import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
 type DeckCardProps = {
   deck: Deck;
   variant?: "default" | "secondary";
+  badgeLabel?: string;
 };
 
-export const DeckCard = ({ deck, variant = "default" }: DeckCardProps) => {
+export const DeckCard = ({
+  deck,
+  variant = "default",
+  badgeLabel,
+}: DeckCardProps) => {
   const deckTag =
     deck.tags && deck.tags.length > 0 ? deck.tags[0].name : "General";
 
@@ -24,11 +29,14 @@ export const DeckCard = ({ deck, variant = "default" }: DeckCardProps) => {
 
   if (variant === "secondary") {
     return (
-      <Card className="overflow-hidden h-full rounded-xl border border-border bg-card hover:shadow-md transition-all">
+      <Card
+        key={`${badgeLabel}-${deck.id}`}
+        className="overflow-hidden h-full rounded-xl border border-border bg-card hover:shadow-md transition-all"
+      >
         <CardContent className="p-0 h-full">
-          <div className="flex h-full items-stretch min-h-[110px]">
+          <div className="flex h-full items-stretch min-h-[96px]">
             <div
-              className="w-28 sm:w-32 h-full min-h-[110px] bg-muted/60 bg-cover bg-center flex-shrink-0"
+              className="w-24 sm:w-28 h-full min-h-[96px] bg-muted/60 bg-cover bg-center flex-shrink-0"
               style={{
                 backgroundImage: deck.imageUrl
                   ? `url(${deck.imageUrl})`
@@ -41,13 +49,13 @@ export const DeckCard = ({ deck, variant = "default" }: DeckCardProps) => {
                   variant="secondary"
                   className="text-[11px] px-2 py-0.5 rounded-md"
                 >
-                  {deckTag}
+                  {badgeLabel}
                 </Badge>
                 <Badge
                   variant="secondary"
                   className="text-[11px] px-2 py-0.5 rounded-md"
                 >
-                  {flashcardCount} cards
+                  {(deck.tags && deck.tags[0]?.name) || "General"}
                 </Badge>
               </div>
 
@@ -65,6 +73,7 @@ export const DeckCard = ({ deck, variant = "default" }: DeckCardProps) => {
 
               <div className="flex items-center justify-between gap-3 mt-auto text-xs text-muted-foreground flex-wrap">
                 <div className="flex items-center gap-2 flex-wrap">
+                  <span>{deck.flashcards?.length || 0} cards</span>
                   <span className="inline-flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5" />
                     {formatActivityDate(getDeckActivityDate(deck))}
