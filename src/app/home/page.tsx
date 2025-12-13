@@ -2,7 +2,6 @@ import { getUserDecks } from "@deck/services/deck-read.service";
 import { getUser } from "@user/services/user.service";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { Deck } from "db/types/models.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
@@ -10,13 +9,11 @@ import {
   ArrowRight,
   Send,
   Sparkles,
-  Clock,
   Wand2,
   NotebookPen,
   PlusCircle,
 } from "lucide-react";
-import formatActivityDate from "@deck/utils/format-activity-date.utils";
-import getDeckActivityDate from "@deck/utils/get-deck-activity-date.utils";
+import { DeckCard } from "@components/library/deck-card";
 
 export const metadata: Metadata = {
   title: "Home | Felinify",
@@ -78,81 +75,6 @@ export default async function HomePage() {
   })();
 
   const firstName = user?.name?.split(" ")[0] || "there";
-
-  const renderDeckPreview = (deck: Deck, badgeLabel?: string) => (
-    <Card
-      key={`${badgeLabel ?? "deck"}-${deck.id}`}
-      className="overflow-hidden h-full rounded-xl border border-border bg-card hover:shadow-md transition-all"
-    >
-      <CardContent className="p-0 h-full">
-        <div className="flex h-full items-stretch min-h-[110px]">
-          <div
-            className="w-28 sm:w-32 h-full min-h-[110px] bg-muted/60 bg-cover bg-center flex-shrink-0"
-            style={{
-              backgroundImage: deck.imageUrl
-                ? `url(${deck.imageUrl})`
-                : undefined,
-            }}
-          />
-          <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-muted-foreground">
-              {badgeLabel && (
-                <Badge
-                  variant="secondary"
-                  className="text-[11px] px-2 py-0.5 rounded-md"
-                >
-                  {badgeLabel}
-                </Badge>
-              )}
-              <Badge
-                variant="secondary"
-                className="text-[11px] px-2 py-0.5 rounded-md"
-              >
-                {(deck.tags && deck.tags[0]?.name) || "General"}
-              </Badge>
-              <Badge
-                variant="secondary"
-                className="text-[11px] px-2 py-0.5 rounded-md"
-              >
-                {deck.flashcards?.length || 0} cards
-              </Badge>
-            </div>
-
-            <div className="space-y-0.5">
-              <h3
-                className="text-base font-semibold text-foreground truncate"
-                title={deck.name}
-              >
-                {deck.name}
-              </h3>
-              <p className="text-sm text-muted-foreground line-clamp-1">
-                {deck.description || "No description yet."}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 mt-auto text-xs text-muted-foreground flex-wrap">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" />
-                  {formatActivityDate(getDeckActivityDate(deck))}
-                </span>
-              </div>
-
-              <Button asChild variant="outline" size="sm" className="gap-1">
-                <Link
-                  href={`/decks/${deck.id}`}
-                  className="inline-flex items-center gap-1"
-                >
-                  Open
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div className="bg-background">
@@ -330,7 +252,14 @@ export default async function HomePage() {
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {recentDecks.map((deck) => renderDeckPreview(deck, "Recent"))}
+                {recentDecks.map((deck) => (
+                  <DeckCard
+                    key={deck.id}
+                    deck={deck}
+                    variant="secondary"
+                    badgeLabel="Recent"
+                  />
+                ))}
               </div>
             )}
           </CardContent>
@@ -356,9 +285,14 @@ export default async function HomePage() {
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {suggestedDecks.map((deck) =>
-                  renderDeckPreview(deck, "Suggested")
-                )}
+                {suggestedDecks.map((deck) => (
+                  <DeckCard
+                    key={deck.id}
+                    deck={deck}
+                    variant="secondary"
+                    badgeLabel="Suggested"
+                  />
+                ))}
               </div>
             )}
           </CardContent>

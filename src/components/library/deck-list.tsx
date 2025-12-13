@@ -50,74 +50,6 @@ export const DeckList = ({
     setCurrentPage(0);
   }, [searchQuery]);
 
-  const renderDeckPreview = (deck: Deck, badgeLabel: string) => (
-    <Card
-      key={`${badgeLabel}-${deck.id}`}
-      className="overflow-hidden h-full rounded-xl border border-border bg-card hover:shadow-md transition-all"
-    >
-      <CardContent className="p-0 h-full">
-        <div className="flex h-full items-stretch min-h-[96px]">
-          <div
-            className="w-24 sm:w-28 h-full min-h-[96px] bg-muted/60 bg-cover bg-center flex-shrink-0"
-            style={{
-              backgroundImage: deck.imageUrl
-                ? `url(${deck.imageUrl})`
-                : undefined,
-            }}
-          />
-          <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-muted-foreground">
-              <Badge
-                variant="secondary"
-                className="text-[11px] px-2 py-0.5 rounded-md"
-              >
-                {badgeLabel}
-              </Badge>
-              <Badge
-                variant="secondary"
-                className="text-[11px] px-2 py-0.5 rounded-md"
-              >
-                {(deck.tags && deck.tags[0]?.name) || "General"}
-              </Badge>
-            </div>
-
-            <div className="space-y-0.5">
-              <h3
-                className="text-base font-semibold text-foreground truncate"
-                title={deck.name}
-              >
-                {deck.name}
-              </h3>
-              <p className="text-sm text-muted-foreground line-clamp-1">
-                {deck.description || "No description yet."}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 mt-auto text-xs text-muted-foreground flex-wrap">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span>{deck.flashcards?.length || 0} cards</span>
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" />
-                  {formatActivityDate(getDeckActivityDate(deck))}
-                </span>
-              </div>
-
-              <Button asChild variant="outline" size="sm" className="gap-1">
-                <Link
-                  href={`/decks/${deck.id}`}
-                  className="inline-flex items-center gap-1"
-                >
-                  Open
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
   const refreshData = () => {
     router.refresh();
   };
@@ -167,7 +99,14 @@ export const DeckList = ({
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {recentToShow.map((deck) => renderDeckPreview(deck, "Recent"))}
+            {recentToShow.map((deck) => (
+              <DeckCard
+                key={deck.id}
+                deck={deck}
+                variant="secondary"
+                badgeLabel="Recent"
+              />
+            ))}
           </div>
           <div className="border-t border-border" />
         </div>
@@ -320,7 +259,14 @@ export const DeckList = ({
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {suggestedDecks.map((deck) => renderDeckPreview(deck, "Suggested"))}
+            {suggestedDecks.map((deck) => (
+              <DeckCard
+                key={deck.id}
+                deck={deck}
+                variant="secondary"
+                badgeLabel="Suggested"
+              />
+            ))}
           </div>
         </div>
       )}
