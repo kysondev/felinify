@@ -7,6 +7,7 @@ const MIN_VISIBLE_MS = 200;
 const TICK_MS = 140;
 const MAX_PROGRESS = 94;
 const AUTO_COMPLETE_MS = 4000;
+const HIDDEN_PATHS = new Set(["/", "/pricing", "/term", "/privacy"]);
 
 export const TopProgressBar = () => {
   const pathname = usePathname();
@@ -19,6 +20,7 @@ export const TopProgressBar = () => {
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const hideRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoCompleteRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isHidden = HIDDEN_PATHS.has(pathname);
 
   const clearTimers = () => {
     if (tickRef.current) {
@@ -63,6 +65,8 @@ export const TopProgressBar = () => {
   };
 
   useEffect(() => {
+    if (isHidden) return;
+
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       if (!target) return;
@@ -107,7 +111,7 @@ export const TopProgressBar = () => {
       window.removeEventListener("popstate", handlePopState);
       clearTimers();
     };
-  }, []);
+  }, [isHidden]);
 
   useEffect(() => {
     const currentLocationKey = `${pathname}?${searchParams.toString()}`;
@@ -116,6 +120,16 @@ export const TopProgressBar = () => {
       finish();
     }
   }, [pathname, searchParams]);
+
+  useEffect(() => {
+    if (!isHidden) return;
+    inFlightRef.current = false;
+    clearTimers();
+    setVisible(false);
+    setProgress(0);
+  }, [isHidden]);
+
+  if (isHidden) return null;
 
   return (
     <div
