@@ -15,7 +15,7 @@ export default async function DecksLayout({
 
   if (user) {
     return (
-      <div className="flex h-screen bg-[#F6F8FA]" suppressHydrationWarning>
+      <div className="flex min-h-screen md:h-screen bg-[#F6F8FA]" suppressHydrationWarning>
         <div className="w-0 md:w-auto md:flex-shrink-0">
           <div className="hidden md:block">
             <Sidebar />
@@ -31,7 +31,7 @@ export default async function DecksLayout({
             </header>
           </div>
 
-          <main className="flex-1 overflow-auto bg-white md:rounded-l-xl border border-[#E7E6E6] transition-all duration-300 md:mt-0 mt-14">
+          <main className="flex-1 bg-white md:rounded-l-xl border border-[#E7E6E6] transition-all duration-300 md:mt-0 mt-14 md:overflow-auto overflow-visible md:min-h-0 min-h-[calc(100vh-3.5rem)]">
             <div className="hidden md:block sticky top-0 z-40 bg-white">
               <DesktopNavbar />
             </div>
