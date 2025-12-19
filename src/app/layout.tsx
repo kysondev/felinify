@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { DM_Sans } from "next/font/google";
 import { TopProgressBar } from "@components/ui/top-progress-bar";
 import { Suspense } from "react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -115,6 +116,7 @@ export default function RootLayout({
         </div>
         {children}
       </body>
+      <GoogleAnalytics gaId="G-H6M4LXBS5X" />
     </html>
   );
 }
