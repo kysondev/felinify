@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { CommandSearch } from "../command-search";
-import { Settings2, PanelLeftClose, PanelLeftOpen, LogOut } from "lucide-react";
+import { Settings2, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import { SidebarNavigation } from "./sidebar-navigation";
 import { Subscription } from "db/types/models.types";
