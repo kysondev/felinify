@@ -5,7 +5,6 @@ import { createDeckAction } from "@deck/actions/deck.action";
 import { hasEnoughEnergy } from "@user/actions/user.action";
 import { Alert, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
-import { DialogFooter, useDialog } from "@ui/dialog";
 import {
   Form,
   FormControl,
@@ -16,7 +15,6 @@ import {
 } from "@ui/form";
 import { Input } from "@ui/Input";
 import { Switch } from "@ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { Textarea } from "@ui/text-area";
 import { Deck, Subscription, User } from "db/types/models.types";
 import { hasReachedMaxDeck } from "@subscription/utils/limits";
@@ -26,7 +24,15 @@ import {
   createDeckWithAISchema,
   CreateDeckWithAISchema,
 } from "@deck/validations/deck.schema";
-import { Brain, Eye, EyeOff, Sparkles, Upload } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  PenSquare,
+  Sparkles,
+  SparklesIcon,
+  Upload,
+  Zap,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -38,25 +44,30 @@ import {
   generateFlashcardsAction,
 } from "@ai/actions/generate-cards.action";
 import { revalidateLibrary } from "@common/utils/revalidation.utils";
+import { cn } from "src/lib/cn";
 
 export function CreateDeckForm({
   user,
   subscription,
   decks,
   onSuccess,
+  onClose,
 }: {
   user: User;
   subscription: Subscription;
   decks: Deck[];
   onSuccess?: () => void;
+  onClose?: () => void;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [generationStatus, setGenerationStatus] = useState("Analyzing your content...");
+  const [generationStatus, setGenerationStatus] = useState(
+    "Analyzing your content..."
+  );
   const [estimatedTime, setEstimatedTime] = useState("30 seconds");
-  const { setOpen } = useDialog();
+  const [mode, setMode] = useState<"manual" | "ai">("manual");
 
   const userSubscription =
     subscription !== undefined
@@ -91,7 +102,7 @@ export function CreateDeckForm({
       );
       if (result.success) {
         revalidateLibrary();
-        setOpen(false);
+        onClose?.();
         router.refresh();
         toast.success("Deck created successfully");
         form.reset();
@@ -105,401 +116,473 @@ export function CreateDeckForm({
   const onGenerateFlashcards = async (data: CreateDeckWithAISchema) => {
     setIsGenerating(true);
     setProgress(10);
-    setGenerationStatus("Preparing generation...");
+    setGenerationStatus("Checking energy levels...");
     setEstimatedTime("45 seconds");
-    
+
     const result = await hasEnoughEnergy(user.id, 1);
     if (!result.success) {
-      toast.error("You don't have enough energy to generate flashcards");
+      toast.error("You don't have enough energy to generate flashcards.");
       setIsGenerating(false);
       return;
     }
 
     try {
-      setProgress(20);
-      setGenerationStatus("Creating deck...");
-      setEstimatedTime("40 seconds");
-      
+      setProgress(25);
+      setGenerationStatus("Creating your deck...");
+      setEstimatedTime("35 seconds");
+
       const deckResult = await createDeckAction(
         user.id,
         data.name,
         "AI generated deck",
         data.visibility
       );
-
-      if (!deckResult.success) {
-        toast.error(deckResult.message || "Failed to create deck");
-        setIsGenerating(false);
+      if (!deckResult.success || !deckResult.data?.id) {
+        toast.error(deckResult.message || "Failed to create deck.");
         return;
       }
 
-      const deckId = deckResult.data?.id;
-      if (!deckId) {
-        toast.error("Failed to get deck ID");
-        setIsGenerating(false);
-        return;
-      }
+      setProgress(55);
+      setGenerationStatus("Generating flashcards...");
+      setEstimatedTime("25 seconds");
 
-      setProgress(40);
-      setGenerationStatus("Analyzing your content...");
-      setEstimatedTime("30 seconds");
-
-      const flashcardsResult = await generateFlashcardsAction(
+      const generationResult = await generateFlashcardsAction(
         data.name,
         data.notes,
         data.visibility
       );
-      setProgress(70);
-      setGenerationStatus("Generating flashcards...");
-      setEstimatedTime("15 seconds");
 
-      if (!flashcardsResult.success) {
+      if (!generationResult.success || !generationResult.flashcards?.length) {
         toast.error(
-          flashcardsResult.message || "Failed to generate flashcards"
+          generationResult.message || "Failed to generate flashcards."
         );
-        setIsGenerating(false);
         return;
       }
 
-      setProgress(85);
-      setGenerationStatus("Processing flashcards...");
+      setProgress(80);
+      setGenerationStatus("Saving flashcards to your deck...");
       setEstimatedTime("10 seconds");
-      
+
       const addResult = await addGeneratedFlashcardsToDeckAction(
         user.id,
-        deckId,
-        flashcardsResult.flashcards
+        deckResult.data.id,
+        generationResult.flashcards
       );
 
-      setProgress(95);
-      setGenerationStatus("Finalizing deck...");
-      setEstimatedTime("5 seconds");
-
       if (!addResult.success) {
-        toast.error(addResult.message || "Failed to add flashcards to deck");
-        setIsGenerating(false);
+        toast.error(addResult.message || "Failed to add flashcards to deck.");
         return;
       }
-      
+
       setProgress(100);
-      setGenerationStatus("Complete!");
-      setEstimatedTime("0 seconds");
-      
+      setGenerationStatus("Deck ready!");
+      setEstimatedTime("Done");
+
       revalidateLibrary();
-      setTimeout(() => {
-        setIsGenerating(false);
-        setOpen(false);
-        toast.success(`Deck created with ${addResult.addedCount} flashcards`);
-        aiForm.reset();
-        router.push(`/decks/${deckId}`);
-        router.refresh();
-        if (onSuccess) onSuccess();
-      }, 1000);
+      onClose?.();
+      router.refresh();
+      toast.success("Deck generated successfully");
+      aiForm.reset();
+      if (onSuccess) onSuccess();
     } catch (error) {
-      console.error("Error in AI flashcard generation:", error);
-      toast.error("Something went wrong during flashcard generation");
+      console.error("Error generating flashcards:", error);
+      toast.error("An error occurred while generating flashcards.");
+    } finally {
       setIsGenerating(false);
     }
   };
 
   return (
-    <Tabs defaultValue="manual" className="w-full">
-      <Alert
-        variant="destructive"
-        className={`mb-2 ${user.emailVerified ? "hidden" : ""}`}
-      >
-        <AlertTitle>
-          Warning: Email verification is required to create a deck
-        </AlertTitle>
-      </Alert>
-      <Alert
-        variant="destructive"
-        className={`mb-2 ${
-          hasReachedMaxDeck(
-            userSubscription as "starter" | "pro" | "ultra",
-            decks
-          )
-            ? ""
-            : "hidden"
-        }`}
-      >
-        <AlertTitle>
-          Warning: You have reached your maximum number of decks
-        </AlertTitle>
-      </Alert>
-      <TabsList className="grid w-full grid-cols-2 mb-3">
-        <TabsTrigger value="manual" className="flex items-center gap-2 text-sm">
-          Manual Creation
-        </TabsTrigger>
-        <TabsTrigger value="ai" className="flex items-center gap-2 text-sm">
-          <Sparkles className="h-4 w-4" />
-          AI Generation
-        </TabsTrigger>
-      </TabsList>
+    <div className="w-full space-y-6">
+      <div className="space-y-2">
+        <Alert
+          variant="destructive"
+          className={`mb-2 ${user.emailVerified ? "hidden" : ""}`}
+        >
+          <AlertTitle>
+            Warning: Email verification is required to create a deck
+          </AlertTitle>
+        </Alert>
+        <Alert
+          variant="destructive"
+          className={`mb-2 ${
+            hasReachedMaxDeck(
+              userSubscription as "starter" | "pro" | "ultra",
+              decks
+            )
+              ? ""
+              : "hidden"
+          }`}
+        >
+          <AlertTitle>
+            Warning: You have reached your maximum number of decks
+          </AlertTitle>
+        </Alert>
+      </div>
 
-      <TabsContent value="manual" className="space-y-3 py-1">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="name"
-              disabled={!user.emailVerified}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Deck Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter deck name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              disabled={!user.emailVerified}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description (Optional)</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Enter a description for your deck..."
-                      className="min-h-[80px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => setMode("manual")}
+          className={cn(
+            "group flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-all",
+            "hover:border-primary/60 hover:shadow-sm",
+            mode === "manual"
+              ? "border-primary bg-primary/5 shadow-sm"
+              : "border-border bg-white"
+          )}
+          aria-pressed={mode === "manual"}
+        >
+          <div
+            className={cn(
+              "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
+              mode === "manual"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-foreground"
+            )}
+          >
+            <PenSquare className="h-5 w-5" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold">Manual build</p>
+            <p className="text-xs text-muted-foreground">
+              Write your own deck details and control visibility.
+            </p>
+          </div>
+        </button>
 
-            <FormField
-              control={form.control}
-              name="visibility"
-              disabled={!user.emailVerified}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Deck Visibility</FormLabel>
-                  <div className="flex items-center justify-between p-3 border rounded-lg bg-white">
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        {field.value === "public" ? (
-                          <Eye className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        )}
-                        <span className="text-sm font-medium">
-                          {field.value === "public" ? "Public" : "Private"}
-                        </span>
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {field.value === "public"
-                          ? "Anyone can view"
-                          : "Only you can view"}
-                      </span>
-                    </div>
-                    <Switch
-                      checked={field.value === "public"}
-                      onCheckedChange={(checked) =>
-                        field.onChange(checked ? "public" : "private")
+        <button
+          type="button"
+          onClick={() => setMode("ai")}
+          className={cn(
+            "group flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-all",
+            "hover:border-primary/60 hover:shadow-sm",
+            mode === "ai"
+              ? "border-primary bg-primary/5 shadow-sm"
+              : "border-border bg-white"
+          )}
+          aria-pressed={mode === "ai"}
+        >
+          <div
+            className={cn(
+              "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
+              mode === "ai"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-foreground"
+            )}
+          >
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold">AI assist</p>
+            <p className="text-xs text-muted-foreground">
+              Paste notes and let AI generate flashcards (1 energy).
+            </p>
+          </div>
+        </button>
+      </div>
+
+      <div className="space-y-8">
+        {mode === "manual" && (
+          <div className="space-y-5">
+            <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-3 border-b px-5 py-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <PenSquare className="h-4 w-4 text-primary" />
+                    Manual deck builder
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Add details and control visibility before you publish.
+                  </p>
+                </div>
+              </div>
+
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-5 px-5 py-5"
+                >
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    disabled={!user.emailVerified}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deck Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter deck name"
+                            className="bg-white"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    disabled={!user.emailVerified}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description (Optional)</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter a description for your deck..."
+                            className="min-h-[140px] resize-none rounded-xl text-sm"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="visibility"
+                    disabled={!user.emailVerified}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deck Visibility</FormLabel>
+                        <div className="flex items-center justify-between rounded-lg border bg-white p-3">
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
+                              {field.value === "public" ? (
+                                <Eye className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <EyeOff className="h-4 w-4 text-muted-foreground" />
+                              )}
+                              <span className="text-sm font-medium">
+                                {field.value === "public"
+                                  ? "Public"
+                                  : "Private"}
+                              </span>
+                            </div>
+                            <span className="text-xs text-muted-foreground">
+                              {field.value === "public"
+                                ? "Anyone can view"
+                                : "Only you can view"}
+                            </span>
+                          </div>
+                          <Switch
+                            checked={field.value === "public"}
+                            onCheckedChange={(checked) =>
+                              field.onChange(checked ? "public" : "private")
+                            }
+                            disabled={!user.emailVerified}
+                          />
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="flex justify-end">
+                    <Button
+                      type="submit"
+                      disabled={
+                        isPending ||
+                        !user.emailVerified ||
+                        hasReachedMaxDeck(
+                          userSubscription as "starter" | "pro" | "ultra",
+                          decks
+                        )
                       }
+                    >
+                      {isPending ? <Loading isWhite /> : "Create Deck"}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </div>
+          </div>
+        )}
+
+        {mode === "ai" && (
+          <div className="space-y-5">
+            <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-3 border-b px-5 py-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <SparklesIcon className="h-4 w-4 text-primary" />
+                    AI deck builder
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Paste notes and we create the deck plus flashcards
+                    automatically.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-white px-3 py-1.5 text-xs font-semibold text-primary">
+                  <Zap className="h-4 w-4" />1 Energy
+                </div>
+              </div>
+
+              <Form {...aiForm}>
+                <form
+                  onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+                  className="space-y-5 px-5 py-5"
+                >
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <FormField
+                      control={aiForm.control}
+                      name="name"
                       disabled={!user.emailVerified}
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel className="flex items-center justify-between">
+                            <span>Deck name</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Exam cram: Cognitive Psychology"
+                              className="bg-white"
+                              disabled={isGenerating}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={aiForm.control}
+                      name="visibility"
+                      disabled={!user.emailVerified}
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel>Visibility</FormLabel>
+                          <div className="flex items-center justify-between rounded-lg border bg-white p-3">
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2">
+                                {field.value === "public" ? (
+                                  <Eye className="h-4 w-4 text-green-500" />
+                                ) : (
+                                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                )}
+                                <span className="text-sm font-medium">
+                                  {field.value === "public"
+                                    ? "Public"
+                                    : "Private"}
+                                </span>
+                              </div>
+                              <span className="text-xs text-muted-foreground">
+                                {field.value === "public"
+                                  ? "Anyone can view"
+                                  : "Only you can view"}
+                              </span>
+                            </div>
+                            <Switch
+                              checked={field.value === "public"}
+                              onCheckedChange={(checked) =>
+                                field.onChange(checked ? "public" : "private")
+                              }
+                              disabled={!user.emailVerified || isGenerating}
+                            />
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter className="pt-4">
-              <Button
-                type="submit"
-                disabled={
-                  isPending ||
-                  !user.emailVerified ||
-                  hasReachedMaxDeck(
-                    userSubscription as "starter" | "pro" | "ultra",
-                    decks
-                  )
-                }
-              >
-                {isPending ? <Loading isWhite /> : "Create Deck"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </TabsContent>
 
-      <TabsContent value="ai" className="space-y-3 py-1">
-        <div className="bg-secondary/50 rounded-lg p-3 border border-border">
-          <h3 className="text-base font-medium flex items-center gap-2 mb-2">
-            <Brain className="h-4 w-4 text-primary" />
-            AI Flashcard Generation
-            <span className="text-xs text-muted-foreground">(1 energy)</span>
-          </h3>
-          <p className="text-sm text-muted-foreground mb-3">
-            Paste your study notes or upload a document, and our AI will
-            automatically create a deck with flashcards for you.
-          </p>
+                  <FormField
+                    control={aiForm.control}
+                    name="notes"
+                    disabled={!user.emailVerified}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center justify-between">
+                          <span>Source notes</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Paste lecture notes, bullet points, or a mini outline. The clearer the structure, the sharper the cards."
+                            className="min-h-[220px] resize-none rounded-xl text-sm"
+                            disabled={isGenerating}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-          {isGenerating ? (
-            <div className="mb-4">
-              <AIGenerationCard
-                progress={progress}
-                status={generationStatus}
-                estimatedTime={estimatedTime}
-                isActive={isGenerating}
-              />
-            </div>
-          ) : (
-            <Form {...aiForm}>
-              <form
-                onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
-                className="space-y-3"
-              >
-              <FormField
-                control={aiForm.control}
-                name="name"
-                disabled={!user.emailVerified}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Deck Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter deck name"
-                        className="bg-white"
-                        disabled={isGenerating}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={aiForm.control}
-                name="notes"
-                disabled={!user.emailVerified}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Study Notes</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Paste your study notes here..."
-                        className="min-h-[80px] text-sm resize-none"
-                        disabled={isGenerating}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={aiForm.control}
-                name="visibility"
-                disabled={!user.emailVerified}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Deck Visibility</FormLabel>
-                    <div className="flex items-center justify-between p-3 border rounded-lg bg-white">
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2">
-                          {field.value === "public" ? (
-                            <Eye className="h-4 w-4 text-green-500" />
-                          ) : (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
-                          )}
-                          <span className="text-sm font-medium">
-                            {field.value === "public" ? "Public" : "Private"}
-                          </span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {field.value === "public"
-                            ? "Anyone can view"
-                            : "Only you can view"}
-                        </span>
-                      </div>
-                      <Switch
-                        checked={field.value === "public"}
-                        onCheckedChange={(checked) =>
-                          field.onChange(checked ? "public" : "private")
+                  <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        type="button"
+                        className="flex items-center gap-2"
+                        disabled={
+                          isGenerating ||
+                          !user.emailVerified ||
+                          hasReachedMaxDeck(
+                            userSubscription as "starter" | "pro" | "ultra",
+                            decks
+                          )
                         }
-                        disabled={!user.emailVerified || isGenerating}
-                      />
+                      >
+                        <Upload className="h-4 w-4" />
+                        Upload notes
+                      </Button>
                     </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <span className="text-xs text-muted-foreground">
-                Note: AI can make mistakes, so please check the flashcards
-                before using them.
-              </span>
-              <div className="flex items-center justify-between pt-2">
-                <Button
-                  variant="outline"
-                  type="button"
-                  className="flex items-center gap-2 sm:hidden"
-                  disabled={isGenerating || !user.emailVerified}
-                >
-                  <Upload className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  type="button"
-                  className="hidden items-center gap-2 sm:flex"
-                  disabled={
-                    isGenerating ||
-                    !user.emailVerified ||
-                    hasReachedMaxDeck(
-                      userSubscription as "starter" | "pro" | "ultra",
-                      decks
-                    )
-                  }
-                >
-                  <Upload className="h-4 w-4" />
-                  Upload Document
-                </Button>
 
-                <Button
-                  type="submit"
-                  className="flex items-center gap-2 sm:hidden"
-                  disabled={isGenerating || !user.emailVerified}
-                >
-                  {isGenerating ? (
-                    <Loading isWhite />
-                  ) : (
-                    <Sparkles className="h-4 w-4" />
-                  )}
-                  {isGenerating ? "" : "Generate"}
-                </Button>
-                <Button
-                  type="submit"
-                  className="hidden items-center gap-2 sm:flex"
-                  disabled={
-                    isGenerating ||
-                    !user.emailVerified ||
-                    hasReachedMaxDeck(
-                      userSubscription as "starter" | "pro" | "ultra",
-                      decks
-                    )
-                  }
-                >
-                  {isGenerating ? (
-                    <Loading isWhite />
-                  ) : (
-                    <Sparkles className="h-4 w-4" />
-                  )}
-                  {isGenerating ? "Generating..." : "Generate Flashcards"}
-                </Button>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="submit"
+                        className="flex items-center gap-2 sm:hidden"
+                        disabled={isGenerating || !user.emailVerified}
+                      >
+                        {isGenerating ? (
+                          <Loading isWhite />
+                        ) : (
+                          <Sparkles className="h-4 w-4" />
+                        )}
+                        {isGenerating ? "" : "Generate"}
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="hidden items-center gap-2 sm:flex"
+                        disabled={
+                          isGenerating ||
+                          !user.emailVerified ||
+                          hasReachedMaxDeck(
+                            userSubscription as "starter" | "pro" | "ultra",
+                            decks
+                          )
+                        }
+                      >
+                        {isGenerating ? (
+                          <Loading isWhite />
+                        ) : (
+                          <Sparkles className="h-4 w-4" />
+                        )}
+                        {isGenerating ? "Generating..." : "Generate Flashcards"}
+                      </Button>
+                    </div>
+                  </div>
+                </form>
+              </Form>
+            </div>
+
+            {isGenerating && (
+              <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3 shadow-sm">
+                <AIGenerationCard
+                  progress={progress}
+                  status={generationStatus}
+                  estimatedTime={estimatedTime}
+                  isActive={isGenerating}
+                />
               </div>
-            </form>
-          </Form>
-          )}
-        </div>
-      </TabsContent>
-    </Tabs>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

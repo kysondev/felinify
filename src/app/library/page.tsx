@@ -1,7 +1,7 @@
 import { Library, Home, ChevronRight } from "lucide-react";
 import { getUserDecks } from "@deck/services/deck-read.service";
-import { getUser, getUserSubscription } from "@user/services/user.service";
-import { Deck, Subscription, User } from "db/types/models.types";
+import { getUser } from "@user/services/user.service";
+import { Deck } from "db/types/models.types";
 import { Metadata } from "next";
 import JsonLd from "@components/SEO/json-ld";
 import { LibraryTabs } from "@components/library/library-tabs";
@@ -29,7 +29,6 @@ export const metadata: Metadata = {
 export default async function LibraryPage() {
   const { data: user } = await getUser();
   const { data: decks } = await getUserDecks(user?.id as string);
-  const { data: subscription } = await getUserSubscription(user?.id as string);
   const safeDecks = decks || [];
 
   const librarySchema = {
@@ -119,8 +118,6 @@ export default async function LibraryPage() {
         <LibraryTabs
           decks={safeDecks}
           recentDecks={recentDecks}
-          user={user as User}
-          subscription={subscription as Subscription}
         />
       </div>
     </div>

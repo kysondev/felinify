@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { PlusCircle, Filter, Search, X } from "lucide-react";
-import { Deck, Subscription, User } from "db/types/models.types";
+import { Deck } from "db/types/models.types";
 import { DeckList } from "./deck-list";
 import { Button } from "@ui/button";
 import { Input } from "@ui/Input";
@@ -14,27 +14,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@ui/dialog";
 import { PREDEFINED_TAGS } from "@explore/config/tags.config";
-import { CreateDeckForm } from "./create-deck-form";
+import Link from "next/link";
 
 export const LibraryTabs = ({
   decks,
   recentDecks,
-  user,
-  subscription,
 }: {
   decks: Deck[];
   recentDecks: Deck[];
-  user: User;
-  subscription: Subscription;
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -147,29 +135,18 @@ export const LibraryTabs = ({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 px-2.5 sm:px-4 w-full sm:w-auto justify-center">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                <span>Create</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6 rounded-2xl">
-              <DialogHeader className="pb-3">
-                <DialogTitle>Create New Flashcard Deck</DialogTitle>
-                <DialogDescription>
-                  Create a new deck to organize your flashcards.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
-                <CreateDeckForm
-                  user={user as User}
-                  subscription={subscription as Subscription}
-                  decks={decks}
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button
+            asChild
+            className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 px-2.5 sm:px-4 w-full sm:w-auto justify-center"
+          >
+            <Link
+              href="/library/new"
+              className="flex items-center justify-center gap-2"
+            >
+              <PlusCircle className="h-4 w-4" />
+              <span>Create</span>
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -212,8 +189,6 @@ export const LibraryTabs = ({
         decks={displayedDecks}
         allDecks={decks}
         recentDecks={recentDecks}
-        user={user as User}
-        subscription={subscription as Subscription}
         searchQuery={searchQuery}
       />
     </div>

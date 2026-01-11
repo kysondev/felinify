@@ -1,37 +1,23 @@
-import { Deck, Subscription, User } from "db/types/models.types";
+import { Deck } from "db/types/models.types";
 import { DeckCard } from "./deck-card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@ui/dialog";
 import { Card, CardContent } from "@ui/card";
 import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
-import { CreateDeckForm } from "./create-deck-form";
 import { Button } from "@ui/button";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
 
 export const DeckList = ({
   decks,
   allDecks,
-  user,
-  subscription,
   searchQuery,
   recentDecks,
 }: {
   decks: Deck[];
   allDecks: Deck[];
-  user: User;
-  subscription: Subscription;
   searchQuery: string | null;
   recentDecks: Deck[];
 }) => {
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const decksPerPage = 8;
   const safeRecentDecks = recentDecks || [];
@@ -39,10 +25,6 @@ export const DeckList = ({
   useEffect(() => {
     setCurrentPage(0);
   }, [searchQuery]);
-
-  const refreshData = () => {
-    router.refresh();
-  };
 
   const filteredDecks = decks || [];
   const fullDecks = allDecks || [];
@@ -121,39 +103,21 @@ export const DeckList = ({
             ))}
 
             {isLastPage && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Card className="border-2 border-dashed border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group">
-                    <CardContent className="flex flex-col items-center justify-center p-8 min-h-[292px] text-center">
-                      <div className="p-4 bg-primary/10 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                        <PlusCircle className="h-8 w-8 text-primary" />
-                      </div>
-                      <h3 className="text-lg font-semibold mb-2">
-                        Create New Deck
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        Start building your knowledge with a new flashcard deck
-                      </p>
-                    </CardContent>
-                  </Card>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6">
-                  <DialogHeader className="pb-3">
-                    <DialogTitle>Create New Flashcard Deck</DialogTitle>
-                    <DialogDescription>
-                      Create a new deck to organize your flashcards.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
-                    <CreateDeckForm
-                      user={user as User}
-                      subscription={subscription as Subscription}
-                      decks={decks}
-                      onSuccess={refreshData}
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Link href="/library/new" className="h-full">
+                <Card className="h-full border-2 border-dashed border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group">
+                  <CardContent className="flex flex-col items-center justify-center p-8 min-h-[292px] text-center">
+                    <div className="p-4 bg-primary/10 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                      <PlusCircle className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Create New Deck
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      Start building your knowledge with a new flashcard deck
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             )}
           </div>
 
@@ -210,30 +174,12 @@ export const DeckList = ({
               Start your learning journey by creating your first flashcard deck.
               Organize your knowledge and track your progress.
             </p>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button size="lg" className="gap-2">
-                  <PlusCircle className="h-5 w-5" />
-                  Create Deck
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden p-4 sm:p-6">
-                <DialogHeader className="pb-3">
-                  <DialogTitle>Create New Flashcard Deck</DialogTitle>
-                  <DialogDescription>
-                    Create a new deck to organize your flashcards.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="max-h-[calc(90vh-140px)] overflow-y-auto px-1">
-                  <CreateDeckForm
-                    user={user as User}
-                    subscription={subscription as Subscription}
-                    decks={decks}
-                    onSuccess={refreshData}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button size="lg" className="gap-2" asChild>
+              <Link href="/library/new" className="flex items-center gap-2">
+                <PlusCircle className="h-5 w-5" />
+                Create Deck
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       )}
