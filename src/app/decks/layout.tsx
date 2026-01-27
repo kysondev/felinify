@@ -35,7 +35,7 @@ export default async function DecksLayout({
             <div className="hidden md:block sticky top-0 z-40 bg-white">
               <DesktopNavbar />
             </div>
-            {children}
+            <div className="md:pt-8">{children}</div>
           </main>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default async function DecksLayout({
           <LandingNavbar />
         </div>
       </div>
-      <div className="px-4 max-w-[1200px] mx-auto">{children}</div>
+      <div className="px-4 max-w-[1200px] mx-auto pt-24">{children}</div>
     </div>
   );
 }

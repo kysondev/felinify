@@ -1,26 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@ui/button";
 import { ArrowRight, Compass, Sparkles } from "lucide-react";
-import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { BetaSubscribeForm } from "./beta-subscribe-form";
 
 const Hero = () => {
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const router = useRouter();
+  const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
 
   const handleGetStartedClick = () => {
-    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
-
-    if (isBetaMode) {
-      setShowSubscriptionPopup(true);
-    } else {
-      router.push("/library");
-    }
+    router.push("/library");
   };
 
   const handleExploreDeckClick = () => {
@@ -63,10 +56,6 @@ const Hero = () => {
 
   return (
     <>
-      <SubscriptionPopup
-        open={showSubscriptionPopup}
-        setOpen={setShowSubscriptionPopup}
-      />
       <section className="pt-24 pb-20 flex justify-center">
         <div className="container text-center">
           {/* Badge */}
@@ -111,32 +100,38 @@ const Hero = () => {
             animate="visible"
             transition={{ delay: 0.6 }}
           >
-            <motion.div className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                className="px-8 py-5 text-base w-full sm:w-auto rounded-full"
-                onClick={handleGetStartedClick}
-              >
-                <span className="flex items-center gap-2">
-                  Get Started <ArrowRight className="w-4 h-4" />
-                </span>
-              </Button>
-            </motion.div>
-            <motion.div className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-5 text-base w-full sm:w-auto group rounded-full"
-                onClick={handleExploreDeckClick}
-              >
-                <span className="flex items-center gap-2">
-                  <div className="flex items-center justify-center w-5 h-5 rounded-full transition-colors">
-                    <Compass className="w-3 h-3" />
-                  </div>
-                  Explore Decks
-                </span>
-              </Button>
-            </motion.div>
+            {isBetaMode ? (
+              <BetaSubscribeForm />
+            ) : (
+              <>
+                <motion.div className="w-full sm:w-auto">
+                  <Button
+                    size="lg"
+                    className="px-8 py-5 text-base w-full sm:w-auto rounded-full"
+                    onClick={handleGetStartedClick}
+                  >
+                    <span className="flex items-center gap-2">
+                      Get Started <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </Button>
+                </motion.div>
+                <motion.div className="w-full sm:w-auto">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-8 py-5 text-base w-full sm:w-auto group rounded-full"
+                    onClick={handleExploreDeckClick}
+                  >
+                    <span className="flex items-center gap-2">
+                      <div className="flex items-center justify-center w-5 h-5 rounded-full transition-colors">
+                        <Compass className="w-3 h-3" />
+                      </div>
+                      Explore Decks
+                    </span>
+                  </Button>
+                </motion.div>
+              </>
+            )}
           </motion.div>
 
           {/* GitHub Link */}
