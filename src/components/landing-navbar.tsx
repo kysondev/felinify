@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { cn } from "../lib/cn";
 
 interface MenuItem {
   title: string;
@@ -35,17 +36,18 @@ interface Navbar1Props {
 
 const LandingNavbar = ({
   logo = {
-    url: "#",
+    url: "/",
     alt: "logo",
     title: "Felinify",
   },
   menu = [
-    { title: "Home", url: "/" },
+    { title: "Features", url: "/#features" },
     { title: "Explore", url: "/explore" },
     {
       title: "Pricing",
       url: "/pricing",
     },
+    { title: "FAQ", url: "/#faq" },
   ],
   auth = {
     login: { title: "Login", url: "/auth/login" },
@@ -54,6 +56,28 @@ const LandingNavbar = ({
 }: Navbar1Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const handleResize = () => setIsDesktop(mediaQuery.matches);
+
+    handleResize();
+    mediaQuery.addEventListener("change", handleResize);
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const shouldShrink = isDesktop && scrolled;
 
   const toggleAccordion = (title: string) => {
     setOpenAccordion((prev) => (prev === title ? null : title));
@@ -62,12 +86,24 @@ const LandingNavbar = ({
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <section className="absolute inset-x-0 top-0 z-50 p-2 flex justify-center">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="bg-background/95 backdrop-blur-lg border border-border rounded-full shadow-lg transition-shadow duration-300 px-3 sm:px-6 py-2 sm:py-3">
+    <section className="fixed inset-x-0 top-0 z-50 p-2 flex justify-center">
+      <div
+        className={cn(
+          "w-full mx-auto transition-all duration-300",
+          shouldShrink ? "max-w-5xl" : "max-w-7xl",
+        )}
+      >
+        <div
+          className={cn(
+            "backdrop-blur-lg border border-border rounded-full shadow-lg transition-all duration-300 px-3",
+            shouldShrink
+              ? "bg-background/80 sm:px-4 py-1 sm:py-2"
+              : "bg-background/95 sm:px-6 py-2 sm:py-3",
+          )}
+        >
           {/* Desktop Menu */}
           <nav className="hidden justify-between w-full lg:flex">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 min-w-[178px]">
               {/* Logo */}
               <Link href={logo.url} className="flex items-center gap-2">
                 <Image
@@ -80,6 +116,8 @@ const LandingNavbar = ({
                   {logo.title}
                 </span>
               </Link>
+            </div>
+            <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 {menu.map((item) => (
                   <DesktopMenuItem key={item.title} item={item} />
@@ -87,18 +125,12 @@ const LandingNavbar = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Link
-                href={auth.login.url}
-                className="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-              >
-                {auth.login.title}
-              </Link>
-              <Link
-                href={auth.signup.url}
-                className="rounded-full px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground hover:opacity-90 transition-colors"
-              >
-                Get Started
-              </Link>
+              <Button variant="ghost" asChild>
+                <Link href={auth.login.url}>{auth.login.title}</Link>
+              </Button>
+              <Button asChild>
+                <Link href={auth.signup.url}>Get Started</Link>
+              </Button>
             </div>
           </nav>
 
@@ -217,7 +249,7 @@ const LandingNavbar = ({
                   >
                     {item.title}
                   </Link>
-                )
+                ),
               )}
             </div>
 
@@ -248,8 +280,9 @@ const DesktopMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items) {
     return (
       <div className="relative group">
-        <Button className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium hover:bg-muted transition-colors">
+        <Button variant="ghost" className="gap-1">
           {item.title}
+          <ChevronDown className="size-4 transition-transform duration-200 group-hover:rotate-180" />
         </Button>
         <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 absolute left-0 top-full mt-2 w-72 rounded-lg border border-border bg-popover shadow-lg">
           <div className="py-2">
@@ -277,12 +310,9 @@ const DesktopMenuItem = ({ item }: { item: MenuItem }) => {
   }
 
   return (
-    <Link
-      href={item.url}
-      className="inline-flex h-10 items-center rounded-md px-4 text-sm font-medium hover:bg-muted transition-colors"
-    >
-      {item.title}
-    </Link>
+    <Button variant="ghost" asChild>
+      <Link href={item.url}>{item.title}</Link>
+    </Button>
   );
 };
 
