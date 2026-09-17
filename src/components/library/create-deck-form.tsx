@@ -103,10 +103,14 @@ export function CreateDeckForm({
       if (result.success) {
         revalidateLibrary();
         onClose?.();
-        router.refresh();
         toast.success("Deck created successfully");
         form.reset();
         if (onSuccess) onSuccess();
+        if (result.data?.id) {
+          router.push(`/decks/${result.data.id}`);
+        } else {
+          router.refresh();
+        }
       } else {
         toast.error(result.message || "Something went wrong");
       }
@@ -180,10 +184,10 @@ export function CreateDeckForm({
 
       revalidateLibrary();
       onClose?.();
-      router.refresh();
       toast.success("Deck generated successfully");
       aiForm.reset();
       if (onSuccess) onSuccess();
+      router.push(`/decks/${deckResult.data.id}`);
     } catch (error) {
       console.error("Error generating flashcards:", error);
       toast.error("An error occurred while generating flashcards.");
