@@ -5,15 +5,9 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
 import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
-import {
-  ArrowRight,
-  Send,
-  Sparkles,
-  Wand2,
-  NotebookPen,
-  PlusCircle,
-} from "lucide-react";
+import { ArrowRight, Sparkles, PlusCircle } from "lucide-react";
 import { DeckCard } from "@components/library/deck-card";
+import { AskFelinCard } from "@components/home/ask-felin-card";
 
 export const metadata: Metadata = {
   title: "Home | Felinify",
@@ -25,13 +19,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-const assistantSuggestions = [
-  "Turn my class notes into flashcards",
-  "List key points about photosynthesis",
-  "Summarize and generate flashcards for this PDF",
-  "Create a deck to prep for my midterm this week",
-];
-
 export default async function HomePage() {
   const { data: user } = await getUser();
   const { data: decks } = await getUserDecks(user?.id as string);
@@ -42,7 +29,7 @@ export default async function HomePage() {
       ?.sort(
         (a, b) =>
           new Date(b.progress!.lastStudied!).getTime() -
-          new Date(a.progress!.lastStudied!).getTime()
+          new Date(a.progress!.lastStudied!).getTime(),
       )
       ?.slice(0, 4) || [];
 
@@ -50,7 +37,7 @@ export default async function HomePage() {
     decks
       ?.filter((deck) => !recentDecks.find((r) => r.id === deck.id))
       ?.sort(
-        (a, b) => (b.flashcards?.length || 0) - (a.flashcards?.length || 0)
+        (a, b) => (b.flashcards?.length || 0) - (a.flashcards?.length || 0),
       )
       ?.slice(0, 3) || [];
 
@@ -64,7 +51,7 @@ export default async function HomePage() {
     decks?.filter(
       (deck) =>
         deck.progress?.lastStudied &&
-        new Date(deck.progress.lastStudied) > sevenDaysAgo
+        new Date(deck.progress.lastStudied) > sevenDaysAgo,
     ).length || 0;
 
   const greeting = (() => {
@@ -141,97 +128,7 @@ export default async function HomePage() {
           </Card>
         </div>
 
-        <Card className="border border-border/60 shadow-sm">
-          <CardHeader className="flex flex-row items-center gap-2">
-            <CardTitle className="text-lg font-semibold">Ask Felin</CardTitle>
-            <Badge className="!mt-0">
-              <Sparkles className="h-4 w-4" />
-              AI
-            </Badge>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-[1.35fr,1fr]">
-              <div className="space-y-3">
-                <form action="/assistant" className="space-y-2">
-                  <div className="relative">
-                    <textarea
-                      name="prompt"
-                      rows={5}
-                      placeholder="Paste notes, drop a topic, or ask for a quiz/summary..."
-                      className="w-full rounded-lg border border-border bg-card p-4 pr-32 text-base focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
-                      autoComplete="off"
-                      required
-                    />
-                    <Button
-                      type="submit"
-                      className="absolute right-3 bottom-3 h-11 px-5 gap-2"
-                    >
-                      <Send className="h-4 w-4" />
-                      Send
-                    </Button>
-                  </div>
-                </form>
-                <div className="flex flex-wrap gap-2">
-                  {assistantSuggestions.map((prompt) => (
-                    <Link
-                      key={prompt}
-                      href={`/assistant?prompt=${encodeURIComponent(prompt)}`}
-                      className="text-sm"
-                    >
-                      <Button type="button" variant="secondary" size="sm">
-                        {prompt}
-                      </Button>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-lg border border-dashed border-border/70 bg-muted/40 p-3 space-y-2">
-                <p className="text-xs font-semibold text-foreground/80">
-                  Quick actions
-                </p>
-                <div className="flex flex-col gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start gap-2"
-                  >
-                    <Wand2 className="h-4 w-4 text-primary" />
-                    Quiz my last deck
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start gap-2"
-                  >
-                    <NotebookPen className="h-4 w-4 text-primary" />
-                    Turn notes into cards
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start gap-2"
-                  >
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    Make a 3-day study plan
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start gap-2"
-                  >
-                    <ArrowRight className="h-4 w-4 text-primary" />
-                    Explain this topic simply
-                  </Button>
-                </div>
-                <div className="text-[11px] text-muted-foreground">
-                  Tip: paste notes or a URL and ask for flashcards, summaries,
-                  or a timed quiz. Press Ctrl + Enter to send.
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <AskFelinCard />
 
         <Card className="border border-border/60 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between">
