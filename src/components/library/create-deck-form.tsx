@@ -64,7 +64,7 @@ export function CreateDeckForm({
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [generationStatus, setGenerationStatus] = useState(
-    "Analyzing your content..."
+    "Analyzing your content...",
   );
   const [estimatedTime, setEstimatedTime] = useState("30 seconds");
   const [mode, setMode] = useState<"manual" | "ai">("manual");
@@ -98,7 +98,7 @@ export function CreateDeckForm({
         user.id,
         data.name,
         data.description,
-        data.visibility
+        data.visibility,
       );
       if (result.success) {
         revalidateLibrary();
@@ -130,6 +130,7 @@ export function CreateDeckForm({
       return;
     }
 
+    let succeeded = false;
     try {
       setProgress(25);
       setGenerationStatus("Creating your deck...");
@@ -139,7 +140,7 @@ export function CreateDeckForm({
         user.id,
         data.name,
         "AI generated deck",
-        data.visibility
+        data.visibility,
       );
       if (!deckResult.success || !deckResult.data?.id) {
         toast.error(deckResult.message || "Failed to create deck.");
@@ -153,12 +154,12 @@ export function CreateDeckForm({
       const generationResult = await generateFlashcardsAction(
         data.name,
         data.notes,
-        data.visibility
+        data.visibility,
       );
 
       if (!generationResult.success || !generationResult.flashcards?.length) {
         toast.error(
-          generationResult.message || "Failed to generate flashcards."
+          generationResult.message || "Failed to generate flashcards.",
         );
         return;
       }
@@ -170,7 +171,7 @@ export function CreateDeckForm({
       const addResult = await addGeneratedFlashcardsToDeckAction(
         user.id,
         deckResult.data.id,
-        generationResult.flashcards
+        generationResult.flashcards,
       );
 
       if (!addResult.success) {
@@ -188,11 +189,12 @@ export function CreateDeckForm({
       aiForm.reset();
       if (onSuccess) onSuccess();
       router.push(`/decks/${deckResult.data.id}`);
+      succeeded = true;
     } catch (error) {
       console.error("Error generating flashcards:", error);
       toast.error("An error occurred while generating flashcards.");
     } finally {
-      setIsGenerating(false);
+      if (!succeeded) setIsGenerating(false);
     }
   };
 
@@ -212,7 +214,7 @@ export function CreateDeckForm({
           className={`mb-2 ${
             hasReachedMaxDeck(
               userSubscription as "starter" | "pro" | "ultra",
-              decks
+              decks,
             )
               ? ""
               : "hidden"
@@ -228,12 +230,13 @@ export function CreateDeckForm({
         <button
           type="button"
           onClick={() => setMode("manual")}
+          disabled={isGenerating}
           className={cn(
             "group flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-all",
             "hover:border-primary/60 hover:shadow-sm",
             mode === "manual"
               ? "border-primary bg-primary/5 shadow-sm"
-              : "border-border bg-white"
+              : "border-border bg-white",
           )}
           aria-pressed={mode === "manual"}
         >
@@ -242,7 +245,7 @@ export function CreateDeckForm({
               "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
               mode === "manual"
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-foreground"
+                : "bg-muted text-foreground",
             )}
           >
             <PenSquare className="h-5 w-5" />
@@ -258,12 +261,13 @@ export function CreateDeckForm({
         <button
           type="button"
           onClick={() => setMode("ai")}
+          disabled={isGenerating}
           className={cn(
             "group flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-all",
             "hover:border-primary/60 hover:shadow-sm",
             mode === "ai"
               ? "border-primary bg-primary/5 shadow-sm"
-              : "border-border bg-white"
+              : "border-border bg-white",
           )}
           aria-pressed={mode === "ai"}
         >
@@ -272,7 +276,7 @@ export function CreateDeckForm({
               "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
               mode === "ai"
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-foreground"
+                : "bg-muted text-foreground",
             )}
           >
             <Sparkles className="h-5 w-5" />
@@ -393,7 +397,7 @@ export function CreateDeckForm({
                         !user.emailVerified ||
                         hasReachedMaxDeck(
                           userSubscription as "starter" | "pro" | "ultra",
-                          decks
+                          decks,
                         )
                       }
                     >
@@ -408,42 +412,106 @@ export function CreateDeckForm({
 
         {mode === "ai" && (
           <div className="space-y-5">
-            <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-              <div className="flex flex-wrap items-start justify-between gap-3 border-b px-5 py-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <SparklesIcon className="h-4 w-4 text-primary" />
-                    AI deck builder
+            {!isGenerating && (
+              <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-3 border-b px-5 py-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                      <SparklesIcon className="h-4 w-4 text-primary" />
+                      AI deck builder
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Paste notes and we create the deck plus flashcards
+                      automatically.
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Paste notes and we create the deck plus flashcards
-                    automatically.
-                  </p>
+                  <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-white px-3 py-1.5 text-xs font-semibold text-primary">
+                    <Zap className="h-4 w-4" />1 Energy
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-white px-3 py-1.5 text-xs font-semibold text-primary">
-                  <Zap className="h-4 w-4" />1 Energy
-                </div>
-              </div>
 
-              <Form {...aiForm}>
-                <form
-                  onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
-                  className="space-y-5 px-5 py-5"
-                >
-                  <div className="grid gap-3 md:grid-cols-2">
+                <Form {...aiForm}>
+                  <form
+                    onSubmit={aiForm.handleSubmit(onGenerateFlashcards)}
+                    className="space-y-5 px-5 py-5"
+                  >
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <FormField
+                        control={aiForm.control}
+                        name="name"
+                        disabled={!user.emailVerified}
+                        render={({ field }) => (
+                          <FormItem className="md:col-span-2">
+                            <FormLabel className="flex items-center justify-between">
+                              <span>Deck name</span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Exam cram: Cognitive Psychology"
+                                className="bg-white"
+                                disabled={isGenerating}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={aiForm.control}
+                        name="visibility"
+                        disabled={!user.emailVerified}
+                        render={({ field }) => (
+                          <FormItem className="md:col-span-2">
+                            <FormLabel>Visibility</FormLabel>
+                            <div className="flex items-center justify-between rounded-lg border bg-white p-3">
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2">
+                                  {field.value === "public" ? (
+                                    <Eye className="h-4 w-4 text-green-500" />
+                                  ) : (
+                                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                  )}
+                                  <span className="text-sm font-medium">
+                                    {field.value === "public"
+                                      ? "Public"
+                                      : "Private"}
+                                  </span>
+                                </div>
+                                <span className="text-xs text-muted-foreground">
+                                  {field.value === "public"
+                                    ? "Anyone can view"
+                                    : "Only you can view"}
+                                </span>
+                              </div>
+                              <Switch
+                                checked={field.value === "public"}
+                                onCheckedChange={(checked) =>
+                                  field.onChange(checked ? "public" : "private")
+                                }
+                                disabled={!user.emailVerified || isGenerating}
+                              />
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <FormField
                       control={aiForm.control}
-                      name="name"
+                      name="notes"
                       disabled={!user.emailVerified}
                       render={({ field }) => (
-                        <FormItem className="md:col-span-2">
+                        <FormItem>
                           <FormLabel className="flex items-center justify-between">
-                            <span>Deck name</span>
+                            <span>Source notes</span>
                           </FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Exam cram: Cognitive Psychology"
-                              className="bg-white"
+                            <Textarea
+                              placeholder="Paste lecture notes, bullet points, or a mini outline. The clearer the structure, the sharper the cards."
+                              className="min-h-[220px] resize-none rounded-xl text-sm"
                               disabled={isGenerating}
                               {...field}
                             />
@@ -453,126 +521,66 @@ export function CreateDeckForm({
                       )}
                     />
 
-                    <FormField
-                      control={aiForm.control}
-                      name="visibility"
-                      disabled={!user.emailVerified}
-                      render={({ field }) => (
-                        <FormItem className="md:col-span-2">
-                          <FormLabel>Visibility</FormLabel>
-                          <div className="flex items-center justify-between rounded-lg border bg-white p-3">
-                            <div className="flex items-center gap-2">
-                              <div className="flex items-center gap-2">
-                                {field.value === "public" ? (
-                                  <Eye className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                                )}
-                                <span className="text-sm font-medium">
-                                  {field.value === "public"
-                                    ? "Public"
-                                    : "Private"}
-                                </span>
-                              </div>
-                              <span className="text-xs text-muted-foreground">
-                                {field.value === "public"
-                                  ? "Anyone can view"
-                                  : "Only you can view"}
-                              </span>
-                            </div>
-                            <Switch
-                              checked={field.value === "public"}
-                              onCheckedChange={(checked) =>
-                                field.onChange(checked ? "public" : "private")
-                              }
-                              disabled={!user.emailVerified || isGenerating}
-                            />
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                    <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          type="button"
+                          className="flex items-center gap-2"
+                          disabled={
+                            isGenerating ||
+                            !user.emailVerified ||
+                            hasReachedMaxDeck(
+                              userSubscription as "starter" | "pro" | "ultra",
+                              decks,
+                            )
+                          }
+                        >
+                          <Upload className="h-4 w-4" />
+                          Upload notes
+                        </Button>
+                      </div>
 
-                  <FormField
-                    control={aiForm.control}
-                    name="notes"
-                    disabled={!user.emailVerified}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center justify-between">
-                          <span>Source notes</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Paste lecture notes, bullet points, or a mini outline. The clearer the structure, the sharper the cards."
-                            className="min-h-[220px] resize-none rounded-xl text-sm"
-                            disabled={isGenerating}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        type="button"
-                        className="flex items-center gap-2"
-                        disabled={
-                          isGenerating ||
-                          !user.emailVerified ||
-                          hasReachedMaxDeck(
-                            userSubscription as "starter" | "pro" | "ultra",
-                            decks
-                          )
-                        }
-                      >
-                        <Upload className="h-4 w-4" />
-                        Upload notes
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="submit"
+                          className="flex items-center gap-2 sm:hidden"
+                          disabled={isGenerating || !user.emailVerified}
+                        >
+                          {isGenerating ? (
+                            <Loading isWhite />
+                          ) : (
+                            <Sparkles className="h-4 w-4" />
+                          )}
+                          {isGenerating ? "" : "Generate"}
+                        </Button>
+                        <Button
+                          type="submit"
+                          className="hidden items-center gap-2 sm:flex"
+                          disabled={
+                            isGenerating ||
+                            !user.emailVerified ||
+                            hasReachedMaxDeck(
+                              userSubscription as "starter" | "pro" | "ultra",
+                              decks,
+                            )
+                          }
+                        >
+                          {isGenerating ? (
+                            <Loading isWhite />
+                          ) : (
+                            <Sparkles className="h-4 w-4" />
+                          )}
+                          {isGenerating
+                            ? "Generating..."
+                            : "Generate Flashcards"}
+                        </Button>
+                      </div>
                     </div>
-
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="submit"
-                        className="flex items-center gap-2 sm:hidden"
-                        disabled={isGenerating || !user.emailVerified}
-                      >
-                        {isGenerating ? (
-                          <Loading isWhite />
-                        ) : (
-                          <Sparkles className="h-4 w-4" />
-                        )}
-                        {isGenerating ? "" : "Generate"}
-                      </Button>
-                      <Button
-                        type="submit"
-                        className="hidden items-center gap-2 sm:flex"
-                        disabled={
-                          isGenerating ||
-                          !user.emailVerified ||
-                          hasReachedMaxDeck(
-                            userSubscription as "starter" | "pro" | "ultra",
-                            decks
-                          )
-                        }
-                      >
-                        {isGenerating ? (
-                          <Loading isWhite />
-                        ) : (
-                          <Sparkles className="h-4 w-4" />
-                        )}
-                        {isGenerating ? "Generating..." : "Generate Flashcards"}
-                      </Button>
-                    </div>
-                  </div>
-                </form>
-              </Form>
-            </div>
+                  </form>
+                </Form>
+              </div>
+            )}
 
             {isGenerating && (
               <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3 shadow-sm">
