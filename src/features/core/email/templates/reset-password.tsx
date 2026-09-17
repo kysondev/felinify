@@ -57,7 +57,7 @@ const ResetPassword = ({ url }: ResetPasswordProps) => {
               <hr className="border-gray-200 mb-8" />
 
               <Text className="text-gray-500 text-xs text-center">
-                ©2025 Felinify
+                ©{new Date().getFullYear()} Felinify
                 <br />
                 <br />
                 All rights reserved.

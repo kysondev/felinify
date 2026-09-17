@@ -126,7 +126,7 @@ const Footer = () => {
 
             {/* Bottom section */}
             <div className="mt-16 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
-              <p>© 2025 Felinify.com. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Felinify.com. All rights reserved.</p>
               <ul className="flex gap-6">
                 {bottomLinks.map((link, linkIdx) => (
                   <li
