@@ -34,3 +34,5 @@ jobs:
           file: infrastructure/Dockerfile
           push: true
           tags: ghcr.io/kysondev/felinify:latest
+          secrets: |
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
