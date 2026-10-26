@@ -1,8 +1,11 @@
 "use server";
 import { getUser, getUserWithId } from "@user/services/user.service";
 import Stripe from "stripe";
+import { lazyClient } from "src/lib/lazy";
 
-const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripeClient = lazyClient(
+  () => new Stripe(process.env.STRIPE_SECRET_KEY!)
+);
 
 export const createCustomerPortalSession = async () => {
   try {

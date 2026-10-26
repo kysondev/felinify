@@ -4,11 +4,7 @@ WORKDIR /app
 COPY ../package.json ../package-lock.json ./
 RUN npm ci
 COPY ../ .
-RUN --mount=type=secret,id=RESEND_API_KEY,env=RESEND_API_KEY \
-    --mount=type=secret,id=NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,env=NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME \
-    --mount=type=secret,id=NEXT_PUBLIC_CLOUDINARY_API_KEY,env=NEXT_PUBLIC_CLOUDINARY_API_KEY \
-    --mount=type=secret,id=CLOUDINARY_SECRET,env=CLOUDINARY_SECRET \
-    npm run build
+RUN npm run build
 
 FROM node:20-slim as runner
 WORKDIR /app

@@ -1,7 +1,8 @@
 import { Resend } from "resend";
 import { ReactNode } from "react";
+import { lazyClient } from "src/lib/lazy";
 
-export const resend = new Resend(process.env.RESEND_API_KEY);
+export const resend = lazyClient(() => new Resend(process.env.RESEND_API_KEY));
 
 interface SendEmailProps {
   to: string;

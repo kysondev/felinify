@@ -72,17 +72,17 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
         // Get Cloudinary signature
         const sigRes = await fetch("/api/cloudinary/signature");
         if (!sigRes.ok) throw new Error("Failed to get signature");
-        const { signature, timestamp } = await sigRes.json();
+        const { signature, timestamp, cloudName, apiKey } = await sigRes.json();
 
         // Upload to Cloudinary
         const formData = new FormData();
         formData.append("file", selectedFile);
-        formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
+        formData.append("api_key", apiKey);
         formData.append("timestamp", timestamp.toString());
         formData.append("signature", signature);
 
         const response = await fetch(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           {
             method: "POST",
             body: formData,

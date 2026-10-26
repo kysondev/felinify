@@ -15,8 +15,11 @@ import {
   revalidateLibrary,
   revalidateSettings,
 } from "@common/utils/revalidation.utils";
+import { lazyClient } from "src/lib/lazy";
 
-const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripeClient = lazyClient(
+  () => new Stripe(process.env.STRIPE_SECRET_KEY!)
+);
 
 export const auth = betterAuth({
   appName: "Felinify",
