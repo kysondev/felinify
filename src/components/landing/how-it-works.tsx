@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
+import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 const StepCard = memo(
   ({ step, index, isLast }: { step: any; index: number; isLast: boolean }) => (
@@ -119,7 +120,6 @@ export const HowItWorks = () => {
   const router = useRouter();
 
   const handleWorkspaceClick = () => {
-    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
 
     if (isBetaMode) {
       setShowSubscriptionPopup(true);

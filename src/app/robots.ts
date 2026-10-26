@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@common/config/app.config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -16,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         "/decks/*/stats",
       ],
     },
-    sitemap: "https://felinify.com/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

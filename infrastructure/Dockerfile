@@ -4,6 +4,12 @@ WORKDIR /app
 COPY ../package.json ../package-lock.json ./
 RUN npm ci
 COPY ../ .
+
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_BETA_MODE
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL \
+    NEXT_PUBLIC_BETA_MODE=$NEXT_PUBLIC_BETA_MODE
+
 RUN npm run build
 
 FROM node:20-slim as runner

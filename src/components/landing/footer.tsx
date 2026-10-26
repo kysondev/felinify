@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
+import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 const Footer = () => {
   const [showSubscribe, setShowSubscribe] = useState(false);
@@ -14,7 +15,6 @@ const Footer = () => {
   }
 
   const handleWorkspaceClick = (url: string) => {
-    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
 
     if (isBetaMode) {
       setShowSubscribe(true);

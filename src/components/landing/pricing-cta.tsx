@@ -6,13 +6,13 @@ import { SubscriptionPopup } from "./subscription-popup";
 import { Button } from "@components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 const PricingCTA = () => {
   const router = useRouter();
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
 
   const handleWorkspaceClick = () => {
-    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
 
     if (isBetaMode) {
       setShowSubscriptionPopup(true);

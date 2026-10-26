@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@common/config/app.config";
 import "@styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { DM_Sans } from "next/font/google";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://felinify.com"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     title: "Felinify | AI Flashcards For Focused, Fast Learning",
     description:
       "Create flashcards from notes, study with smart quizzes, and track mastery. Built for students who want to stop wasting time.",
-    url: "https://felinify.com",
+    url: SITE_URL,
     siteName: "Felinify",
     images: [
       {

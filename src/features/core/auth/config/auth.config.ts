@@ -1,9 +1,12 @@
+import { IS_BETA_MODE } from "@common/config/app.config";
+
 export const AUTH_CONFIG = {
-  isSignupEnabled: process.env.NEXT_PUBLIC_SIGNUP_ENABLED === "true",
 
-  isEmailLoginEnabled: process.env.NEXT_PUBLIC_EMAIL_LOGIN_ENABLED === "true",
+  isSignupEnabled: !IS_BETA_MODE,
 
-  isOAuthEnabled: process.env.NEXT_PUBLIC_OAUTH_ENABLED === "true",
+  isEmailLoginEnabled: true,
+
+  isOAuthEnabled: !IS_BETA_MODE,
 };
 
 export const AUTH_DISABLED_MESSAGES = {

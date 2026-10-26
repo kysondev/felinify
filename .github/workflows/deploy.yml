@@ -34,3 +34,6 @@ jobs:
           file: infrastructure/Dockerfile
           push: true
           tags: ghcr.io/kysondev/felinify:latest
+          build-args: |
+            NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
+            NEXT_PUBLIC_BETA_MODE=${{ vars.NEXT_PUBLIC_BETA_MODE }}

@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { BetaSubscribeForm } from "./beta-subscribe-form";
+import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 const Hero = () => {
   const router = useRouter();
-  const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
 
   const handleGetStartedClick = () => {
     router.push("/library");

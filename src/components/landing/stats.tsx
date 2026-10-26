@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { SubscriptionPopup } from "./subscription-popup";
 import { useRouter } from "next/navigation";
+import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 export function Stats() {
   const stats = [
@@ -41,7 +42,6 @@ export function Stats() {
   const router = useRouter();
 
   const handleWorkspaceClick = () => {
-    const isBetaMode = process.env.NEXT_PUBLIC_BETA_MODE === "true";
     
     if (isBetaMode) {
       setShowSubscriptionPopup(true);
