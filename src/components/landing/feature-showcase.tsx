@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Clock,
   BookOpen,
@@ -13,81 +11,35 @@ import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
 import { Skeleton } from "../ui/skeleton";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
-import { motion } from "framer-motion";
 
 export function FeatureShowcase() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-        duration: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
 
   return (
     <>
       <section id="features">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <motion.div
-            className="text-center mb-12 sm:mb-16"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            <motion.h2
+          <div className="text-center mb-12 sm:mb-16">
+            <h2
               className="text-2xl font-bold sm:text-3xl lg:text-4xl mb-4 text-foreground"
-              variants={itemVariants}
             >
               Study smarter, not harder — no delays, just results.
-            </motion.h2>
-            <motion.p
+            </h2>
+            <p
               className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed"
-              variants={itemVariants}
             >
               Transform your learning with AI-powered flashcards that adapt to
               your pace, track your progress, and help you master any subject
               faster than ever before.
-            </motion.p>
-          </motion.div>
+            </p>
+          </div>
 
-          <motion.div
-            className="space-y-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <motion.div
+          <div className="space-y-8">
+            <div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={containerVariants}
             >
-              <motion.div
+              <div
                 className="group relative bg-card border cursor-default border-border rounded-xl p-6 overflow-hidden hover:shadow-lg transition-shadow duration-200 min-h-[240px] flex flex-col"
-                variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -135,11 +87,10 @@ export function FeatureShowcase() {
                 </div>
 
                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              </motion.div>
+              </div>
 
-              <motion.div
+              <div
                 className="group relative bg-card border cursor-default border-border rounded-xl p-6 overflow-hidden hover:shadow-lg transition-shadow duration-200 min-h-[240px] flex flex-col"
-                variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -199,11 +150,10 @@ export function FeatureShowcase() {
                 </div>
 
                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              </motion.div>
+              </div>
 
-              <motion.div
+              <div
                 className="group relative bg-card border cursor-default border-border rounded-xl overflow-hidden p-6 hover:shadow-lg transition-shadow duration-200"
-                variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -266,13 +216,12 @@ export function FeatureShowcase() {
                 </div>
 
                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-              <motion.div
+              <div
                 className="group relative bg-card border cursor-default border-border rounded-xl p-6 overflow-hidden hover:shadow-lg transition-shadow duration-200"
-                variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -356,11 +305,10 @@ export function FeatureShowcase() {
                 </div>
 
                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              </motion.div>
+              </div>
 
-              <motion.div
+              <div
                 className="group relative bg-card border cursor-default border-border rounded-xl p-6 overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col"
-                variants={cardVariants}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -447,9 +395,9 @@ export function FeatureShowcase() {
                 </div>
 
                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 translate-x-8 group-hover:scale-125 transition-transform duration-500" />
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </>

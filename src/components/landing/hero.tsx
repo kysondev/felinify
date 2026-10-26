@@ -5,7 +5,6 @@ import { ArrowRight, Compass, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { GithubLogoIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { BetaSubscribeForm } from "./beta-subscribe-form";
 
 const Hero = () => {
@@ -19,92 +18,46 @@ const Hero = () => {
   const handleExploreDeckClick = () => {
     router.push("/explore");
   };
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-        duration: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: 0.3,
-      },
-    },
-  };
 
   return (
     <>
       <section className="pt-24 pb-20 flex justify-center">
         <div className="container text-center">
           {/* Badge */}
-          <motion.div
-            className="mx-auto flex max-w-5xl flex-col gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div
+          <div className="mx-auto flex max-w-5xl flex-col gap-8">
+            <div
               className="inline-flex items-center justify-center gap-2 mx-auto px-3.5 py-1.5 rounded-full border border-border bg-background/60 text-foreground/80 backdrop-blur supports-[backdrop-filter]:bg-background/40 shadow-sm font-medium text-sm mb-2"
-              variants={itemVariants}
             >
               <Sparkles className="w-4 h-4 text-primary" />
               <span>Launching Soon</span>
-            </motion.div>
+            </div>
 
             {/* Main headline */}
-            <motion.h1
+            <h1
               className="text-4xl font-bold lg:text-6xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent leading-tight"
-              variants={itemVariants}
             >
               Built For Learners Who Want More Than Memorization
-            </motion.h1>
+            </h1>
 
             {/* Description */}
-            <motion.p
+            <p
               className="text-muted-foreground text-balance lg:text-lg max-w-4xl mx-auto leading-relaxed"
-              variants={itemVariants}
             >
               Stop cramming. Start learning smarter. Create flashcards from your
               notes, test your understanding with intelligent quizzes, and see
               your progress soar as you master every topic.
-            </motion.p>
-          </motion.div>
+            </p>
+          </div>
 
           {/* CTA Buttons */}
-          <motion.div
+          <div
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.6 }}
           >
             {isBetaMode ? (
               <BetaSubscribeForm />
             ) : (
               <>
-                <motion.div className="w-full sm:w-auto">
+                <div className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     className="px-8 py-5 text-base w-full sm:w-auto rounded-full"
@@ -114,8 +67,8 @@ const Hero = () => {
                       Get Started <ArrowRight className="w-4 h-4" />
                     </span>
                   </Button>
-                </motion.div>
-                <motion.div className="w-full sm:w-auto">
+                </div>
+                <div className="w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="lg"
@@ -129,19 +82,13 @@ const Hero = () => {
                       Explore Decks
                     </span>
                   </Button>
-                </motion.div>
+                </div>
               </>
             )}
-          </motion.div>
+          </div>
 
           {/* GitHub Link */}
-          <motion.div
-            className="flex justify-center mt-6"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.8 }}
-          >
+          <div className="flex justify-center mt-6">
             <a
               href="https://github.com/kysondev/felinify"
               target="_blank"
@@ -151,15 +98,10 @@ const Hero = () => {
               <GithubLogoIcon className="w-3 h-3" />
               <span>Star on GitHub</span>
             </a>
-          </motion.div>
+          </div>
 
           {/* Product screenshot */}
-          <motion.div
-            className="relative mt-10 overflow-hidden px-1 sm:px-2"
-            variants={imageVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <div className="relative mt-10 overflow-hidden px-1 sm:px-2">
             <div className="bg-gradient-to-b to-[#FEFEFE] dark:to-gray-950 absolute inset-0 z-10 from-transparent from-35%"></div>
             <div className="relative mx-auto max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 bg-[#FEFEFE] dark:bg-gray-900 shadow-2xl shadow-zinc-950/20">
               <div className="bg-muted/30 px-2 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between border-b border-border">
@@ -256,24 +198,14 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent from-40% via-white/20 to-white dark:via-gray-950/20 dark:to-gray-950"></div>
               </div>
             </div>
-          </motion.div>
+          </div>
           {/* Technology Stack */}
-          <motion.div
-            className="bottom-10 relative z-10"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 1.0 }}
-          >
-            <motion.p
-              className="text-sm text-muted-foreground mb-6 text-center"
-              variants={itemVariants}
-            >
+          <div className="bottom-10 relative z-10">
+            <p className="text-sm text-muted-foreground mb-6 text-center">
               Powered by industry-leading tools
-            </motion.p>
-            <motion.div
+            </p>
+            <div
               className="flex flex-wrap justify-center items-center gap-8 sm:gap-10 lg:gap-12"
-              variants={containerVariants}
             >
               {[
                 { src: "/nextjs.svg", alt: "NextJS", name: "NextJS" },
@@ -291,11 +223,9 @@ const Hero = () => {
                 },
                 { src: "/resend.svg", alt: "Resend", name: "Resend" },
               ].map((tech, index) => (
-                <motion.div
+                <div
                   key={tech.name}
                   className="flex items-center gap-3"
-                  variants={itemVariants}
-                  transition={{ delay: index * 0.1 }}
                 >
                   <img
                     src={tech.src}
@@ -305,10 +235,10 @@ const Hero = () => {
                   <span className="text-lg sm:text-xl font-medium text-muted-foreground">
                     {tech.name}
                   </span>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
     </>
