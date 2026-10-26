@@ -1,5 +1,5 @@
 import { getUserDecks } from "@deck/services/deck-read.service";
-import { getUser } from "@user/services/user.service";
+import { requireUser } from "@auth/utils/session.utils";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { data: user } = await getUser();
-  const { data: decks } = await getUserDecks(user?.id as string);
+  const user = await requireUser();
+  const { data: decks } = await getUserDecks(user.id);
 
   const recentDecks =
     decks

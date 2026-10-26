@@ -1,6 +1,6 @@
 import { Library, Home, ChevronRight } from "lucide-react";
 import { getUserDecks } from "@deck/services/deck-read.service";
-import { getUser } from "@user/services/user.service";
+import { requireUser } from "@auth/utils/session.utils";
 import { Deck } from "db/types/models.types";
 import { Metadata } from "next";
 import JsonLd from "@components/SEO/json-ld";
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
 };
 
 export default async function LibraryPage() {
-  const { data: user } = await getUser();
-  const { data: decks } = await getUserDecks(user?.id as string);
+  const user = await requireUser();
+  const { data: decks } = await getUserDecks(user.id);
   const safeDecks = decks || [];
 
   const librarySchema = {

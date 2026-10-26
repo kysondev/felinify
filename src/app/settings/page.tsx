@@ -1,4 +1,5 @@
-import { getUser, getUserSubscription } from "@user/services/user.service";
+import { getUserSubscription } from "@user/services/user.service";
+import { requireUser } from "@auth/utils/session.utils";
 import { Alert } from "@ui/alert";
 import { Subscription, User } from "db/types/models.types";
 import { SettingsTabs } from "@components/settings/settings-tabs";
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
 };
 
 export default async function SettingsPage() {
-  const { data: user } = await getUser();
-  const { data: subscription } = await getUserSubscription(user?.id || "");
+  const user = await requireUser();
+  const { data: subscription } = await getUserSubscription(user.id);
 
   return (
     <div className="container max-w-[900px] mx-auto px-4 md:px-6 py-8">

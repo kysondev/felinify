@@ -2,7 +2,8 @@ import { ChevronRight, Home, Library, PlusCircle } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { CreateDeckForm } from "@components/library/create-deck-form";
-import { getUser, getUserSubscription } from "@user/services/user.service";
+import { getUserSubscription } from "@user/services/user.service";
+import { requireUser } from "@auth/utils/session.utils";
 import { getUserDecks } from "@deck/services/deck-read.service";
 import { Subscription, User } from "db/types/models.types";
 
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
 };
 
 export default async function NewLibraryDeckPage() {
-  const { data: user } = await getUser();
-  const { data: decks } = await getUserDecks(user?.id as string);
-  const { data: subscription } = await getUserSubscription(user?.id as string);
+  const user = await requireUser();
+  const { data: decks } = await getUserDecks(user.id);
+  const { data: subscription } = await getUserSubscription(user.id);
 
   return (
     <div className="min-h-screen bg-background mt-2">

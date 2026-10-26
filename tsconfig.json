@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -10,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -19,29 +23,61 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@auth/*": ["src/features/core/auth/*"],
-      "@deck/*": ["src/features/core/deck/*"],
-      "@study/*": ["src/features/core/study/*"],
-      "@explore/*": ["src/features/core/explore/*"],
-      "@review/*": ["src/features/core/review/*"],
-      "@subscription/*": ["src/features/core/subscription/*"],
-      "@user/*": ["src/features/core/user/*"],
-      "@email/*": ["src/features/core/email/*"],
-      "@ai/*": ["src/features/core/ai/*"],
-      "@common/*": ["src/features/common/*"],
-      "@styles/*": ["src/styles/*"],
-      "@components/*": ["src/components/*"],
-      "@ui/*": ["src/components/ui/*"]
+      "@auth/*": [
+        "src/features/core/auth/*"
+      ],
+      "@deck/*": [
+        "src/features/core/deck/*"
+      ],
+      "@study/*": [
+        "src/features/core/study/*"
+      ],
+      "@explore/*": [
+        "src/features/core/explore/*"
+      ],
+      "@review/*": [
+        "src/features/core/review/*"
+      ],
+      "@subscription/*": [
+        "src/features/core/subscription/*"
+      ],
+      "@user/*": [
+        "src/features/core/user/*"
+      ],
+      "@email/*": [
+        "src/features/core/email/*"
+      ],
+      "@ai/*": [
+        "src/features/core/ai/*"
+      ],
+      "@common/*": [
+        "src/features/common/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@ui/*": [
+        "src/components/ui/*"
+      ]
     },
     "target": "ES2023",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "eslint.config.js",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "app/api/og/route.js"  ],
-  "exclude": ["node_modules"]
+    ".next/types/**/*.ts",
+    "app/api/og/route.js",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
