@@ -1,6 +1,4 @@
 import { MetadataRoute } from "next";
-import { Deck } from "db/types/models.types";
-import { getAllDecks } from "@deck/services/deck-read.service";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://felinify.com";
@@ -31,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
   ];
-
+  
   const publicPages = [
     {
       url: `${baseUrl}/explore`,
@@ -59,16 +57,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Get public decks for sitemap
-  const { data: publicDecks } = await getAllDecks(1, 1000);
-  const deckPages = publicDecks?.map((deck: Deck) => ({
-    url: `${baseUrl}/decks/${deck.id}`,
-    lastModified: new Date(deck.updatedAt),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  })) || [];
-
-  const routes = [...landingPages, ...publicPages, ...deckPages];
-
-  return routes;
+  return [...landingPages, ...publicPages];
 }
