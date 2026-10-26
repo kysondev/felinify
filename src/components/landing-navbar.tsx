@@ -95,7 +95,7 @@ const LandingNavbar = ({
       >
         <div
           className={cn(
-            "backdrop-blur-lg border border-border rounded-full shadow-lg transition-all duration-300 px-3",
+            "lg:backdrop-blur-lg border border-border rounded-full shadow-lg transition-all duration-300 px-3",
             shouldShrink
               ? "bg-background/80 sm:px-4 py-1 sm:py-2"
               : "bg-background/95 sm:px-6 py-2 sm:py-3",
