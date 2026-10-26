@@ -1,16 +1,13 @@
 "use client";
 
 import { Check, Crown, Star, Rocket } from "lucide-react";
-import { useState } from "react";
 
 import { Badge } from "@ui/badge";
-import { Button } from "@ui/button";
 import { Label } from "@ui/label";
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
 import { Separator } from "@ui/separator";
-import { SubscriptionPopup } from "./subscription-popup";
-import { useRouter } from "next/navigation";
-import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
+import { CtaButton } from "./cta-button";
+import { useState } from "react";
 
 interface PricingProps {
   showHeader?: boolean;
@@ -18,17 +15,6 @@ interface PricingProps {
 
 const Pricing = ({ showHeader = true }: PricingProps) => {
   const [isAnnually, setIsAnnually] = useState(false);
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
-  const router = useRouter();
-
-  const handleWorkspaceClick = () => {
-
-    if (isBetaMode) {
-      setShowSubscriptionPopup(true);
-    } else {
-      router.push("/library");
-    }
-  };
   const proOriginalYearly = 35.99;
   const ultraOriginalYearly = 95.99;
   const proMonthly = 2.99;
@@ -38,10 +24,6 @@ const Pricing = ({ showHeader = true }: PricingProps) => {
 
   return (
     <>
-      <SubscriptionPopup
-        open={showSubscriptionPopup}
-        setOpen={setShowSubscriptionPopup}
-      />
       <section
         className="py-16 sm:py-20 lg:py-24"
         id="pricing"
@@ -163,13 +145,13 @@ const Pricing = ({ showHeader = true }: PricingProps) => {
                 </ul>
               </div>
 
-              <Button
+              <CtaButton
                 className="mt-6 w-full"
                 variant="outline"
-                onClick={handleWorkspaceClick}
+            href="/library"
               >
                 Get started free
-              </Button>
+              </CtaButton>
             </div>
 
             <div className="group relative rounded-2xl border-2 border-primary bg-card p-6 md:p-7 flex flex-col justify-between shadow-sm">
@@ -241,9 +223,10 @@ const Pricing = ({ showHeader = true }: PricingProps) => {
                 </ul>
               </div>
 
-              <Button className="mt-6 w-full" onClick={handleWorkspaceClick}>
+              <CtaButton className="mt-6 w-full"
+            href="/library">
                 Choose Pro plan
-              </Button>
+              </CtaButton>
             </div>
 
             <div className="group relative rounded-2xl border border-border/70 bg-card/80 p-6 md:p-7 flex flex-col justify-between">
@@ -314,13 +297,13 @@ const Pricing = ({ showHeader = true }: PricingProps) => {
                 </ul>
               </div>
 
-              <Button
+              <CtaButton
                 className="mt-6 w-full"
                 variant="outline"
-                onClick={handleWorkspaceClick}
+            href="/library"
               >
                 Choose Ultra plan
-              </Button>
+              </CtaButton>
             </div>
           </div>
         </div>

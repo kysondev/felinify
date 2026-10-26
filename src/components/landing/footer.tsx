@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { SubscriptionPopup } from "./subscription-popup";
+import dynamic from "next/dynamic";
+
+const SubscriptionPopup = dynamic(() =>
+  import("./subscription-popup").then((m) => m.SubscriptionPopup)
+);
 import { useRouter } from "next/navigation";
 import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
@@ -74,7 +78,9 @@ const Footer = () => {
   ];
   return (
     <>
-      <SubscriptionPopup open={showSubscribe} setOpen={setShowSubscribe} />
+      {showSubscribe && (
+        <SubscriptionPopup open={showSubscribe} setOpen={setShowSubscribe} />
+      )}
       <section className="py-16 border-t border-border mt-16">
         <div className="px-4 max-w-[1200px] mx-auto">
           <footer>

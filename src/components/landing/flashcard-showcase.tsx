@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent } from "@ui/card";
 import { Badge } from "@ui/badge";
 import { 
@@ -8,18 +6,11 @@ import {
   Zap,
   FileUp,
 } from "lucide-react";
-import { useState } from "react";
-import { SubscriptionPopup } from "./subscription-popup";
 
 export function FlashcardShowcase() {
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
 
   return (
     <>
-      <SubscriptionPopup 
-        open={showSubscriptionPopup} 
-        setOpen={setShowSubscriptionPopup} 
-      />
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto">
           {/* Header */}

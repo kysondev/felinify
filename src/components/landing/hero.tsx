@@ -1,23 +1,12 @@
-"use client";
-
 import { Button } from "@ui/button";
 import { ArrowRight, Compass, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { GithubLogoIcon } from "@phosphor-icons/react";
+import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
-import { BetaSubscribeForm } from "./beta-subscribe-form";
+import Link from "next/link";
+import { BetaSubscribeSlot } from "./beta-subscribe-slot";
 import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
 
 const Hero = () => {
-  const router = useRouter();
-
-  const handleGetStartedClick = () => {
-    router.push("/library");
-  };
-
-  const handleExploreDeckClick = () => {
-    router.push("/explore");
-  };
 
   return (
     <>
@@ -54,33 +43,37 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10"
           >
             {isBetaMode ? (
-              <BetaSubscribeForm />
+              <BetaSubscribeSlot />
             ) : (
               <>
                 <div className="w-full sm:w-auto">
                   <Button
+                    asChild
                     size="lg"
                     className="px-8 py-5 text-base w-full sm:w-auto rounded-full"
-                    onClick={handleGetStartedClick}
                   >
-                    <span className="flex items-center gap-2">
-                      Get Started <ArrowRight className="w-4 h-4" />
-                    </span>
+                    <Link href="/library">
+                      <span className="flex items-center gap-2">
+                        Get Started <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </Link>
                   </Button>
                 </div>
                 <div className="w-full sm:w-auto">
                   <Button
+                    asChild
                     variant="outline"
                     size="lg"
                     className="px-8 py-5 text-base w-full sm:w-auto group rounded-full"
-                    onClick={handleExploreDeckClick}
                   >
-                    <span className="flex items-center gap-2">
-                      <div className="flex items-center justify-center w-5 h-5 rounded-full transition-colors">
-                        <Compass className="w-3 h-3" />
-                      </div>
-                      Explore Decks
-                    </span>
+                    <Link href="/explore">
+                      <span className="flex items-center gap-2">
+                        <div className="flex items-center justify-center w-5 h-5 rounded-full transition-colors">
+                          <Compass className="w-3 h-3" />
+                        </div>
+                        Explore Decks
+                      </span>
+                    </Link>
                   </Button>
                 </div>
               </>

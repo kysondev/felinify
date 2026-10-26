@@ -1,12 +1,8 @@
-"use client";
-
 import { Lightbulb, LineChart } from "lucide-react";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Button } from "../ui/button";
 import { CardsIcon } from "@phosphor-icons/react/dist/ssr";
-import { SubscriptionPopup } from "./subscription-popup";
-import { useRouter } from "next/navigation";
-import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
+import { CtaButton } from "./cta-button";
 
 const StepCard = memo(
   ({ step, index, isLast }: { step: any; index: number; isLast: boolean }) => (
@@ -116,24 +112,9 @@ export const HowItWorks = () => {
       time: "Ongoing",
     },
   ];
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
-  const router = useRouter();
-
-  const handleWorkspaceClick = () => {
-
-    if (isBetaMode) {
-      setShowSubscriptionPopup(true);
-    } else {
-      router.push("/library");
-    }
-  };
 
   return (
     <>
-      <SubscriptionPopup
-        open={showSubscriptionPopup}
-        setOpen={setShowSubscriptionPopup}
-      />
       <section
         className="py-16 sm:py-20 lg:py-24"
         aria-labelledby="how-it-works-heading"
@@ -172,7 +153,8 @@ export const HowItWorks = () => {
               a minute.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button onClick={handleWorkspaceClick}>Try It Now — Free</Button>
+              <CtaButton
+            href="/library">Try It Now — Free</CtaButton>
               <Button variant="outline">Watch Demo</Button>
             </div>
           </div>

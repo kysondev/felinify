@@ -1,11 +1,6 @@
-"use client";
-
 import { Users, Brain, Zap, Target, TrendingUp } from "lucide-react";
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { SubscriptionPopup } from "./subscription-popup";
-import { useRouter } from "next/navigation";
-import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
+
+import { CtaButton } from "./cta-button";
 
 export function Stats() {
   const stats = [
@@ -38,24 +33,9 @@ export function Stats() {
       highlight: "Flexible",
     },
   ];
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
-  const router = useRouter();
-
-  const handleWorkspaceClick = () => {
-    
-    if (isBetaMode) {
-      setShowSubscriptionPopup(true);
-    } else {
-      router.push("/library");
-    }
-  };
 
   return (
     <>
-      <SubscriptionPopup 
-        open={showSubscriptionPopup} 
-        setOpen={setShowSubscriptionPopup} 
-      />
       <section className="py-16 sm:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -118,7 +98,8 @@ export function Stats() {
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto text-sm">
             Start your learning journey today with AI-powered flashcards
           </p>
-          <Button variant="default" onClick={handleWorkspaceClick}>
+          <CtaButton variant="default"
+            href="/library">
             Get Started Free
             <svg
               className="w-4 h-4"
@@ -133,7 +114,7 @@ export function Stats() {
                 d="M13 7l5 5m0 0l-5 5m5-5H6"
               />
             </svg>
-          </Button>
+          </CtaButton>
         </div>
       </div>
     </section>

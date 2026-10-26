@@ -1,11 +1,5 @@
-"use client";
-
 import { ArrowRight, Check } from "lucide-react";
-import { Button } from "@ui/button";
-import { useState } from "react";
-import { SubscriptionPopup } from "./subscription-popup";
-import { useRouter } from "next/navigation";
-import { IS_BETA_MODE as isBetaMode } from "@common/config/app.config";
+import { CtaButton } from "./cta-button";
 
 const Cta = () => {
   const items = [
@@ -15,24 +9,9 @@ const Cta = () => {
     "Sync Across All Devices",
     "Highly customizable",
   ];
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
-  const router = useRouter();
-
-  const handleWorkspaceClick = () => {
-
-    if (isBetaMode) {
-      setShowSubscriptionPopup(true);
-    } else {
-      router.push("/library");
-    }
-  };
 
   return (
     <>
-      <SubscriptionPopup
-        open={showSubscriptionPopup}
-        setOpen={setShowSubscriptionPopup}
-      />
       <section className="">
         <div className="max-w-[1200px] mx-auto">
           <div className="flex justify-center">
@@ -51,15 +30,15 @@ const Cta = () => {
                       repetition, and a distraction-free study experience built
                       for serious learners.
                     </p>
-                    <Button
+                    <CtaButton
                       className="mt-8 px-8"
                       size="lg"
-                      onClick={handleWorkspaceClick}
+            href="/library"
                     >
                       <span className="flex items-center gap-2">
                         Start Learning Free <ArrowRight className="size-4" />
                       </span>
-                    </Button>
+                    </CtaButton>
                   </div>
 
                   {/* Right content - feature list */}
