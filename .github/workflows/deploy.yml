@@ -36,3 +36,6 @@ jobs:
           tags: ghcr.io/kysondev/felinify:latest
           secrets: |
             RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+            NEXT_PUBLIC_CLOUDINARY_API_KEY=${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+            CLOUDINARY_SECRET=${{ secrets.CLOUDINARY_SECRET }}
