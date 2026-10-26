@@ -15,7 +15,7 @@ const Hero = () => {
           {/* Badge */}
           <div className="mx-auto flex max-w-5xl flex-col gap-8">
             <div
-              className="inline-flex items-center justify-center gap-2 mx-auto px-3.5 py-1.5 rounded-full border border-border bg-background/60 text-foreground/80 backdrop-blur supports-[backdrop-filter]:bg-background/40 shadow-sm font-medium text-sm mb-2"
+              className="inline-flex items-center justify-center gap-2 mx-auto px-3.5 py-1.5 rounded-full border border-border bg-background/60 text-foreground/80 lg:backdrop-blur lg:supports-[backdrop-filter]:bg-background/40 shadow-sm font-medium text-sm mb-2"
             >
               <Sparkles className="w-4 h-4 text-primary" />
               <span>Launching Soon</span>

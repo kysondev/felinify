@@ -164,7 +164,7 @@ const LandingNavbar = ({
 
       <div className="lg:hidden">
         <div
-          className={`fixed inset-0 z-40 bg-background/60 backdrop-blur-sm transition-opacity duration-150 ${
+          className={`fixed inset-0 z-40 bg-background/95 transition-opacity duration-150 ${
             mobileOpen
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
