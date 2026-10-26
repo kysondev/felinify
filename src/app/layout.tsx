@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "education",
     "student tools",
   ],
-  authors: [{ name: "Shi Jun(Kyson) W." }],
+  authors: [{ name: "Kyson Weng" }],
   creator: "Felinify",
   publisher: "Felinify",
   formatDetection: {

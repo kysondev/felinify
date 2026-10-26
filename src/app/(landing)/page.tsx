@@ -81,11 +81,11 @@ export default function Home() {
     applicationSubCategory: "Learning Tools",
     author: {
       "@type": "Person",
-      name: "Shi Jun(Kyson) W.",
+      name: "Kyson Weng",
     },
     publisher: {
       "@type": "Person",
-      name: "Shi Jun(Kyson) W.",
+      name: "Kyson Weng",
     },
   };
 
@@ -111,7 +111,7 @@ export default function Home() {
     sameAs: [],
     founder: {
       "@type": "Person",
-      name: "Shi Jun(Kyson) W.",
+      name: "Kyson Weng",
     },
   };
 
